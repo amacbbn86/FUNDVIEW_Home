@@ -1424,6 +1424,117 @@
       }
     }
 
+    /* ——— Every FUNDVIEW Solution Delivers ——— */
+    .solution_delivers {
+      width: 100%;
+      padding: clamp(3.5rem, 7vw, 5.5rem) 1.5rem;
+      background: #f0f4f8;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #0a2e57;
+    }
+
+    .solution_delivers__inner {
+      width: min(1240px, 100%);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .solution_delivers__title {
+      margin: 0 auto clamp(2.25rem, 4.5vw, 3.25rem);
+      max-width: 22ch;
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: #0a2e57;
+    }
+
+    .solution_delivers__grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: clamp(1rem, 1.8vw, 1.5rem);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .solution_delivers__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 1.75rem 1.15rem 1.6rem;
+      border: 1px solid #d1dae3;
+      border-radius: 14px;
+      background: #fff;
+      text-align: center;
+      transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .solution_delivers__item:hover {
+      transform: translateY(-3px);
+      border-color: #00b7b3;
+      box-shadow: 0 14px 34px rgba(10, 46, 87, 0.12);
+    }
+
+    .solution_delivers__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: rgba(0, 183, 179, 0.12);
+      color: #00928f;
+    }
+
+    .solution_delivers__icon svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .solution_delivers__item-title {
+      margin: 0;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #0a2e57;
+    }
+
+    .solution_delivers__item-copy {
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: #4b5c6e;
+    }
+
+    @media (max-width: 1100px) {
+      .solution_delivers__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .solution_delivers__item:nth-child(4),
+      .solution_delivers__item:nth-child(5) {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .solution_delivers {
+        padding: 3rem 1.15rem;
+      }
+
+      .solution_delivers__grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .solution_delivers__item {
+        max-width: 420px;
+        margin: 0 auto;
+        width: 100%;
+      }
+    }
+
     /* ——— See It In Action — overview video band ——— */
     .see_in_action {
       width: 100%;
@@ -3097,6 +3208,70 @@
     </div>
   </section>
 
+  <section class="solution_delivers" id="solution_delivers" aria-labelledby="solution-delivers-heading">
+    <div class="solution_delivers__inner">
+      <h2 class="solution_delivers__title" id="solution-delivers-heading">Every FUNDVIEW Solution Delivers</h2>
+
+      <ul class="solution_delivers__grid">
+        <li class="solution_delivers__item">
+          <span class="solution_delivers__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.75"/>
+              <path d="M3 12c1.8-4.2 5-6.75 9-6.75S19.2 7.8 21 12c-1.8 4.2-5 6.75-9 6.75S4.8 16.2 3 12z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <h3 class="solution_delivers__item-title">Clarity</h3>
+          <p class="solution_delivers__item-copy">Understand what&rsquo;s happening across your organization with real-time information.</p>
+        </li>
+
+        <li class="solution_delivers__item">
+          <span class="solution_delivers__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 7.5h14M7.5 12h9M10 16.5h4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+              <rect x="3.5" y="4" width="17" height="16" rx="2.5" stroke="currentColor" stroke-width="1.75"/>
+            </svg>
+          </span>
+          <h3 class="solution_delivers__item-title">Simplicity</h3>
+          <p class="solution_delivers__item-copy">Replace disconnected systems and manual processes with one intuitive platform.</p>
+        </li>
+
+        <li class="solution_delivers__item">
+          <span class="solution_delivers__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M13 3.5L5.5 13.5h5.25L10.5 20.5 18.5 10H13V3.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <h3 class="solution_delivers__item-title">Efficiency</h3>
+          <p class="solution_delivers__item-copy">Save time through automation, streamlined workflows, and integrated operations.</p>
+        </li>
+
+        <li class="solution_delivers__item">
+          <span class="solution_delivers__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="6.5" cy="7" r="2.25" stroke="currentColor" stroke-width="1.75"/>
+              <circle cx="17.5" cy="7" r="2.25" stroke="currentColor" stroke-width="1.75"/>
+              <circle cx="12" cy="17" r="2.25" stroke="currentColor" stroke-width="1.75"/>
+              <path d="M8.4 8.6l2.4 6.1M15.6 8.6l-2.4 6.1M8.75 7h6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <h3 class="solution_delivers__item-title">Connectivity</h3>
+          <p class="solution_delivers__item-copy">Bring every department together on one connected ERP platform.</p>
+        </li>
+
+        <li class="solution_delivers__item">
+          <span class="solution_delivers__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 18.5V5.5M4 18.5h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+              <path d="M7.5 14.5v4M11.5 10.5v8M15.5 12.5v6M19.5 7.5v11" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <h3 class="solution_delivers__item-title">Visibility</h3>
+          <p class="solution_delivers__item-copy">Gain real-time insight into financial and operational performance.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
   <section class="see_in_action" id="see_in_action" aria-labelledby="see-in-action-heading">
     <h2 class="see_in_action__main-title" id="see-in-action-heading">See It In Action</h2>
     <div class="see_in_action__inner">
@@ -3542,7 +3717,7 @@
       if (!btn) return;
 
       const sections = [...document.querySelectorAll(
-        ".hero, .news_and_updates, .client_slider, .stats, .experience_fundview, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .resources, .ready_to_see_fundview"
+        ".hero, .news_and_updates, .client_slider, .stats, .experience_fundview, .solution_delivers, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .resources, .ready_to_see_fundview"
       )];
       if (!sections.length) return;
 
