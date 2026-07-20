@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FundView Footer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fv-navy: #0a2e57;
+      --fv-navy-deep: #071f3a;
+      --fv-teal: #00b7b3;
+      --fv-teal-bright: #00e5e0;
+      --fv-gold: #f2b632;
+      --fv-white: #ffffff;
+      --fv-footer-muted: rgba(255, 255, 255, 0.72);
+      --fv-footer-faint: rgba(255, 255, 255, 0.45);
+      --fv-footer-line: rgba(255, 255, 255, 0.12);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #fff;
+    }
+
+    /* ============================================
+       Global footer
+       ============================================ */
+    .site-footer {
+      width: 100%;
+      background:
+        radial-gradient(ellipse 60% 80% at 12% 0%, rgba(0, 183, 179, 0.12), transparent 60%),
+        linear-gradient(160deg, var(--fv-navy) 0%, var(--fv-navy-deep) 100%);
+      color: var(--fv-white);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .site-footer__inner {
+      width: min(1240px, 100%);
+      margin: 0 auto;
+      padding: clamp(3.25rem, 6vw, 5rem) 1.5rem clamp(1.5rem, 3vw, 2rem);
+    }
+
+    /* — Top: brand block + nav columns — */
+    .site-footer__top {
+      display: grid;
+      grid-template-columns: minmax(260px, 1.1fr) minmax(0, 2fr);
+      gap: clamp(2.5rem, 6vw, 5rem);
+      align-items: start;
+      padding-bottom: clamp(2.5rem, 5vw, 3.75rem);
+    }
+
+    .site-footer__brand {
+      max-width: 360px;
+    }
+
+    .site-footer__logo {
+      display: inline-block;
+      line-height: 0;
+    }
+
+    .site-footer__logo img {
+      display: block;
+      width: min(100%, 260px);
+      height: auto;
+    }
+
+    .site-footer__slogan-rule {
+      display: block;
+      width: 44px;
+      height: 3px;
+      margin: 1.5rem 0 1rem;
+      border-radius: 999px;
+      background: var(--fv-gold);
+    }
+
+    .site-footer__slogan {
+      margin: 0;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      line-height: 1.5;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fv-footer-muted);
+    }
+
+    .site-footer__nav {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+
+    .site-footer__col-title {
+      margin: 0 0 1.1rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fv-footer-faint);
+    }
+
+    .site-footer__links {
+      display: grid;
+      gap: 0.7rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .site-footer__links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--fv-footer-muted);
+      text-decoration: none;
+      transition: color 0.18s ease, transform 0.18s ease;
+    }
+
+    .site-footer__links a:hover,
+    .site-footer__links a:focus-visible {
+      color: var(--fv-teal-bright);
+      transform: translateX(2px);
+      outline: none;
+    }
+
+    .site-footer__links a svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: var(--fv-footer-faint);
+      transition: color 0.18s ease;
+    }
+
+    .site-footer__links a:hover svg,
+    .site-footer__links a:focus-visible svg {
+      color: var(--fv-teal-bright);
+    }
+
+    /* — Big brand statement (inspired by the oversized-logo footers) — */
+    .site-footer__statement {
+      padding: clamp(2rem, 4.5vw, 3.25rem) 0;
+      border-top: 1px solid var(--fv-footer-line);
+      text-align: center;
+    }
+
+    .site-footer__statement-title {
+      margin: 0;
+      font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--fv-white);
+    }
+
+    .site-footer__statement-highlight {
+      position: relative;
+      display: inline-block;
+    }
+
+    .site-footer__statement-highlight::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0.04em;
+      height: 4px;
+      background: var(--fv-gold);
+    }
+
+    /* — Bottom bar — */
+    .site-footer__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
+      border-top: 1px solid var(--fv-footer-line);
+    }
+
+    .site-footer__legal {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      font-size: 0.8125rem;
+      color: var(--fv-footer-faint);
+    }
+
+    .site-footer__legal a {
+      color: var(--fv-footer-faint);
+      text-decoration: none;
+      transition: color 0.18s ease;
+    }
+
+    .site-footer__legal a:hover,
+    .site-footer__legal a:focus-visible {
+      color: var(--fv-white);
+      outline: none;
+    }
+
+    .site-footer__social {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .site-footer__social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--fv-footer-line);
+      color: var(--fv-footer-muted);
+      background: rgba(255, 255, 255, 0.04);
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .site-footer__social a:hover,
+    .site-footer__social a:focus-visible {
+      background: var(--fv-teal);
+      border-color: var(--fv-teal);
+      color: var(--fv-navy);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .site-footer__social svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* — Responsive — */
+    @media (max-width: 960px) {
+      .site-footer__top {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .site-footer__nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .site-footer__inner {
+        padding: 3rem 1.15rem 1.5rem;
+      }
+
+      .site-footer__nav {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+      }
+
+      .site-footer__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="site-footer__inner">
+
+      <!-- Top: brand + navigation columns -->
+      <div class="site-footer__top">
+        <div class="site-footer__brand">
+          <a class="site-footer__logo" href="home.html" aria-label="FUNDVIEW home">
+            <img src="Assets_Footer/LOGO_FUNDVIEW_Stacked_WHITE.png" alt="FUNDVIEW" loading="lazy">
+          </a>
+          <span class="site-footer__slogan-rule" aria-hidden="true"></span>
+          <p class="site-footer__slogan">Financial &amp; Operational Software for Cities</p>
+        </div>
+
+        <nav class="site-footer__nav" aria-label="Footer navigation">
+          <div>
+            <h2 class="site-footer__col-title">Platform</h2>
+            <ul class="site-footer__links">
+              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Solutions</a></li>
+              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Pricing</a></li>
+              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Support</a></li>
+              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Login</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="site-footer__col-title">Company</h2>
+            <ul class="site-footer__links">
+              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Team</a></li>
+              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Careers</a></li>
+              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Contact Us</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="site-footer__col-title">Resources</h2>
+            <ul class="site-footer__links">
+              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Resources</a></li>
+              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Newsletter</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 class="site-footer__col-title">Connect</h2>
+            <ul class="site-footer__links">
+              <li>
+                <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.6 7.2a2.6 2.6 0 00-1.83-1.85C18.16 4.9 12 4.9 12 4.9s-6.16 0-7.77.45A2.6 2.6 0 002.4 7.2 27.3 27.3 0 002 12a27.3 27.3 0 00.4 4.8 2.6 2.6 0 001.83 1.85c1.61.45 7.77.45 7.77.45s6.16 0 7.77-.45a2.6 2.6 0 001.83-1.85A27.3 27.3 0 0022 12a27.3 27.3 0 00-.4-4.8z" stroke="currentColor" stroke-width="1.5"/><path d="M10 9.5v5l4.5-2.5L10 9.5z" fill="currentColor"/></svg>
+                  YouTube
+                </a>
+              </li>
+              <li>
+                <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.5 8.5H14c-.83 0-1.5.67-1.5 1.5v2h3l-.5 3h-2.5v6h-3v-6H7v-3h2.5v-2A4.5 4.5 0 0114 5.5h1.5v3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                  Facebook
+                </a>
+              </li>
+              <li>
+                <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7.75 10.25V16.5M7.75 7.4v.1M11.5 16.5v-3.75a2.25 2.25 0 014.5 0v3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  LinkedIn
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Brand statement -->
+      <div class="site-footer__statement">
+        <p class="site-footer__statement-title">
+          The Platform That <span class="site-footer__statement-highlight">Powers</span> Local Governments
+        </p>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="site-footer__bottom">
+        <div class="site-footer__legal">
+          <span>&copy; 2026 FUNDVIEW. All rights reserved.</span>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Terms</a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Privacy</a>
+        </div>
+
+        <div class="site-footer__social">
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo" aria-label="FUNDVIEW on YouTube">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.6 2.6 0 00-1.83-1.85C18.16 4.9 12 4.9 12 4.9s-6.16 0-7.77.45A2.6 2.6 0 002.4 7.2 27.3 27.3 0 002 12a27.3 27.3 0 00.4 4.8 2.6 2.6 0 001.83 1.85c1.61.45 7.77.45 7.77.45s6.16 0 7.77-.45a2.6 2.6 0 001.83-1.85A27.3 27.3 0 0022 12a27.3 27.3 0 00-.4-4.8zM10 14.5v-5l4.5 2.5-4.5 2.5z"/></svg>
+          </a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo" aria-label="FUNDVIEW on Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.87.24-1.46 1.49-1.46H16.5V5.06c-.28-.04-1.22-.12-2.32-.12-2.3 0-3.87 1.4-3.87 3.98V11H7.9v3h2.41v7h3.19z"/></svg>
+          </a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo" aria-label="FUNDVIEW on LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 8.65H4.1V19h2.84V8.65zM5.52 7.37a1.69 1.69 0 100-3.37 1.69 1.69 0 000 3.37zM19.9 13.06c0-3.02-1.61-4.42-3.76-4.42-1.73 0-2.5.95-2.94 1.62V8.65H10.4V19h2.84v-5.5c0-1.46.67-2.33 1.94-2.33 1.23 0 1.88.83 1.88 2.33V19h2.84v-5.94z"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>

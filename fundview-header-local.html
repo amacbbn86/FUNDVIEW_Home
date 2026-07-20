@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FundView Header</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fv-navy: #0a2e57;
+      --fv-navy-soft: #3a4756;
+      --fv-teal: #00b7b3;
+      --fv-teal-hover: #00a39f;
+      --fv-cta: #f2b632;
+      --fv-cta-hover: #e0a628;
+      --fv-cta-text: #0a2e57;
+      --fv-header-start: #f4f8fb;
+      --fv-header-end: #e8f1f8;
+      --fv-divider: rgba(10, 46, 87, 0.12);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--fv-navy-soft);
+      background: #fff;
+    }
+
+    body.nav-open {
+      overflow: hidden;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      /* Keep the header/nav above the experience_fundview spotlight (backdrop 1190, panel/tabs 1200),
+         while staying below the full-screen video modal (10000). */
+      z-index: 5000;
+      background: linear-gradient(90deg, var(--fv-header-start) 0%, var(--fv-header-end) 100%);
+      border-bottom: 1px solid rgba(10, 46, 87, 0.06);
+    }
+
+    .site-header__inner {
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      column-gap: 2.5rem;
+      padding: 0.9rem 2.5rem;
+    }
+
+    .site-header__logo {
+      display: flex;
+      align-items: center;
+      justify-self: start;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .site-header__logo img {
+      display: block;
+      height: 42px;
+      width: auto;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      justify-self: stretch;
+      width: 100%;
+      flex-wrap: nowrap;
+      gap: 1rem;
+    }
+
+    .site-nav a {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--fv-navy);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.2s ease;
+    }
+
+    .site-nav a:hover,
+    .site-nav a:focus-visible {
+      color: var(--fv-teal);
+    }
+
+    .site-header__actions {
+      display: flex;
+      align-items: center;
+      justify-self: end;
+      flex-wrap: nowrap;
+      gap: 0.75rem;
+    }
+
+    .site-header__actions--mobile {
+      display: none;
+    }
+
+    .site-header__cta,
+    .site-header__cta:link,
+    .site-header__cta:visited {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.7rem 1rem;
+      border-radius: 999px;
+      background: var(--fv-cta);
+      color: #0a2e57;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background-color 0.2s ease;
+    }
+
+    .site-header__cta:hover,
+    .site-header__cta:focus-visible,
+    .site-header__cta:active {
+      background: var(--fv-cta-hover);
+      color: #0a2e57;
+    }
+
+    .site-header__cta-icon {
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      flex-shrink: 0;
+    }
+
+    .site-header__menu-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      justify-self: end;
+    }
+
+    .hamburger {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 26px;
+      height: 18px;
+    }
+
+    .hamburger__line {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--fv-navy);
+      transform-origin: center;
+      transition: transform 0.28s ease, opacity 0.2s ease, width 0.2s ease;
+    }
+
+    .site-header__menu-toggle:hover .hamburger__line:nth-child(1) {
+      width: 85%;
+    }
+
+    .site-header__menu-toggle:hover .hamburger__line:nth-child(2) {
+      width: 65%;
+    }
+
+    .site-header__menu-toggle[aria-expanded="true"] .hamburger__line:nth-child(1) {
+      width: 100%;
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .site-header__menu-toggle[aria-expanded="true"] .hamburger__line:nth-child(2) {
+      width: 100%;
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .site-header__menu-toggle[aria-expanded="true"] .hamburger__line:nth-child(3) {
+      width: 100%;
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Below 1660px: nav on its own full-width row (single row gets too tight below this,
+       including a buffer for scrollbar width and browser zoom rounding) */
+    @media (max-width: 1659px) {
+      .site-header__inner {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "logo actions"
+          "nav nav";
+        row-gap: 0.85rem;
+        column-gap: 1.5rem;
+        padding: 0.9rem 2rem 1rem;
+      }
+
+      .site-header__logo {
+        grid-area: logo;
+      }
+
+      .site-header__actions {
+        grid-area: actions;
+      }
+
+      .site-nav {
+        grid-area: nav;
+        width: 94%;
+        justify-self: center;
+        justify-content: space-between;
+        gap: 0;
+        padding: 0.35rem 0 0.15rem;
+        border-top: 1px solid rgba(10, 46, 87, 0.06);
+      }
+
+      .site-nav a {
+        font-size: 0.875rem;
+      }
+
+      .site-header__menu-toggle {
+        grid-area: actions;
+      }
+    }
+
+    /* 991px and below: Wispr-style full-width hamburger menu */
+    @media (max-width: 991px) {
+      .site-header__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 1rem;
+        padding: 0.75rem 1.25rem;
+        row-gap: 0;
+      }
+
+      .site-header__actions--desktop {
+        display: none;
+      }
+
+      .site-header__menu-toggle {
+        display: inline-flex;
+        position: relative;
+        z-index: 2;
+      }
+
+      .site-nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0;
+        padding: 0.25rem 0 1rem;
+        background: linear-gradient(180deg, var(--fv-header-start) 0%, #ffffff 100%);
+        border-bottom: 1px solid var(--fv-divider);
+        box-shadow: 0 18px 40px rgba(10, 46, 87, 0.1);
+        transform: translateY(-0.5rem);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform 0.4s ease, opacity 0.28s ease, visibility 0.28s ease;
+        z-index: 1;
+      }
+
+      .site-header.is-open .site-nav {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      .site-nav a {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        line-height: 1.3;
+        color: #222;
+        white-space: normal;
+        border-bottom: 1px solid var(--fv-divider);
+      }
+
+      .site-nav a:hover,
+      .site-nav a:focus-visible {
+        color: var(--fv-teal);
+      }
+
+      .site-header__actions--mobile {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 1.15rem 1.25rem 0.35rem;
+      }
+
+      .site-header__actions--mobile .site-header__cta,
+      .site-header__actions--mobile .site-header__cta:link,
+      .site-header__actions--mobile .site-header__cta:visited {
+        width: 100%;
+        justify-content: center;
+        padding: 0.9rem 1.2rem;
+        font-size: 0.9375rem;
+        color: #0a2e57;
+        border-bottom: 0;
+      }
+
+      .site-header__actions--mobile .site-header__cta:hover,
+      .site-header__actions--mobile .site-header__cta:focus-visible,
+      .site-header__actions--mobile .site-header__cta:active {
+        color: #0a2e57;
+        background: var(--fv-cta-hover);
+      }
+
+      .site-header__logo img {
+        height: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner">
+      <a class="site-header__logo" href="https://245865092.hs-sites-na2.com/book-a-demo" aria-label="FUNDVIEW home">
+        <img
+          src="https://245865092.hs-sites-na2.com/hubfs/Landing%20Page/Logo_FundView%20-%20Official%20Header.png"
+          alt="FUNDVIEW"
+          width="200"
+          height="42"
+        >
+      </a>
+
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href="https://245865092.hs-sites-na2.com/book-a-demo">Our ERP Platform</a>
+        <a href="https://245865092.hs-sites-na2.com/book-a-demo">Solutions</a>
+        <a href="https://245865092.hs-sites-na2.com/book-a-demo">Why FUNDVIEW</a>
+        <a href="https://245865092.hs-sites-na2.com/book-a-demo">How We Work</a>
+        <a href="https://245865092.hs-sites-na2.com/book-a-demo">Customers</a>
+        <a href="https://245865092.hs-sites-na2.com/book-a-demo">Resources</a>
+        <a href="https://245865092.hs-sites-na2.com/book-a-demo">Pricing</a>
+
+        <div class="site-header__actions site-header__actions--mobile">
+          <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+            <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M8.5 19.5 6 21.5V17.8A7.5 7.5 0 1 1 12 19.5a7.3 7.3 0 0 1-3.5-.9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M9.75 11.25h.01M12 11.25h.01M14.25 11.25h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+            </svg>
+            Ask a Question
+          </a>
+          <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+            <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M2.75 12S6.25 5.75 12 5.75 21.25 12 21.25 12 17.75 18.25 12 18.25 2.75 12 2.75 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+            See FUNDVIEW
+          </a>
+          <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+            <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20.4 13.6 13.6 20.4a1.9 1.9 0 0 1-2.7 0l-7.2-7.2V3.6h9.6l7.1 7.1a1.9 1.9 0 0 1 0 2.9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <circle cx="7.9" cy="7.9" r="1.4" fill="currentColor"/>
+            </svg>
+            Request Pricing
+          </a>
+        </div>
+      </nav>
+
+      <div class="site-header__actions site-header__actions--desktop">
+        <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M8.5 19.5 6 21.5V17.8A7.5 7.5 0 1 1 12 19.5a7.3 7.3 0 0 1-3.5-.9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M9.75 11.25h.01M12 11.25h.01M14.25 11.25h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+          Ask a Question
+        </a>
+        <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M2.75 12S6.25 5.75 12 5.75 21.25 12 21.25 12 17.75 18.25 12 18.25 2.75 12 2.75 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          See FUNDVIEW
+        </a>
+        <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20.4 13.6 13.6 20.4a1.9 1.9 0 0 1-2.7 0l-7.2-7.2V3.6h9.6l7.1 7.1a1.9 1.9 0 0 1 0 2.9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <circle cx="7.9" cy="7.9" r="1.4" fill="currentColor"/>
+          </svg>
+          Request Pricing
+        </a>
+      </div>
+
+      <button
+        class="site-header__menu-toggle"
+        type="button"
+        id="menu-toggle"
+        aria-label="Menu"
+        aria-controls="site-nav"
+        aria-expanded="false"
+      >
+        <span class="hamburger" aria-hidden="true">
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <script>
+    (function () {
+      const header = document.getElementById("site-header");
+      const toggle = document.getElementById("menu-toggle");
+      const nav = document.getElementById("site-nav");
+      if (!header || !toggle || !nav) return;
+
+      const mq = window.matchMedia("(max-width: 991px)");
+
+      function setOpen(isOpen) {
+        header.classList.toggle("is-open", isOpen);
+        toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        document.body.classList.toggle("nav-open", isOpen && mq.matches);
+      }
+
+      function closeMenu() {
+        setOpen(false);
+      }
+
+      toggle.addEventListener("click", function () {
+        const isOpen = toggle.getAttribute("aria-expanded") === "true";
+        setOpen(!isOpen);
+      });
+
+      nav.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", closeMenu);
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") closeMenu();
+      });
+
+      document.addEventListener("click", function (event) {
+        if (!mq.matches) return;
+        if (!header.contains(event.target)) closeMenu();
+      });
+
+      function handleBreakpoint(event) {
+        if (!event.matches) closeMenu();
+      }
+
+      if (typeof mq.addEventListener === "function") {
+        mq.addEventListener("change", handleBreakpoint);
+      } else if (typeof mq.addListener === "function") {
+        mq.addListener(handleBreakpoint);
+      }
+    })();
+  </script>
+</body>
+</html>
