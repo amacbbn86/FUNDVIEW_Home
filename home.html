@@ -2,7 +2,9 @@
 <!--
   FUNDVIEW home — dual mode
   • EDIT (default): preview home.html locally. HubSpot HubL lives in <template data-hubspot> blocks and does not render on screen.
-  • UPLOAD: run `node _hubspot_mode.js upload` to generate Home.hubspot.html for Design Manager (SITE MAIN / Home.html).
+    Header/footer load from fundview-header-local.html / fundview-footer-local.html via fetch (local preview only).
+  • UPLOAD: run `node _hubspot_mode.js upload` to generate Home.hubspot.html for Design Manager.
+    That file INLINES header + footer so the HubSpot draft URL shows all three (home + header + footer).
   Tell the agent "working on edits" or "ready to upload to HubSpot" to switch.
 -->
 <html lang="en">
