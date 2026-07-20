@@ -10,15 +10,17 @@
   <style>
     :root {
       --fv-navy: #0a2e57;
+      --fv-navy-deep: #071f3a;
       --fv-navy-soft: #3a4756;
       --fv-teal: #00b7b3;
-      --fv-teal-hover: #00a39f;
+      --fv-teal-bright: #00e5e0;
+      --fv-teal-hover: #00928f;
       --fv-cta: #f2b632;
       --fv-cta-hover: #e0a628;
       --fv-cta-text: #0a2e57;
-      --fv-header-start: #f4f8fb;
-      --fv-header-end: #e8f1f8;
-      --fv-divider: rgba(10, 46, 87, 0.12);
+      --fv-glass: rgba(255, 255, 255, 0.08);
+      --fv-glass-border: rgba(255, 255, 255, 0.16);
+      --fv-divider: rgba(255, 255, 255, 0.12);
     }
 
     *,
@@ -38,6 +40,7 @@
       overflow: hidden;
     }
 
+    /* Navy spectrum from Ready to See FUNDVIEW — pulled into the header */
     .site-header {
       position: sticky;
       top: 0;
@@ -45,17 +48,59 @@
       /* Keep the header/nav above the experience_fundview spotlight (backdrop 1190, panel/tabs 1200),
          while staying below the full-screen video modal (10000). */
       z-index: 5000;
-      background: linear-gradient(90deg, var(--fv-header-start) 0%, var(--fv-header-end) 100%);
-      border-bottom: 1px solid rgba(10, 46, 87, 0.06);
+      padding: 0.85rem 1.25rem;
+      background:
+        radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.18), transparent 60%),
+        radial-gradient(ellipse 55% 80% at 90% 0%, rgba(0, 183, 179, 0.1), transparent 55%),
+        linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Glass nav shell with layered 3D depth */
+    .site-header__glass {
+      position: relative;
+      width: 100%;
+      border-radius: 18px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.14) 0%,
+        rgba(255, 255, 255, 0.05) 100%
+      );
+      border: 1px solid var(--fv-glass-border);
+      backdrop-filter: blur(18px) saturate(145%);
+      -webkit-backdrop-filter: blur(18px) saturate(145%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.22) inset,
+        0 -1px 0 rgba(7, 31, 58, 0.25) inset,
+        0 10px 28px rgba(3, 14, 30, 0.35),
+        0 28px 56px rgba(3, 14, 30, 0.28);
+    }
+
+    /* Soft highlight edge — reinforces the glass / 3D read */
+    .site-header__glass::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.45) 20%,
+        rgba(0, 229, 224, 0.35) 50%,
+        rgba(255, 255, 255, 0.45) 80%,
+        transparent 100%
+      );
+      pointer-events: none;
     }
 
     .site-header__inner {
+      position: relative;
       width: 100%;
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
       column-gap: 2.5rem;
-      padding: 0.9rem 2.5rem;
+      padding: 0.75rem 1.5rem;
     }
 
     .site-header__logo {
@@ -70,6 +115,8 @@
       display: block;
       height: 42px;
       width: auto;
+      /* Official header logo is dark — invert for navy glass header */
+      filter: brightness(0) invert(1);
     }
 
     .site-nav {
@@ -87,15 +134,16 @@
       font-size: 0.9rem;
       font-weight: 600;
       line-height: 1.2;
-      color: var(--fv-navy);
+      color: rgba(255, 255, 255, 0.92);
       text-decoration: none;
       white-space: nowrap;
+      text-shadow: 0 1px 2px rgba(3, 14, 30, 0.35);
       transition: color 0.2s ease;
     }
 
     .site-nav a:hover,
     .site-nav a:focus-visible {
-      color: var(--fv-teal);
+      color: var(--fv-teal-bright);
     }
 
     .site-header__actions {
@@ -117,17 +165,21 @@
       align-items: center;
       justify-content: center;
       gap: 0.45rem;
-      padding: 0.7rem 1rem;
+      padding: 0.7rem 1.1rem;
       border-radius: 999px;
       background: var(--fv-cta);
       color: #0a2e57;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 0.875rem;
-      font-weight: 600;
+      font-weight: 700;
       line-height: 1;
       text-decoration: none;
       white-space: nowrap;
-      transition: background-color 0.2s ease;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.35) inset,
+        0 8px 20px rgba(242, 182, 50, 0.35),
+        0 14px 28px rgba(3, 14, 30, 0.25);
+      transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .site-header__cta:hover,
@@ -135,6 +187,11 @@
     .site-header__cta:active {
       background: var(--fv-cta-hover);
       color: #0a2e57;
+      transform: translateY(-1px);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.4) inset,
+        0 12px 26px rgba(242, 182, 50, 0.42),
+        0 18px 34px rgba(3, 14, 30, 0.3);
     }
 
     .site-header__cta-icon {
@@ -171,7 +228,9 @@
       display: block;
       width: 100%;
       height: 2px;
-      background: var(--fv-navy);
+      background: #fff;
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(3, 14, 30, 0.35);
       transform-origin: center;
       transition: transform 0.28s ease, opacity 0.2s ease, width 0.2s ease;
     }
@@ -208,9 +267,9 @@
         grid-template-areas:
           "logo actions"
           "nav nav";
-        row-gap: 0.85rem;
+        row-gap: 0.75rem;
         column-gap: 1.5rem;
-        padding: 0.9rem 2rem 1rem;
+        padding: 0.85rem 1.35rem 1rem;
       }
 
       .site-header__logo {
@@ -223,12 +282,12 @@
 
       .site-nav {
         grid-area: nav;
-        width: 94%;
-        justify-self: center;
+        width: 100%;
+        justify-self: stretch;
         justify-content: space-between;
-        gap: 0;
-        padding: 0.35rem 0 0.15rem;
-        border-top: 1px solid rgba(10, 46, 87, 0.06);
+        gap: 0.5rem;
+        padding: 0.55rem 0.35rem 0.15rem;
+        border-top: 1px solid var(--fv-divider);
       }
 
       .site-nav a {
@@ -240,15 +299,23 @@
       }
     }
 
-    /* 991px and below: Wispr-style full-width hamburger menu */
+    /* 991px and below: full-width hamburger menu */
     @media (max-width: 991px) {
+      .site-header {
+        padding: 0.65rem 0.85rem;
+      }
+
+      .site-header__glass {
+        border-radius: 14px;
+      }
+
       .site-header__inner {
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: nowrap;
         gap: 1rem;
-        padding: 0.75rem 1.25rem;
+        padding: 0.65rem 0.9rem;
         row-gap: 0;
       }
 
@@ -264,7 +331,7 @@
 
       .site-nav {
         position: absolute;
-        top: 100%;
+        top: calc(100% + 0.45rem);
         left: 0;
         right: 0;
         width: 100%;
@@ -273,10 +340,17 @@
         align-items: stretch;
         justify-content: flex-start;
         gap: 0;
-        padding: 0.25rem 0 1rem;
-        background: linear-gradient(180deg, var(--fv-header-start) 0%, #ffffff 100%);
-        border-bottom: 1px solid var(--fv-divider);
-        box-shadow: 0 18px 40px rgba(10, 46, 87, 0.1);
+        padding: 0.35rem 0 1rem;
+        border-radius: 14px;
+        border: 1px solid var(--fv-glass-border);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%),
+          linear-gradient(135deg, rgba(10, 46, 87, 0.96) 0%, rgba(7, 31, 58, 0.98) 100%);
+        backdrop-filter: blur(18px) saturate(145%);
+        -webkit-backdrop-filter: blur(18px) saturate(145%);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.18) inset,
+          0 18px 40px rgba(3, 14, 30, 0.45);
         transform: translateY(-0.5rem);
         opacity: 0;
         visibility: hidden;
@@ -300,14 +374,15 @@
         font-size: 1.125rem;
         font-weight: 600;
         line-height: 1.3;
-        color: #222;
+        color: rgba(255, 255, 255, 0.94);
         white-space: normal;
         border-bottom: 1px solid var(--fv-divider);
+        text-shadow: none;
       }
 
       .site-nav a:hover,
       .site-nav a:focus-visible {
-        color: var(--fv-teal);
+        color: var(--fv-teal-bright);
       }
 
       .site-header__actions--mobile {
@@ -345,24 +420,36 @@
 </head>
 <body>
   <header class="site-header" id="site-header">
-    <div class="site-header__inner">
-      <a class="site-header__logo" href="https://245865092.hs-sites-na2.com/book-a-demo" aria-label="FUNDVIEW home">
-        <img
-          src="https://245865092.hs-sites-na2.com/hubfs/Landing%20Page/Logo_FundView%20-%20Official%20Header.png"
-          alt="FUNDVIEW"
-          width="200"
-          height="42"
-        >
-      </a>
+    <div class="site-header__glass">
+      <div class="site-header__inner">
+        <a class="site-header__logo" href="https://245865092.hs-sites-na2.com/book-a-demo" aria-label="FUNDVIEW home">
+          <img
+            src="https://245865092.hs-sites-na2.com/hubfs/Landing%20Page/Logo_FundView%20-%20Official%20Header.png"
+            alt="FUNDVIEW"
+            width="200"
+            height="42"
+          >
+        </a>
 
-      <nav class="site-nav" id="site-nav" aria-label="Primary">
-        <a href="https://245865092.hs-sites-na2.com/book-a-demo">Our ERP Platform</a>
-        <a href="https://245865092.hs-sites-na2.com/book-a-demo">Solutions</a>
-        <a href="https://245865092.hs-sites-na2.com/book-a-demo">Why FUNDVIEW</a>
-        <a href="https://245865092.hs-sites-na2.com/book-a-demo">How We Work</a>
-        <a href="https://245865092.hs-sites-na2.com/book-a-demo">Pricing</a>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Our ERP Platform</a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Solutions</a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Why FUNDVIEW</a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">How We Work</a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Pricing</a>
 
-        <div class="site-header__actions site-header__actions--mobile">
+          <div class="site-header__actions site-header__actions--mobile">
+            <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+              <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M2.75 12S6.25 5.75 12 5.75 21.25 12 21.25 12 17.75 18.25 12 18.25 2.75 12 2.75 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+              Demo FUNDVIEW
+            </a>
+          </div>
+        </nav>
+
+        <div class="site-header__actions site-header__actions--desktop">
           <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
             <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M2.75 12S6.25 5.75 12 5.75 21.25 12 21.25 12 17.75 18.25 12 18.25 2.75 12 2.75 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
@@ -371,32 +458,22 @@
             Demo FUNDVIEW
           </a>
         </div>
-      </nav>
 
-      <div class="site-header__actions site-header__actions--desktop">
-        <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
-          <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M2.75 12S6.25 5.75 12 5.75 21.25 12 21.25 12 17.75 18.25 12 18.25 2.75 12 2.75 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-            <circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/>
-          </svg>
-          Demo FUNDVIEW
-        </a>
+        <button
+          class="site-header__menu-toggle"
+          type="button"
+          id="menu-toggle"
+          aria-label="Menu"
+          aria-controls="site-nav"
+          aria-expanded="false"
+        >
+          <span class="hamburger" aria-hidden="true">
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+          </span>
+        </button>
       </div>
-
-      <button
-        class="site-header__menu-toggle"
-        type="button"
-        id="menu-toggle"
-        aria-label="Menu"
-        aria-controls="site-nav"
-        aria-expanded="false"
-      >
-        <span class="hamburger" aria-hidden="true">
-          <span class="hamburger__line"></span>
-          <span class="hamburger__line"></span>
-          <span class="hamburger__line"></span>
-        </span>
-      </button>
     </div>
   </header>
 
