@@ -40,7 +40,7 @@
       overflow: hidden;
     }
 
-    /* Navy spectrum from Ready to See FUNDVIEW — pulled into the header */
+    /* Full-bleed header: navy spectrum + glass treatment edge-to-edge */
     .site-header {
       position: sticky;
       top: 0;
@@ -48,35 +48,38 @@
       /* Keep the header/nav above the experience_fundview spotlight (backdrop 1190, panel/tabs 1200),
          while staying below the full-screen video modal (10000). */
       z-index: 5000;
-      padding: 0.85rem 1.25rem;
+      padding: 0;
       background:
+        linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.12) 0%,
+          rgba(255, 255, 255, 0.04) 100%
+        ),
         radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.18), transparent 60%),
         radial-gradient(ellipse 55% 80% at 90% 0%, rgba(0, 183, 179, 0.1), transparent 55%),
         linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    /* Glass nav shell with layered 3D depth */
-    .site-header__glass {
-      position: relative;
-      width: 100%;
-      border-radius: 18px;
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.14) 0%,
-        rgba(255, 255, 255, 0.05) 100%
-      );
-      border: 1px solid var(--fv-glass-border);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(18px) saturate(145%);
       -webkit-backdrop-filter: blur(18px) saturate(145%);
       box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.22) inset,
-        0 -1px 0 rgba(7, 31, 58, 0.25) inset,
-        0 10px 28px rgba(3, 14, 30, 0.35),
-        0 28px 56px rgba(3, 14, 30, 0.28);
+        0 10px 28px rgba(3, 14, 30, 0.28),
+        0 22px 48px rgba(3, 14, 30, 0.2);
     }
 
-    /* Soft highlight edge — reinforces the glass / 3D read */
+    /* Kept for markup compatibility — fills the full header area (no inset container) */
+    .site-header__glass {
+      position: relative;
+      width: 100%;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    /* Soft highlight edge — reinforces the glass / 3D read across the full header */
     .site-header__glass::before {
       content: "";
       position: absolute;
@@ -100,7 +103,7 @@
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
       column-gap: 2.5rem;
-      padding: 0.75rem 1.5rem;
+      padding: 0.9rem 2.5rem;
     }
 
     .site-header__logo {
@@ -269,7 +272,7 @@
           "nav nav";
         row-gap: 0.75rem;
         column-gap: 1.5rem;
-        padding: 0.85rem 1.35rem 1rem;
+        padding: 0.9rem 2rem 1rem;
       }
 
       .site-header__logo {
@@ -301,21 +304,13 @@
 
     /* 991px and below: full-width hamburger menu */
     @media (max-width: 991px) {
-      .site-header {
-        padding: 0.65rem 0.85rem;
-      }
-
-      .site-header__glass {
-        border-radius: 14px;
-      }
-
       .site-header__inner {
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: nowrap;
         gap: 1rem;
-        padding: 0.65rem 0.9rem;
+        padding: 0.75rem 1.25rem;
         row-gap: 0;
       }
 
@@ -331,7 +326,7 @@
 
       .site-nav {
         position: absolute;
-        top: calc(100% + 0.45rem);
+        top: 100%;
         left: 0;
         right: 0;
         width: 100%;
@@ -341,15 +336,16 @@
         justify-content: flex-start;
         gap: 0;
         padding: 0.35rem 0 1rem;
-        border-radius: 14px;
-        border: 1px solid var(--fv-glass-border);
+        border-radius: 0;
+        border: 0;
+        border-bottom: 1px solid var(--fv-glass-border);
         background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%),
-          linear-gradient(135deg, rgba(10, 46, 87, 0.96) 0%, rgba(7, 31, 58, 0.98) 100%);
+          linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%),
+          linear-gradient(135deg, rgba(10, 46, 87, 0.98) 0%, rgba(7, 31, 58, 0.99) 100%);
         backdrop-filter: blur(18px) saturate(145%);
         -webkit-backdrop-filter: blur(18px) saturate(145%);
         box-shadow:
-          0 1px 0 rgba(255, 255, 255, 0.18) inset,
+          0 1px 0 rgba(255, 255, 255, 0.14) inset,
           0 18px 40px rgba(3, 14, 30, 0.45);
         transform: translateY(-0.5rem);
         opacity: 0;
