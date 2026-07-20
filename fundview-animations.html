@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUNDVIEW Product Animations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   FUNDVIEW choreographed product animations (Lattice-style)
+   - Each tab plays a SEQUENCE of beats (not one movement).
+   - Narration is synced beat-by-beat with a visual SPOTLIGHT
+     and an on-canvas CAPTION, so the viewer sees what's said.
+   - Pie/donut charts use correct geometry (segments close).
+   Drop .fv-stage into node
+   id="w-node-a55ced41-ba98-f824-aef1-9771f1992d80-f1992d70".
+   ============================================================ */
+:root{
+  --fv-navy:#0a2e57;--fv-navy-2:#123f73;--fv-teal:#00b7b3;--fv-teal-2:#00a39f;
+  --fv-gold:#f2b632;--fv-ink:#3a4756;--fv-mute:#8a97a8;--fv-line:#e6edf4;
+  --fv-line-2:#eef3f8;--fv-panel:#fff;--fv-rail:#0d3765;
+  --fv-shadow:0 24px 60px -18px rgba(10,46,87,.35);
+  --fv-spot:0 0 0 3px rgba(0,183,179,.55),0 14px 30px -8px rgba(0,183,179,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#4a5666,#6a7686);padding:36px 20px;color:var(--fv-navy)}
+.fv-demo-tabs{max-width:1180px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.fv-demo-tabs button{font:600 .8rem Inter;padding:.5rem .95rem;border-radius:999px;border:0;background:#fff;color:var(--fv-navy);cursor:pointer;box-shadow:0 2px 8px rgba(10,46,87,.12)}
+.fv-demo-tabs button.on{background:var(--fv-navy);color:#fff}
+.fv-stage{max-width:1180px;margin:0 auto}
+
+.fv-anim{display:none}
+.fv-anim.is-active{display:block}
+.fv-card-wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:26px;background:#fff;border-radius:18px;padding:26px;box-shadow:0 30px 70px -22px rgba(10,46,87,.4);align-items:start}
+.fv-visual{position:relative}
+
+/* copy column */
+.fv-copy{min-width:0}
+.fv-copy-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.fv-copy h3{font:800 1.6rem Inter;color:var(--fv-navy);margin:0;letter-spacing:-.01em}
+.fv-desc{font:400 .9rem/1.55 Inter;color:var(--fv-ink);margin:.7rem 0 1rem}
+.fv-controls{display:flex;gap:8px;flex-shrink:0}
+.fv-narrate,.fv-replay{display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;border:1.5px solid var(--fv-teal);background:#fff;color:var(--fv-teal-2);font:600 .74rem Inter;padding:.45rem .75rem;border-radius:999px;transition:.2s}
+.fv-narrate:hover,.fv-replay:hover{background:var(--fv-teal);color:#fff}
+.fv-narrate.is-playing{background:var(--fv-navy);border-color:var(--fv-navy);color:#fff}
+.fv-replay{border-color:#cfd9e4;color:var(--fv-navy-2)}
+.fv-replay:hover{background:var(--fv-navy);border-color:var(--fv-navy);color:#fff}
+
+.fv-callout{display:flex;gap:14px;align-items:stretch;margin:0 0 1.1rem;flex-wrap:wrap}
+.fv-callout-stat{background:var(--fv-navy);color:#fff;border-radius:12px;padding:14px 16px;min-width:132px;flex:0 0 auto}
+.fv-callout-stat b{display:block;font:800 1.6rem Inter;color:var(--fv-teal);line-height:1}
+.fv-callout-stat small{display:block;font:600 .62rem Inter;margin-top:6px;opacity:.9;line-height:1.3}
+.fv-callout blockquote{flex:1;min-width:180px;margin:0;padding:10px 0 0;font:italic 500 .82rem/1.5 Inter;color:var(--fv-ink)}
+.fv-callout cite{display:block;margin-top:6px;font:700 .68rem Inter;color:var(--fv-navy);font-style:normal}
+.fv-highlights{margin:0 0 1.1rem}
+h6{font:700 .62rem Inter;letter-spacing:.09em;text-transform:uppercase;color:var(--fv-teal-2);margin:0 0 .55rem}
+.fv-feat{display:flex;flex-wrap:wrap;gap:6px}
+.fv-feat span{font:600 .7rem Inter;color:var(--fv-navy);background:#eef6fb;border:1px solid var(--fv-line);border-radius:7px;padding:.32rem .6rem}
+.fv-lists{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.fv-check{list-style:none;margin:0;padding:0}
+.fv-check li{position:relative;padding:0 0 .5rem 1.35rem;font:500 .78rem/1.35 Inter;color:var(--fv-ink)}
+.fv-check li::before{content:"";position:absolute;left:0;top:.18em;width:14px;height:14px;border-radius:50%;background:var(--fv-teal);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/contain no-repeat}
+
+/* mock window */
+.fv-window{position:relative;width:100%;border-radius:14px;overflow:hidden;background:var(--fv-panel);box-shadow:var(--fv-shadow);border:1px solid rgba(10,46,87,.08)}
+.fv-titlebar{height:26px;background:linear-gradient(180deg,#eef3f8,#e4ecf4);display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:1px solid var(--fv-line)}
+.fv-titlebar i{width:9px;height:9px;border-radius:50%;background:#cdd7e2;display:block}
+.fv-titlebar i:nth-child(1){background:#f06a5c}.fv-titlebar i:nth-child(2){background:#f4bd4f}.fv-titlebar i:nth-child(3){background:#54c25a}
+.fv-topbar{height:22px;background:var(--fv-navy);display:flex;align-items:center;padding:0 10px;gap:6px}
+.fv-logo{font:800 .58rem Inter;color:#fff;letter-spacing:.06em}.fv-logo b{color:var(--fv-teal)}
+.fv-topbar .fv-spacer{flex:1}.fv-topbar em{width:22px;height:6px;border-radius:3px;background:rgba(255,255,255,.18);display:block}
+.fv-body{display:flex;min-height:330px;background:#fbfdff}
+.fv-rail{width:34px;background:var(--fv-rail);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:9px;flex-shrink:0}
+.fv-rail span{width:14px;height:14px;border-radius:4px;background:rgba(255,255,255,.16)}.fv-rail span.hot{background:var(--fv-teal)}
+.fv-canvas{flex:1;padding:14px 16px;position:relative;overflow:hidden}
+
+/* ---- BEAT primitives: hidden -> revealed -> spotlighted ---- */
+.beat-hidden{opacity:0;transform:translateY(12px);pointer-events:none}
+.beat-in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
+.beat-spot{position:relative;z-index:3;border-radius:10px;box-shadow:var(--fv-spot);transition:box-shadow .35s ease}
+.beat-dim{opacity:.4;filter:saturate(.75);transition:opacity .4s ease,filter .4s ease}
+tr.beat-in{display:table-row}
+
+/* on-canvas caption tied to the current narration beat */
+.fv-caption{position:absolute;left:16px;right:16px;bottom:14px;z-index:6;
+  background:rgba(10,46,87,.94);color:#fff;border-radius:10px;padding:9px 13px;
+  font:600 .72rem/1.35 Inter;box-shadow:0 12px 28px -8px rgba(10,46,87,.6);
+  opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease;pointer-events:none}
+.fv-caption.show{opacity:1;transform:none}
+.fv-caption::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--fv-teal);margin-right:7px;vertical-align:middle;animation:capdot 1s infinite}
+@keyframes capdot{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* stats/cards */
+.fv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.fv-stat{background:#fff;border:1px solid var(--fv-line);border-radius:10px;padding:10px 12px}
+.fv-stat small{font:600 .56rem Inter;color:var(--fv-mute);text-transform:uppercase;letter-spacing:.05em}
+.fv-stat .num{font:800 1.1rem Inter;color:var(--fv-navy);margin-top:4px}
+.fv-stat .num.teal{color:var(--fv-teal-2)}.fv-stat .num.gold{color:#d89a15}
+.fv-charts{display:grid;grid-template-columns:1.5fr 1fr;gap:12px}
+.fv-card{background:#fff;border:1px solid var(--fv-line);border-radius:10px;padding:12px}
+.fv-card h4{font:700 .68rem Inter;color:var(--fv-navy);margin:0 0 10px}
+.fv-bars{display:flex;align-items:flex-end;gap:5px;height:150px;padding-top:6px}
+.fv-bars .bar{flex:1;border-radius:3px 3px 0 0;height:0;transform-origin:bottom;transition:height .7s cubic-bezier(.2,.8,.25,1)}
+
+/* PIE — geometry set inline; we animate dasharray from "0 C" to "seg gap" */
+.fv-pie{width:150px;height:150px;margin:0 auto;display:block;transform:rotate(-90deg)}
+.fv-pie circle{fill:none;stroke-width:24;transition:stroke-dasharray .8s cubic-bezier(.3,.7,.3,1)}
+.fv-legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;justify-content:center}
+.fv-legend span{font:600 .56rem Inter;color:var(--fv-ink);display:flex;align-items:center;gap:5px}
+.fv-legend span::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--c)}
+
+.fv-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.fv-panel-head h4{margin:0;font:700 .72rem Inter;color:var(--fv-navy)}
+.fv-pill{font:600 .54rem Inter;color:#fff;background:var(--fv-teal);padding:.28rem .6rem;border-radius:999px}
+.fv-table{width:100%;border-collapse:collapse;font:500 .6rem Inter}
+.fv-table th{text-align:left;color:var(--fv-mute);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--fv-line);text-transform:uppercase;letter-spacing:.04em;font-size:.52rem}
+.fv-table td{padding:7px 8px;border-bottom:1px solid var(--fv-line-2);color:var(--fv-ink)}
+.fv-table td .dot{color:var(--fv-teal-2);font-weight:700}
+.fv-tag{display:inline-block;padding:.12rem .45rem;border-radius:5px;font:600 .5rem Inter}
+.fv-tag.paid{background:#e3f7ee;color:#178a5a}.fv-tag.due{background:#fef1dc;color:#b9820f}.fv-tag.open{background:#e7f1fd;color:#2b6cb0}
+.fv-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fv-block{background:#fff;border:1px solid var(--fv-line);border-radius:10px;padding:12px}
+.fv-block h5{margin:0 0 8px;font:700 .66rem Inter;color:var(--fv-navy);display:flex;align-items:center;gap:6px}
+.fv-block h5::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--fv-teal)}
+.fv-line-item{display:flex;justify-content:space-between;font:500 .6rem Inter;color:var(--fv-ink);padding:5px 0;border-bottom:1px dashed var(--fv-line)}
+.fv-line-item:last-child{border-bottom:0}.fv-line-item b{color:var(--fv-navy)}
+.fv-link{color:var(--fv-teal-2);font-weight:600}
+.fv-meter{height:7px;border-radius:4px;background:var(--fv-line);overflow:hidden;margin-top:6px}
+.fv-meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--fv-teal),var(--fv-navy-2));border-radius:4px;transition:width .9s cubic-bezier(.2,.8,.25,1)}
+.fv-badge{position:absolute;bottom:52px;right:16px;background:var(--fv-navy);color:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 12px 30px -8px rgba(10,46,87,.5)}
+.fv-badge b{display:block;font:800 1.1rem Inter;color:var(--fv-teal)}.fv-badge small{font:600 .55rem Inter;opacity:.85}
+
+@media(max-width:1080px){.fv-card-wrap{grid-template-columns:1fr;gap:22px}}
+@media(max-width:720px){.fv-charts,.fv-two,.fv-lists{grid-template-columns:1fr}.fv-stats{grid-template-columns:1fr}.fv-pie{width:120px;height:120px}.fv-copy h3{font-size:1.35rem}}
+@media(prefers-reduced-motion:reduce){
+  .beat-in{transition-duration:.001s}.fv-bars .bar,.fv-meter i,.fv-pie circle{transition-duration:.001s}
+}
+
+/* ---- global control bar (Play/Pause + Autoplay + progress) ---- */
+.fv-controlbar{max-width:1180px;margin:0 auto 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:12px 16px}
+.fv-btn{display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;border:0;
+  font:700 .82rem Inter;padding:.6rem 1.05rem;border-radius:999px;transition:.18s;white-space:nowrap}
+.fv-btn svg{flex-shrink:0}
+.fv-btn-primary{background:var(--fv-teal);color:#fff}
+.fv-btn-primary:hover{background:var(--fv-teal-2)}
+.fv-btn-primary.is-paused{background:var(--fv-gold);color:var(--fv-navy)}
+.fv-btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35)}
+.fv-btn-ghost:hover{background:rgba(255,255,255,.14)}
+.fv-btn-ghost.is-on{background:#fff;color:var(--fv-navy);border-color:#fff}
+.fv-ctrl-hint{font:500 .72rem Inter;color:rgba(255,255,255,.72);margin-left:2px}
+
+/* progress: one dot/segment per tab, fills as it plays */
+.fv-progress{display:flex;align-items:center;gap:7px;margin-left:auto;flex-wrap:wrap}
+.fv-progress .seg{position:relative;width:34px;height:6px;border-radius:999px;background:rgba(255,255,255,.22);overflow:hidden;cursor:pointer}
+.fv-progress .seg::after{content:"";position:absolute;inset:0;width:0;background:var(--fv-teal);border-radius:999px}
+.fv-progress .seg.done::after{width:100%}
+.fv-progress .seg.active::after{width:var(--p,0%);transition:width .2s linear}
+.fv-progress .seg.active{background:rgba(255,255,255,.4)}
+.fv-progress-label{font:600 .72rem Inter;color:#fff;min-width:118px;text-align:right}
+
+@media(max-width:720px){
+  .fv-progress-label{display:none}
+  .fv-controlbar{gap:10px;padding:10px 12px}
+}
+
+</style>
+</head>
+<body>
+<div class="fv-demo-tabs">
+<button class="on" data-go="fin">Financial Management</button>
+<button class="" data-go="work">Workforce Management</button>
+<button class="" data-go="util">Utility &amp; Field Services</button>
+<button class="" data-go="comm">Community Development</button>
+<button class="" data-go="court">Municipal Court</button>
+<button class="" data-go="portal">CityCentral Citizen Portal</button>
+<button class="" data-go="plat">The FUNDVIEW Platform</button></div>
+
+<div class="fv-controlbar">
+  <button class="fv-btn fv-btn-primary" id="fvPlayPause" type="button" aria-label="Play or pause narration">
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <path class="ic-play" d="M8 5v14l11-7z" fill="currentColor"/>
+      <g class="ic-pause" style="display:none" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></g>
+    </svg>
+    <span class="fv-btn-txt">Play audio</span>
+  </button>
+  <button class="fv-btn fv-btn-ghost" id="fvAutoplay" type="button" aria-label="Autoplay all tabs">
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 4h2v16H4zM8 5l11 7-11 7z" fill="currentColor"/></svg>
+    <span class="fv-btn-txt">Autoplay all</span>
+  </button>
+  <span class="fv-ctrl-hint">Click a tab to watch it. Press Play for audio, or Autoplay for a guided tour.</span>
+  <div class="fv-progress" id="fvProgress" aria-hidden="true"></div>
+  <span class="fv-progress-label" id="fvProgressLabel"></span>
+</div>
+
+<div class="fv-stage">
+
+<div class="fv-anim is-active" id="fin">
+  <div class="fv-card-wrap">
+    <div class="fv-visual"><div class="fv-window"><div class="fv-titlebar"><i></i><i></i><i></i></div><div class="fv-topbar"><span class="fv-logo">FUND<b>VIEW</b></span><span class="fv-spacer"></span><em></em><em></em><em></em></div><div class="fv-body"><div class="fv-rail"><span class="hot"></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="fv-canvas">
+<div class="fv-stats">
+  <div class="fv-stat beat-hidden" data-el="fin-s1"><small>Consolidated Cash Balance</small><div class="num" data-count="3603179.95" data-prefix="$">$0.00</div></div>
+  <div class="fv-stat beat-hidden" data-el="fin-s2"><small>Outstanding Payables</small><div class="num teal" data-count="154.50" data-prefix="$">$0.00</div></div>
+  <div class="fv-stat beat-hidden" data-el="fin-s3"><small>Accounts Over Budget</small><div class="num gold" data-count="78" data-prefix="">0</div></div>
+</div>
+<div class="fv-charts">
+  <div class="fv-card beat-hidden" data-el="fin-bars"><h4>Budget vs Actual</h4><div class="fv-bars" id="finbars"></div></div>
+  <div class="fv-card beat-hidden" data-el="fin-pie"><h4>Revenue by Category</h4><svg class="fv-pie" viewBox="0 0 120 120"><circle class="pie-seg beat-hidden" data-el="fin-slice0" r="40" cx="60" cy="60" stroke="#0a2e57" style="--seg:138.23;--gap:113.1;--off:0.0;stroke-dasharray:0 251.33;stroke-dashoffset:0.0"></circle><circle class="pie-seg beat-hidden" data-el="fin-slice1" r="40" cx="60" cy="60" stroke="#00b7b3" style="--seg:75.4;--gap:175.93;--off:-138.23;stroke-dasharray:0 251.33;stroke-dashoffset:-138.23"></circle><circle class="pie-seg beat-hidden" data-el="fin-slice2" r="40" cx="60" cy="60" stroke="#f2b632" style="--seg:37.7;--gap:213.63;--off:-213.63;stroke-dasharray:0 251.33;stroke-dashoffset:-213.63"></circle></svg><div class="fv-legend"><span class="beat-hidden" data-el="fin-leg0" style="--c:#0a2e57">Property &amp; Sales Tax</span><span class="beat-hidden" data-el="fin-leg1" style="--c:#00b7b3">Grants &amp; Fees</span><span class="beat-hidden" data-el="fin-leg2" style="--c:#f2b632">Transfers</span></div></div>
+</div></div></div></div>
+      <div class="fv-caption" data-cap="fin"></div>
+    </div>
+    <div class="fv-copy">
+      <div class="fv-copy-head">
+        <h3>Financial Management</h3>
+      </div>
+      <p class="fv-desc">FUNDVIEW Financial Management connects every aspect of your organization&#x27;s financial operations into one fully integrated platform. It helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information.</p>
+      <div class="fv-callout">
+        <div class="fv-callout-stat"><b>70%</b><small>Faster month-end close</small></div>
+        <blockquote>&ldquo;Month-end used to take us weeks. With FUNDVIEW, our books are closed and our council reports are ready in days.&rdquo;<cite>— Finance Director, Texas Municipality</cite></blockquote>
+      </div>
+      <div class="fv-highlights"><h6>Feature highlights</h6><div class="fv-feat"><span>General Ledger</span><span>Budget Manager</span><span>Bank Reconciliation</span><span>Accounts Payable</span><span>Purchasing</span><span>Asset Management</span><span>Cash Receipting</span><span>Financial Reporting</span></div></div>
+      <div class="fv-lists">
+        <div><h6>Customer outcomes</h6><ul class="fv-check"><li>Reduce month-end close by up to 70%</li><li>Improve financial visibility with a Real-Time General Ledger</li><li>Eliminate duplicate data entry across departments</li><li>Simplify budgeting, purchasing, and financial reporting</li><li>Reduce bank reconciliation time by up to 50%</li><li>Maintain 100% GASB &amp; GAAP compliance</li><li>Improve audit readiness and financial transparency</li><li>Give leadership greater confidence in every financial decision</li></ul></div>
+        <div><h6>Why finance directors choose FUNDVIEW</h6><ul class="fv-check"><li>One connected financial platform</li><li>Real-time financial visibility</li><li>Purpose-built for local government accounting</li><li>Built-in compliance and audit readiness</li><li>Faster month-end close</li><li>Connected purchasing and budgeting</li><li>Reduced manual reconciliation</li><li>U.S.-based support from experts who understand municipal finance</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fv-anim" id="work">
+  <div class="fv-card-wrap">
+    <div class="fv-visual"><div class="fv-window"><div class="fv-titlebar"><i></i><i></i><i></i></div><div class="fv-topbar"><span class="fv-logo">FUND<b>VIEW</b></span><span class="fv-spacer"></span><em></em><em></em><em></em></div><div class="fv-body"><div class="fv-rail"><span></span><span class="hot"></span><span></span><span></span><span></span><span></span><span></span></div><div class="fv-canvas">
+<div class="fv-panel-head beat-hidden" data-el="wk-head"><h4>Payroll Process</h4><span class="fv-pill">Next run in 3 days</span></div>
+<div class="fv-two">
+  <div class="fv-block beat-hidden" data-el="wk-pay">
+    <h5>Two Payrolls Due</h5>
+    <div class="fv-line-item"><span>Bi-weekly — Depts A–K</span><b class="fv-link">Run &rarr;</b></div>
+    <div class="fv-line-item"><span>Monthly — Council</span><b class="fv-link">Run &rarr;</b></div>
+    <h5 style="margin-top:12px">Completion</h5>
+    <div class="fv-meter"><i data-meter="82" style="--w:82%"></i></div>
+  </div>
+  <div class="fv-block beat-hidden" data-el="wk-ann">
+    <h5>Employee Anniversaries</h5>
+    <table class="fv-table"><thead><tr><th>Employee</th><th>Years</th><th>Date</th></tr></thead><tbody>
+      <tr class="beat-hidden" data-el="wk-r1"><td>Jason A.</td><td><span class="dot">5</span></td><td>03/17</td></tr>
+      <tr class="beat-hidden" data-el="wk-r2"><td>Maria R.</td><td><span class="dot">3</span></td><td>03/21</td></tr>
+      <tr class="beat-hidden" data-el="wk-r3"><td>Devon B.</td><td><span class="dot">8</span></td><td>03/22</td></tr>
+      <tr class="beat-hidden" data-el="wk-r4"><td>Aisha K.</td><td><span class="dot">1</span></td><td>03/28</td></tr>
+    </tbody></table>
+  </div>
+</div></div></div></div>
+      <div class="fv-caption" data-cap="work"></div>
+    </div>
+    <div class="fv-copy">
+      <div class="fv-copy-head">
+        <h3>Workforce Management</h3>
+      </div>
+      <p class="fv-desc">Simplify payroll, human resources, and employee time management with one connected workforce solution designed specifically for local government. FUNDVIEW helps you pay employees accurately, manage employee information with confidence, and eliminate manual processes that slow your team down.</p>
+      <div class="fv-callout">
+        <div class="fv-callout-stat"><b>30%</b><small>Average workload reclaimed</small></div>
+        <blockquote>&ldquo;Payroll that used to take days now runs smoothly every cycle — and it posts straight to the General Ledger.&rdquo;<cite>— HR &amp; Payroll Coordinator, City Government</cite></blockquote>
+      </div>
+      <div class="fv-highlights"><h6>Feature highlights</h6><div class="fv-feat"><span>Payroll</span><span>Human Resources</span><span>Distributed Time Entry</span><span>Employee Management</span><span>Benefits Administration</span><span>Accrual &amp; Leave Tracking</span><span>Payroll Reporting</span><span>Real-Time Financial Integration</span></div></div>
+      <div class="fv-lists">
+        <div><h6>Customer outcomes</h6><ul class="fv-check"><li>Process payroll with greater speed and accuracy</li><li>Eliminate duplicate entry between payroll and finance</li><li>Empower departments with distributed time entry</li><li>Improve employee record management</li><li>Simplify leave and accrual tracking</li><li>Reduce payroll errors and manual processes</li><li>Automatically update the General Ledger in real time</li><li>Strengthen compliance and reporting</li></ul></div>
+        <div><h6>Why HR &amp; finance teams choose FUNDVIEW</h6><ul class="fv-check"><li>One connected workforce platform</li><li>Payroll integrated with financial management</li><li>Real-Time General Ledger updates</li><li>Department-approved time entry</li><li>Improved payroll accuracy</li><li>Simplified HR administration</li><li>Built specifically for local government</li><li>U.S.-based support from experts who understand municipal operations</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fv-anim" id="util">
+  <div class="fv-card-wrap">
+    <div class="fv-visual"><div class="fv-window"><div class="fv-titlebar"><i></i><i></i><i></i></div><div class="fv-topbar"><span class="fv-logo">FUND<b>VIEW</b></span><span class="fv-spacer"></span><em></em><em></em><em></em></div><div class="fv-body"><div class="fv-rail"><span></span><span></span><span class="hot"></span><span></span><span></span><span></span><span></span></div><div class="fv-canvas">
+<div class="fv-panel-head beat-hidden" data-el="ut-head"><h4>Utility Billing Dashboard</h4><span class="fv-pill">Current billing period</span></div>
+<div class="fv-two">
+  <div class="fv-block beat-hidden" data-el="ut-so">
+    <h5>Service Orders</h5>
+    <div class="fv-line-item"><span>Open service orders</span><b>6</b></div>
+    <div class="fv-line-item"><span>Pending service orders</span><b>3</b></div>
+    <div class="fv-line-item"><span>Past-due agreements</span><b class="fv-link">4 active</b></div>
+  </div>
+  <div class="fv-block beat-hidden" data-el="ut-pay">
+    <h5>Payments Collected</h5>
+    <div class="fv-line-item"><span>Online</span><b>68%</b></div>
+    <div class="fv-meter"><i data-meter="68" style="--w:68%"></i></div>
+    <div class="fv-line-item" style="margin-top:8px"><span>Counter</span><b>32%</b></div>
+    <div class="fv-meter"><i data-meter="32" style="--w:32%"></i></div>
+  </div>
+</div>
+<div class="fv-block beat-hidden" data-el="ut-meter" style="margin-top:12px">
+  <h5>Meter Reads Processed Today</h5>
+  <div class="fv-bars" id="utilbars" style="height:90px"></div>
+</div>
+<div class="fv-badge beat-hidden" data-el="ut-badge"><b>24/7</b><small>Online payments &amp; access</small></div></div></div></div>
+      <div class="fv-caption" data-cap="util"></div>
+    </div>
+    <div class="fv-copy">
+      <div class="fv-copy-head">
+        <h3>Utility & Field Services</h3>
+      </div>
+      <p class="fv-desc">Manage utility billing, field operations, service requests, and customer payments from one connected platform. FUNDVIEW helps local governments improve efficiency, deliver better customer service, and keep utility operations moving with real-time information.</p>
+      <div class="fv-callout">
+        <div class="fv-callout-stat"><b>24/7</b><small>Online payments &amp; account access</small></div>
+        <blockquote>&ldquo;Billing, service orders, and payments finally live in one place. Our field crews and office staff see the same information in real time.&rdquo;<cite>— Utility Billing Supervisor, Texas City</cite></blockquote>
+      </div>
+      <div class="fv-highlights"><h6>Feature highlights</h6><div class="fv-feat"><span>Utility Billing</span><span>Service Orders</span><span>Customer Account Management</span><span>Meter Reading &amp; Consumption Tracking</span><span>Connects &amp; Disconnects</span><span>Meter Exchanges</span><span>Payment Processing</span><span>Online Payments</span><span>Customer Payment History</span><span>Real-Time Financial Integration</span><span>Mobile Friendly</span><span>Real-Time Text and Email Notifications</span></div></div>
+      <div class="fv-lists">
+        <div><h6>Customer outcomes</h6><ul class="fv-check"><li>Simplify utility billing and payment processing</li><li>Reduce manual work between departments</li><li>Improve customer service and response times</li><li>Manage field work with real-time updates</li><li>Eliminate duplicate data entry</li><li>Automatically update financial records</li><li>Improve operational visibility</li><li>Deliver faster, more accurate utility services</li></ul></div>
+        <div><h6>Why utility departments choose FUNDVIEW</h6><ul class="fv-check"><li>One connected utility platform</li><li>Billing integrated with financial management</li><li>Real-time account and payment updates</li><li>Improved field service coordination</li><li>Faster response to customer requests</li><li>Better visibility into utility operations</li><li>Built specifically for local government</li><li>U.S.-based support from people who understand municipal utilities</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fv-anim" id="comm">
+  <div class="fv-card-wrap">
+    <div class="fv-visual"><div class="fv-window"><div class="fv-titlebar"><i></i><i></i><i></i></div><div class="fv-topbar"><span class="fv-logo">FUND<b>VIEW</b></span><span class="fv-spacer"></span><em></em><em></em><em></em></div><div class="fv-body"><div class="fv-rail"><span></span><span></span><span></span><span class="hot"></span><span></span><span></span><span></span></div><div class="fv-canvas">
+<div class="fv-charts">
+  <div class="fv-card beat-hidden" data-el="cm-bars"><h4>Service Orders by Team Member</h4><div class="fv-bars" id="commbars" style="height:150px"></div></div>
+  <div class="fv-card beat-hidden" data-el="cm-pie"><h4>Orders by Status</h4><svg class="fv-pie" viewBox="0 0 120 120"><circle class="pie-seg beat-hidden" data-el="cm-slice0" r="40" cx="60" cy="60" stroke="#2b7cd3" style="--seg:155.82;--gap:95.5;--off:0.0;stroke-dasharray:0 251.32;stroke-dashoffset:0.0"></circle><circle class="pie-seg beat-hidden" data-el="cm-slice1" r="40" cx="60" cy="60" stroke="#28a745" style="--seg:95.5;--gap:155.82;--off:-155.82;stroke-dasharray:0 251.32;stroke-dashoffset:-155.82"></circle></svg><div class="fv-legend"><span class="beat-hidden" data-el="cm-leg0" style="--c:#2b7cd3">Open</span><span class="beat-hidden" data-el="cm-leg1" style="--c:#28a745">Past due</span></div></div>
+</div>
+<div class="fv-two" style="margin-top:12px">
+  <div class="fv-block beat-hidden" data-el="cm-permits">
+    <h5>Permits by Type</h5>
+    <div class="fv-line-item"><span>Building</span><b>41</b></div>
+    <div class="fv-line-item"><span>Electrical</span><b>19</b></div>
+    <div class="fv-line-item"><span>Plumbing</span><b>12</b></div>
+  </div>
+  <div class="fv-block beat-hidden" data-el="cm-insp">
+    <h5>Open Inspections</h5>
+    <div class="fv-meter"><i data-meter="74" style="--w:74%"></i></div>
+    <div class="fv-line-item" style="margin-top:8px"><span>Scheduled today</span><b class="fv-link">23</b></div>
+  </div>
+</div></div></div></div>
+      <div class="fv-caption" data-cap="comm"></div>
+    </div>
+    <div class="fv-copy">
+      <div class="fv-copy-head">
+        <h3>Community Development</h3>
+      </div>
+      <p class="fv-desc">Support responsible growth, protect your community, and streamline development with one connected solution for permitting, inspections, and code enforcement. FUNDVIEW helps local governments simplify processes, improve communication, and keep projects moving.</p>
+      <div class="fv-callout">
+        <div class="fv-callout-stat"><b>One</b><small>Platform for permits, inspections &amp; code enforcement</small></div>
+        <blockquote>&ldquo;Contractors get answers faster, inspectors stay organized, and every permit fee posts to finance automatically.&rdquo;<cite>— Community Development Director</cite></blockquote>
+      </div>
+      <div class="fv-highlights"><h6>Feature highlights</h6><div class="fv-feat"><span>Permitting</span><span>Code Enforcement</span><span>Permit Applications</span><span>Plan Review</span><span>Inspections</span><span>Violation &amp; Case Management</span><span>Image &amp; Document Management</span><span>Contractor &amp; Property Records</span><span>Citizen Communication</span><span>Real-Time Financial Integration</span></div></div>
+      <div class="fv-lists">
+        <div><h6>Customer outcomes</h6><ul class="fv-check"><li>Streamline permitting and inspection workflows</li><li>Improve communication between departments</li><li>Track violations and enforcement activities with confidence</li><li>Reduce manual paperwork and duplicate entry</li><li>Improve visibility into active projects and cases</li><li>Provide faster service to contractors and citizens</li><li>Automatically update financial records</li><li>Support responsible community growth</li></ul></div>
+        <div><h6>Why community development teams choose FUNDVIEW</h6><ul class="fv-check"><li>One connected platform for permits and code enforcement</li><li>Simplified permit review and approval workflows</li><li>Better visibility into inspections and active cases</li><li>Improved communication with contractors and citizens</li><li>Integrated financial tracking for permit fees</li><li>Reduced paperwork and manual processes</li><li>Built specifically for local government</li><li>U.S.-based support from experts who understand municipal operations</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fv-anim" id="court">
+  <div class="fv-card-wrap">
+    <div class="fv-visual"><div class="fv-window"><div class="fv-titlebar"><i></i><i></i><i></i></div><div class="fv-topbar"><span class="fv-logo">FUND<b>VIEW</b></span><span class="fv-spacer"></span><em></em><em></em><em></em></div><div class="fv-body"><div class="fv-rail"><span></span><span></span><span></span><span></span><span class="hot"></span><span></span><span></span></div><div class="fv-canvas">
+<div class="fv-panel-head beat-hidden" data-el="ct-head"><h4>Invoices &amp; Citations</h4><span class="fv-pill">Posted to finance in real time</span></div>
+<div class="fv-card beat-hidden" data-el="ct-tbl" style="padding:6px 10px">
+  <table class="fv-table"><thead><tr><th>Citation</th><th>Defendant</th><th>Issued</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+    <tr class="beat-hidden" data-el="ct-r1"><td>CT-10428</td><td>R. Alvarez</td><td>02/14</td><td>$185.00</td><td><span class="fv-tag paid">Paid</span></td></tr>
+    <tr class="beat-hidden" data-el="ct-r2"><td>CT-10429</td><td>M. Chen</td><td>02/15</td><td>$240.50</td><td><span class="fv-tag open">Open</span></td></tr>
+    <tr class="beat-hidden" data-el="ct-r3"><td>CT-10431</td><td>D. Okafor</td><td>02/16</td><td>$96.00</td><td><span class="fv-tag due">Due</span></td></tr>
+    <tr class="beat-hidden" data-el="ct-r4"><td>CT-10434</td><td>S. Patel</td><td>02/18</td><td>$310.00</td><td><span class="fv-tag paid">Paid</span></td></tr>
+    <tr class="beat-hidden" data-el="ct-r5"><td>CT-10437</td><td>L. Nguyen</td><td>02/19</td><td>$128.75</td><td><span class="fv-tag open">Open</span></td></tr>
+    <tr class="beat-hidden" data-el="ct-r6"><td>CT-10440</td><td>J. Brooks</td><td>02/21</td><td>$205.00</td><td><span class="fv-tag due">Due</span></td></tr>
+  </tbody></table>
+</div>
+<div class="fv-badge beat-hidden" data-el="ct-badge"><b>Real-time</b><small>Court activity posted to finance</small></div></div></div></div>
+      <div class="fv-caption" data-cap="court"></div>
+    </div>
+    <div class="fv-copy">
+      <div class="fv-copy-head">
+        <h3>Municipal Court</h3>
+      </div>
+      <p class="fv-desc">FUNDVIEW Municipal Court simplifies every stage of court administration — from citation entry and case management to payments, reporting, and compliance. Fully integrated with FUNDVIEW&#x27;s financial platform, court activity updates in real time, eliminating duplicate entry and giving staff greater visibility into daily operations.</p>
+      <div class="fv-callout">
+        <div class="fv-callout-stat"><b>Real-time</b><small>Court activity posted to finance</small></div>
+        <blockquote>&ldquo;Citations, dockets, and payments all flow through one system — our clerks no longer re-key anything.&rdquo;<cite>— Municipal Court Clerk</cite></blockquote>
+      </div>
+      <div class="fv-highlights"><h6>Feature highlights</h6><div class="fv-feat"><span>Citation &amp; Case Management</span><span>Docket &amp; Court Scheduling</span><span>Warrants &amp; Collections</span><span>Payment Processing</span><span>Online Payments</span><span>Document &amp; Case History</span><span>Reporting &amp; Compliance</span><span>Real-Time Financial Integration</span></div></div>
+      <div class="fv-lists">
+        <div><h6>Customer outcomes</h6><ul class="fv-check"><li>Reduce manual case management</li><li>Increase payment convenience</li><li>Keep court operations connected with the rest of your city</li><li>Improve staff efficiency</li><li>Maintain accurate financial records</li></ul></div>
+        <div><h6>Why courts choose FUNDVIEW</h6><ul class="fv-check"><li>Citations, dockets, and payments in one system</li><li>Court activity posted to finance in real time</li><li>No duplicate re-keying for clerks</li><li>Greater visibility into daily operations</li><li>Built specifically for local government</li><li>Integrated with FUNDVIEW financial management</li><li>Simplified reporting and compliance</li><li>U.S.-based support</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fv-anim" id="portal">
+  <div class="fv-card-wrap">
+    <div class="fv-visual"><div class="fv-window"><div class="fv-titlebar"><i></i><i></i><i></i></div><div class="fv-topbar"><span class="fv-logo">FUND<b>VIEW</b></span><span class="fv-spacer"></span><em></em><em></em><em></em></div><div class="fv-body"><div class="fv-rail"><span></span><span></span><span></span><span></span><span></span><span class="hot"></span><span></span></div><div class="fv-canvas">
+<div class="fv-panel-head beat-hidden" data-el="pt-head"><h4>CityCentral&trade; — My Account</h4><span class="fv-pill">Self-service</span></div>
+<div class="fv-two">
+  <div class="fv-block beat-hidden" data-el="pt-util">
+    <h5>Utility Bill</h5>
+    <div class="fv-line-item"><span>Current balance</span><b class="num" data-count="94.20" data-prefix="$">$0.00</b></div>
+    <div class="fv-line-item"><span>Due date</span><b>Mar 28</b></div>
+    <div class="fv-line-item"><span>Pay online</span><b class="fv-link">Pay now &rarr;</b></div>
+  </div>
+  <div class="fv-block beat-hidden" data-el="pt-court">
+    <h5>Court Payment</h5>
+    <div class="fv-line-item"><span>Citation CT-10429</span><b>$240.50</b></div>
+    <div class="fv-line-item"><span>Payment plan</span><b class="fv-link">Available</b></div>
+    <div class="fv-line-item"><span>Receipt</span><b class="fv-link">Email me</b></div>
+  </div>
+</div>
+<div class="fv-block beat-hidden" data-el="pt-hist" style="margin-top:12px">
+  <h5>Payment History</h5>
+  <table class="fv-table"><tbody>
+    <tr class="beat-hidden" data-el="pt-h1"><td>Feb 27</td><td>Water &amp; Sewer</td><td>$88.10</td><td><span class="fv-tag paid">Paid</span></td></tr>
+    <tr class="beat-hidden" data-el="pt-h2"><td>Jan 26</td><td>Water &amp; Sewer</td><td>$91.40</td><td><span class="fv-tag paid">Paid</span></td></tr>
+  </tbody></table>
+</div>
+<div class="fv-badge beat-hidden" data-el="pt-badge"><b>24/7</b><small>Self-service citizen access</small></div></div></div></div>
+      <div class="fv-caption" data-cap="portal"></div>
+    </div>
+    <div class="fv-copy">
+      <div class="fv-copy-head">
+        <h3>CityCentral&trade; Citizen Portal</h3>
+      </div>
+      <p class="fv-desc">Give citizens secure, convenient online access to utility billing and municipal court services through one easy-to-use self-service portal.</p>
+      <div class="fv-callout">
+        <div class="fv-callout-stat"><b>24/7</b><small>Self-service citizen access</small></div>
+        <blockquote>&ldquo;Residents pay their bills online at any hour, and our front counter finally has room to breathe.&rdquo;<cite>— City Secretary</cite></blockquote>
+      </div>
+      <div class="fv-highlights"><h6>Feature highlights</h6><div class="fv-feat"><span>Online Utility Payments</span><span>Municipal Court Payments</span><span>Account Lookup &amp; Payment History</span><span>Secure Citizen Portal</span><span>24/7 Self-Service Access</span><span>Payment Receipts &amp; Confirmations</span><span>Reduced Counter Traffic</span><span>Fully Integrated with FUNDVIEW</span></div></div>
+      <div class="fv-lists">
+        <div><h6>Customer outcomes</h6><ul class="fv-check"><li>Improve the citizen experience</li><li>Reduce phone calls and walk-in traffic</li><li>Eliminate duplicate payment entry</li><li>Increase online payment adoption</li><li>Provide 24/7 access to services</li><li>Keep financial records updated automatically</li></ul></div>
+        <div><h6>Why cities choose CityCentral</h6><ul class="fv-check"><li>Secure, convenient online self-service</li><li>Utility billing and court payments in one portal</li><li>Account lookup and payment history</li><li>Payment receipts and confirmations</li><li>Reduced counter traffic</li><li>Fully integrated with FUNDVIEW</li><li>Financial records updated automatically</li><li>Easy for residents to use</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fv-anim" id="plat">
+  <div class="fv-card-wrap">
+    <div class="fv-visual"><div class="fv-window"><div class="fv-titlebar"><i></i><i></i><i></i></div><div class="fv-topbar"><span class="fv-logo">FUND<b>VIEW</b></span><span class="fv-spacer"></span><em></em><em></em><em></em></div><div class="fv-body"><div class="fv-rail"><span class="hot"></span><span class="hot"></span><span class="hot"></span><span class="hot"></span><span></span><span></span><span></span></div><div class="fv-canvas">
+<div class="fv-stats">
+  <div class="fv-stat beat-hidden" data-el="pl-s1"><small>Consolidated Cash Balance</small><div class="num" data-count="3603179.95" data-prefix="$">$0.00</div></div>
+  <div class="fv-stat beat-hidden" data-el="pl-s2"><small>Outstanding Payables</small><div class="num teal" data-count="154.50" data-prefix="$">$0.00</div></div>
+  <div class="fv-stat beat-hidden" data-el="pl-s3"><small>GASB &amp; GAAP Compliant</small><div class="num gold" data-count="100" data-suffix="%">0%</div></div>
+</div>
+<div class="fv-charts">
+  <div class="fv-card beat-hidden" data-el="pl-bars"><h4>Budget vs Actual — All Departments</h4><div class="fv-bars" id="platbars"></div></div>
+  <div class="fv-card beat-hidden" data-el="pl-pie"><h4>Revenue by Category</h4><svg class="fv-pie" viewBox="0 0 120 120"><circle class="pie-seg beat-hidden" data-el="pl-slice0" r="40" cx="60" cy="60" stroke="#0a2e57" style="--seg:138.23;--gap:113.1;--off:0.0;stroke-dasharray:0 251.33;stroke-dashoffset:0.0"></circle><circle class="pie-seg beat-hidden" data-el="pl-slice1" r="40" cx="60" cy="60" stroke="#00b7b3" style="--seg:75.4;--gap:175.93;--off:-138.23;stroke-dasharray:0 251.33;stroke-dashoffset:-138.23"></circle><circle class="pie-seg beat-hidden" data-el="pl-slice2" r="40" cx="60" cy="60" stroke="#f2b632" style="--seg:37.7;--gap:213.63;--off:-213.63;stroke-dasharray:0 251.33;stroke-dashoffset:-213.63"></circle></svg><div class="fv-legend"><span class="beat-hidden" data-el="pl-leg0" style="--c:#0a2e57">Property &amp; Sales Tax</span><span class="beat-hidden" data-el="pl-leg1" style="--c:#00b7b3">Grants &amp; Fees</span><span class="beat-hidden" data-el="pl-leg2" style="--c:#f2b632">Transfers</span></div></div>
+</div></div></div></div>
+      <div class="fv-caption" data-cap="plat"></div>
+    </div>
+    <div class="fv-copy">
+      <div class="fv-copy-head">
+        <h3>The FUNDVIEW Platform</h3>
+      </div>
+      <p class="fv-desc">The power of FUNDVIEW goes beyond individual departments. Every module works together on one connected platform, giving your organization real-time visibility, shared data, automated workflows, and the confidence that comes from having one reliable source of information.</p>
+      <div class="fv-callout">
+        <div class="fv-callout-stat"><b>100%</b><small>GASB &amp; GAAP compliant</small></div>
+        <blockquote>&ldquo;Every department works from the same real-time data. FUNDVIEW replaced six disconnected systems for us.&rdquo;<cite>— City Administrator</cite></blockquote>
+      </div>
+      <div class="fv-highlights"><h6>Feature highlights</h6><div class="fv-feat"><span>One Connected Platform</span><span>Real-Time General Ledger</span><span>Real-Time Visibility</span><span>Cloud-Based ERP</span><span>Dashboards &amp; Reporting</span><span>Automated Text &amp; Email Notifications</span><span>Document Management</span><span>Approval Workflows</span><span>Security &amp; User Permissions</span><span>GASB &amp; GAAP Compliance</span><span>Audit Trail</span><span>Mobile &amp; Remote Access</span></div></div>
+      <div class="fv-lists">
+        <div><h6>Customer outcomes</h6><ul class="fv-check"><li>One source of truth across every department</li><li>Real-time visibility into financial and operational activity</li><li>Eliminate duplicate data entry and disconnected systems</li><li>Improve collaboration across departments</li><li>Automate notifications and routine workflows</li><li>Increase security and accountability</li><li>Access information securely from anywhere</li><li>Support better decisions with real-time reporting</li></ul></div>
+        <div><h6>Why organizations choose the FUNDVIEW Platform</h6><ul class="fv-check"><li>One connected ERP platform</li><li>Real-time visibility across every department</li><li>Built specifically for local government</li><li>Cloud-based and secure</li><li>Automated workflows and notifications</li><li>Connected financial and operational data</li><li>Scalable as your community grows</li><li>U.S.-based support from experts who understand local government</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+(function(){
+  var BEATS = {"fin": [{"say": "FUNDVIEW Financial Management connects every aspect of your financial operations into one integrated platform.", "reveal": ["fin-s1"], "spot": "fin-s1"}, {"say": "Watch a consolidated cash balance of over three point six million dollars post in real time, alongside outstanding payables.", "reveal": ["fin-s2"], "spot": "fin-s2"}, {"say": "The system flags seventy-eight accounts currently over budget so nothing slips through.", "reveal": ["fin-s3"], "spot": "fin-s3"}, {"say": "Budget versus actual is charted across every department for instant visibility.", "reveal": ["fin-bars"], "spot": "fin-bars", "bars": "finbars"}, {"say": "And revenue by category breaks down property and sales tax, grants and fees, and transfers.", "reveal": ["fin-pie", "fin-slice0", "fin-slice1", "fin-slice2", "fin-leg0", "fin-leg1", "fin-leg2"], "spot": "fin-pie", "pie": true}], "work": [{"say": "Workforce Management simplifies payroll, HR, and time entry in one connected solution for local government.", "reveal": ["wk-head"], "spot": "wk-head"}, {"say": "Two payrolls are due \u2014 a bi-weekly run and a monthly council run \u2014 each ready to process.", "reveal": ["wk-pay"], "spot": "wk-pay"}, {"say": "A completion meter tracks the current cycle as it finalizes and posts straight to the General Ledger.", "reveal": [], "spot": "wk-pay", "meter": true}, {"say": "Meanwhile, upcoming employee anniversaries surface automatically for your HR team.", "reveal": ["wk-ann", "wk-r1", "wk-r2", "wk-r3", "wk-r4"], "spot": "wk-ann", "rows": ["wk-r1", "wk-r2", "wk-r3", "wk-r4"]}], "util": [{"say": "Utility and Field Services manages billing, field operations, and customer payments from one connected platform.", "reveal": ["ut-head"], "spot": "ut-head"}, {"say": "Track open and pending service orders, plus past-due agreements, at a glance.", "reveal": ["ut-so"], "spot": "ut-so"}, {"say": "See exactly how payments arrive \u2014 sixty-eight percent online versus thirty-two percent at the counter.", "reveal": ["ut-pay"], "spot": "ut-pay", "meter": true}, {"say": "Meter reads processed today are charted so field crews and office staff share the same live picture.", "reveal": ["ut-meter"], "spot": "ut-meter", "bars": "utilbars"}, {"say": "And residents get twenty-four seven online payments and account access.", "reveal": ["ut-badge"], "spot": "ut-badge"}], "comm": [{"say": "Community Development streamlines permitting, inspections, and code enforcement on one platform.", "reveal": ["cm-bars"], "spot": "cm-bars", "bars": "commbars"}, {"say": "Service orders by team member show workload distribution across your staff.", "reveal": [], "spot": "cm-bars"}, {"say": "Orders by status break down what's open versus past due.", "reveal": ["cm-pie", "cm-slice0", "cm-slice1", "cm-leg0", "cm-leg1"], "spot": "cm-pie", "pie": true}, {"say": "Permits are grouped by type \u2014 building, electrical, and plumbing.", "reveal": ["cm-permits"], "spot": "cm-permits"}, {"say": "And open inspections track what's scheduled today, with every permit fee posting to finance automatically.", "reveal": ["cm-insp"], "spot": "cm-insp", "meter": true}], "court": [{"say": "Municipal Court simplifies every stage of court administration, from citation entry to payments and compliance.", "reveal": ["ct-head"], "spot": "ct-head"}, {"say": "Citations and invoices populate with defendant, issue date, and amount.", "reveal": ["ct-tbl", "ct-r1", "ct-r2", "ct-r3"], "spot": "ct-tbl", "rows": ["ct-r1", "ct-r2", "ct-r3"]}, {"say": "Color-coded statuses show at a glance what's paid, open, or due.", "reveal": ["ct-r4", "ct-r5", "ct-r6"], "spot": "ct-tbl", "rows": ["ct-r4", "ct-r5", "ct-r6"]}, {"say": "Every action posts to finance in real time, so clerks never re-key anything.", "reveal": ["ct-badge"], "spot": "ct-badge"}], "portal": [{"say": "CityCentral gives citizens secure online access to utility billing and court services in one self-service portal.", "reveal": ["pt-head"], "spot": "pt-head"}, {"say": "Residents see their current utility balance and due date, and can pay online instantly.", "reveal": ["pt-util"], "spot": "pt-util", "count": true}, {"say": "They can also handle municipal court payments and set up a payment plan.", "reveal": ["pt-court"], "spot": "pt-court"}, {"say": "A full payment history keeps every transaction transparent and on record.", "reveal": ["pt-hist", "pt-h1", "pt-h2"], "spot": "pt-hist", "rows": ["pt-h1", "pt-h2"]}, {"say": "With twenty-four seven access, residents pay any hour and counter traffic drops.", "reveal": ["pt-badge"], "spot": "pt-badge"}], "plat": [{"say": "The FUNDVIEW Platform brings every module together on one connected system.", "reveal": ["pl-s1"], "spot": "pl-s1"}, {"say": "A consolidated cash balance and outstanding payables roll up across all departments in real time.", "reveal": ["pl-s2"], "spot": "pl-s2"}, {"say": "Everything stays one hundred percent GASB and GAAP compliant.", "reveal": ["pl-s3"], "spot": "pl-s3"}, {"say": "Budget versus actual spans every department from a single source of truth.", "reveal": ["pl-bars"], "spot": "pl-bars", "bars": "platbars"}, {"say": "And revenue by category confirms FUNDVIEW replaced six disconnected systems with one.", "reveal": ["pl-pie", "pl-slice0", "pl-slice1", "pl-slice2", "pl-leg0", "pl-leg1", "pl-leg2"], "spot": "pl-pie", "pie": true}]};
+  var ORDER = ["fin", "work", "util", "comm", "court", "portal", "plat"];
+  var LABELS = {"fin": "Financial Management", "work": "Workforce Management", "util": "Utility & Field Services", "comm": "Community Development", "court": "Municipal Court", "portal": "CityCentral Citizen Portal", "plat": "The FUNDVIEW Platform"};
+
+  var BARSPEC={
+    finbars:[22,60,34,90,28,44,70,30,52,40,66,24,58,36,48,30,74,42,26,55],
+    platbars:[30,52,40,88,26,60,72,34,50,44,64,28,56,38,46,32,70,40,24,58],
+    utilbars:[40,72,55,88,60,44,78,50,66],
+    commbars:[90,34,20,52,26,16,30]
+  };
+  function buildBars(id){var el=document.getElementById(id);if(!el||el.dataset.built)return;el.dataset.built="1";
+    (BARSPEC[id]||[]).forEach(function(h,i){var b=document.createElement('span');b.className='bar';
+      b.style.background=(i%3===2)?'#f2b632':'#2b6fc9';b.dataset.h=h;el.appendChild(b);});}
+  Object.keys(BARSPEC).forEach(buildBars);
+  function growBars(id){var el=document.getElementById(id);if(!el)return;
+    Array.prototype.forEach.call(el.children,function(b,i){b.style.height='0';
+      schedule(function(){b.style.height=b.dataset.h+'%';},60+i*45);});}
+  function resetBars(id){var el=document.getElementById(id);if(el)Array.prototype.forEach.call(el.children,function(b){b.style.height='0';});}
+
+  function countUp(node){
+    var target=parseFloat(node.getAttribute('data-count'));
+    var prefix=node.getAttribute('data-prefix')||'',suffix=node.getAttribute('data-suffix')||'';
+    var decimals=(String(target).split('.')[1]||'').length,dur=1000,startT=null,raf;
+    function tick(now){ if(paused){ pauseRAFs.push({fn:tick}); return; }
+      if(startT===null)startT=now;
+      var p=Math.min(1,(now-startT)/dur),e=1-Math.pow(1-p,3),v=target*e;
+      node.textContent=prefix+v.toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals})+suffix;
+      if(p<1)requestAnimationFrame(tick);}
+    requestAnimationFrame(tick);
+  }
+  function el(anim,name){return anim.querySelector('[data-el="'+name+'"]');}
+
+  /* ---------- speech ---------- */
+  var synth=window.speechSynthesis;
+  function pickVoice(){if(!synth)return null;var vs=synth.getVoices()||[];
+    return vs.find(function(v){return /en-US/i.test(v.lang)&&/Google|Samantha|Natural|Aria|Jenny/i.test(v.name);})
+      ||vs.find(function(v){return /^en/i.test(v.lang);})||vs[0]||null;}
+  if(synth&&typeof synth.onvoiceschanged!=='undefined')synth.onvoiceschanged=pickVoice;
+
+  /* ---------- global state ---------- */
+  var timers=[];          // scheduled setTimeouts (pausable)
+  var pauseRAFs=[];        // count-up loops paused mid-flight
+  var playingAnim=null;    // the .fv-anim currently choreographing
+  var beatIndex=0;         // current beat within the tab
+  var audioArmed=false;    // has the user turned audio ON? (persists across tabs)
+  var paused=false;        // is playback paused?
+  var autoplay=false;      // tour mode
+  var currentHasAudio=false; // is the current playback running with narration?
+  var beatStart=0, beatDur=0, beatRemaining=0; // for pause/resume timing + progress
+  var progressRAF=null;
+
+  // pausable scheduler: setTimeout that we can freeze
+  function schedule(fn, delay){
+    var t={fn:fn, delay:delay, start:performance.now(), id:null};
+    t.id=setTimeout(function(){ removeTimer(t); fn(); }, delay);
+    timers.push(t); return t;
+  }
+  function removeTimer(t){var i=timers.indexOf(t);if(i>=0)timers.splice(i,1);}
+  function clearTimers(){timers.forEach(function(t){clearTimeout(t.id);});timers=[];}
+
+  function estDur(text){return Math.max(2200, 300+text.length*38);}
+
+  /* ---------- reset a tab to blank ---------- */
+  function resetAnim(anim){
+    clearTimers(); pauseRAFs=[];
+    if(synth)synth.cancel();
+    anim.querySelectorAll('.beat-in').forEach(function(n){n.classList.remove('beat-in');n.classList.add('beat-hidden');});
+    anim.querySelectorAll('.beat-spot').forEach(function(n){n.classList.remove('beat-spot');});
+    anim.querySelectorAll('.fv-pie circle').forEach(function(c){
+      var seg=c.style.getPropertyValue('--seg'),gap=c.style.getPropertyValue('--gap');
+      c.style.strokeDasharray='0 '+(parseFloat(seg)+parseFloat(gap));});
+    anim.querySelectorAll('.fv-meter i').forEach(function(m){m.style.width='0';});
+    anim.querySelectorAll('[data-count]').forEach(function(n){
+      n.textContent=(n.getAttribute('data-prefix')||'')+'0'+(n.getAttribute('data-suffix')||'');});
+    ['finbars','platbars','utilbars','commbars'].forEach(resetBars);
+    var cap=anim.querySelector('.fv-caption');if(cap){cap.classList.remove('show');cap.textContent='';}
+  }
+
+  /* ---------- apply one beat's visuals ---------- */
+  function applyBeatVisual(anim,beat){
+    (beat.reveal||[]).forEach(function(name){var e=el(anim,name);if(e){e.classList.remove('beat-hidden');e.classList.add('beat-in');
+      e.querySelectorAll('[data-count]').forEach(function(n){schedule(function(){countUp(n);},180);});
+      if(e.hasAttribute('data-count'))schedule(function(){countUp(e);},180);}});
+    anim.querySelectorAll('.beat-spot').forEach(function(n){n.classList.remove('beat-spot');});
+    if(beat.spot){var s=el(anim,beat.spot);if(s){s.classList.add('beat-spot');
+      if(beat.count){s.querySelectorAll('[data-count]').forEach(function(n){schedule(function(){countUp(n);},120);});
+        if(s.hasAttribute('data-count'))schedule(function(){countUp(s);},120);}}}
+    var cap=anim.querySelector('.fv-caption');if(cap){cap.textContent=beat.say;cap.classList.add('show');}
+    if(beat.bars)growBars(beat.bars);
+    if(beat.pie){(beat.reveal||[]).forEach(function(name){var c=anim.querySelector('.fv-pie circle[data-el="'+name+'"]');
+      if(c){var seg=c.style.getPropertyValue('--seg'),gap=c.style.getPropertyValue('--gap');
+        schedule(function(){c.style.strokeDasharray=seg+' '+gap;},80);}});}
+    if(beat.meter)anim.querySelectorAll('.fv-meter i').forEach(function(m){var w=m.getAttribute('data-meter');if(w)m.style.width=w+'%';});
+    if(beat.rows)beat.rows.forEach(function(name,i){var r=el(anim,name);if(r){r.classList.add('beat-hidden');
+      schedule(function(){r.classList.remove('beat-hidden');r.classList.add('beat-in');},i*140);}});
+  }
+
+  /* ---------- progress indicator ---------- */
+  function buildProgress(){
+    var wrap=document.getElementById('fvProgress'); if(!wrap)return;
+    wrap.innerHTML='';
+    ORDER.forEach(function(id,i){
+      var s=document.createElement('span'); s.className='seg'; s.dataset.i=i; s.title=LABELS[id];
+      s.addEventListener('click',function(){ goToTab(id); });
+      wrap.appendChild(s);
+    });
+  }
+  function updateProgressSegments(){
+    var wrap=document.getElementById('fvProgress'); if(!wrap)return;
+    var ai=ORDER.indexOf(playingAnim?playingAnim.id:'');
+    Array.prototype.forEach.call(wrap.children,function(s,i){
+      s.classList.toggle('done', i<ai);
+      s.classList.toggle('active', i===ai);
+      if(i>ai){s.classList.remove('done','active');}
+      if(i!==ai)s.style.removeProperty('--p');
+    });
+    var lbl=document.getElementById('fvProgressLabel');
+    if(lbl&&playingAnim)lbl.textContent=(ai+1)+' / '+ORDER.length+'  ·  '+LABELS[playingAnim.id];
+  }
+  function tickProgressBeat(){
+    // fill the active segment based on beat progress across the whole tab
+    var wrap=document.getElementById('fvProgress'); if(!wrap||!playingAnim)return;
+    var ai=ORDER.indexOf(playingAnim.id); var seg=wrap.children[ai]; if(!seg)return;
+    var beats=BEATS[playingAnim.id]||[];
+    function frame(){
+      if(!playingAnim)return;
+      if(paused){return;}
+      var within = beatDur>0 ? Math.min(1,(performance.now()-beatStart)/beatDur) : 0;
+      var pct = ((beatIndex+within)/beats.length)*100;
+      seg.style.setProperty('--p', pct.toFixed(1)+'%');
+      if(playingAnim) progressRAF=requestAnimationFrame(frame);
+    }
+    cancelAnimationFrame(progressRAF); progressRAF=requestAnimationFrame(frame);
+  }
+
+  /* ---------- play a tab from beat 0 ---------- */
+  function playTab(anim, withAudio){
+    stopEverything(false);
+    resetAnim(anim);
+    playingAnim=anim; beatIndex=0; paused=false; currentHasAudio=withAudio;
+    updateProgressSegments();
+    var voice=pickVoice();
+    setPlayBtn(true,false);
+
+    function runBeat(i){
+      if(!playingAnim||playingAnim!==anim||paused) return;
+      beatIndex=i;
+      var beats=BEATS[anim.id]||[];
+      if(i>=beats.length){ onTabComplete(); return; }
+      var beat=beats[i];
+      applyBeatVisual(anim,beat);
+      beatDur = withAudio ? estDur(beat.say) : estDur(beat.say); // both use same estimate; audio uses onend when available
+      beatStart = performance.now(); beatRemaining=beatDur;
+      tickProgressBeat();
+      if(withAudio && synth){
+        var u=new SpeechSynthesisUtterance(beat.say);
+        if(voice)u.voice=voice; u.rate=1.0;
+        var advanced=false;
+        function goNext(){ if(!advanced&&playingAnim===anim&&!paused){advanced=true;runBeat(i+1);} }
+        // fallback timer in case speech never fires end (or no voices installed)
+        schedule(goNext, beatDur+500);
+        u.onend=goNext;
+        u.onerror=function(){ /* fallback timer advances */ };
+        currentUtterText=beat.say; synth.speak(u);
+      }else{
+        schedule(function(){ runBeat(i+1); }, beatDur);
+      }
+    }
+    // small lead-in so reveal animation is visible before first word
+    schedule(function(){ runBeat(0); }, 250);
+  }
+
+  var currentUtterText='';
+
+  function onTabComplete(){
+    updateProgressSegments();
+    var wrap=document.getElementById('fvProgress');
+    if(wrap){var ai=ORDER.indexOf(playingAnim.id);if(wrap.children[ai])wrap.children[ai].classList.add('done');}
+    if(autoplay){
+      var ai=ORDER.indexOf(playingAnim.id);
+      if(ai < ORDER.length-1){
+        schedule(function(){ goToTab(ORDER[ai+1]); }, 900);
+      }else{
+        // stop after last tab
+        autoplay=false; setAutoplayBtn(false); setPlayBtn(false,false);
+      }
+    }else{
+      // single-tab: mark finished, button back to "play"
+      setPlayBtn(false,false);
+    }
+  }
+
+  /* ---------- pause / resume ---------- */
+  function pausePlayback(){
+    if(!playingAnim||paused)return;
+    paused=true;
+    // freeze scheduled timers: record remaining time
+    timers.forEach(function(t){ clearTimeout(t.id); t.remaining=Math.max(0,t.delay-(performance.now()-t.start)); });
+    if(synth&&synth.speaking)synth.pause();
+    cancelAnimationFrame(progressRAF);
+    // freeze CSS transitions by locking computed values
+    freezeTransitions(playingAnim,true);
+    setPlayBtn(true,true);
+  }
+  function resumePlayback(){
+    if(!playingAnim||!paused)return;
+    paused=false;
+    freezeTransitions(playingAnim,false);
+    // resume timers with remaining time
+    var pending=timers.slice(); timers=[];
+    pending.forEach(function(t){ schedule(t.fn, t.remaining!=null?t.remaining:t.delay); });
+    // resume any paused count-ups
+    var rafs=pauseRAFs.slice(); pauseRAFs=[];
+    rafs.forEach(function(r){ requestAnimationFrame(r.fn); });
+    if(synth&&synth.paused)synth.resume();
+    tickProgressBeat();
+    setPlayBtn(true,false);
+  }
+  // freeze/unfreeze: pause CSS transitions mid-way by snapshotting current computed style
+  function freezeTransitions(anim,on){
+    var nodes=anim.querySelectorAll('.fv-bars .bar,.fv-meter i,.fv-pie circle,.beat-in');
+    nodes.forEach(function(n){
+      if(on){
+        var cs=getComputedStyle(n);
+        if(n.classList.contains('bar')||n.parentNode&&n.parentNode.classList&&n.parentNode.classList.contains('fv-meter')){
+          n.style.transition='none';
+        }else if(n.tagName==='circle'){
+          n.style.transition='none';
+        }else{
+          n.style.transition='none';
+        }
+      }else{
+        n.style.transition='';
+      }
+    });
+  }
+
+  /* ---------- top-level controls ---------- */
+  function stopEverything(resetActive){
+    clearTimers(); pauseRAFs=[]; cancelAnimationFrame(progressRAF);
+    if(synth)synth.cancel();
+    paused=false;
+    if(resetActive&&playingAnim)resetAnim(playingAnim);
+  }
+
+  // main Play/Pause button
+  function onPlayPause(){
+    var active=document.querySelector('.fv-anim.is-active'); if(!active)return;
+    // Not this tab yet, or this tab is running WITHOUT audio -> (re)start in sync with audio
+    if(!playingAnim || playingAnim!==active || !currentHasAudio){
+      audioArmed=true;
+      playTab(active, true);
+      return;
+    }
+    // Already playing this tab with audio -> pause/resume toggle
+    if(paused){ resumePlayback(); }
+    else { pausePlayback(); }
+  }
+
+  // Autoplay toggle
+  function onAutoplay(){
+    autoplay=!autoplay; setAutoplayBtn(autoplay);
+    if(autoplay){
+      audioArmed=true;
+      var active=document.querySelector('.fv-anim.is-active')||document.getElementById(ORDER[0]);
+      // if a tab is mid-play, restart current from 0 in autoplay; else start active
+      playTab(active, true);
+    }else{
+      // turning autoplay off leaves current tab as-is (paused-free); stop chaining only
+    }
+  }
+
+  function autoplayNote(){}
+
+  /* ---------- tab switching ---------- */
+  function goToTab(id){
+    setActiveTab(id);
+    var panel=document.getElementById(id); if(!panel)return;
+    if(audioArmed || autoplay){
+      playTab(panel, true);           // play animation + audio in sync from the start
+    }else{
+      // click a tab: animation plays, NO audio
+      stopEverything(false);
+      resetAnim(panel);
+      playingAnim=panel; beatIndex=0; paused=false;
+      updateProgressSegments();
+      setPlayBtn(false,false);
+      playTabSilent(panel);
+    }
+  }
+  function playTabSilent(anim){
+    currentHasAudio=false;
+    var beats=BEATS[anim.id]||[];
+    function runBeat(i){
+      if(!playingAnim||playingAnim!==anim||paused)return;
+      beatIndex=i;
+      if(i>=beats.length){ onTabComplete(); return; }
+      var beat=beats[i];
+      applyBeatVisual(anim,beat);
+      beatDur=estDur(beat.say); beatStart=performance.now();
+      tickProgressBeat();
+      schedule(function(){ runBeat(i+1); }, beatDur);
+    }
+    schedule(function(){ runBeat(0); }, 250);
+  }
+
+  function setActiveTab(id){
+    document.querySelectorAll('.fv-anim').forEach(function(a){a.classList.remove('is-active');});
+    var p=document.getElementById(id); if(p)p.classList.add('is-active');
+    document.querySelectorAll('.fv-demo-tabs button').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-go')===id);});
+  }
+
+  /* ---------- button visual state ---------- */
+  function setPlayBtn(playing, isPaused){
+    var b=document.getElementById('fvPlayPause'); if(!b)return;
+    var icPlay=b.querySelector('.ic-play'), icPause=b.querySelector('.ic-pause'), txt=b.querySelector('.fv-btn-txt');
+    b.classList.toggle('is-paused', isPaused);
+    if(playing && !isPaused){ icPlay.style.display='none'; icPause.style.display=''; txt.textContent='Pause'; }
+    else if(isPaused){ icPlay.style.display=''; icPause.style.display='none'; txt.textContent='Resume'; }
+    else { icPlay.style.display=''; icPause.style.display='none'; txt.textContent='Play audio'; }
+  }
+  function setAutoplayBtn(on){
+    var b=document.getElementById('fvAutoplay'); if(!b)return;
+    b.classList.toggle('is-on',on);
+    b.querySelector('.fv-btn-txt').textContent = on?'Autoplay: On':'Autoplay all';
+  }
+
+  /* ---------- wire up ---------- */
+  buildProgress();
+  var ppBtn=document.getElementById('fvPlayPause'); if(ppBtn)ppBtn.addEventListener('click',onPlayPause);
+  var apBtn=document.getElementById('fvAutoplay'); if(apBtn)apBtn.addEventListener('click',onAutoplay);
+
+  document.querySelectorAll('.fv-demo-tabs button').forEach(function(btn){
+    btn.addEventListener('click',function(){ goToTab(btn.getAttribute('data-go')); });
+  });
+
+  window.fvActivate=goToTab;
+
+  // initial: show first tab, play silent animation (no audio; browsers block autoplay audio anyway)
+  var first=document.querySelector('.fv-anim.is-active')||document.getElementById(ORDER[0]);
+  if(first){ setActiveTab(first.id); playingAnim=first; updateProgressSegments(); playTabSilent(first); }
+})();
+
+</script>
+</body>
+</html>
