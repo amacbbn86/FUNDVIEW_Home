@@ -1,26 +1,19 @@
-<!DOCTYPE html>
 <!--
-  FUNDVIEW home — dual mode
-  • EDIT (default): preview home.html locally. HubSpot HubL lives in <template data-hubspot> blocks and does not render on screen.
-  • UPLOAD: run `node _hubspot_mode.js upload` to generate Home.hubspot.html for Design Manager (SITE MAIN / Home.html).
-  Tell the agent "working on edits" or "ready to upload to HubSpot" to switch.
+  templateType: page
+  isAvailableForNewContent: true
+  label: FUNDVIEW Home
 -->
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FUNDVIEW</title>
-
-  <!-- HubSpot head includes (hidden in local preview; activated by _hubspot_mode.js upload) -->
-  <template data-hubspot="head">
-    {% if content.html_title %}<title>{{ content.html_title }}</title>{% endif %}
+  {% if content.html_title %}<title>{{ content.html_title }}</title>{% endif %}
     <meta name="description" content="{{ content.meta_description }}">
     {% if brand_settings.primaryFavicon.src %}
     <link rel="shortcut icon" href="{{ brand_settings.primaryFavicon.src }}" />
     {% endif %}
     {{ standard_header_includes }}
-  </template>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -3639,7 +3632,6 @@
     </div>
   </section>
 
-
   <button class="scroll-guide" id="scroll-guide" type="button" aria-label="Scroll to next section">
     <span class="scroll-guide__inner">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -5173,10 +5165,6 @@
       }
     })();
   </script>
-
-  <!-- HubSpot footer includes (hidden in local preview; activated by _hubspot_mode.js upload) -->
-  <template data-hubspot="footer">
-    {{ standard_footer_includes }}
-  </template>
+  {{ standard_footer_includes }}
 </body>
 </html>
