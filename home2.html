@@ -3600,8 +3600,8 @@
                  Poster falls back to the still image while the video loads. -->
             <video id="sceneImg" class="absolute inset-0 h-full w-full select-none object-cover"
                    style="max-width:none;"
-                   src="HOME_Section_Explore FUNDVIEW2/assets_experience/FUNDVIEW-Hero-Loop.mp4"
-                   poster="HOME_Section_Explore FUNDVIEW2/assets_experience/hero-scene-wide.png"
+                   src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/FUNDVIEW-Hero-Loop.mp4"
+                   poster="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/hero-scene-wide.png"
                    autoplay muted loop playsinline disablepictureinpicture
                    controlslist="nodownload noremoteplayback"
                    aria-label="FUNDVIEW dashboard on a laptop in front of a city hall and water tower"></video>
@@ -3677,12 +3677,12 @@
 <!-- Pre-rendered 1s zoom-into-laptop clip — primary click animation -->
 <video id="zoomClip" muted playsinline preload="auto" disablepictureinpicture
        controlslist="nodownload noremoteplayback"
-       aria-hidden="true" src="HOME_Section_Explore FUNDVIEW2/assets_experience/FUNDVIEW-Zoom-In.mp4"></video>
+       aria-hidden="true" src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/FUNDVIEW-Zoom-In.mp4"></video>
 
 <!-- Pre-rendered zoom-OUT clip — plays on exit to return to the scene -->
 <video id="zoomOutClip" muted playsinline preload="auto" disablepictureinpicture
        controlslist="nodownload noremoteplayback"
-       aria-hidden="true" src="HOME_Section_Explore FUNDVIEW2/assets_experience/FUNDVIEW-Zoom-Out.mp4"></video>
+       aria-hidden="true" src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/FUNDVIEW-Zoom-Out.mp4"></video>
 
 <!-- Frozen final frame of the zoom clip — pixel bridge during handoff/exit -->
 <canvas id="zoomBridge" aria-hidden="true"></canvas>
@@ -3730,7 +3730,7 @@
           <div class="flex items-center gap-2">
             <!-- Official FUNDVIEW logo (transparent PNG, ~5:1) — height-locked
                  to the 40px header so the wordmark sits optically centered -->
-            <img src="HOME_Section_Explore FUNDVIEW2/assets_experience/fundview-logo-official.png" alt="FUNDVIEW"
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/fundview-logo-official.png" alt="FUNDVIEW"
                  class="h-[17px] w-auto select-none" draggable="false">
           </div>
           <div style="flex:1; display:flex; justify-content:center; min-width:0; padding:0 8px;">
@@ -6423,7 +6423,7 @@
 
   /* Video-zoom timeline (ms)
      OPEN: FUNDVIEW-Zoom-In.mp4 then matched-frame handoff + SaaS lift
-     EXIT: reverse lift only (no reverse-video scrub) — CLOSE_MS=400 */
+     EXIT: FUNDVIEW-Zoom-Out.mp4 (forward play), with lift fallback */
   const CROSS_IN_MS    = 180;
   const CLIP_MS        = 1000;
   const OPEN_MS        = 520;
@@ -6438,7 +6438,9 @@
   let handoffStarted = false;
   let openGen = 0;           // cancels stale async open work
   let zoomInReady = false;
+  let zoomOutReady = false;
   let zoomInBlobUrl = '';
+  let zoomOutBlobUrl = '';
 
   function clearZoomTimers() {
     zoomTimers.forEach(clearTimeout);
@@ -6630,7 +6632,7 @@
   /* Preload the known end still so the handoff never paints a mid-dolly frame */
   const endStill = new Image();
   endStill.decoding = 'async';
-  endStill.src = 'HOME_Section_Explore FUNDVIEW2/assets_experience/zoom-in-end-frame.png';
+  endStill.src = 'https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/zoom-in-end-frame.png';
 
   function paintTrueEndBridge() {
     // Prefer the preloaded end still (pixel-stable). Fall back to the seeked
@@ -6686,27 +6688,45 @@
     later(() => finish(video.readyState >= 2), timeoutMs || 900);
   }
 
-  /* Warm zoom-in into a blob URL so the first click plays from memory */
-  function warmZoomAssets() {
-    if (!USE_ZOOM_VIDEO || !zoomClip) return;
-    const src = zoomClip.getAttribute('src') || zoomClip.currentSrc;
+  /* Warm zoom clips into blob URLs so open/close play from memory */
+  function warmOneClip(video, setReady, getBlob, setBlob) {
+    const src = video.getAttribute('src') || video.currentSrc;
     if (!src) return;
-    // Decode end still early
-    if (endStill.decode) endStill.decode().catch(function () {});
     fetch(src, { cache: 'force-cache' }).then(function (r) {
       if (!r.ok) throw new Error('zoom fetch failed');
       return r.blob();
     }).then(function (blob) {
-      if (zoomInBlobUrl) URL.revokeObjectURL(zoomInBlobUrl);
-      zoomInBlobUrl = URL.createObjectURL(blob);
-      zoomClip.src = zoomInBlobUrl;
-      zoomClip.preload = 'auto';
-      zoomClip.load();
-      whenVideoReady(zoomClip, function (ok) { zoomInReady = !!ok; }, 4000);
+      const prev = getBlob();
+      if (prev) URL.revokeObjectURL(prev);
+      const url = URL.createObjectURL(blob);
+      setBlob(url);
+      video.src = url;
+      video.preload = 'auto';
+      video.load();
+      whenVideoReady(video, function (ok) { setReady(!!ok); }, 4000);
     }).catch(function () {
-      try { zoomClip.load(); } catch (_) {}
-      whenVideoReady(zoomClip, function (ok) { zoomInReady = !!ok; }, 4000);
+      try { video.load(); } catch (_) {}
+      whenVideoReady(video, function (ok) { setReady(!!ok); }, 4000);
     });
+  }
+
+  function warmZoomAssets() {
+    if (!USE_ZOOM_VIDEO || !zoomClip) return;
+    if (endStill.decode) endStill.decode().catch(function () {});
+    warmOneClip(
+      zoomClip,
+      function (ok) { zoomInReady = ok; },
+      function () { return zoomInBlobUrl; },
+      function (u) { zoomInBlobUrl = u; }
+    );
+    if (zoomOutClip) {
+      warmOneClip(
+        zoomOutClip,
+        function (ok) { zoomOutReady = ok; },
+        function () { return zoomOutBlobUrl; },
+        function (u) { zoomOutBlobUrl = u; }
+      );
+    }
   }
 
   /* Primary: pre-rendered zoom clip + opaque matched-frame bridge */
@@ -6858,7 +6878,7 @@
   }
 
   function setExitVector() {
-    // Aim the reverse lift toward the on-page laptop screen hotspot
+    // Aim the reverse-lift fallback toward the on-page laptop screen hotspot
     try {
       const from = demoLaptop.getBoundingClientRect();
       const to = (target || hotspot).getBoundingClientRect();
@@ -6872,7 +6892,29 @@
     }
   }
 
-  /* EXIT: reverse SaaS lift only — no reverse-video scrub (snappier, no stall) */
+  function finishCloseCleanup() {
+    resetOverlayClasses();
+    resetZoomClip();
+    try {
+      zoomOutClip.pause();
+      zoomOutClip.currentTime = 0;
+    } catch (_) {}
+    zoomOutClip.classList.remove('active');
+    zoomOutClip.style.zIndex = '';
+    zoomOutClip.style.transitionDuration = '';
+    hideBridge(true);
+    handoffStarted = false;
+    overlay.style.transition = '';
+    demoLaptop.style.transition = '';
+    sceneEl.style.transition = '';
+    sceneEl.style.transform = '';
+    if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
+    document.body.style.overflow = '';
+    demoOpen = false;
+    animating = false;
+  }
+
+  /* EXIT: play FUNDVIEW-Zoom-Out.mp4, then hand back to the live town scene */
   function closeDemoVideo() {
     if (!demoOpen) return;
     // Allow exit even if open handoff is mid-flight (prevents "stuck" reloads)
@@ -6896,35 +6938,73 @@
     if (reduced) {
       overlay.classList.add('closing');
       overlay.classList.remove('open', 'bridging', 'ui-ready', 'handoff-cover');
-      later(function () {
-        resetOverlayClasses();
-        handoffStarted = false;
-        document.body.style.overflow = '';
-        demoOpen = false; animating = false;
-      }, 40);
+      later(finishCloseCleanup, 40);
       return;
     }
 
-    setExitVector();
-    demoLaptop.style.transition =
-      'transform ' + CLOSE_MS + 'ms ' + EASE_IO + ', opacity ' + Math.max(280, CLOSE_MS - 40) + 'ms ' + EASE_IO;
+    const clip = zoomOutClip;
+    if (!clip) {
+      // No out clip — CSS reverse lift fallback
+      setExitVector();
+      demoLaptop.style.transition =
+        'transform ' + CLOSE_MS + 'ms ' + EASE_IO + ', opacity ' + Math.max(280, CLOSE_MS - 40) + 'ms ' + EASE_IO;
+      overlay.classList.add('closing');
+      overlay.classList.remove('bridging', 'handoff-cover');
+      void demoLaptop.offsetWidth;
+      overlay.classList.remove('open', 'ui-ready');
+      later(finishCloseCleanup, CLOSE_MS + 40);
+      return;
+    }
 
-    overlay.classList.add('closing');
-    overlay.classList.remove('bridging', 'handoff-cover');
-    // Keep .open until lift starts so closing rules can override rest pose
-    void demoLaptop.offsetWidth;
-    overlay.classList.remove('open', 'ui-ready');
+    let done = false;
+    const finish = function () {
+      if (done) return;
+      done = true;
+      clip.style.transitionDuration = '280ms';
+      clip.classList.remove('active');
+      later(finishCloseCleanup, 300);
+    };
 
-    later(function () {
-      resetOverlayClasses();
-      demoLaptop.style.transition = '';
-      handoffStarted = false;
-      sceneEl.style.transition = '';
-      sceneEl.style.transform = '';
-      if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
-      document.body.style.overflow = '';
-      demoOpen = false; animating = false;
-    }, CLOSE_MS + 40);
+    const startOut = function () {
+      clip.style.zIndex = '60';
+      clip.style.transitionDuration = '0ms';
+      try { clip.currentTime = 0; } catch (_) {}
+      clip.classList.add('active');
+
+      overlay.classList.add('closing');
+      overlay.classList.remove('open', 'bridging', 'ui-ready', 'handoff-cover');
+      overlay.style.transition = 'opacity .14s linear';
+      overlay.style.opacity = '0';
+
+      const play = function () {
+        const p = clip.play();
+        if (p && p.catch) {
+          p.catch(function () {
+            // Play failed — finish via lift so we never stick
+            finish();
+          });
+        }
+      };
+      requestAnimationFrame(play);
+      clip.addEventListener('ended', finish, { once: true });
+      later(finish, 2200); // safety if ended never fires
+    };
+
+    whenVideoReady(clip, function (ok) {
+      if (!ok && clip.readyState < 2) {
+        // Out clip not ready — CSS reverse lift fallback
+        setExitVector();
+        demoLaptop.style.transition =
+          'transform ' + CLOSE_MS + 'ms ' + EASE_IO + ', opacity ' + Math.max(280, CLOSE_MS - 40) + 'ms ' + EASE_IO;
+        overlay.classList.add('closing');
+        overlay.classList.remove('bridging', 'handoff-cover');
+        void demoLaptop.offsetWidth;
+        overlay.classList.remove('open', 'ui-ready');
+        later(finishCloseCleanup, CLOSE_MS + 40);
+        return;
+      }
+      startOut();
+    }, zoomOutReady ? 200 : 800);
   }
 
   function openDemoCssDolly() {
