@@ -1303,18 +1303,19 @@
     }
   }
 
-  /* Depth-of-field recession: the page itself falls back and softens under
-     the demo. Blurring the (paused) hero is far cheaper than backdrop-filter,
-     which would re-sample the backdrop on every composited frame. */
+  /* Depth-of-field recession: applied ONLY after the demo is up (never mid
+     zoom-clip). Blurring #hero during the video stalls Chrome's decoder and
+     freezes the dolly mid-frame. Once the overlay covers the hero, a light
+     scale + dim is enough — skip live blur (veil already separates depth). */
   #hero {
     transform-origin: 50% 40%;
     transition:
-      transform 680ms cubic-bezier(0.23, 1, 0.32, 1),
-      filter 680ms cubic-bezier(0.23, 1, 0.32, 1);
+      transform 400ms cubic-bezier(0.23, 1, 0.32, 1),
+      filter 400ms cubic-bezier(0.23, 1, 0.32, 1);
   }
   #hero.demo-recede {
     transform: scale(0.966);
-    filter: blur(13px) brightness(0.7) saturate(0.85);
+    filter: brightness(0.72) saturate(0.88);
   }
 
   /* Veil: plain gradient dim (no backdrop-filter — see above) with a faint
@@ -1333,7 +1334,7 @@
   #demoOverlay.closing .demo-backdrop {
     opacity: 0;
     /* Laptop leads, veil follows — the layered exit reads as depth */
-    transition: opacity 460ms var(--ease-exit) 60ms;
+    transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   /* Laptop chassis: hidden pose -> final rest under opaque bridge -> reveal.
@@ -1344,8 +1345,8 @@
     opacity: 0;
     transform: scale(0.9) translate3d(0, 36px, 0) rotateX(6.5deg);
     transition:
-      transform 700ms var(--spring),
-      opacity 460ms var(--ease-out);
+      transform 520ms var(--ease-out),
+      opacity 400ms var(--ease-out);
     will-change: transform, opacity;
   }
   /* Final rest pose under the opaque bridge — identical to .open so the
@@ -1369,7 +1370,7 @@
     from { transform: scale(0.982) translate3d(0, 10px, 0); }
   }
   #demoOverlay.open.ui-ready:not(.handoff-cover):not(.closing) #demoLaptop {
-    animation: demoLandIn 0.62s var(--spring) both;
+    animation: demoLandIn 0.52s var(--ease-out) both;
   }
 
   /* Luminance continuity: the zoom clip ends on a DARK vignetted scene, but
@@ -1393,8 +1394,8 @@
       translate3d(var(--exit-x, 0px), calc(var(--exit-y, 0px) + 10px), 0)
       scale(0.88) rotateX(4deg);
     transition:
-      transform 520ms var(--ease-exit),
-      opacity 440ms var(--ease-exit) 40ms;
+      transform 400ms cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 360ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   /* ---- Compositor-only shadow / light stack ---- */
@@ -1431,7 +1432,7 @@
   #demoOverlay.handoff-cover .demo-shadow-lift { opacity: 1; }
   #demoOverlay.bridging .demo-shadow-lift,
   #demoOverlay.handoff-cover .demo-shadow-lift { transition: none; }
-  #demoOverlay.closing .demo-shadow-lift { opacity: 0; transition-duration: 420ms; }
+  #demoOverlay.closing .demo-shadow-lift { opacity: 0; transition-duration: 400ms; }
 
   /* Contact shadow: a pre-blurred ellipse under the base that widens and
      deepens as the machine lifts — grounds the float without filters */
@@ -6420,16 +6421,14 @@
   /* Flip to false to restore the CSS transform dolly instead of the clip */
   const USE_ZOOM_VIDEO = true;
 
-  /* Video-zoom timeline (ms) - clip duration is 1000ms
-     CROSS_IN / CLIP = cinematic zoom clip
-     REVEAL_AT = true clip end — paint endStill + assemble under cover, then
-       hard-cut on double-rAF (no long opaque freeze dwell / mid-in pause)
-     CLOSE_MS = the return */
-  const CROSS_IN_MS    = 240;
+  /* Video-zoom timeline (ms)
+     OPEN: FUNDVIEW-Zoom-In.mp4 then matched-frame handoff + SaaS lift
+     EXIT: reverse lift only (no reverse-video scrub) — CLOSE_MS=400 */
+  const CROSS_IN_MS    = 180;
   const CLIP_MS        = 1000;
-  const REVEAL_AT      = 985;   // last frames still play; handoff at true end
-  const OPEN_MS        = 700;   // legacy settle budget (charts wake, clip release)
-  const CLOSE_MS       = 560;   // matches .closing transforms + veil delay
+  const OPEN_MS        = 520;
+  const CLOSE_MS       = 400;
+  const EASE_IO        = 'cubic-bezier(0.23, 1, 0.32, 1)';
   /* CSS-dolly fallback timing */
   const ZOOM_MS = 750, BLOOM_AT = 380, CSS_REVEAL_AT = 450, UNZOOM_MS = 700;
   let demoOpen = false, animating = false;
@@ -6437,6 +6436,9 @@
   let endFrameReady = false;
   let reverseRaf = 0;
   let handoffStarted = false;
+  let openGen = 0;           // cancels stale async open work
+  let zoomInReady = false;
+  let zoomInBlobUrl = '';
 
   function clearZoomTimers() {
     zoomTimers.forEach(clearTimeout);
@@ -6447,6 +6449,32 @@
     const id = setTimeout(fn, ms);
     zoomTimers.push(id);
     return id;
+  }
+
+  /* Hard reset used when a transition stalls — recovers without reload */
+  function forceResetDemo() {
+    clearZoomTimers();
+    stopCountUps();
+    handoffStarted = false;
+    openGen++;
+    try { zoomClip.pause(); } catch (_) {}
+    try { zoomOutClip.pause(); } catch (_) {}
+    zoomClip.classList.remove('active');
+    zoomOutClip.classList.remove('active');
+    zoomClip.style.transitionDuration = '';
+    zoomOutClip.style.transitionDuration = '';
+    zoomOutClip.style.zIndex = '';
+    hideBridge(true);
+    resetOverlayClasses();
+    resetZoomClip();
+    hero.classList.remove('demo-recede');
+    sceneEl.style.transition = '';
+    sceneEl.style.transform = '';
+    sceneEl.classList.remove('hover-zoom');
+    document.body.style.overflow = '';
+    sceneVid.play().catch(function () {});
+    demoOpen = false;
+    animating = false;
   }
 
   /* Hover push-in toward the laptop (suppressed while the dolly runs) */
@@ -6602,7 +6630,7 @@
   /* Preload the known end still so the handoff never paints a mid-dolly frame */
   const endStill = new Image();
   endStill.decoding = 'async';
-  endStill.src = 'HOME_Section_Explore FUNDVIEW2/HOME_Section_Explore FUNDVIEW2/assets_experience/zoom-in-end-frame.png';
+  endStill.src = 'HOME_Section_Explore FUNDVIEW2/assets_experience/zoom-in-end-frame.png';
 
   function paintTrueEndBridge() {
     // Prefer the preloaded end still (pixel-stable). Fall back to the seeked
@@ -6629,7 +6657,7 @@
           };
           zoomClip.addEventListener('seeked', onSeeked);
           zoomClip.currentTime = endT;
-          later(finish, 90); // safety if seeked never fires
+          later(finish, 120); // safety if seeked never fires
           return;
         }
       }
@@ -6637,11 +6665,56 @@
     finish();
   }
 
+  function whenVideoReady(video, cb, timeoutMs) {
+    if (video.readyState >= 3 /* HAVE_FUTURE_DATA */) { cb(true); return; }
+    let done = false;
+    const finish = (ok) => {
+      if (done) return;
+      done = true;
+      video.removeEventListener('canplaythrough', onReady);
+      video.removeEventListener('canplay', onReady);
+      video.removeEventListener('loadeddata', onReady);
+      video.removeEventListener('error', onErr);
+      cb(ok);
+    };
+    const onReady = () => finish(true);
+    const onErr = () => finish(false);
+    video.addEventListener('canplaythrough', onReady, { once: true });
+    video.addEventListener('canplay', onReady, { once: true });
+    video.addEventListener('loadeddata', onReady, { once: true });
+    video.addEventListener('error', onErr, { once: true });
+    later(() => finish(video.readyState >= 2), timeoutMs || 900);
+  }
+
+  /* Warm zoom-in into a blob URL so the first click plays from memory */
+  function warmZoomAssets() {
+    if (!USE_ZOOM_VIDEO || !zoomClip) return;
+    const src = zoomClip.getAttribute('src') || zoomClip.currentSrc;
+    if (!src) return;
+    // Decode end still early
+    if (endStill.decode) endStill.decode().catch(function () {});
+    fetch(src, { cache: 'force-cache' }).then(function (r) {
+      if (!r.ok) throw new Error('zoom fetch failed');
+      return r.blob();
+    }).then(function (blob) {
+      if (zoomInBlobUrl) URL.revokeObjectURL(zoomInBlobUrl);
+      zoomInBlobUrl = URL.createObjectURL(blob);
+      zoomClip.src = zoomInBlobUrl;
+      zoomClip.preload = 'auto';
+      zoomClip.load();
+      whenVideoReady(zoomClip, function (ok) { zoomInReady = !!ok; }, 4000);
+    }).catch(function () {
+      try { zoomClip.load(); } catch (_) {}
+      whenVideoReady(zoomClip, function (ok) { zoomInReady = !!ok; }, 4000);
+    });
+  }
+
   /* Primary: pre-rendered zoom clip + opaque matched-frame bridge */
   function openDemoVideo() {
     if (demoOpen || animating) return;
     animating = true; demoOpen = true;
     handoffStarted = false;
+    const gen = ++openGen;
     clearZoomTimers();
     hideBridge(true);
     resetOverlayClasses();
@@ -6654,154 +6727,204 @@
     document.body.style.overflow = 'hidden';
     sceneVid.pause();
 
-    // Depth-of-field: recede the hero once the clip fully covers it, so the
-    // backdrop is already soft and distant when the veil later reveals it
-    later(() => hero.classList.add('demo-recede'), CROSS_IN_MS + 60);
+    // Do NOT apply demo-recede here — blur/filter mid-clip freezes playback.
+    // Recede only after the hard cut when the overlay already covers the hero.
 
-    // 1) Cross-dissolve the dolly clip in and play
+    const failToCss = () => {
+      if (gen !== openGen) return;
+      // Video path unavailable — fall through to CSS dolly without getting stuck
+      demoOpen = false; animating = false;
+      document.body.style.overflow = '';
+      openDemoCssDolly();
+    };
+
+    const armHandoffWatchers = () => {
+      // Prefer real clip progress over wall-clock (avoids cutting while stalled)
+      const onTime = () => {
+        if (gen !== openGen || !demoOpen || handoffStarted) return;
+        const d = zoomClip.duration;
+        if (d && isFinite(d) && zoomClip.currentTime >= d - 0.05) {
+          zoomClip.removeEventListener('timeupdate', onTime);
+          beginMatchedHandoff(gen);
+        }
+      };
+      zoomClip.addEventListener('timeupdate', onTime);
+      zoomClip.addEventListener('ended', () => {
+        if (gen !== openGen || !demoOpen || handoffStarted) return;
+        beginMatchedHandoff(gen);
+      }, { once: true });
+      // Absolute safety: never leave the UI frozen mid-dolly
+      later(() => {
+        if (gen !== openGen || !demoOpen || handoffStarted) return;
+        beginMatchedHandoff(gen);
+      }, CLIP_MS + CROSS_IN_MS + 700);
+    };
+
     const startClip = () => {
+      if (gen !== openGen || !demoOpen) return;
       zoomClip.style.transitionDuration = CROSS_IN_MS + 'ms';
       zoomClip.classList.add('active');
-      const play = () => zoomClip.play().catch(() => {});
-      if (zoomClip.readyState >= 2) play();
-      else zoomClip.addEventListener('canplay', play, { once: true });
+      const playPromise = zoomClip.play();
+      armHandoffWatchers();
+      if (playPromise && playPromise.catch) {
+        playPromise.catch(() => {
+          if (gen !== openGen) return;
+          // Autoplay/play failed — land via handoff or CSS fallback
+          later(() => {
+            if (handoffStarted || gen !== openGen) return;
+            if (zoomClip.readyState >= 2) beginMatchedHandoff(gen);
+            else failToCss();
+          }, 200);
+        });
+      }
     };
-    try { zoomClip.currentTime = 0; } catch (_) {}
-    if (zoomClip.readyState >= 2) startClip();
-    else {
-      zoomClip.addEventListener('loadeddata', startClip, { once: true });
-      zoomClip.load();
-      later(startClip, 80);
-    }
 
-    // 2) At clip end: opaque endStill cover -> assemble under cover -> hard cut
-    later(() => {
-      if (!demoOpen) return;
-      beginMatchedHandoff();
-    }, reduced ? 40 : REVEAL_AT);
-
-    // Safety: if timers drift past clip end without a handoff, still land
-    zoomClip.addEventListener('ended', () => {
-      if (!demoOpen || handoffStarted) return;
-      beginMatchedHandoff();
-    }, { once: true });
+    whenVideoReady(zoomClip, (ok) => {
+      if (gen !== openGen || !demoOpen) return;
+      if (!ok && zoomClip.readyState < 2) { failToCss(); return; }
+      try { zoomClip.currentTime = 0; } catch (_) {}
+      // Small rAF so currentTime=0 commits before play (avoids mid-frame starts)
+      requestAnimationFrame(() => {
+        if (gen !== openGen || !demoOpen) return;
+        startClip();
+      });
+    }, zoomInReady ? 200 : 1000);
   }
 
-  function beginMatchedHandoff() {
+  function beginMatchedHandoff(gen) {
+    if (gen != null && gen !== openGen) return;
     if (!demoOpen || handoffStarted) return;
     handoffStarted = true;
 
-    // Paint endStill onto opaque bridge FIRST, then assemble live demo under
-    // cover. Hard-cut on double-rAF (layout + paint) — no BRIDGE/SETTLE dwell
-    // that freezes the photo end-frame and reads as a mid-transition pause.
-    // Still opaque → instant cut (never opacity-crossfade mismatched geometries).
-    seekClipToEnd(() => {
+    const finishOpen = () => {
+      if (gen != null && gen !== openGen) return;
       if (!demoOpen) return;
-      paintTrueEndBridge();
-      showBridge(); // opaque cover BEFORE live demo is visible
+      try {
+        paintTrueEndBridge();
+        showBridge();
 
-      prepareDashboard();
+        prepareDashboard();
 
-      // Assemble live demo UNDER the opaque bridge at FINAL rest pose with
-      // UI fully painted (handoff-cover skips empty-shell / stagger flash).
-      overlay.classList.remove('pointer-events-none', 'closing');
-      overlay.classList.add('bridging', 'handoff-cover');
-      overlay.style.opacity = '1';
-      overlay.setAttribute('aria-hidden', 'false');
-      void demoLaptop.offsetWidth;
+        overlay.classList.remove('pointer-events-none', 'closing');
+        overlay.classList.add('bridging', 'handoff-cover');
+        overlay.style.opacity = '1';
+        overlay.setAttribute('aria-hidden', 'false');
+        void demoLaptop.offsetWidth;
 
-      // Promote to open while bridge stays opaque — no dissolve
-      overlay.classList.remove('bridging');
-      overlay.classList.add('open', 'ui-ready');
+        overlay.classList.remove('bridging');
+        overlay.classList.add('open', 'ui-ready');
 
-      // Paint charts/KPIs under cover so the cut never reveals blank UI
-      const fresh = !built.has('financial');
-      initCharts('financial');
-      if (!reduced) {
-        if (!fresh) replayCharts('financial');
-        // Snap KPIs to final under cover (count-up after reveal would reflow)
-        stopCountUps();
-      }
+        const fresh = !built.has('financial');
+        try {
+          initCharts('financial');
+          if (!reduced) {
+            if (!fresh) replayCharts('financial');
+            stopCountUps();
+          }
+        } catch (err) {
+          console.warn('demo charts init', err);
+        }
 
-      // Double-rAF: wait for layout + first paint under cover, then hard cut
-      requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          if (!demoOpen) return;
-          // Photo end-frame vs flat HTML chassis — soft dissolve ghosts.
-          hideBridge(true);
-          overlay.classList.remove('handoff-cover');
-          if (!reduced) runCountUps();
-          animating = false;
-          zoomClip.style.transitionDuration = '480ms';
-          zoomClip.classList.remove('active');
-          zoomClip.pause();
+          requestAnimationFrame(() => {
+            if ((gen != null && gen !== openGen) || !demoOpen) return;
+            hideBridge(true);
+            overlay.classList.remove('handoff-cover');
+            // Recede hero only now that the overlay fully covers it
+            hero.classList.add('demo-recede');
+            if (!reduced) runCountUps();
+            animating = false;
+            zoomClip.style.transitionDuration = '280ms';
+            zoomClip.classList.remove('active');
+            zoomClip.pause();
+          });
         });
-      });
-    });
+      } catch (err) {
+        console.warn('demo handoff failed', err);
+        // Last resort: show overlay even if bridge paint failed
+        overlay.classList.remove('pointer-events-none', 'closing', 'bridging', 'handoff-cover');
+        overlay.classList.add('open', 'ui-ready');
+        overlay.style.opacity = '1';
+        overlay.setAttribute('aria-hidden', 'false');
+        hideBridge(true);
+        zoomClip.classList.remove('active');
+        zoomClip.pause();
+        hero.classList.add('demo-recede');
+        animating = false;
+      }
+    };
+
+    seekClipToEnd(finishOpen);
   }
 
+  function setExitVector() {
+    // Aim the reverse lift toward the on-page laptop screen hotspot
+    try {
+      const from = demoLaptop.getBoundingClientRect();
+      const to = (target || hotspot).getBoundingClientRect();
+      const dx = (to.left + to.width / 2) - (from.left + from.width / 2);
+      const dy = (to.top + to.height / 2) - (from.top + from.height / 2);
+      demoLaptop.style.setProperty('--exit-x', (dx * 0.22).toFixed(1) + 'px');
+      demoLaptop.style.setProperty('--exit-y', (dy * 0.22).toFixed(1) + 'px');
+    } catch (_) {
+      demoLaptop.style.setProperty('--exit-x', '0px');
+      demoLaptop.style.setProperty('--exit-y', '28px');
+    }
+  }
+
+  /* EXIT: reverse SaaS lift only — no reverse-video scrub (snappier, no stall) */
   function closeDemoVideo() {
-    if (!demoOpen || animating) return;
+    if (!demoOpen) return;
+    // Allow exit even if open handoff is mid-flight (prevents "stuck" reloads)
+    if (animating && !overlay.classList.contains('open')) {
+      forceResetDemo();
+      return;
+    }
+    if (animating) return;
     animating = true;
     clearZoomTimers();
     stopCountUps();
+    openGen++; // cancel any stray open watchers
 
-    hero.classList.remove('demo-recede');   // rack focus back behind the clip
+    hero.classList.remove('demo-recede');
     sceneVid.play().catch(function () {});
     sceneEl.style.transition = '';
     sceneEl.style.transform = '';
+    resetZoomClip();
+    hideBridge(true);
 
-    // Reduced motion: resolve instantly, no clip
     if (reduced) {
       overlay.classList.add('closing');
-      overlay.classList.remove('open', 'bridging');
+      overlay.classList.remove('open', 'bridging', 'ui-ready', 'handoff-cover');
       later(function () {
-        resetOverlayClasses(); resetZoomClip(); hideBridge(true);
-        handoffStarted = false; document.body.style.overflow = '';
+        resetOverlayClasses();
+        handoffStarted = false;
+        document.body.style.overflow = '';
         demoOpen = false; animating = false;
       }, 40);
       return;
     }
 
-    /* The return: play the dedicated zoom-OUT clip forward (mirrors the
-       click-to-zoom open), then hand back to the live town scene. */
-    var clip = zoomOutClip;
-    clip.style.zIndex = '60';                 // cover the live demo + overlay
-    clip.style.transitionDuration = '0ms';
-    try { clip.currentTime = 0; } catch (_) {}
-    clip.classList.add('active');
+    setExitVector();
+    demoLaptop.style.transition =
+      'transform ' + CLOSE_MS + 'ms ' + EASE_IO + ', opacity ' + Math.max(280, CLOSE_MS - 40) + 'ms ' + EASE_IO;
 
     overlay.classList.add('closing');
-    overlay.classList.remove('open', 'bridging');
-    overlay.style.transition = 'opacity .16s linear';
-    overlay.style.opacity = '0';
+    overlay.classList.remove('bridging', 'handoff-cover');
+    // Keep .open until lift starts so closing rules can override rest pose
+    void demoLaptop.offsetWidth;
+    overlay.classList.remove('open', 'ui-ready');
 
-    var done = false;
-    var finish = function () {
-      if (done) return; done = true;
-      clip.style.transitionDuration = '300ms';
-      clip.classList.remove('active');        // fade out to reveal the hero scene
-      later(function () {
-        resetOverlayClasses();
-        resetZoomClip();
-        try { clip.pause(); clip.currentTime = 0; } catch (_) {}
-        clip.style.zIndex = '';
-        clip.style.transitionDuration = '';
-        hideBridge(true);
-        handoffStarted = false;
-        overlay.style.transition = '';
-        sceneEl.style.transition = ''; sceneEl.style.transform = '';
-        if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
-        document.body.style.overflow = '';
-        demoOpen = false; animating = false;
-      }, 320);
-    };
-
-    var play = function () { clip.play().catch(function () {}); };
-    if (clip.readyState >= 2) play();
-    else { clip.addEventListener('canplay', play, { once: true }); try { clip.load(); } catch (_) {} later(play, 80); }
-    clip.addEventListener('ended', finish, { once: true });
-    later(finish, 2000);   // safety if 'ended' never fires
+    later(function () {
+      resetOverlayClasses();
+      demoLaptop.style.transition = '';
+      handoffStarted = false;
+      sceneEl.style.transition = '';
+      sceneEl.style.transform = '';
+      if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
+      document.body.style.overflow = '';
+      demoOpen = false; animating = false;
+    }, CLOSE_MS + 40);
   }
 
   function openDemoCssDolly() {
@@ -6853,6 +6976,7 @@
         }
         heroInner.classList.remove('scene-change');
         sceneChange.classList.remove('flash');
+        hero.classList.add('demo-recede');
       }, ZOOM_MS - CSS_REVEAL_AT + 200);
     }, reduced ? 50 : CSS_REVEAL_AT);
   }
@@ -6862,6 +6986,7 @@
     animating = true;
     clearZoomTimers();
     stopCountUps();
+    hero.classList.remove('demo-recede');
     heroInner.classList.remove('scene-change');
     sceneChange.classList.remove('flash');
     overlay.classList.add('closing');
@@ -6896,12 +7021,15 @@
   exitBtn.addEventListener('click', closeDemo);
   // Clicking the veil closes too (cursor: zoom-out signals it)
   overlay.querySelector('.demo-backdrop').addEventListener('click', closeDemo);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDemo(); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (animating && demoOpen) { forceResetDemo(); return; }
+    closeDemo();
+  });
 
   // Warm the zoom clip + end still so the first click doesn't wait on decode
   if (USE_ZOOM_VIDEO && zoomClip) {
-    try { zoomClip.load(); } catch (_) {}
-    try { zoomOutClip.load(); } catch (_) {}
+    warmZoomAssets();
   }
 
   // initial screen ready; pre-build its charts during idle time so the first
