@@ -1015,22 +1015,32 @@
     .experience_FUNDVIEW {
       position: relative;
       width: 100%;
-      isolation: isolate;
+      /* No isolation:isolate here — it creates a stacking context that traps
+         #demoOverlay / zoom clips below the sticky site-header (z-index:5000). */
     }
 
-
-  /* Desktop: drop hero top padding to tighten section height */
+  /* Desktop: drop hero top padding to tighten section height.
+     Compiled Tailwind has pt-6 / sm:pt-8 but no lg:pt-0 utility. */
   @media (min-width: 1024px) {
     #experience_FUNDVIEW #heroContent,
-    #experience_FUNDVIEW #heroInner {
-      padding-top: 0 !important;
-    }
+    #experience_FUNDVIEW #heroInner,
     #experience_FUNDVIEW #hero {
       padding-top: 0 !important;
     }
   }
 
-  /* Sit above the sticky site-header (z-index: 5000) so demo chrome isn't covered */
+  /* Lift the whole Experience section above site-header while demo/zoom chrome
+     is active, then stack the fixed overlays inside it. */
+  #experience_FUNDVIEW:has(#demoOverlay.open),
+  #experience_FUNDVIEW:has(#demoOverlay.bridging),
+  #experience_FUNDVIEW:has(#demoOverlay.handoff-cover),
+  #experience_FUNDVIEW:has(#demoOverlay.closing),
+  #experience_FUNDVIEW:has(#zoomClip.active),
+  #experience_FUNDVIEW:has(#zoomOutClip.active),
+  #experience_FUNDVIEW:has(#zoomBridge.visible) {
+    z-index: 6000;
+    isolation: isolate;
+  }
   #demoOverlay { z-index: 6000 !important; }
   #zoomClip, #zoomOutClip { z-index: 6010 !important; }
   #zoomBridge { z-index: 6020 !important; }
@@ -3540,7 +3550,7 @@
          the content rises to fill the space the navbar used to occupy.
          On tablet/small-desktop the content row becomes 1fr so the copy can
          spread to fill its column height. -->
-    <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-6 lg:pt-0 sm:px-10 sm:pt-8 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(360px,38%)_1fr] lg:grid-rows-none lg:gap-4 lg:pl-14 lg:pr-0">
+    <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-0 sm:px-10 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(360px,38%)_1fr] lg:grid-rows-none lg:gap-4 lg:pl-14 lg:pr-0">
 
       <!-- Left column: copy + CTAs.
            order-2 below lg so it sits BELOW the laptop scene when stacked.
