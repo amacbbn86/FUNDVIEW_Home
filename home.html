@@ -306,8 +306,16 @@
       width: 70%;
       max-width: 100%;
       overflow: hidden;
+      cursor: grab;
+      touch-action: pan-y;
+      -webkit-user-select: none;
+      user-select: none;
       -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
       mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    }
+
+    .hero__ticker-viewport.is-dragging {
+      cursor: grabbing;
     }
 
     .hero__ticker-track {
@@ -316,19 +324,26 @@
       width: max-content;
       gap: clamp(2.25rem, 5vw, 4.5rem);
       animation: hero-ticker-scroll 45s linear infinite;
+      will-change: transform;
     }
 
-    .hero__ticker:hover .hero__ticker-track {
+    .hero__ticker-track.is-js-driven {
+      animation: none;
+    }
+
+    .hero__ticker:hover .hero__ticker-track:not(.is-js-driven) {
       animation-play-state: paused;
     }
 
-    /* White transparent city logos — sit cleanly on the navy hero/ticker scrim */
     .hero__ticker-track img {
       height: 74px; /* +20% from 62px */
       width: auto;
       flex-shrink: 0;
       object-fit: contain;
       opacity: 0.88;
+      pointer-events: none;
+      -webkit-user-drag: none;
+      user-select: none;
       transition: opacity 0.2s ease;
     }
 
@@ -3853,6 +3868,149 @@
       if (reduceMotion.matches) return; /* leave the first update shown, no auto-rotation */
 
       scheduleNext();
+    })();
+
+    /* Hero logo ticker — seamless auto-scroll + drag scrub */
+    (function heroTicker() {
+      var ticker = document.querySelector(".hero__ticker");
+      if (!ticker) return;
+
+      var viewport = ticker.querySelector(".hero__ticker-viewport");
+      var track = ticker.querySelector(".hero__ticker-track");
+      if (!viewport || !track) return;
+
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      if (reduceMotion.matches) return;
+
+      var LOOP_SECONDS = 45;
+      var offset = 0;
+      var half = 0;
+      var lastTs = null;
+      var rafId = null;
+      var dragging = false;
+      var pointerId = null;
+      var startX = 0;
+      var startOffset = 0;
+      var hovered = false;
+
+      track.classList.add("is-js-driven");
+
+      function measure() {
+        half = track.scrollWidth / 2;
+      }
+
+      function wrap(value) {
+        if (!half) return value;
+        value = value % half;
+        if (value > 0) value -= half;
+        return value;
+      }
+
+      function apply() {
+        track.style.transform = "translate3d(" + offset + "px, 0, 0)";
+      }
+
+      function speedPxPerSec() {
+        return half > 0 ? half / LOOP_SECONDS : 40;
+      }
+
+      function tick(ts) {
+        if (!dragging && !hovered) {
+          if (lastTs != null) {
+            var dt = Math.min(0.05, (ts - lastTs) / 1000);
+            offset = wrap(offset - speedPxPerSec() * dt);
+            apply();
+          }
+          lastTs = ts;
+        } else {
+          lastTs = ts;
+        }
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function onPointerDown(e) {
+        if (e.button != null && e.button !== 0) return;
+        dragging = true;
+        pointerId = e.pointerId;
+        startX = e.clientX;
+        startOffset = offset;
+        viewport.classList.add("is-dragging");
+        try {
+          viewport.setPointerCapture(e.pointerId);
+        } catch (err) {}
+      }
+
+      function onPointerMove(e) {
+        if (!dragging || e.pointerId !== pointerId) return;
+        var dx = e.clientX - startX;
+        offset = wrap(startOffset + dx);
+        apply();
+      }
+
+      function endDrag(e) {
+        if (!dragging) return;
+        if (e && pointerId != null && e.pointerId !== pointerId) return;
+        dragging = false;
+        pointerId = null;
+        viewport.classList.remove("is-dragging");
+        lastTs = null;
+      }
+
+      viewport.addEventListener("pointerdown", onPointerDown);
+      viewport.addEventListener("pointermove", onPointerMove);
+      viewport.addEventListener("pointerup", endDrag);
+      viewport.addEventListener("pointercancel", endDrag);
+      viewport.addEventListener("lostpointercapture", endDrag);
+
+      /* Pause autoplay while hovering so drag feels intentional; resume on leave */
+      viewport.addEventListener("pointerenter", function () {
+        hovered = true;
+      });
+      viewport.addEventListener("pointerleave", function () {
+        hovered = false;
+        if (!dragging) lastTs = null;
+      });
+
+      window.addEventListener("resize", function () {
+        measure();
+        offset = wrap(offset);
+        apply();
+      });
+
+      /* Wait a frame so duplicated logo images can contribute to scrollWidth */
+      requestAnimationFrame(function () {
+        measure();
+        apply();
+        rafId = requestAnimationFrame(tick);
+      });
+
+      /* Recalculate after images finish loading */
+      var imgs = track.querySelectorAll("img");
+      var pending = imgs.length;
+      if (!pending) return;
+      imgs.forEach(function (img) {
+        if (img.complete) {
+          pending -= 1;
+          if (!pending) {
+            measure();
+            offset = wrap(offset);
+            apply();
+          }
+          return;
+        }
+        img.addEventListener(
+          "load",
+          function () {
+            pending -= 1;
+            if (!pending) {
+              measure();
+              offset = wrap(offset);
+              apply();
+            }
+          },
+          { once: true }
+        );
+      });
     })();
 
     /* Client slider — trusted-cities logo carousel (from town_scene.html) */
