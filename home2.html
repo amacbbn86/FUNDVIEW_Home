@@ -1046,7 +1046,7 @@
   #zoomBridge { z-index: 6020 !important; }
   #sceneChange { z-index: 6015 !important; }
   #demoOverlay #exitDemo,
-  #demoOverlay #bookDemo { position: relative; z-index: 2; }
+  #demoOverlay #bookDemoMobile { position: relative; z-index: 2; }
 
 
   /* ---------- Global ---------- */
@@ -1616,58 +1616,55 @@
   }
   #exitDemo:active { transform: translate3d(0, 0, 0) scale(0.97); }
 
-  /* Book a Live Demo — top-left overlay chrome (desktop + mobile) */
-  #bookDemo {
+  /* Shared Book a Live Demo CTA */
+  .book-demo {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    max-width: calc(100vw - 5.5rem);
-    padding: 8px 12px 8px 10px;
+    gap: 8px;
+    padding: 8px 10px;
     border-radius: 10px;
     background: #f5b83d;
     color: #0a1a30;
     text-decoration: none;
-    box-shadow: 0 8px 24px rgba(245, 184, 61, 0.4);
-    opacity: 0;
+    box-shadow: 0 6px 18px rgba(245, 184, 61, 0.35);
     pointer-events: auto;
     transition:
-      opacity 0.2s ease,
       transform 0.2s ease,
       background-color 0.18s ease,
       box-shadow 0.25s ease;
   }
-  #bookDemo .book-demo__icon {
+  .book-demo__icon {
     display: inline-flex;
     flex: none;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 7px;
     background: rgba(10, 26, 48, 0.1);
     color: #0a1a30;
   }
-  #bookDemo .book-demo__copy {
+  .book-demo__copy {
     display: flex;
     min-width: 0;
     flex-direction: column;
     gap: 1px;
     line-height: 1.15;
   }
-  #bookDemo .book-demo__eyebrow {
-    font-size: 9px;
+  .book-demo__eyebrow {
+    font-size: 8.5px;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
     opacity: 0.78;
   }
-  #bookDemo .book-demo__label {
-    font-size: 13px;
+  .book-demo__label {
+    font-size: 12.5px;
     font-weight: 800;
     letter-spacing: -0.01em;
     white-space: nowrap;
   }
-  #bookDemo .book-demo__arrow {
+  .book-demo__arrow {
     flex: none;
     margin-left: 2px;
     font-size: 14px;
@@ -1675,28 +1672,45 @@
     line-height: 1;
     opacity: 0.85;
   }
-  #demoOverlay.open:not(.closing) #bookDemo {
+  .book-demo:hover {
+    transform: translate3d(0, -1px, 0);
+    background: #f0a820;
+    box-shadow: 0 10px 24px rgba(245, 184, 61, 0.48);
+  }
+  .book-demo:active { transform: translate3d(0, 0, 0) scale(0.98); }
+
+  /* Desktop: pinned to bottom of side nav, above Close All Tabs */
+  #bookDemo.book-demo--rail {
+    width: auto;
+    max-width: none;
+    margin-top: auto;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  }
+  #bookDemo.book-demo--rail .book-demo__label {
+    white-space: normal;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  #bookDemo.book-demo--rail .book-demo__eyebrow {
+    font-size: 8px;
+  }
+
+  /* Mobile chrome CTA — top-right; fades with overlay chrome */
+  #bookDemoMobile.book-demo--chrome {
+    max-width: min(220px, calc(100vw - 7.5rem));
+    opacity: 0;
+    gap: 7px;
+    padding: 7px 9px;
+  }
+  #bookDemoMobile.book-demo--chrome .book-demo__label { font-size: 12px; }
+  #bookDemoMobile.book-demo--chrome .book-demo__eyebrow { font-size: 8px; }
+  #demoOverlay.open:not(.closing) #bookDemoMobile {
     opacity: 1;
     animation: demoExitBtnIn 0.55s var(--ease-out) 0.52s backwards;
   }
-  #demoOverlay.bridging #bookDemo,
-  #demoOverlay.handoff-cover #bookDemo,
-  #demoOverlay.closing #bookDemo { opacity: 0; }
-  #bookDemo:hover {
-    transform: translate3d(0, -1px, 0);
-    background: #f0a820;
-    box-shadow: 0 12px 28px rgba(245, 184, 61, 0.5);
-  }
-  #bookDemo:active { transform: translate3d(0, 0, 0) scale(0.98); }
-  @media (max-width: 480px) {
-    #bookDemo {
-      gap: 8px;
-      padding: 7px 10px 7px 8px;
-    }
-    #bookDemo .book-demo__icon { width: 26px; height: 26px; }
-    #bookDemo .book-demo__eyebrow { font-size: 8px; }
-    #bookDemo .book-demo__label { font-size: 12px; }
-  }
+  #demoOverlay.bridging #bookDemoMobile,
+  #demoOverlay.handoff-cover #bookDemoMobile,
+  #demoOverlay.closing #bookDemoMobile { opacity: 0; }
 
   /* Reduced motion: overlay states resolve instantly — nothing sweeps,
      breathes, springs, or counts (JS honours the same media query) */
@@ -3772,17 +3786,17 @@
   <!-- Depth veil + blur: separates the lifted dashboard from the hero -->
   <div class="demo-backdrop absolute inset-0"></div>
 
-  <!-- Exit button -->
+  <!-- Exit Preview — left on mobile, right on desktop -->
   <button id="exitDemo"
-          class="absolute right-5 top-5 z-20 inline-flex items-center gap-2 rounded-full border border-fvteal/50 bg-navy-800/90 px-4 py-2 text-[13px] font-semibold text-fvteal backdrop-blur transition hover:bg-fvteal hover:text-navy-950 sm:right-8 sm:top-7">
+          class="absolute left-4 top-4 z-20 inline-flex items-center gap-2 rounded-full border border-fvteal/50 bg-navy-800/90 px-3 py-2 text-[12px] font-semibold text-fvteal backdrop-blur transition hover:bg-fvteal hover:text-navy-950 sm:left-auto sm:right-8 sm:top-7 sm:px-4 sm:text-[13px]">
     <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg>
     Exit Preview
     <kbd class="ml-0.5 rounded-[4px] border border-current px-[5px] py-[1px] text-[9px] font-bold leading-none opacity-60">ESC</kbd>
   </button>
 
-  <!-- Book a Live Demo — top-left chrome (mirrors Exit on the right; same on mobile) -->
-  <a id="bookDemo" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
-     class="absolute left-4 top-4 z-20 sm:left-8 sm:top-7">
+  <!-- Mobile-only chrome CTA (top-right). Desktop CTA lives in #sideNav. -->
+  <a id="bookDemoMobile" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
+     class="book-demo book-demo--chrome absolute right-4 top-4 z-20 sm:hidden">
     <span class="book-demo__icon" aria-hidden="true">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
     </span>
@@ -3826,9 +3840,21 @@
         </header>
 
         <div class="flex min-h-0 flex-1">
-          <!-- Dark sidebar navigation -->
-          <aside class="slim-scroll flex w-[46px] shrink-0 flex-col gap-[3px] overflow-y-auto bg-[#0c2440] py-2 sm:w-44" id="sideNav">
-            <!-- items injected by JS -->
+          <!-- Dark sidebar navigation — CTA pinned above the Close All Tabs bar -->
+          <aside class="flex w-[46px] shrink-0 flex-col overflow-hidden bg-[#0c2440] sm:w-44" id="sideNav">
+            <div id="sideNavItems" class="slim-scroll flex min-h-0 flex-1 flex-col gap-[3px] overflow-y-auto py-2">
+              <!-- items injected by JS -->
+            </div>
+            <a id="bookDemo" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
+               class="book-demo book-demo--rail mx-2 mb-2.5 mt-1 hidden sm:flex">
+              <span class="book-demo__icon" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+              </span>
+              <span class="book-demo__copy">
+                <span class="book-demo__eyebrow">Outgrown your ERP?</span>
+                <span class="book-demo__label">Book a Live Demo</span>
+              </span>
+            </a>
           </aside>
 
           <!-- Main content host -->
@@ -6330,6 +6356,7 @@
   ]
 
   const sideNav = document.getElementById('sideNav');
+  const sideNavItems = document.getElementById('sideNavItems') || sideNav;
   MODULES.forEach((m, i) => {
     const b = document.createElement('button');
     b.className = 'side-item flex w-full items-center gap-2.5 px-3 py-[7px] text-left text-[11px] text-slate-300' + (i === 0 ? ' active' : '');
@@ -6337,7 +6364,7 @@
     b.style.setProperty('--i', i);   // cascade index for the open stagger
     b.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">${m.icon}</svg><span class="hidden truncate sm:inline">${m.label}</span>`;
     b.addEventListener('click', () => showScreen(m.id));
-    sideNav.appendChild(b);
+    sideNavItems.appendChild(b);
   });
 
   /* â•â•â•â•â•â•â•â• 2. SCREEN SWITCHING (fade transitions) â•â•â•â•â•â•â•â• */
