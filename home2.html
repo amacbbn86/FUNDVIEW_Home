@@ -1046,7 +1046,7 @@
   #zoomBridge { z-index: 6020 !important; }
   #sceneChange { z-index: 6015 !important; }
   #demoOverlay #exitDemo,
-  #demoOverlay #bookDemoMobile { position: relative; z-index: 2; }
+  #demoOverlay #bookDemoMobile { z-index: 2; }
 
 
   /* ---------- Global ---------- */
@@ -1679,10 +1679,13 @@
   }
   .book-demo:active { transform: translate3d(0, 0, 0) scale(0.98); }
 
-  /* Desktop: pinned to bottom of side nav, above Close All Tabs */
+  /* Desktop: pinned to bottom of side nav, above Close All Tabs.
+     (Compiled Tailwind has .hidden but no sm:flex — control display here.) */
   #bookDemo.book-demo--rail {
+    display: none;
     width: auto;
     max-width: none;
+    flex-shrink: 0;
     margin-top: auto;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
   }
@@ -1694,9 +1697,14 @@
   #bookDemo.book-demo--rail .book-demo__eyebrow {
     font-size: 8px;
   }
+  @media (min-width: 640px) {
+    #bookDemo.book-demo--rail { display: flex; }
+    #bookDemoMobile.book-demo--chrome { display: none !important; }
+  }
 
   /* Mobile chrome CTA — top-right; fades with overlay chrome */
   #bookDemoMobile.book-demo--chrome {
+    display: inline-flex;
     max-width: min(220px, calc(100vw - 7.5rem));
     opacity: 0;
     gap: 7px;
@@ -1711,6 +1719,9 @@
   #demoOverlay.bridging #bookDemoMobile,
   #demoOverlay.handoff-cover #bookDemoMobile,
   #demoOverlay.closing #bookDemoMobile { opacity: 0; }
+  @media (max-width: 639.98px) {
+    #bookDemo.book-demo--rail { display: none !important; }
+  }
 
   /* Reduced motion: overlay states resolve instantly — nothing sweeps,
      breathes, springs, or counts (JS honours the same media query) */
@@ -3796,7 +3807,7 @@
 
   <!-- Mobile-only chrome CTA (top-right). Desktop CTA lives in #sideNav. -->
   <a id="bookDemoMobile" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
-     class="book-demo book-demo--chrome absolute right-4 top-4 z-20 sm:hidden">
+     class="book-demo book-demo--chrome absolute right-4 top-4 z-20">
     <span class="book-demo__icon" aria-hidden="true">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
     </span>
@@ -3846,7 +3857,7 @@
               <!-- items injected by JS -->
             </div>
             <a id="bookDemo" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
-               class="book-demo book-demo--rail mx-2 mb-2.5 mt-1 hidden sm:flex">
+               class="book-demo book-demo--rail mx-2 mb-2.5 mt-1">
               <span class="book-demo__icon" aria-hidden="true">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
               </span>
