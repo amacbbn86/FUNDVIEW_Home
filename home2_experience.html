@@ -1046,7 +1046,13 @@
   #zoomBridge { z-index: 6020 !important; }
   #sceneChange { z-index: 6015 !important; }
   #demoOverlay #exitDemo,
-  #demoOverlay #bookDemoMobile { z-index: 40; pointer-events: auto; }
+  #demoOverlay #bookDemoMobile {
+    z-index: 40;
+    /* Keep off the site header until demo is open — pointer-events:auto on
+       children still hit-tests even when #demoOverlay is pointer-events:none. */
+    pointer-events: none;
+    visibility: hidden;
+  }
 
 
   /* ---------- Global ---------- */
@@ -1584,7 +1590,13 @@
   }
 
   #demoOverlay #exitDemo,
-  #demoOverlay #bookDemoMobile { z-index: 40; pointer-events: auto; }
+  #demoOverlay #bookDemoMobile {
+    z-index: 40;
+    /* Keep off the site header until demo is open — pointer-events:auto on
+       children still hit-tests even when #demoOverlay is pointer-events:none. */
+    pointer-events: none;
+    visibility: hidden;
+  }
 
   /* Exit Preview — explicit coords (compiled Tailwind lacks left-4/top-4) */
   #exitDemo {
@@ -1628,11 +1640,17 @@
   }
   #demoOverlay.open:not(.closing) #exitDemo {
     opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
     animation: demoExitBtnIn 0.55s var(--ease-out) 0.48s backwards;
   }
   #demoOverlay.bridging #exitDemo,
   #demoOverlay.handoff-cover #exitDemo,
-  #demoOverlay.closing #exitDemo { opacity: 0; }
+  #demoOverlay.closing #exitDemo {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
   #exitDemo:hover {
     transform: translate3d(0, -1px, 0);
     background: #1fc0cd;
@@ -1662,7 +1680,6 @@
     color: #0a1a30;
     text-decoration: none;
     box-shadow: 0 6px 18px rgba(245, 184, 61, 0.35);
-    pointer-events: auto;
     transition:
       transform 0.2s ease,
       background-color 0.18s ease,
@@ -1723,6 +1740,7 @@
     padding: 9px 10px;
     gap: 8px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    pointer-events: auto;
   }
   #bookDemo.book-demo--rail .book-demo__label {
     white-space: normal;
@@ -1741,7 +1759,7 @@
     #bookDemoMobile.book-demo--chrome { display: none !important; }
   }
 
-  /* Mobile chrome CTA — top-right (explicit coords; Tailwind lacks right-4/top-4) */
+  /* Mobile chrome CTA — only while demo overlay is open */
   #bookDemoMobile.book-demo--chrome {
     position: absolute;
     right: 12px;
@@ -1751,16 +1769,24 @@
     opacity: 0;
     gap: 7px;
     padding: 7px 9px;
+    pointer-events: none;
+    visibility: hidden;
   }
   #bookDemoMobile.book-demo--chrome .book-demo__label { font-size: 12px; }
   #bookDemoMobile.book-demo--chrome .book-demo__eyebrow { font-size: 8px; }
   #demoOverlay.open:not(.closing) #bookDemoMobile {
     opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
     animation: demoExitBtnIn 0.55s var(--ease-out) 0.52s backwards;
   }
   #demoOverlay.bridging #bookDemoMobile,
   #demoOverlay.handoff-cover #bookDemoMobile,
-  #demoOverlay.closing #bookDemoMobile { opacity: 0; }
+  #demoOverlay.closing #bookDemoMobile {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
   @media (max-width: 639.98px) {
     #bookDemo.book-demo--rail { display: none !important; }
   }
