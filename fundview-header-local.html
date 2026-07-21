@@ -133,6 +133,9 @@
     }
 
     .site-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 0.9rem;
       font-weight: 600;
@@ -147,6 +150,15 @@
     .site-nav a:hover,
     .site-nav a:focus-visible {
       color: var(--fv-teal-bright);
+    }
+
+    /* Nav icons: 1:1, height matches menu title (1em = current font-size) */
+    .site-nav__icon {
+      display: block;
+      width: 1em;
+      height: 1em;
+      flex-shrink: 0;
+      color: currentColor;
     }
 
     .site-header__actions {
@@ -365,6 +377,7 @@
       .site-nav a {
         display: flex;
         align-items: center;
+        gap: 0.65rem;
         width: 100%;
         padding: 1rem 1.25rem;
         font-size: 1.125rem;
@@ -379,6 +392,11 @@
       .site-nav a:hover,
       .site-nav a:focus-visible {
         color: var(--fv-teal-bright);
+      }
+
+      .site-nav__icon {
+        width: 1em;
+        height: 1em;
       }
 
       .site-header__actions--mobile {
@@ -428,11 +446,48 @@
         </a>
 
         <nav class="site-nav" id="site-nav" aria-label="Primary">
-          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Our ERP Platform</a>
-          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Solutions</a>
-          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Why FUNDVIEW</a>
-          <a href="https://245865092.hs-sites-na2.com/book-a-demo">How We Work</a>
-          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Pricing</a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+            <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3.5" y="5.5" width="12.5" height="10" rx="1.4" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M3.5 8.4h12.5" stroke="currentColor" stroke-width="1.7"/>
+              <rect x="8" y="8.5" width="12.5" height="10" rx="1.4" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M8 11.4h12.5" stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+            Our ERP Platform
+          </a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+            <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3.75" y="3.75" width="7" height="7" rx="1.4" stroke="currentColor" stroke-width="1.7"/>
+              <rect x="13.25" y="3.75" width="7" height="7" rx="1.4" stroke="currentColor" stroke-width="1.7"/>
+              <rect x="3.75" y="13.25" width="7" height="7" rx="1.4" stroke="currentColor" stroke-width="1.7"/>
+              <rect x="13.25" y="13.25" width="7" height="7" rx="1.4" stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+            Solutions
+          </a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+            <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M12 12l4.4-4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              <path d="M14.35 6.55l2.95.75-.75 2.95-2.2-2.2z" fill="currentColor"/>
+              <circle cx="12" cy="12" r="1.35" fill="currentColor"/>
+            </svg>
+            Why FUNDVIEW
+          </a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+            <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="5.5" cy="7" r="2.15" stroke="currentColor" stroke-width="1.7"/>
+              <circle cx="18.5" cy="17" r="2.15" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M7.6 7H14a2 2 0 012 2v6h.35" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            How We Work
+          </a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+            <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20.4 13.6 13.6 20.4a1.9 1.9 0 0 1-2.7 0l-7.2-7.2V3.6h9.6l7.1 7.1a1.9 1.9 0 0 1 0 2.9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <circle cx="7.9" cy="7.9" r="1.35" fill="currentColor"/>
+            </svg>
+            Pricing
+          </a>
 
           <div class="site-header__actions site-header__actions--mobile">
             <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
