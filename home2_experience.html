@@ -1018,6 +1018,27 @@
       isolation: isolate;
     }
 
+
+  /* Desktop: drop hero top padding to tighten section height */
+  @media (min-width: 1024px) {
+    #experience_FUNDVIEW #heroContent,
+    #experience_FUNDVIEW #heroInner {
+      padding-top: 0 !important;
+    }
+    #experience_FUNDVIEW #hero {
+      padding-top: 0 !important;
+    }
+  }
+
+  /* Sit above the sticky site-header (z-index: 5000) so demo chrome isn't covered */
+  #demoOverlay { z-index: 6000 !important; }
+  #zoomClip, #zoomOutClip { z-index: 6010 !important; }
+  #zoomBridge { z-index: 6020 !important; }
+  #sceneChange { z-index: 6015 !important; }
+  #demoOverlay #exitDemo,
+  #demoOverlay #bookDemo { position: relative; z-index: 2; }
+
+
   /* ---------- Global ---------- */
   html { scroll-behavior: smooth; }
   .experience_FUNDVIEW { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; background:#081426; }
@@ -3519,7 +3540,7 @@
          the content rises to fill the space the navbar used to occupy.
          On tablet/small-desktop the content row becomes 1fr so the copy can
          spread to fill its column height. -->
-    <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-6 sm:px-10 sm:pt-8 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(360px,38%)_1fr] lg:grid-rows-none lg:gap-4 lg:pl-14 lg:pr-0">
+    <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-6 lg:pt-0 sm:px-10 sm:pt-8 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(360px,38%)_1fr] lg:grid-rows-none lg:gap-4 lg:pl-14 lg:pr-0">
 
       <!-- Left column: copy + CTAs.
            order-2 below lg so it sits BELOW the laptop scene when stacked.
