@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BACKUP — client_slider section (from home2.html)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; font-family: Inter, sans-serif; }
+    /* ——— Client slider — trusted-cities logo carousel (from town_scene.html) ——— */
+    .client_slider {
+      --navy: #0a2e57;
+      --teal: #00b7b3;
+      --teal-dark: #00928f;
+      --teal-light: #ccf5f4;
+      --teal-50: #e8fafa;
+      --gray-50: #f0f4f8;
+      --gray-100: #e4ebf2;
+      --gray-200: #d1dae3;
+      --gray-300: #b7c3d0;
+      --gray-400: #8a97a5;
+      --gray-500: #4b5c6e;
+      --gray-600: #4b5c6e;
+      --gray-700: #3a4756;
+      --white: #ffffff;
+      --transition: 0.2s ease;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 72px 0 48px;
+      text-align: center;
+      background: var(--white);
+      border-top: 1px solid var(--gray-100);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .client_slider__title {
+      margin: 0 0 clamp(2.5rem, 5vw, 3.5rem);
+      text-align: center;
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: #0a2e57;
+    }
+
+    .trust__carousel {
+      width: 100%;
+      max-width: 100vw;
+      margin: 0 auto 16px;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+
+    .trust__carousel-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .trust__viewport {
+      overflow: hidden;
+      width: 100%;
+      min-height: 160px;
+      flex: 1;
+    }
+
+    .trust__track {
+      display: flex;
+      align-items: center;
+      will-change: transform;
+    }
+
+    .trust__logo-item {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    .trust__logo-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .trust__logo-item img {
+      height: 130px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      filter: grayscale(100%);
+      opacity: 0.85;
+      transition: opacity 0.3s ease, filter 0.3s ease;
+    }
+
+    .trust__logo-item img:hover {
+      filter: grayscale(0%);
+      opacity: 1;
+    }
+
+    .trust__nav-btn {
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+    }
+
+    .trust__nav-btn:hover {
+      background: var(--teal);
+      color: var(--white);
+      border-color: var(--teal);
+    }
+
+    .trust__pause-btn {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 12px auto 0;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-500);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+    }
+
+    .trust__pause-btn:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-300);
+      color: var(--gray-700);
+    }
+
+    .trust__pause-btn.is-playing {
+      color: var(--teal-dark);
+      border-color: var(--teal);
+      background: var(--teal-50);
+    }
+
+    .trust__pause-btn.is-playing:hover {
+      background: var(--teal-light);
+      color: var(--teal-dark);
+      border-color: var(--teal);
+    }
+
+    .trust__pause-btn.is-paused {
+      color: var(--gray-600);
+      border-color: var(--gray-300);
+      background: var(--gray-50);
+    }
+
+    .trust__pause-btn.is-paused:hover {
+      color: var(--navy);
+      border-color: var(--gray-400);
+      background: var(--white);
+    }
+
+    /* Global svg rules elsewhere on the page override the hidden attribute; restore it */
+    .trust__pause-btn svg[hidden] {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+<!--
+  Backup of the client_slider ("Trusted by 180+ Cities") section removed from home2.html.
+  Related carousel JS remains in home2.html (initTrustCarousel) and no-ops if #trust-track is absent.
+  To restore: paste the <section> below back into home2.html (styles already live there unless also removed).
+-->
+  <section class="client_slider" id="client_slider" aria-labelledby="client-slider-heading">
+    <h2 class="client_slider__title" id="client-slider-heading">Trusted by 180+ Cities</h2>
+    <div class="trust__carousel" id="trust-carousel" aria-live="polite">
+      <div class="trust__carousel-wrap">
+        <button class="trust__nav-btn trust__nav-btn--prev" id="trust-prev" type="button" aria-label="Previous logos">
+          <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </button>
+        <div class="trust__viewport">
+          <div class="trust__track" id="trust-track">
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Reno.png" alt="Reno, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Anthony.png" alt="Anthony, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_City_of_Iowa_Colony.png" alt="City of Iowa Colony, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Hickory%20Creek.png" alt="Hickory Creek, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Jacksboro.png" alt="Jacksboro, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Keene.png" alt="Keene, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Quinlan.png" alt="Quinlan, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Mason%20(1).png" alt="Mason, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Winnsboro%20(1).png" alt="Winnsboro, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Big%20Lake%20(1).png" alt="Big Lake, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Sweetwater%20(1).png" alt="Sweetwater, TX" loading="lazy">
+              </div>
+            </div>
+            <div class="trust__logo-item">
+              <div class="trust__logo-card">
+                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Muenster%20(1).png" alt="Muenster, TX" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="trust__nav-btn trust__nav-btn--next" id="trust-next" type="button" aria-label="Next logos">
+          <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        </button>
+      </div>
+      <button class="trust__pause-btn is-playing" id="trust-pause" type="button" aria-label="Pause carousel rotation" aria-pressed="false">
+        <svg class="trust__pause-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/></svg>
+        <svg class="trust__play-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" hidden><path d="M3 1.5l10 5.5-10 5.5V1.5z" fill="currentColor"/></svg>
+        <span class="trust__pause-label">Playing</span>
+      </button>
+    </div>
+  </section>
+</body>
+</html>

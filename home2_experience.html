@@ -254,25 +254,6 @@
       line-height: 0;
     }
 
-    .hero-media::after {
-      content: "Community story";
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      z-index: 2;
-      font-size: 9px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      padding: 0.45rem 0.8rem;
-      border-radius: 999px;
-      background: rgba(26, 59, 84, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #fff;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      line-height: 1.2;
-    }
-
     .hero-video {
       position: absolute;
       inset: 0;
@@ -1011,37 +992,52 @@
       }
     }
 
-    /* ——— experience_FUNDVIEW (from HOME_Section_Explore FUNDVIEW2) ——— */
-    .experience_FUNDVIEW {
+    /* ——— experience_fundview (from HOME_Section_Explore FUNDVIEW2) ——— */
+    .experience_fundview {
       position: relative;
       width: 100%;
-      isolation: isolate;
+      /* No isolation:isolate here — it creates a stacking context that traps
+         #demoOverlay / zoom clips below the sticky site-header (z-index:5000). */
     }
 
-
-  /* Desktop: drop hero top padding to tighten section height */
+  /* Desktop: drop hero top padding to tighten section height.
+     Compiled Tailwind has pt-6 / sm:pt-8 but no lg:pt-0 utility. */
   @media (min-width: 1024px) {
-    #experience_FUNDVIEW #heroContent,
-    #experience_FUNDVIEW #heroInner {
-      padding-top: 0 !important;
-    }
-    #experience_FUNDVIEW #hero {
+    #experience_fundview #heroContent,
+    #experience_fundview #heroInner,
+    #experience_fundview #hero {
       padding-top: 0 !important;
     }
   }
 
-  /* Sit above the sticky site-header (z-index: 5000) so demo chrome isn't covered */
+  /* Lift the whole Experience section above site-header while demo/zoom chrome
+     is active, then stack the fixed overlays inside it. */
+  #experience_fundview:has(#demoOverlay.open),
+  #experience_fundview:has(#demoOverlay.bridging),
+  #experience_fundview:has(#demoOverlay.handoff-cover),
+  #experience_fundview:has(#demoOverlay.closing),
+  #experience_fundview:has(#zoomClip.active),
+  #experience_fundview:has(#zoomOutClip.active),
+  #experience_fundview:has(#zoomBridge.visible) {
+    z-index: 6000;
+    isolation: isolate;
+  }
   #demoOverlay { z-index: 6000 !important; }
   #zoomClip, #zoomOutClip { z-index: 6010 !important; }
   #zoomBridge { z-index: 6020 !important; }
   #sceneChange { z-index: 6015 !important; }
   #demoOverlay #exitDemo,
-  #demoOverlay #bookDemo { position: relative; z-index: 2; }
-
+  #demoOverlay #bookDemoMobile {
+    z-index: 40;
+    /* Keep off the site header until demo is open — pointer-events:auto on
+       children still hit-tests even when #demoOverlay is pointer-events:none. */
+    pointer-events: none;
+    visibility: hidden;
+  }
 
   /* ---------- Global ---------- */
   html { scroll-behavior: smooth; }
-  .experience_FUNDVIEW { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; background:#081426; }
+  .experience_fundview { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; background:#081426; }
 
   /* ---------- Hero camera push-in (cinematic dolly toward the laptop screen) ----------
      The zoom scale + origin are computed in JS from the on-screen position of
@@ -1232,17 +1228,59 @@
     }
   }
 
-  /* ---------- Mobile / stacked layout: scene flush to the top ----------
-     Below the lg breakpoint the laptop scene stacks on top of the copy. Pull
-     it to the very top of the page: kill the hero's top padding, pin the grid
-     rows to the start so a tall phone never vertically centers the scene, and
-     drop the top edge-fade so the sky meets the top edge cleanly. */
+  /* ---------- Mobile / stacked layout ----------
+     Below lg: eyebrow ("EXPERIENCE FUNDVIEW") stacks above the town scene,
+     then the scene, then the copy. Eyebrow is centered with breathing room
+     above (section → title) and below (title → scene).
+     Also drop min-h-screen / flex-1 stretch so copy doesn't leave a huge empty
+     band under the prompt — keep a clean bottom pad instead. */
+  .experience-eyebrow--stack { display: none; }
   @media (max-width: 1023.98px) {
+    #hero,
+    #heroInner {
+      min-height: 0 !important;
+    }
     #heroContent {
+      flex: none !important;
       padding-top: 0 !important;
+      padding-bottom: 2rem !important;
       align-content: start;
+      align-items: start;
+      gap: 0 !important; /* eyebrow padding owns the title↔scene gap */
+    }
+    .experience-eyebrow--stack {
+      display: block;
+      order: 0;
+      width: 100%;
+      text-align: center;
+      padding-top: clamp(2.25rem, 6vw, 3.25rem);
+      padding-bottom: clamp(1.5rem, 4vw, 2.25rem);
+    }
+    .experience-eyebrow--rail { display: none !important; }
+    #sceneWrap { order: 1; }
+    #heroContent > .fade-left {
+      order: 2;
+      justify-content: flex-start !important;
+      align-self: auto !important;
+      padding-top: clamp(1.5rem, 4vw, 2.25rem);
     }
     .scene-blend-top { display: none; }
+  }
+
+  /* Phones: a little more breathing room under the copy */
+  @media (max-width: 639.98px) {
+    #heroContent {
+      padding-bottom: 2.5rem !important;
+    }
+    .experience-eyebrow--stack {
+      padding-top: 2.5rem;
+      padding-bottom: 1.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .experience-eyebrow--stack { display: none !important; }
+    .experience-eyebrow--rail { display: block !important; }
   }
 
   /* Handwritten annotation gently floats */
@@ -1293,18 +1331,19 @@
     }
   }
 
-  /* Depth-of-field recession: the page itself falls back and softens under
-     the demo. Blurring the (paused) hero is far cheaper than backdrop-filter,
-     which would re-sample the backdrop on every composited frame. */
+  /* Depth-of-field recession: applied ONLY after the demo is up (never mid
+     zoom-clip). Blurring #hero during the video stalls Chrome's decoder and
+     freezes the dolly mid-frame. Once the overlay covers the hero, a light
+     scale + dim is enough — skip live blur (veil already separates depth). */
   #hero {
     transform-origin: 50% 40%;
     transition:
-      transform 680ms cubic-bezier(0.23, 1, 0.32, 1),
-      filter 680ms cubic-bezier(0.23, 1, 0.32, 1);
+      transform 400ms cubic-bezier(0.23, 1, 0.32, 1),
+      filter 400ms cubic-bezier(0.23, 1, 0.32, 1);
   }
   #hero.demo-recede {
     transform: scale(0.966);
-    filter: blur(13px) brightness(0.7) saturate(0.85);
+    filter: brightness(0.72) saturate(0.88);
   }
 
   /* Veil: plain gradient dim (no backdrop-filter — see above) with a faint
@@ -1323,7 +1362,7 @@
   #demoOverlay.closing .demo-backdrop {
     opacity: 0;
     /* Laptop leads, veil follows — the layered exit reads as depth */
-    transition: opacity 460ms var(--ease-exit) 60ms;
+    transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   /* Laptop chassis: hidden pose -> final rest under opaque bridge -> reveal.
@@ -1334,8 +1373,8 @@
     opacity: 0;
     transform: scale(0.9) translate3d(0, 36px, 0) rotateX(6.5deg);
     transition:
-      transform 700ms var(--spring),
-      opacity 460ms var(--ease-out);
+      transform 520ms var(--ease-out),
+      opacity 400ms var(--ease-out);
     will-change: transform, opacity;
   }
   /* Final rest pose under the opaque bridge — identical to .open so the
@@ -1357,9 +1396,21 @@
      path (ui-ready) gets this; the CSS-dolly fallback keeps its own spring. */
   @keyframes demoLandIn {
     from { transform: scale(0.982) translate3d(0, 10px, 0); }
+    to   { transform: none; }
   }
   #demoOverlay.open.ui-ready:not(.handoff-cover):not(.closing) #demoLaptop {
-    animation: demoLandIn 0.62s var(--spring) both;
+    animation: demoLandIn 0.52s var(--ease-out) forwards;
+  }
+  /* After open (past bridge/handoff), drop perspective/transform promotion
+     so iOS Safari can scroll overflow inside #screenHost — nested scrollers
+     inside transformed/perspectived fixed layers often go dead. */
+  #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) {
+    perspective: none;
+    transform: none;
+  }
+  #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop {
+    will-change: auto;
+    transform: none;
   }
 
   /* Luminance continuity: the zoom clip ends on a DARK vignetted scene, but
@@ -1383,23 +1434,53 @@
       translate3d(var(--exit-x, 0px), calc(var(--exit-y, 0px) + 10px), 0)
       scale(0.88) rotateX(4deg);
     transition:
-      transform 520ms var(--ease-exit),
-      opacity 440ms var(--ease-exit) 40ms;
+      transform 400ms cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 360ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   /* ---- Compositor-only shadow / light stack ---- */
   /* Resting shadow is painted once on the chassis and never animated */
   .demo-screen {
-    width: min(82vw, 124vh);
-    aspect-ratio: 1.68;
-    /* Never taller than the viewport: dense screens scroll INSIDE the
-       laptop (screenHost is overflow-y auto) instead of stretching the
-       chassis past the fold */
+    --demo-screen-w: min(82vw, 124vh);
+    width: var(--demo-screen-w);
+    /* Explicit height (not aspect-ratio alone): #appShell used height:100%,
+       which does not resolve against aspect-ratio parents — the shell grew
+       with content and #screenHost never became a scroll box (Chrome + iOS). */
+    height: min(calc(var(--demo-screen-w) / 1.68), calc(100dvh - 96px));
     max-height: calc(100vh - 96px);
     max-height: calc(100dvh - 96px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
     box-shadow:
       0 10px 26px -10px rgba(0, 0, 0, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  /* Large desktops: use more of the viewport (cap 90vw) + wider side nav
+     so labels like "CityCentral™ Citizen Portal" are not ellipsized. */
+  @media (min-width: 1300px) {
+    .demo-screen {
+      --demo-screen-w: min(90vw, 132vh);
+      width: var(--demo-screen-w);
+      height: min(calc(var(--demo-screen-w) / 1.68), calc(100dvh - 96px));
+    }
+    .demo-base {
+      width: calc(min(90vw, 132vh) * 1.035) !important;
+    }
+    #sideNav {
+      width: 15.5rem !important; /* ~248px; sm:w-44 (11rem) was too narrow */
+    }
+  }
+  /* App shell fills the bezel via flex — never height:100% against aspect-ratio */
+  #appShell {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
   }
   /* Lift shadow: the intense multi-layer shadow lives on its own layer and
      only its OPACITY animates — transitioning box-shadow itself would
@@ -1421,7 +1502,7 @@
   #demoOverlay.handoff-cover .demo-shadow-lift { opacity: 1; }
   #demoOverlay.bridging .demo-shadow-lift,
   #demoOverlay.handoff-cover .demo-shadow-lift { transition: none; }
-  #demoOverlay.closing .demo-shadow-lift { opacity: 0; transition-duration: 420ms; }
+  #demoOverlay.closing .demo-shadow-lift { opacity: 0; transition-duration: 400ms; }
 
   /* Contact shadow: a pre-blurred ellipse under the base that widens and
      deepens as the machine lifts — grounds the float without filters */
@@ -1502,8 +1583,16 @@
 
   @media (max-width: 640px) {
     .demo-screen {
-      width: 94vw; aspect-ratio: auto;
-      height: 76vh; height: 76dvh;
+      --demo-screen-w: 94vw;
+      width: 94vw;
+      aspect-ratio: auto;
+      /* Leave room for top CTAs + iOS Safari chrome so the chassis isn't flush */
+      height: min(68dvh, calc(100dvh - 148px));
+      max-height: calc(100dvh - 148px);
+      overflow: hidden;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
     }
     /* Base deck tracks the mobile screen width (94vw * 1.035) */
     .demo-base { width: 97.3vw !important; }
@@ -1572,8 +1661,33 @@
     transition: opacity 0.22s ease;
   }
 
-  /* Exit Preview — arrives after the laptop lands; micro-lift on hover */
+  #demoOverlay #exitDemo,
+  #demoOverlay #bookDemoMobile {
+    z-index: 40;
+    /* Keep off the site header until demo is open — pointer-events:auto on
+       children still hit-tests even when #demoOverlay is pointer-events:none. */
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  /* Exit Preview — mobile: top-right (swapped with Book Demo); desktop: top-right */
   #exitDemo {
+    position: absolute;
+    left: auto;
+    right: 12px;
+    top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 192, 205, 0.5);
+    background: rgba(12, 36, 64, 0.92);
+    color: #1fc0cd;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
     opacity: 0;
     box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
     transition:
@@ -1584,18 +1698,32 @@
       border-color 0.18s ease,
       box-shadow 0.25s ease;
   }
+  #exitDemo .book-demo-esc {
+    margin-left: 2px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0.6;
+  }
   @keyframes demoExitBtnIn {
     from { opacity: 0; transform: translate3d(0, -10px, 0) scale(0.94); }
   }
   #demoOverlay.open:not(.closing) #exitDemo {
     opacity: 1;
-    /* `backwards` fill (not `both`): once the entrance ends the animation
-       releases transform, so the hover micro-lift stays instant */
+    visibility: visible;
+    pointer-events: auto;
     animation: demoExitBtnIn 0.55s var(--ease-out) 0.48s backwards;
   }
   #demoOverlay.bridging #exitDemo,
   #demoOverlay.handoff-cover #exitDemo,
-  #demoOverlay.closing #exitDemo { opacity: 0; }
+  #demoOverlay.closing #exitDemo {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
   #exitDemo:hover {
     transform: translate3d(0, -1px, 0);
     background: #1fc0cd;
@@ -1604,10 +1732,138 @@
     box-shadow: 0 10px 30px rgba(31, 192, 205, 0.45);
   }
   #exitDemo:active { transform: translate3d(0, 0, 0) scale(0.97); }
-  #bookDemo { opacity: 0; transition: opacity .2s ease, transform .2s ease, background-color .18s ease, box-shadow .25s ease; }
-  #demoOverlay.open:not(.closing) #bookDemo { opacity: 1; animation: demoExitBtnIn 0.55s var(--ease-out) 0.52s backwards; }
-  #demoOverlay.bridging #bookDemo, #demoOverlay.handoff-cover #bookDemo, #demoOverlay.closing #bookDemo { opacity: 0; }
-  #bookDemo:hover { transform: translate3d(0, -1px, 0); }
+  @media (min-width: 640px) {
+    #exitDemo {
+      left: auto;
+      right: 2rem;
+      top: 1.75rem;
+      font-size: 13px;
+      padding: 8px 16px;
+    }
+  }
+
+  /* Shared Book a Live Demo CTA */
+  .book-demo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: #f5b83d;
+    color: #0a1a30;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(245, 184, 61, 0.35);
+    transition:
+      transform 0.2s ease,
+      background-color 0.18s ease,
+      box-shadow 0.25s ease;
+  }
+  .book-demo__icon {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: rgba(10, 26, 48, 0.1);
+    color: #0a1a30;
+  }
+  .book-demo__copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 1px;
+    line-height: 1.15;
+  }
+  .book-demo__eyebrow {
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    opacity: 0.78;
+  }
+  .book-demo__label {
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .book-demo__arrow {
+    flex: none;
+    margin-left: 2px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0.85;
+  }
+  .book-demo:hover {
+    transform: translate3d(0, -1px, 0);
+    background: #f0a820;
+    box-shadow: 0 10px 24px rgba(245, 184, 61, 0.48);
+  }
+  .book-demo:active { transform: translate3d(0, 0, 0) scale(0.98); }
+
+  /* Desktop: pinned to bottom of side nav, above Close All Tabs */
+  #bookDemo.book-demo--rail {
+    display: none;
+    flex-shrink: 0;
+    align-self: stretch;
+    margin: auto 10px 12px;
+    padding: 9px 10px;
+    gap: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    pointer-events: auto;
+  }
+  #bookDemo.book-demo--rail .book-demo__label {
+    white-space: normal;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  #bookDemo.book-demo--rail .book-demo__eyebrow {
+    font-size: 8px;
+  }
+  #bookDemo.book-demo--rail .book-demo__icon {
+    width: 24px;
+    height: 24px;
+  }
+  @media (min-width: 640px) {
+    #bookDemo.book-demo--rail { display: flex; }
+    #bookDemoMobile.book-demo--chrome { display: none !important; }
+  }
+
+  /* Mobile chrome CTA — top-left (swapped with Exit Preview); only while open */
+  #bookDemoMobile.book-demo--chrome {
+    position: absolute;
+    left: 12px;
+    right: auto;
+    top: 12px;
+    display: inline-flex;
+    max-width: min(200px, calc(100vw - 7.25rem));
+    opacity: 0;
+    gap: 7px;
+    padding: 7px 9px;
+    pointer-events: none;
+    visibility: hidden;
+  }
+  #bookDemoMobile.book-demo--chrome .book-demo__label { font-size: 12px; }
+  #bookDemoMobile.book-demo--chrome .book-demo__eyebrow { font-size: 8px; }
+  #demoOverlay.open:not(.closing) #bookDemoMobile {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    animation: demoExitBtnIn 0.55s var(--ease-out) 0.52s backwards;
+  }
+  #demoOverlay.bridging #bookDemoMobile,
+  #demoOverlay.handoff-cover #bookDemoMobile,
+  #demoOverlay.closing #bookDemoMobile {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  @media (max-width: 639.98px) {
+    #bookDemo.book-demo--rail { display: none !important; }
+  }
 
   /* Reduced motion: overlay states resolve instantly — nothing sweeps,
      breathes, springs, or counts (JS honours the same media query) */
@@ -1630,16 +1886,111 @@
   .side-item.active svg { color:#04222b; }
   .side-item:not(.active):hover { background:rgba(255,255,255,.08); color:#fff; }
 
-  /* Slim scrollbars inside the laptop */
-  /* Inner scrollers (sidebar, tables) — browser-default look */
-  .slim-scroll::-webkit-scrollbar { width:10px; height:10px; }
-  .slim-scroll::-webkit-scrollbar-thumb { background:#c2ccd6; border-radius:5px; }
-  /* Main content: keep ONLY the horizontal scrollbar prominent (teal); vertical stays slim/default */
-  #screenHost::-webkit-scrollbar { width:9px; height:13px; }
-  #screenHost::-webkit-scrollbar-track:horizontal { background:#e6ebf1; }
-  #screenHost::-webkit-scrollbar-thumb:horizontal { background:#1fc0cd; border-radius:6px; border:2px solid #e6ebf1; }
-  #screenHost::-webkit-scrollbar-thumb:horizontal:hover { background:#17a9b6; }
-  #screenHost::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
+  /* Slim scrollbars inside the laptop — always show gutter (not overlay-only) */
+  .slim-scroll {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    scrollbar-width: thin;
+    scrollbar-color: #c2ccd6 #e6ebf1;
+  }
+  .slim-scroll::-webkit-scrollbar { width:10px; height:10px; -webkit-appearance: none; display: block; }
+  .slim-scroll::-webkit-scrollbar-track { background:#e6ebf1; }
+  .slim-scroll::-webkit-scrollbar-thumb { background:#c2ccd6; border-radius:5px; border:2px solid #e6ebf1; }
+  /* Main content: teal horizontal bar, gray vertical — forced visible gutters */
+  #screenHost,
+  #screenScroll {
+    scrollbar-width: thin;
+    scrollbar-color: #1fc0cd #e6ebf1;
+  }
+  #screenHost::-webkit-scrollbar,
+  #screenScroll::-webkit-scrollbar {
+    width: 9px;
+    height: 13px;
+    -webkit-appearance: none;
+    display: block;
+    background: #e6ebf1;
+  }
+  #screenHost::-webkit-scrollbar-track,
+  #screenScroll::-webkit-scrollbar-track { background: #e6ebf1; }
+  #screenHost::-webkit-scrollbar-track:horizontal,
+  #screenScroll::-webkit-scrollbar-track:horizontal { background:#e6ebf1; }
+  #screenHost::-webkit-scrollbar-thumb:horizontal,
+  #screenScroll::-webkit-scrollbar-thumb:horizontal {
+    background:#1fc0cd; border-radius:6px; border:2px solid #e6ebf1;
+  }
+  #screenHost::-webkit-scrollbar-thumb:horizontal:hover,
+  #screenScroll::-webkit-scrollbar-thumb:horizontal:hover { background:#17a9b6; }
+  #screenHost::-webkit-scrollbar-thumb:vertical,
+  #screenScroll::-webkit-scrollbar-thumb:vertical {
+    background:#c2ccd6; border-radius:4px; border:2px solid #e6ebf1;
+  }
+  /* Wide data tables must overflow so horizontal pan has somewhere to go */
+  #screenScroll .slim-scroll {
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+  #screenScroll table {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  /* Demo category scroll (Chrome + iOS Safari):
+     - Mid row stays a normal flex row so #sideNav is never covered
+     - #screenHost is a relative flex:1 clip box (overflow:hidden)
+     - #screenScroll is the absolute-fill overflow:auto scroller
+       (WebKit needs a positioned overflow layer with a bounded box;
+        putting absolute on #screenHost itself covered the sidebar) */
+  #appShell > .flex.min-h-0 {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  #sideNav {
+    position: relative !important;
+    z-index: 2 !important;
+    flex-shrink: 0 !important;
+  }
+  #screenHost {
+    position: relative !important;
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    height: auto !important;
+    overflow: hidden !important;
+    background: #eef2f6;
+  }
+  #screenScroll {
+    position: absolute !important;
+    inset: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: scroll !important; /* scroll (not auto) keeps gutters available */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-x pan-y;
+    background: #eef2f6;
+    z-index: 1;
+  }
+  /* Once demo is settled, hard-kill transforms/animations on the chassis
+     so iOS does not keep a compositing layer that disables nested scroll. */
+  #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop,
+  #demoOverlay.open.ui-ready:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop {
+    animation: none !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+  #sideNavItems {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
 
   /* Material-style filter field (matches the app screenshots) */
   .md-field { border-bottom:1px solid #9aa5b1; padding:2px 2px 4px 2px; position:relative; }
@@ -1698,7 +2049,7 @@
     #hero, #heroInner { min-height: 0 !important; }
   }
   /* Tablet & mobile: zoom the scene stage so the LAPTOP becomes the large,
-     centered subject of the video loop. Stage is a cover box scaled 1.3x and
+     centered subject of the video loop. Stage is a cover box scaled up and
      positioned (clamped) to keep the laptop centered without exposing gaps. */
   @media (max-width: 1023.98px) {
     #scene {
@@ -1719,9 +2070,43 @@
     }
   }
 
-  /* Phones: shorter scene so the stacked copy below stays comfortably in view */
+  /* Tablet only (not phones): zoom OUT 20%, center stage, shorten frame 15% */
+  @media (min-width: 640px) and (max-width: 1023.98px) {
+    #scene {
+      height: min(56.1vh, 102vw) !important; /* min(66vh, 120vw) × 0.85 */
+    }
+    #sceneZoom {
+      --sw: calc(max(100cqw, 100cqh * 16 / 9) * 0.848); /* 1.06 × 0.8 */
+      --sh: calc(max(100cqh, 100cqw * 9 / 16) * 0.848);
+      right: auto !important;
+      /* Horizontally center the smaller stage in the frame */
+      left: max(0px, calc((100cqw - var(--sw)) * 0.5)) !important;
+      top: max(0px, calc((100cqh - var(--sh)) * 0.42)) !important;
+    }
+  }
+
+  /* Phones: town scene frame taller (+15% then +10%). Frame-pinned note/arrow
+     percentages were tuned for the old 53.6vw frame — retune so they sit on
+     the laptop again after the taller cover-crop. */
   @media (max-width: 639.98px) {
-    #scene { height: min(53.6vw, 60vh) !important; }
+    #scene { height: min(67.8vw, 75.9vh) !important; }
+    div.scene-note-m {
+      left: 12% !important; /* 17% then −5% */
+      bottom: 27% !important;
+      width: 56% !important;
+    }
+    svg.scene-note-m {
+      left: 4% !important;
+      top: -11% !important;
+    }
+  }
+
+  /* Side navy edge-fades into the town scene — narrower on mobile so more sky shows */
+  .scene-blend-side--left { width: 4.5rem; }
+  .scene-blend-side--right { width: 2.5rem; }
+  @media (max-width: 639.98px) {
+    .scene-blend-side--left { width: 2.25rem; }
+    .scene-blend-side--right { width: 1.25rem; }
   }
 
   /* KPI cards: stack on phones so large currency values never overflow their card */
@@ -3320,89 +3705,6 @@
   </section>
   -->
 
-  <section class="client_slider" id="client_slider" aria-labelledby="client-slider-heading">
-    <h2 class="client_slider__title" id="client-slider-heading">Trusted by 180+ Cities</h2>
-    <div class="trust__carousel" id="trust-carousel" aria-live="polite">
-      <div class="trust__carousel-wrap">
-        <button class="trust__nav-btn trust__nav-btn--prev" id="trust-prev" type="button" aria-label="Previous logos">
-          <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-        </button>
-        <div class="trust__viewport">
-          <div class="trust__track" id="trust-track">
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Reno.png" alt="Reno, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Anthony.png" alt="Anthony, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_City_of_Iowa_Colony.png" alt="City of Iowa Colony, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Hickory%20Creek.png" alt="Hickory Creek, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Jacksboro.png" alt="Jacksboro, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Keene.png" alt="Keene, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Quinlan.png" alt="Quinlan, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Mason%20(1).png" alt="Mason, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Winnsboro%20(1).png" alt="Winnsboro, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Big%20Lake%20(1).png" alt="Big Lake, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Sweetwater%20(1).png" alt="Sweetwater, TX" loading="lazy">
-              </div>
-            </div>
-            <div class="trust__logo-item">
-              <div class="trust__logo-card">
-                <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Client%20Town-City%20Logos/TX_Muenster%20(1).png" alt="Muenster, TX" loading="lazy">
-              </div>
-            </div>
-          </div>
-        </div>
-        <button class="trust__nav-btn trust__nav-btn--next" id="trust-next" type="button" aria-label="Next logos">
-          <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-        </button>
-      </div>
-      <button class="trust__pause-btn is-playing" id="trust-pause" type="button" aria-label="Pause carousel rotation" aria-pressed="false">
-        <svg class="trust__pause-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/></svg>
-        <svg class="trust__play-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" hidden><path d="M3 1.5l10 5.5-10 5.5V1.5z" fill="currentColor"/></svg>
-        <span class="trust__pause-label">Playing</span>
-      </button>
-    </div>
-  </section>
-
   <!-- Quick links CTA bar (Highlands-style) — gives prime real estate to the three primary CTAs -->
   <section class="quicklinks" id="quicklinks" aria-label="Quick links">
     <div class="quicklinks__inner">
@@ -3510,7 +3812,7 @@
     </div>
   </section>
 
-  <section class="experience_FUNDVIEW antialiased text-white overflow-x-hidden" id="experience_FUNDVIEW" aria-label="Experience FUNDVIEW">
+  <section class="experience_fundview antialiased text-white overflow-x-hidden" id="experience_fundview" aria-label="Experience FUNDVIEW">
 <template id="__bundler_thumbnail">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
     <rect width="100" height="100" fill="#081426"/>
@@ -3540,7 +3842,13 @@
          the content rises to fill the space the navbar used to occupy.
          On tablet/small-desktop the content row becomes 1fr so the copy can
          spread to fill its column height. -->
-    <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-6 lg:pt-0 sm:px-10 sm:pt-8 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(360px,38%)_1fr] lg:grid-rows-none lg:gap-4 lg:pl-14 lg:pr-0">
+    <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-0 sm:px-10 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(360px,38%)_1fr] lg:grid-rows-none lg:gap-4 lg:pl-14 lg:pr-0">
+
+      <!-- Tablet/mobile: eyebrow stacked above the town scene (centered).
+           Desktop: hidden here — the copy column keeps its own eyebrow. -->
+      <div class="experience-eyebrow experience-eyebrow--stack order-0 text-center lg:hidden">
+        <div class="text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal">Experience FUNDVIEW</div>
+      </div>
 
       <!-- Left column: copy + CTAs.
            order-2 below lg so it sits BELOW the laptop scene when stacked.
@@ -3552,8 +3860,8 @@
            stretch/justify-between rules fight the tall image column and blow
            a huge gap between the subhead and CTAs (seen on iPad Pro 1024px). -->
       <div class="hero-fade fade-left order-2 flex w-full max-w-xl flex-col items-center justify-center text-center mx-auto md:items-center md:justify-between md:self-stretch md:text-center lg:order-1 lg:mx-0 lg:items-start lg:justify-center lg:self-auto lg:text-left">
-        <!-- Eyebrow -->
-        <div class="mb-4 text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal">Experience FUNDVIEW</div>
+        <!-- Eyebrow (desktop / lg+ only — stacked version is used below lg) -->
+        <div class="experience-eyebrow experience-eyebrow--rail mb-4 hidden text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal lg:block">Experience FUNDVIEW</div>
 
         <!-- Headline -->
         <h1 class="text-[clamp(30px,3.3vw,50px)] font-black leading-[1.07] tracking-tight text-white">
@@ -3589,8 +3897,8 @@
                  Poster falls back to the still image while the video loads. -->
             <video id="sceneImg" class="absolute inset-0 h-full w-full select-none object-cover"
                    style="max-width:none;"
-                   src="HOME_Section_Explore FUNDVIEW2/assets_experience/FUNDVIEW-Hero-Loop.mp4"
-                   poster="HOME_Section_Explore FUNDVIEW2/assets_experience/hero-scene-wide.png"
+                   src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/FUNDVIEW-Hero-Loop.mp4"
+                   poster="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/hero-scene-wide.png"
                    autoplay muted loop playsinline disablepictureinpicture
                    controlslist="nodownload noremoteplayback"
                    aria-label="FUNDVIEW dashboard on a laptop in front of a city hall and water tower"></video>
@@ -3641,8 +3949,8 @@
 
           <!-- Blend edges into the navy background — kept OUTSIDE the zoom
                wrapper so they stay pinned to the frame while the scene magnifies -->
-          <div class="pointer-events-none absolute inset-y-0 left-0 z-30 w-28" style="background:linear-gradient(to right,#081426,rgba(8,20,38,0));"></div>
-          <div class="pointer-events-none absolute inset-y-0 right-0 z-30 w-16" style="background:linear-gradient(to left,#081426,rgba(8,20,38,0));"></div>
+          <div class="scene-blend-side scene-blend-side--left pointer-events-none absolute inset-y-0 left-0 z-30" style="background:linear-gradient(to right,#081426,rgba(8,20,38,0));"></div>
+          <div class="scene-blend-side scene-blend-side--right pointer-events-none absolute inset-y-0 right-0 z-30" style="background:linear-gradient(to left,#081426,rgba(8,20,38,0));"></div>
           <div class="scene-blend-top pointer-events-none absolute inset-x-0 top-0 z-30 h-16" style="background:linear-gradient(to bottom,#081426,rgba(8,20,38,0));"></div>
           <div class="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-24" style="background:linear-gradient(to top,#081426,rgba(8,20,38,0));"></div>
           <!-- Mobile-only note: EXACT desktop text + EXACT desktop arrow, repositioned (frame-pinned) -->
@@ -3666,12 +3974,12 @@
 <!-- Pre-rendered 1s zoom-into-laptop clip — primary click animation -->
 <video id="zoomClip" muted playsinline preload="auto" disablepictureinpicture
        controlslist="nodownload noremoteplayback"
-       aria-hidden="true" src="HOME_Section_Explore FUNDVIEW2/assets_experience/FUNDVIEW-Zoom-In.mp4"></video>
+       aria-hidden="true" src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/FUNDVIEW-Zoom-In.mp4"></video>
 
 <!-- Pre-rendered zoom-OUT clip — plays on exit to return to the scene -->
 <video id="zoomOutClip" muted playsinline preload="auto" disablepictureinpicture
        controlslist="nodownload noremoteplayback"
-       aria-hidden="true" src="HOME_Section_Explore FUNDVIEW2/assets_experience/FUNDVIEW-Zoom-Out.mp4"></video>
+       aria-hidden="true" src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/FUNDVIEW-Zoom-Out.mp4"></video>
 
 <!-- Frozen final frame of the zoom clip — pixel bridge during handoff/exit -->
 <canvas id="zoomBridge" aria-hidden="true"></canvas>
@@ -3683,19 +3991,24 @@
   <!-- Depth veil + blur: separates the lifted dashboard from the hero -->
   <div class="demo-backdrop absolute inset-0"></div>
 
-  <!-- Exit button -->
-  <button id="exitDemo"
-          class="absolute right-5 top-5 z-20 inline-flex items-center gap-2 rounded-full border border-fvteal/50 bg-navy-800/90 px-4 py-2 text-[13px] font-semibold text-fvteal backdrop-blur transition hover:bg-fvteal hover:text-navy-950 sm:right-8 sm:top-7">
+  <!-- Exit Preview — left on mobile, right on desktop (positions in CSS) -->
+  <button id="exitDemo" type="button">
     <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg>
     Exit Preview
-    <kbd class="ml-0.5 rounded-[4px] border border-current px-[5px] py-[1px] text-[9px] font-bold leading-none opacity-60">ESC</kbd>
+    <kbd class="book-demo-esc">ESC</kbd>
   </button>
 
-  <!-- Book a Demo -->
-  <a id="bookDemo" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
-     class="absolute left-5 top-5 z-20 inline-flex items-center gap-2 rounded-full bg-fvgold px-4 py-2 text-[13px] font-bold text-navy-950 shadow-[0_8px_24px_rgba(245,184,61,.4)] transition hover:bg-fvgold-dark sm:left-8 sm:top-7">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
-    Book a Demo
+  <!-- Mobile-only chrome CTA (top-right). Desktop CTA lives in #sideNav. -->
+  <a id="bookDemoMobile" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
+     class="book-demo book-demo--chrome">
+    <span class="book-demo__icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+    </span>
+    <span class="book-demo__copy">
+      <span class="book-demo__eyebrow">Outgrown your ERP?</span>
+      <span class="book-demo__label">Book a Live Demo</span>
+    </span>
+    <span class="book-demo__arrow" aria-hidden="true">→</span>
   </a>
 
   <!-- Laptop mockup — silver bezel tuned toward the zoom-clip end frame -->
@@ -3719,7 +4032,7 @@
           <div class="flex items-center gap-2">
             <!-- Official FUNDVIEW logo (transparent PNG, ~5:1) — height-locked
                  to the 40px header so the wordmark sits optically centered -->
-            <img src="HOME_Section_Explore FUNDVIEW2/assets_experience/fundview-logo-official.png" alt="FUNDVIEW"
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/fundview-logo-official.png" alt="FUNDVIEW"
                  class="h-[17px] w-auto select-none" draggable="false">
           </div>
           <div style="flex:1; display:flex; justify-content:center; min-width:0; padding:0 8px;">
@@ -3731,13 +4044,25 @@
         </header>
 
         <div class="flex min-h-0 flex-1">
-          <!-- Dark sidebar navigation -->
-          <aside class="slim-scroll flex w-[46px] shrink-0 flex-col gap-[3px] overflow-y-auto bg-[#0c2440] py-2 sm:w-44" id="sideNav">
-            <!-- items injected by JS -->
+          <!-- Dark sidebar navigation — CTA pinned above the Close All Tabs bar -->
+          <aside class="flex w-[46px] shrink-0 flex-col overflow-hidden bg-[#0c2440] sm:w-44" id="sideNav">
+            <div id="sideNavItems" class="slim-scroll flex min-h-0 flex-1 flex-col gap-[3px] overflow-y-auto py-2">
+              <!-- items injected by JS -->
+            </div>
+            <a id="bookDemo" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
+               class="book-demo book-demo--rail">
+              <span class="book-demo__icon" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+              </span>
+              <span class="book-demo__copy">
+                <span class="book-demo__eyebrow">Outgrown your ERP?</span>
+                <span class="book-demo__label">Book a Live Demo</span>
+              </span>
+            </a>
           </aside>
 
-          <!-- Main content host -->
-          <main id="screenHost" class="slim-scroll relative min-w-0 flex-1 overflow-y-auto bg-[#eef2f6]">
+          <!-- Main content host: relative clip; #screenScroll (injected) scrolls -->
+          <main id="screenHost" class="relative min-h-0 min-w-0 flex-1 bg-[#eef2f6]">
             <!-- Category screens -->
 
             <section class="app-screen" data-screen="financial">
@@ -3807,9 +4132,9 @@
                         <div class="rounded-md bg-[#eef2f6] p-2"><div class="text-[16px] font-black text-slate-800">10</div><div class="text-[8.5px] text-slate-600">Anniversaries</div></div>
                       </div>
                     </div>
-                    <div class="fv-card overflow-hidden">
+                    <div class="fv-card">
                       <div class="border-b border-slate-200 px-3 py-2 text-[11px] font-bold text-slate-900">Employee Anniversaries</div>
-                      <div class="max-h-[236px] overflow-y-auto slim-scroll">
+                      <div class="max-h-[236px] overflow-auto slim-scroll">
                         <table class="w-full border-collapse"><thead class="sticky top-0 z-10 bg-[#eef4fb]"><tr><th class="grid-th">Employee</th><th class="grid-th">Anniversary</th><th class="grid-th">Yrs</th></tr></thead><tbody id="tbWfAnniv"></tbody></table>
                       </div>
                     </div>
@@ -3950,9 +4275,9 @@
               <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
                 <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
 
-                  <div class="fv-card overflow-hidden">
+                  <div class="fv-card">
                     <div class="border-b border-slate-200 px-3 py-2 text-[12px] font-bold text-slate-900">Invoices</div>
-                    <div class="max-h-[300px] overflow-y-auto slim-scroll">
+                    <div class="max-h-[300px] overflow-auto slim-scroll">
                       <table class="w-full border-collapse">
                         <thead class="sticky top-0 z-10 bg-[#eef4fb]"><tr><th class="grid-th">Vendor</th><th class="grid-th">Invoice #</th><th class="grid-th">Invoice Date</th><th class="grid-th">Batch #</th><th class="grid-th">Description</th><th class="grid-th">Paid</th><th class="grid-th text-right">Amount</th></tr></thead>
                         <tbody id="tbCourtInv"></tbody>
@@ -4630,7 +4955,7 @@
       if (!btn) return;
 
       const sections = [...document.querySelectorAll(
-        ".hero, .news_and_updates, .client_slider, .stats, .experience_FUNDVIEW, .solution_delivers, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .resources, .ready_to_see_fundview"
+        ".hero, .news_and_updates, .stats, .experience_fundview, .solution_delivers, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .resources, .ready_to_see_fundview"
       )];
       if (!sections.length) return;
 
@@ -6218,7 +6543,7 @@
     {{ standard_footer_includes }}
   </template>
 
-  <!-- experience_FUNDVIEW scripts -->
+  <!-- experience_fundview scripts -->
   <script data-experience-fundview="">
 (function () {
   'use strict';
@@ -6235,6 +6560,7 @@
   ]
 
   const sideNav = document.getElementById('sideNav');
+  const sideNavItems = document.getElementById('sideNavItems') || sideNav;
   MODULES.forEach((m, i) => {
     const b = document.createElement('button');
     b.className = 'side-item flex w-full items-center gap-2.5 px-3 py-[7px] text-left text-[11px] text-slate-300' + (i === 0 ? ' active' : '');
@@ -6242,12 +6568,25 @@
     b.style.setProperty('--i', i);   // cascade index for the open stagger
     b.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">${m.icon}</svg><span class="hidden truncate sm:inline">${m.label}</span>`;
     b.addEventListener('click', () => showScreen(m.id));
-    sideNav.appendChild(b);
+    sideNavItems.appendChild(b);
   });
 
   /* â•â•â•â•â•â•â•â• 2. SCREEN SWITCHING (fade transitions) â•â•â•â•â•â•â•â• */
+  /* Wrap category screens in #screenScroll — THAT element is the scroller.
+     #screenHost is only the relative clip box beside #sideNav. */
+  (function ensureScreenScroll() {
+    const shell = document.getElementById('screenHost');
+    if (!shell || document.getElementById('screenScroll')) return;
+    const wrap = document.createElement('div');
+    wrap.id = 'screenScroll';
+    while (shell.firstChild) wrap.appendChild(shell.firstChild);
+    shell.appendChild(wrap);
+  })();
   const screens = document.querySelectorAll('.app-screen');
   const host = document.getElementById('screenHost');
+  function scrollPane() {
+    return document.getElementById('screenScroll') || host;
+  }
   let current = 'financial';
 
   /* ── Bottom tab workspace: every opened screen docks as a closable tab ── */
@@ -6307,7 +6646,7 @@
     const swap = () => {
       screens.forEach(s => s.classList.remove('active', 'visible'));
       next.classList.add('active');
-      host.scrollTop = 0;
+      scrollPane().scrollTop = 0;
       requestAnimationFrame(() => requestAnimationFrame(() => {
         next.classList.add('visible');
         // Chart construction blocks the main thread; during the hero dolly
@@ -6410,16 +6749,14 @@
   /* Flip to false to restore the CSS transform dolly instead of the clip */
   const USE_ZOOM_VIDEO = true;
 
-  /* Video-zoom timeline (ms) - clip duration is 1000ms
-     CROSS_IN / CLIP = cinematic zoom clip
-     REVEAL_AT = true clip end — paint endStill + assemble under cover, then
-       hard-cut on double-rAF (no long opaque freeze dwell / mid-in pause)
-     CLOSE_MS = the return */
-  const CROSS_IN_MS    = 240;
+  /* Video-zoom timeline (ms)
+     OPEN: FUNDVIEW-Zoom-In.mp4 then matched-frame handoff + SaaS lift
+     EXIT: FUNDVIEW-Zoom-Out.mp4 (forward play), with lift fallback */
+  const CROSS_IN_MS    = 180;
   const CLIP_MS        = 1000;
-  const REVEAL_AT      = 985;   // last frames still play; handoff at true end
-  const OPEN_MS        = 700;   // legacy settle budget (charts wake, clip release)
-  const CLOSE_MS       = 560;   // matches .closing transforms + veil delay
+  const OPEN_MS        = 520;
+  const CLOSE_MS       = 400;
+  const EASE_IO        = 'cubic-bezier(0.23, 1, 0.32, 1)';
   /* CSS-dolly fallback timing */
   const ZOOM_MS = 750, BLOOM_AT = 380, CSS_REVEAL_AT = 450, UNZOOM_MS = 700;
   let demoOpen = false, animating = false;
@@ -6427,6 +6764,12 @@
   let endFrameReady = false;
   let reverseRaf = 0;
   let handoffStarted = false;
+  let openGen = 0;           // cancels stale async open work
+  let zoomInReady = false;
+  let zoomOutReady = false;
+  let zoomInBlobUrl = '';
+  let zoomOutBlobUrl = '';
+  let lockedScrollY = 0;
 
   function clearZoomTimers() {
     zoomTimers.forEach(clearTimeout);
@@ -6437,6 +6780,144 @@
     const id = setTimeout(fn, ms);
     zoomTimers.push(id);
     return id;
+  }
+
+  /* Page scroll lock while the demo is open.
+     Do NOT use position:fixed on body (Exit jump on iPhone).
+     Do NOT blanket-preventDefault every touchmove (kills nested pans).
+     Do NOT rAF-pin window.scrollY while a finger is inside #screenHost —
+     continuous scrollTo() cancels iOS Safari's nested overflow gesture.
+     Strategy: overflow:hidden + conditional touchmove block outside demo
+     scrollers + light rAF pin only when NOT touching a scroller. */
+  let scrollLocked = false;
+  let freezeRaf = 0;
+  let touchingDemoScroller = false;
+  let pageTouchMoveBlocker = null;
+  let lockTouchListenersBound = false;
+  function readScrollY() {
+    return window.scrollY
+      || window.pageYOffset
+      || document.documentElement.scrollTop
+      || document.body.scrollTop
+      || 0;
+  }
+  function pinScrollY(y) {
+    const top = (typeof y === 'number') ? y : lockedScrollY;
+    window.scrollTo(0, top);
+    try { document.documentElement.scrollTop = top; } catch (_) {}
+    try { document.body.scrollTop = top; } catch (_) {}
+  }
+  function isDemoScrollerTarget(target) {
+    if (!target || !target.closest) return false;
+    return !!target.closest(
+      '#screenScroll, #screenHost, #sideNavItems, #tabStrip, .slim-scroll, #demoLaptop .overflow-y-auto'
+    );
+  }
+  function onDemoTouchStart(e) {
+    touchingDemoScroller = isDemoScrollerTarget(e.target);
+  }
+  function onDemoTouchEnd() {
+    touchingDemoScroller = false;
+  }
+  function onPageTouchMoveBlock(e) {
+    if (!scrollLocked) return;
+    if (isDemoScrollerTarget(e.target)) return;
+    e.preventDefault();
+  }
+  function lockPageScroll() {
+    if (!scrollLocked) {
+      lockedScrollY = readScrollY();
+      scrollLocked = true;
+    }
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    // Clear any leftover fixed pin from older HubSpot pastes
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    if (!lockTouchListenersBound) {
+      lockTouchListenersBound = true;
+      document.addEventListener('touchstart', onDemoTouchStart, { passive: true, capture: true });
+      document.addEventListener('touchend', onDemoTouchEnd, { passive: true, capture: true });
+      document.addEventListener('touchcancel', onDemoTouchEnd, { passive: true, capture: true });
+    }
+    if (!pageTouchMoveBlocker) {
+      pageTouchMoveBlocker = onPageTouchMoveBlock;
+      document.addEventListener('touchmove', pageTouchMoveBlocker, { passive: false, capture: true });
+    }
+    cancelAnimationFrame(freezeRaf);
+    const tick = function () {
+      if (!scrollLocked) return;
+      // Never fight an in-progress nested pan on iOS
+      if (!touchingDemoScroller && Math.abs(readScrollY() - lockedScrollY) > 0.5) {
+        pinScrollY(lockedScrollY);
+      }
+      freezeRaf = requestAnimationFrame(tick);
+    };
+    freezeRaf = requestAnimationFrame(tick);
+  }
+  function unlockPageScroll() {
+    const y = lockedScrollY || 0;
+    scrollLocked = false;
+    touchingDemoScroller = false;
+    cancelAnimationFrame(freezeRaf);
+    freezeRaf = 0;
+    if (lockTouchListenersBound) {
+      document.removeEventListener('touchstart', onDemoTouchStart, true);
+      document.removeEventListener('touchend', onDemoTouchEnd, true);
+      document.removeEventListener('touchcancel', onDemoTouchEnd, true);
+      lockTouchListenersBound = false;
+    }
+    if (pageTouchMoveBlocker) {
+      document.removeEventListener('touchmove', pageTouchMoveBlocker, true);
+      pageTouchMoveBlocker = null;
+    }
+    try {
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    } catch (_) {}
+    // Pin BEFORE restoring overflow so iOS never paints at y=0
+    pinScrollY(y);
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    pinScrollY(y);
+    requestAnimationFrame(function () { pinScrollY(y); });
+    setTimeout(function () { pinScrollY(y); }, 0);
+    setTimeout(function () { pinScrollY(y); }, 50);
+    setTimeout(function () { pinScrollY(y); }, 120);
+    setTimeout(function () { pinScrollY(y); }, 280);
+  }
+
+  /* Hard reset used when a transition stalls — recovers without reload */
+  function forceResetDemo() {
+    clearZoomTimers();
+    stopCountUps();
+    handoffStarted = false;
+    openGen++;
+    try { zoomClip.pause(); } catch (_) {}
+    try { zoomOutClip.pause(); } catch (_) {}
+    zoomClip.classList.remove('active');
+    zoomOutClip.classList.remove('active');
+    zoomClip.style.transitionDuration = '';
+    zoomOutClip.style.transitionDuration = '';
+    zoomOutClip.style.zIndex = '';
+    hideBridge(true);
+    resetOverlayClasses();
+    resetZoomClip();
+    hero.classList.remove('demo-recede');
+    sceneEl.style.transition = '';
+    sceneEl.style.transform = '';
+    sceneEl.classList.remove('hover-zoom');
+    unlockPageScroll();
+    sceneVid.play().catch(function () {});
+    demoOpen = false;
+    animating = false;
   }
 
   /* Hover push-in toward the laptop (suppressed while the dolly runs) */
@@ -6488,10 +6969,286 @@
     dash.classList.add('active', 'visible');
     void dash.offsetWidth;              // commit opacity:1 before restoring the fade
     dash.style.transition = '';
-    host.scrollTop = 0;
+    scrollPane().scrollTop = 0;
     current = 'financial';
     renderTabs();
   }
+
+  /* After chassis lands: keep #sideNav in normal flex flow; make
+     #screenScroll the absolute-fill overflow scroller inside #screenHost. */
+  function isPhoneDemo() {
+    try { return window.matchMedia('(max-width: 640px)').matches; }
+    catch (_) { return false; }
+  }
+  function armDemoScroll() {
+    try {
+      demoLaptop.style.animation = 'none';
+      demoLaptop.style.transform = 'none';
+      demoLaptop.style.willChange = 'auto';
+    } catch (_) {}
+
+    const screen = document.querySelector('#demoLaptop .demo-screen');
+    const appShell = document.getElementById('appShell');
+    const hostPane = document.getElementById('screenHost');
+    const scroller = document.getElementById('screenScroll');
+    const side = document.getElementById('sideNav');
+    const mid = appShell && (appShell.querySelector(':scope > .flex.min-h-0') || appShell.querySelector(':scope > .flex'));
+
+    clearDemoScrollSizing();
+
+    if (screen) {
+      const vv = window.visualViewport;
+      const vh = (vv && vv.height) ? vv.height : window.innerHeight;
+      if (isPhoneDemo()) {
+        const h = Math.round(Math.min(vh * 0.68, Math.max(280, vh - 148)));
+        screen.style.height = h + 'px';
+        screen.style.maxHeight = h + 'px';
+      }
+    }
+
+    if (!hostPane || !appShell) return;
+    void appShell.offsetHeight;
+
+    const header = appShell.querySelector(':scope > header');
+    const tabBar = document.getElementById('tabBar');
+    const shellH = appShell.clientHeight || (screen ? Math.max(0, screen.clientHeight - 16) : 0);
+    const budget = Math.max(
+      120,
+      shellH - (header ? header.offsetHeight : 0) - (tabBar ? tabBar.offsetHeight : 0)
+    );
+
+    // Mid row: hard pixel height, normal flex (sidebar + host side-by-side)
+    if (mid) {
+      mid.style.display = 'flex';
+      mid.style.flex = '1 1 0%';
+      mid.style.minHeight = '0';
+      mid.style.height = budget + 'px';
+      mid.style.maxHeight = budget + 'px';
+      mid.style.overflow = 'hidden';
+      mid.style.position = 'relative';
+    }
+    if (side) {
+      side.style.position = 'relative';
+      side.style.zIndex = '2';
+      side.style.flexShrink = '0';
+    }
+
+    // Host = relative clip box beside the nav (NOT absolute over the mid row)
+    hostPane.style.position = 'relative';
+    hostPane.style.flex = '1 1 0%';
+    hostPane.style.minWidth = '0';
+    hostPane.style.minHeight = '0';
+    hostPane.style.height = '100%';
+    hostPane.style.overflow = 'hidden';
+    hostPane.style.left = '';
+    hostPane.style.right = '';
+    hostPane.style.top = '';
+    hostPane.style.bottom = '';
+
+    // Scroller = absolute fill of host — iOS nested-scroll pattern
+    if (scroller) {
+      scroller.style.position = 'absolute';
+      scroller.style.left = '0';
+      scroller.style.right = '0';
+      scroller.style.top = '0';
+      scroller.style.bottom = '0';
+      scroller.style.width = 'auto';
+      scroller.style.height = 'auto';
+      scroller.style.overflow = 'scroll';
+      scroller.style.webkitOverflowScrolling = 'touch';
+      scroller.style.touchAction = 'pan-x pan-y';
+      scroller.style.overscrollBehavior = 'contain';
+      scroller.scrollTop = 0;
+      scroller.scrollLeft = 0;
+    }
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        if (!demoOpen) return;
+        const pane = scrollPane();
+        if (!pane) return;
+        const t = pane.scrollTop;
+        pane.scrollTop = t + 1;
+        pane.scrollTop = t;
+      });
+    });
+
+    bindDemoTouchScroll();
+  }
+
+  /* iPhone Safari often refuses nested overflow pans inside a fixed overlay.
+     Drive #screenScroll from touch deltas on phones (both axes). Nested
+     table/tab scrollers keep native pan — we don't steal those gestures. */
+  let touchScrollBound = false;
+  let tsActive = false;
+  let tsStartX = 0;
+  let tsStartY = 0;
+  let tsStartScrollX = 0;
+  let tsStartScrollY = 0;
+  let tsNested = false;
+  function onDemoScrollTouchStart(e) {
+    if (!demoOpen || !isPhoneDemo()) return;
+    const pane = scrollPane();
+    if (!pane || !e.touches || !e.touches[0]) return;
+    if (!pane.contains(e.target)) return;
+    // Nested horizontal/vertical regions (tables, tab strip, sidebar lists)
+    tsNested = !!(e.target.closest && e.target.closest(
+      '#tabStrip, #sideNavItems, #screenScroll .slim-scroll, #demoLaptop .overflow-y-auto, #demoLaptop .overflow-x-auto'
+    ));
+    if (tsNested) {
+      tsActive = false;
+      return;
+    }
+    tsActive = true;
+    tsStartX = e.touches[0].clientX;
+    tsStartY = e.touches[0].clientY;
+    tsStartScrollX = pane.scrollLeft;
+    tsStartScrollY = pane.scrollTop;
+  }
+  function onDemoScrollTouchMove(e) {
+    if (!tsActive || !demoOpen || !isPhoneDemo()) return;
+    const pane = scrollPane();
+    if (!pane || !e.touches || !e.touches[0]) return;
+    const maxY = pane.scrollHeight - pane.clientHeight;
+    const maxX = pane.scrollWidth - pane.clientWidth;
+    if (maxY <= 1 && maxX <= 1) return;
+    const dx = tsStartX - e.touches[0].clientX;
+    const dy = tsStartY - e.touches[0].clientY;
+    if (maxY > 1) pane.scrollTop = Math.max(0, Math.min(maxY, tsStartScrollY + dy));
+    if (maxX > 1) pane.scrollLeft = Math.max(0, Math.min(maxX, tsStartScrollX + dx));
+    e.preventDefault();
+  }
+  function onDemoScrollTouchEnd() {
+    tsActive = false;
+    tsNested = false;
+  }
+  function bindDemoTouchScroll() {
+    const pane = scrollPane();
+    if (!pane || touchScrollBound) return;
+    touchScrollBound = true;
+    pane.addEventListener('touchstart', onDemoScrollTouchStart, { passive: true });
+    pane.addEventListener('touchmove', onDemoScrollTouchMove, { passive: false });
+    pane.addEventListener('touchend', onDemoScrollTouchEnd, { passive: true });
+    pane.addEventListener('touchcancel', onDemoScrollTouchEnd, { passive: true });
+    // Nested table/list panes: drive both axes when Safari won't
+    pane.addEventListener('touchstart', onNestedScrollTouchStart, { passive: true, capture: true });
+    pane.addEventListener('touchmove', onNestedScrollTouchMove, { passive: false, capture: true });
+    pane.addEventListener('touchend', onNestedScrollTouchEnd, { passive: true, capture: true });
+    pane.addEventListener('touchcancel', onNestedScrollTouchEnd, { passive: true, capture: true });
+  }
+
+  let nestActive = false;
+  let nestEl = null;
+  let nestX = 0, nestY = 0, nestSX = 0, nestSY = 0;
+  function nestedScrollEl(target) {
+    if (!target || !target.closest) return null;
+    return target.closest('#screenScroll .slim-scroll, #tabStrip');
+  }
+  function onNestedScrollTouchStart(e) {
+    if (!demoOpen || !isPhoneDemo() || !e.touches || !e.touches[0]) return;
+    const el = nestedScrollEl(e.target);
+    if (!el) { nestActive = false; nestEl = null; return; }
+    nestActive = true;
+    nestEl = el;
+    nestX = e.touches[0].clientX;
+    nestY = e.touches[0].clientY;
+    nestSX = el.scrollLeft;
+    nestSY = el.scrollTop;
+  }
+  function onNestedScrollTouchMove(e) {
+    if (!nestActive || !nestEl || !demoOpen || !isPhoneDemo()) return;
+    if (!e.touches || !e.touches[0]) return;
+    const maxX = nestEl.scrollWidth - nestEl.clientWidth;
+    const maxY = nestEl.scrollHeight - nestEl.clientHeight;
+    if (maxX <= 1 && maxY <= 1) return;
+    const dx = nestX - e.touches[0].clientX;
+    const dy = nestY - e.touches[0].clientY;
+    if (maxX > 1) nestEl.scrollLeft = Math.max(0, Math.min(maxX, nestSX + dx));
+    if (maxY > 1) nestEl.scrollTop = Math.max(0, Math.min(maxY, nestSY + dy));
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  function onNestedScrollTouchEnd() {
+    nestActive = false;
+    nestEl = null;
+  }
+
+  function clearDemoScrollSizing() {
+    const screen = document.querySelector('#demoLaptop .demo-screen');
+    const appShell = document.getElementById('appShell');
+    const hostPane = document.getElementById('screenHost');
+    const scroller = document.getElementById('screenScroll');
+    const side = document.getElementById('sideNav');
+    const mid = appShell && (appShell.querySelector(':scope > .flex.min-h-0') || appShell.querySelector(':scope > .flex'));
+    if (screen) {
+      screen.style.height = '';
+      screen.style.maxHeight = '';
+    }
+    if (appShell) {
+      appShell.style.minHeight = '';
+      appShell.style.height = '';
+      appShell.style.maxHeight = '';
+      appShell.style.overflow = '';
+      appShell.style.display = '';
+      appShell.style.flexDirection = '';
+    }
+    if (mid) {
+      mid.style.display = '';
+      mid.style.flex = '';
+      mid.style.minHeight = '';
+      mid.style.height = '';
+      mid.style.maxHeight = '';
+      mid.style.overflow = '';
+      mid.style.position = '';
+    }
+    if (side) {
+      side.style.position = '';
+      side.style.zIndex = '';
+      side.style.flexShrink = '';
+    }
+    if (hostPane) {
+      hostPane.style.position = '';
+      hostPane.style.left = '';
+      hostPane.style.right = '';
+      hostPane.style.top = '';
+      hostPane.style.bottom = '';
+      hostPane.style.width = '';
+      hostPane.style.flex = '';
+      hostPane.style.minWidth = '';
+      hostPane.style.minHeight = '';
+      hostPane.style.height = '';
+      hostPane.style.maxHeight = '';
+      hostPane.style.overflow = '';
+      hostPane.style.overflowY = '';
+      hostPane.style.webkitOverflowScrolling = '';
+      hostPane.style.touchAction = '';
+      hostPane.style.overscrollBehavior = '';
+    }
+    if (scroller) {
+      scroller.style.position = '';
+      scroller.style.left = '';
+      scroller.style.right = '';
+      scroller.style.top = '';
+      scroller.style.bottom = '';
+      scroller.style.width = '';
+      scroller.style.height = '';
+      scroller.style.overflow = '';
+      scroller.style.overflowX = '';
+      scroller.style.overflowY = '';
+      scroller.style.webkitOverflowScrolling = '';
+      scroller.style.touchAction = '';
+      scroller.style.overscrollBehavior = '';
+    }
+  }
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function () {
+      if (demoOpen && !animating && isPhoneDemo()) armDemoScroll();
+    });
+  }
+  window.addEventListener('resize', function () {
+    if (demoOpen && !animating) armDemoScroll();
+  });
 
   /* Replay chart intro animations on each open so the dashboard reads as
      freshly computed every time the laptop lifts */
@@ -6592,7 +7349,7 @@
   /* Preload the known end still so the handoff never paints a mid-dolly frame */
   const endStill = new Image();
   endStill.decoding = 'async';
-  endStill.src = 'HOME_Section_Explore FUNDVIEW2/HOME_Section_Explore FUNDVIEW2/assets_experience/zoom-in-end-frame.png';
+  endStill.src = 'https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/zoom-in-end-frame.png';
 
   function paintTrueEndBridge() {
     // Prefer the preloaded end still (pixel-stable). Fall back to the seeked
@@ -6619,7 +7376,7 @@
           };
           zoomClip.addEventListener('seeked', onSeeked);
           zoomClip.currentTime = endT;
-          later(finish, 90); // safety if seeked never fires
+          later(finish, 120); // safety if seeked never fires
           return;
         }
       }
@@ -6627,11 +7384,74 @@
     finish();
   }
 
+  function whenVideoReady(video, cb, timeoutMs) {
+    if (video.readyState >= 3 /* HAVE_FUTURE_DATA */) { cb(true); return; }
+    let done = false;
+    const finish = (ok) => {
+      if (done) return;
+      done = true;
+      video.removeEventListener('canplaythrough', onReady);
+      video.removeEventListener('canplay', onReady);
+      video.removeEventListener('loadeddata', onReady);
+      video.removeEventListener('error', onErr);
+      cb(ok);
+    };
+    const onReady = () => finish(true);
+    const onErr = () => finish(false);
+    video.addEventListener('canplaythrough', onReady, { once: true });
+    video.addEventListener('canplay', onReady, { once: true });
+    video.addEventListener('loadeddata', onReady, { once: true });
+    video.addEventListener('error', onErr, { once: true });
+    later(() => finish(video.readyState >= 2), timeoutMs || 900);
+  }
+
+  /* Warm zoom clips into blob URLs so open/close play from memory */
+  function warmOneClip(video, setReady, getBlob, setBlob) {
+    const src = video.getAttribute('src') || video.currentSrc;
+    if (!src) return;
+    fetch(src, { cache: 'force-cache' }).then(function (r) {
+      if (!r.ok) throw new Error('zoom fetch failed');
+      return r.blob();
+    }).then(function (blob) {
+      const prev = getBlob();
+      if (prev) URL.revokeObjectURL(prev);
+      const url = URL.createObjectURL(blob);
+      setBlob(url);
+      video.src = url;
+      video.preload = 'auto';
+      video.load();
+      whenVideoReady(video, function (ok) { setReady(!!ok); }, 4000);
+    }).catch(function () {
+      try { video.load(); } catch (_) {}
+      whenVideoReady(video, function (ok) { setReady(!!ok); }, 4000);
+    });
+  }
+
+  function warmZoomAssets() {
+    if (!USE_ZOOM_VIDEO || !zoomClip) return;
+    if (endStill.decode) endStill.decode().catch(function () {});
+    warmOneClip(
+      zoomClip,
+      function (ok) { zoomInReady = ok; },
+      function () { return zoomInBlobUrl; },
+      function (u) { zoomInBlobUrl = u; }
+    );
+    if (zoomOutClip) {
+      warmOneClip(
+        zoomOutClip,
+        function (ok) { zoomOutReady = ok; },
+        function () { return zoomOutBlobUrl; },
+        function (u) { zoomOutBlobUrl = u; }
+      );
+    }
+  }
+
   /* Primary: pre-rendered zoom clip + opaque matched-frame bridge */
   function openDemoVideo() {
     if (demoOpen || animating) return;
     animating = true; demoOpen = true;
     handoffStarted = false;
+    const gen = ++openGen;
     clearZoomTimers();
     hideBridge(true);
     resetOverlayClasses();
@@ -6641,157 +7461,276 @@
     sceneEl.style.transition = 'none';
     sceneEl.classList.remove('hover-zoom');
 
-    document.body.style.overflow = 'hidden';
+    lockPageScroll();
     sceneVid.pause();
 
-    // Depth-of-field: recede the hero once the clip fully covers it, so the
-    // backdrop is already soft and distant when the veil later reveals it
-    later(() => hero.classList.add('demo-recede'), CROSS_IN_MS + 60);
+    // Do NOT apply demo-recede here — blur/filter mid-clip freezes playback.
+    // Recede only after the hard cut when the overlay already covers the hero.
 
-    // 1) Cross-dissolve the dolly clip in and play
+    const failToCss = () => {
+      if (gen !== openGen) return;
+      // Video path unavailable — fall through to CSS dolly without getting stuck
+      demoOpen = false; animating = false;
+      unlockPageScroll();
+      openDemoCssDolly();
+    };
+
+    const armHandoffWatchers = () => {
+      // Prefer real clip progress over wall-clock (avoids cutting while stalled)
+      const onTime = () => {
+        if (gen !== openGen || !demoOpen || handoffStarted) return;
+        const d = zoomClip.duration;
+        if (d && isFinite(d) && zoomClip.currentTime >= d - 0.05) {
+          zoomClip.removeEventListener('timeupdate', onTime);
+          beginMatchedHandoff(gen);
+        }
+      };
+      zoomClip.addEventListener('timeupdate', onTime);
+      zoomClip.addEventListener('ended', () => {
+        if (gen !== openGen || !demoOpen || handoffStarted) return;
+        beginMatchedHandoff(gen);
+      }, { once: true });
+      // Absolute safety: never leave the UI frozen mid-dolly
+      later(() => {
+        if (gen !== openGen || !demoOpen || handoffStarted) return;
+        beginMatchedHandoff(gen);
+      }, CLIP_MS + CROSS_IN_MS + 700);
+    };
+
     const startClip = () => {
+      if (gen !== openGen || !demoOpen) return;
       zoomClip.style.transitionDuration = CROSS_IN_MS + 'ms';
       zoomClip.classList.add('active');
-      const play = () => zoomClip.play().catch(() => {});
-      if (zoomClip.readyState >= 2) play();
-      else zoomClip.addEventListener('canplay', play, { once: true });
+      const playPromise = zoomClip.play();
+      armHandoffWatchers();
+      if (playPromise && playPromise.catch) {
+        playPromise.catch(() => {
+          if (gen !== openGen) return;
+          // Autoplay/play failed — land via handoff or CSS fallback
+          later(() => {
+            if (handoffStarted || gen !== openGen) return;
+            if (zoomClip.readyState >= 2) beginMatchedHandoff(gen);
+            else failToCss();
+          }, 200);
+        });
+      }
     };
-    try { zoomClip.currentTime = 0; } catch (_) {}
-    if (zoomClip.readyState >= 2) startClip();
-    else {
-      zoomClip.addEventListener('loadeddata', startClip, { once: true });
-      zoomClip.load();
-      later(startClip, 80);
-    }
 
-    // 2) At clip end: opaque endStill cover -> assemble under cover -> hard cut
-    later(() => {
-      if (!demoOpen) return;
-      beginMatchedHandoff();
-    }, reduced ? 40 : REVEAL_AT);
-
-    // Safety: if timers drift past clip end without a handoff, still land
-    zoomClip.addEventListener('ended', () => {
-      if (!demoOpen || handoffStarted) return;
-      beginMatchedHandoff();
-    }, { once: true });
+    whenVideoReady(zoomClip, (ok) => {
+      if (gen !== openGen || !demoOpen) return;
+      if (!ok && zoomClip.readyState < 2) { failToCss(); return; }
+      try { zoomClip.currentTime = 0; } catch (_) {}
+      // Small rAF so currentTime=0 commits before play (avoids mid-frame starts)
+      requestAnimationFrame(() => {
+        if (gen !== openGen || !demoOpen) return;
+        startClip();
+      });
+    }, zoomInReady ? 200 : 1000);
   }
 
-  function beginMatchedHandoff() {
+  function beginMatchedHandoff(gen) {
+    if (gen != null && gen !== openGen) return;
     if (!demoOpen || handoffStarted) return;
     handoffStarted = true;
 
-    // Paint endStill onto opaque bridge FIRST, then assemble live demo under
-    // cover. Hard-cut on double-rAF (layout + paint) — no BRIDGE/SETTLE dwell
-    // that freezes the photo end-frame and reads as a mid-transition pause.
-    // Still opaque → instant cut (never opacity-crossfade mismatched geometries).
-    seekClipToEnd(() => {
+    const finishOpen = () => {
+      if (gen != null && gen !== openGen) return;
       if (!demoOpen) return;
-      paintTrueEndBridge();
-      showBridge(); // opaque cover BEFORE live demo is visible
+      try {
+        paintTrueEndBridge();
+        showBridge();
 
-      prepareDashboard();
+        prepareDashboard();
 
-      // Assemble live demo UNDER the opaque bridge at FINAL rest pose with
-      // UI fully painted (handoff-cover skips empty-shell / stagger flash).
-      overlay.classList.remove('pointer-events-none', 'closing');
-      overlay.classList.add('bridging', 'handoff-cover');
-      overlay.style.opacity = '1';
-      overlay.setAttribute('aria-hidden', 'false');
-      void demoLaptop.offsetWidth;
+        overlay.classList.remove('pointer-events-none', 'closing');
+        overlay.classList.add('bridging', 'handoff-cover');
+        overlay.style.opacity = '1';
+        overlay.setAttribute('aria-hidden', 'false');
+        void demoLaptop.offsetWidth;
 
-      // Promote to open while bridge stays opaque — no dissolve
-      overlay.classList.remove('bridging');
-      overlay.classList.add('open', 'ui-ready');
+        overlay.classList.remove('bridging');
+        overlay.classList.add('open', 'ui-ready');
 
-      // Paint charts/KPIs under cover so the cut never reveals blank UI
-      const fresh = !built.has('financial');
-      initCharts('financial');
-      if (!reduced) {
-        if (!fresh) replayCharts('financial');
-        // Snap KPIs to final under cover (count-up after reveal would reflow)
-        stopCountUps();
-      }
+        const fresh = !built.has('financial');
+        try {
+          initCharts('financial');
+          if (!reduced) {
+            if (!fresh) replayCharts('financial');
+            stopCountUps();
+          }
+        } catch (err) {
+          console.warn('demo charts init', err);
+        }
 
-      // Double-rAF: wait for layout + first paint under cover, then hard cut
-      requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          if (!demoOpen) return;
-          // Photo end-frame vs flat HTML chassis — soft dissolve ghosts.
-          hideBridge(true);
-          overlay.classList.remove('handoff-cover');
-          if (!reduced) runCountUps();
-          animating = false;
-          zoomClip.style.transitionDuration = '480ms';
-          zoomClip.classList.remove('active');
-          zoomClip.pause();
+          requestAnimationFrame(() => {
+            if ((gen != null && gen !== openGen) || !demoOpen) return;
+            hideBridge(true);
+            overlay.classList.remove('handoff-cover');
+            // Recede hero only now that the overlay fully covers it
+            hero.classList.add('demo-recede');
+            if (!reduced) runCountUps();
+            animating = false;
+            armDemoScroll();
+            zoomClip.style.transitionDuration = '280ms';
+            zoomClip.classList.remove('active');
+            zoomClip.pause();
+          });
         });
-      });
-    });
+      } catch (err) {
+        console.warn('demo handoff failed', err);
+        // Last resort: show overlay even if bridge paint failed
+        overlay.classList.remove('pointer-events-none', 'closing', 'bridging', 'handoff-cover');
+        overlay.classList.add('open', 'ui-ready');
+        overlay.style.opacity = '1';
+        overlay.setAttribute('aria-hidden', 'false');
+        hideBridge(true);
+        zoomClip.classList.remove('active');
+        zoomClip.pause();
+        hero.classList.add('demo-recede');
+        animating = false;
+        armDemoScroll();
+      }
+    };
+
+    seekClipToEnd(finishOpen);
   }
 
+  function setExitVector() {
+    // Aim the reverse-lift fallback toward the on-page laptop screen hotspot
+    try {
+      const from = demoLaptop.getBoundingClientRect();
+      const to = (target || hotspot).getBoundingClientRect();
+      const dx = (to.left + to.width / 2) - (from.left + from.width / 2);
+      const dy = (to.top + to.height / 2) - (from.top + from.height / 2);
+      demoLaptop.style.setProperty('--exit-x', (dx * 0.22).toFixed(1) + 'px');
+      demoLaptop.style.setProperty('--exit-y', (dy * 0.22).toFixed(1) + 'px');
+    } catch (_) {
+      demoLaptop.style.setProperty('--exit-x', '0px');
+      demoLaptop.style.setProperty('--exit-y', '28px');
+    }
+  }
+
+  function finishCloseCleanup() {
+    const y = lockedScrollY;
+    pinScrollY(y);
+    resetOverlayClasses();
+    resetZoomClip();
+    try {
+      zoomOutClip.pause();
+      zoomOutClip.currentTime = 0;
+    } catch (_) {}
+    zoomOutClip.classList.remove('active');
+    zoomOutClip.style.zIndex = '';
+    zoomOutClip.style.transitionDuration = '';
+    hideBridge(true);
+    handoffStarted = false;
+    overlay.style.transition = '';
+    demoLaptop.style.transition = '';
+    demoLaptop.style.animation = '';
+    demoLaptop.style.transform = '';
+    demoLaptop.style.willChange = '';
+    sceneEl.style.transition = '';
+    sceneEl.style.transform = '';
+    clearDemoScrollSizing();
+    if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
+    unlockPageScroll();
+    demoOpen = false;
+    animating = false;
+    pinScrollY(y);
+  }
+
+  /* EXIT: play FUNDVIEW-Zoom-Out.mp4, then hand back to the live town scene */
   function closeDemoVideo() {
-    if (!demoOpen || animating) return;
+    if (!demoOpen) return;
+    // Allow exit even if open handoff is mid-flight (prevents "stuck" reloads)
+    if (animating && !overlay.classList.contains('open')) {
+      forceResetDemo();
+      return;
+    }
+    if (animating) return;
     animating = true;
     clearZoomTimers();
     stopCountUps();
+    openGen++; // cancel any stray open watchers
 
-    hero.classList.remove('demo-recede');   // rack focus back behind the clip
+    hero.classList.remove('demo-recede');
     sceneVid.play().catch(function () {});
     sceneEl.style.transition = '';
     sceneEl.style.transform = '';
+    resetZoomClip();
+    hideBridge(true);
 
-    // Reduced motion: resolve instantly, no clip
     if (reduced) {
       overlay.classList.add('closing');
-      overlay.classList.remove('open', 'bridging');
-      later(function () {
-        resetOverlayClasses(); resetZoomClip(); hideBridge(true);
-        handoffStarted = false; document.body.style.overflow = '';
-        demoOpen = false; animating = false;
-      }, 40);
+      overlay.classList.remove('open', 'bridging', 'ui-ready', 'handoff-cover');
+      later(finishCloseCleanup, 40);
       return;
     }
 
-    /* The return: play the dedicated zoom-OUT clip forward (mirrors the
-       click-to-zoom open), then hand back to the live town scene. */
-    var clip = zoomOutClip;
-    clip.style.zIndex = '60';                 // cover the live demo + overlay
-    clip.style.transitionDuration = '0ms';
-    try { clip.currentTime = 0; } catch (_) {}
-    clip.classList.add('active');
+    const clip = zoomOutClip;
+    if (!clip) {
+      // No out clip — CSS reverse lift fallback
+      setExitVector();
+      demoLaptop.style.transition =
+        'transform ' + CLOSE_MS + 'ms ' + EASE_IO + ', opacity ' + Math.max(280, CLOSE_MS - 40) + 'ms ' + EASE_IO;
+      overlay.classList.add('closing');
+      overlay.classList.remove('bridging', 'handoff-cover');
+      void demoLaptop.offsetWidth;
+      overlay.classList.remove('open', 'ui-ready');
+      later(finishCloseCleanup, CLOSE_MS + 40);
+      return;
+    }
 
-    overlay.classList.add('closing');
-    overlay.classList.remove('open', 'bridging');
-    overlay.style.transition = 'opacity .16s linear';
-    overlay.style.opacity = '0';
-
-    var done = false;
-    var finish = function () {
-      if (done) return; done = true;
-      clip.style.transitionDuration = '300ms';
-      clip.classList.remove('active');        // fade out to reveal the hero scene
-      later(function () {
-        resetOverlayClasses();
-        resetZoomClip();
-        try { clip.pause(); clip.currentTime = 0; } catch (_) {}
-        clip.style.zIndex = '';
-        clip.style.transitionDuration = '';
-        hideBridge(true);
-        handoffStarted = false;
-        overlay.style.transition = '';
-        sceneEl.style.transition = ''; sceneEl.style.transform = '';
-        if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
-        document.body.style.overflow = '';
-        demoOpen = false; animating = false;
-      }, 320);
+    let done = false;
+    const finish = function () {
+      if (done) return;
+      done = true;
+      clip.style.transitionDuration = '280ms';
+      clip.classList.remove('active');
+      later(finishCloseCleanup, 300);
     };
 
-    var play = function () { clip.play().catch(function () {}); };
-    if (clip.readyState >= 2) play();
-    else { clip.addEventListener('canplay', play, { once: true }); try { clip.load(); } catch (_) {} later(play, 80); }
-    clip.addEventListener('ended', finish, { once: true });
-    later(finish, 2000);   // safety if 'ended' never fires
+    const startOut = function () {
+      clip.style.zIndex = '60';
+      clip.style.transitionDuration = '0ms';
+      try { clip.currentTime = 0; } catch (_) {}
+      clip.classList.add('active');
+
+      overlay.classList.add('closing');
+      overlay.classList.remove('open', 'bridging', 'ui-ready', 'handoff-cover');
+      overlay.style.transition = 'opacity .14s linear';
+      overlay.style.opacity = '0';
+
+      const play = function () {
+        const p = clip.play();
+        if (p && p.catch) {
+          p.catch(function () {
+            // Play failed — finish via lift so we never stick
+            finish();
+          });
+        }
+      };
+      requestAnimationFrame(play);
+      clip.addEventListener('ended', finish, { once: true });
+      later(finish, 2200); // safety if ended never fires
+    };
+
+    whenVideoReady(clip, function (ok) {
+      if (!ok && clip.readyState < 2) {
+        // Out clip not ready — CSS reverse lift fallback
+        setExitVector();
+        demoLaptop.style.transition =
+          'transform ' + CLOSE_MS + 'ms ' + EASE_IO + ', opacity ' + Math.max(280, CLOSE_MS - 40) + 'ms ' + EASE_IO;
+        overlay.classList.add('closing');
+        overlay.classList.remove('bridging', 'handoff-cover');
+        void demoLaptop.offsetWidth;
+        overlay.classList.remove('open', 'ui-ready');
+        later(finishCloseCleanup, CLOSE_MS + 40);
+        return;
+      }
+      startOut();
+    }, zoomOutReady ? 200 : 800);
   }
 
   function openDemoCssDolly() {
@@ -6810,7 +7749,7 @@
     const scale = Math.max(window.innerWidth / r.width, window.innerHeight / r.height) * 1.02;
     heroInner.style.transformOrigin = ox + 'px ' + oy + 'px';
 
-    document.body.style.overflow = 'hidden';
+    lockPageScroll();
     heroInner.classList.add('zooming');
     if (!reduced) {
       void heroInner.offsetWidth;
@@ -6835,6 +7774,7 @@
       prepareDashboard();
       later(() => {
         animating = false;
+        armDemoScroll();
         const fresh = !built.has('financial');
         initCharts('financial');
         if (!reduced) {
@@ -6843,6 +7783,7 @@
         }
         heroInner.classList.remove('scene-change');
         sceneChange.classList.remove('flash');
+        hero.classList.add('demo-recede');
       }, ZOOM_MS - CSS_REVEAL_AT + 200);
     }, reduced ? 50 : CSS_REVEAL_AT);
   }
@@ -6852,6 +7793,7 @@
     animating = true;
     clearZoomTimers();
     stopCountUps();
+    hero.classList.remove('demo-recede');
     heroInner.classList.remove('scene-change');
     sceneChange.classList.remove('flash');
     overlay.classList.add('closing');
@@ -6862,13 +7804,17 @@
       heroInner.style.transform = '';
       heroInner.classList.remove('zooming');
       later(() => {
+        const y = lockedScrollY;
+        pinScrollY(y);
         heroInner.style.transitionDuration = '';
-        document.body.style.overflow = '';
+        clearDemoScrollSizing();
+        unlockPageScroll();
         demoOpen = false; animating = false;
         unfreezeScene();
         sceneEl.style.transition = '';
         sceneEl.style.transform = '';
         if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
+        pinScrollY(y);
       }, reduced ? 50 : UNZOOM_MS);
     }, 450);
   }
@@ -6886,12 +7832,15 @@
   exitBtn.addEventListener('click', closeDemo);
   // Clicking the veil closes too (cursor: zoom-out signals it)
   overlay.querySelector('.demo-backdrop').addEventListener('click', closeDemo);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDemo(); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (animating && demoOpen) { forceResetDemo(); return; }
+    closeDemo();
+  });
 
   // Warm the zoom clip + end still so the first click doesn't wait on decode
   if (USE_ZOOM_VIDEO && zoomClip) {
-    try { zoomClip.load(); } catch (_) {}
-    try { zoomOutClip.load(); } catch (_) {}
+    warmZoomAssets();
   }
 
   // initial screen ready; pre-build its charts during idle time so the first
