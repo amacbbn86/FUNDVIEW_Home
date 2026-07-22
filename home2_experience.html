@@ -1398,6 +1398,16 @@
   #demoOverlay.open.ui-ready:not(.handoff-cover):not(.closing) #demoLaptop {
     animation: demoLandIn 0.52s var(--ease-out) both;
   }
+  /* After open (past bridge/handoff), drop perspective/transform promotion
+     so iOS Safari can scroll overflow:auto inside #screenHost — nested
+     scrollers inside transformed/perspectived fixed layers often go dead. */
+  #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) {
+    perspective: none;
+    transform: none;
+  }
+  #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop {
+    will-change: auto;
+  }
 
   /* Luminance continuity: the zoom clip ends on a DARK vignetted scene, but
      the demo veil + blurred hero read brighter. A black shade sits at 42%
@@ -1541,7 +1551,11 @@
     .demo-screen {
       width: 94vw; aspect-ratio: auto;
       height: 76vh; height: 76dvh;
+      max-height: calc(100dvh - 88px);
+      overflow: hidden;
+      min-height: 0;
     }
+    #appShell { min-height: 0; height: 100%; }
     /* Base deck tracks the mobile screen width (94vw * 1.035) */
     .demo-base { width: 97.3vw !important; }
     .demo-contact-shadow { bottom: -26px; height: 38px; }
@@ -1842,6 +1856,23 @@
   #screenHost::-webkit-scrollbar-thumb:horizontal { background:#1fc0cd; border-radius:6px; border:2px solid #e6ebf1; }
   #screenHost::-webkit-scrollbar-thumb:horizontal:hover { background:#17a9b6; }
   #screenHost::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
+
+  /* iOS Safari: #screenHost must shrink inside the flex column or overflow-y
+     never gets a bounded box (min-height:auto sizes to content → no scroll). */
+  #appShell > .flex.min-h-0 { overflow: hidden; }
+  #screenHost {
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+  #sideNavItems {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+  /* Contain page rubber-banding while the demo is open */
+  #demoOverlay.open { overflow: hidden; }
 
   /* Material-style filter field (matches the app screenshots) */
   .md-field { border-bottom:1px solid #9aa5b1; padding:2px 2px 4px 2px; position:relative; }
@@ -3891,8 +3922,8 @@
             </a>
           </aside>
 
-          <!-- Main content host -->
-          <main id="screenHost" class="slim-scroll relative min-w-0 flex-1 overflow-y-auto bg-[#eef2f6]">
+          <!-- Main content host (min-h-0 required for iOS overflow scroll) -->
+          <main id="screenHost" class="slim-scroll relative min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain bg-[#eef2f6]">
             <!-- Category screens -->
 
             <section class="app-screen" data-screen="financial">
@@ -6586,6 +6617,7 @@
   let zoomOutReady = false;
   let zoomInBlobUrl = '';
   let zoomOutBlobUrl = '';
+  let lockedScrollY = 0;
 
   function clearZoomTimers() {
     zoomTimers.forEach(clearTimeout);
@@ -6596,6 +6628,29 @@
     const id = setTimeout(fn, ms);
     zoomTimers.push(id);
     return id;
+  }
+
+  /* iOS Safari ignores overflow:hidden on body alone — pin the page so
+     category pages inside #screenHost receive the touch pans. */
+  function lockPageScroll() {
+    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + lockedScrollY + 'px';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  }
+  function unlockPageScroll() {
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, lockedScrollY || 0);
   }
 
   /* Hard reset used when a transition stalls — recovers without reload */
@@ -6618,7 +6673,7 @@
     sceneEl.style.transition = '';
     sceneEl.style.transform = '';
     sceneEl.classList.remove('hover-zoom');
-    document.body.style.overflow = '';
+    unlockPageScroll();
     sceneVid.play().catch(function () {});
     demoOpen = false;
     animating = false;
@@ -6889,7 +6944,7 @@
     sceneEl.style.transition = 'none';
     sceneEl.classList.remove('hover-zoom');
 
-    document.body.style.overflow = 'hidden';
+    lockPageScroll();
     sceneVid.pause();
 
     // Do NOT apply demo-recede here — blur/filter mid-clip freezes playback.
@@ -6899,7 +6954,7 @@
       if (gen !== openGen) return;
       // Video path unavailable — fall through to CSS dolly without getting stuck
       demoOpen = false; animating = false;
-      document.body.style.overflow = '';
+      unlockPageScroll();
       openDemoCssDolly();
     };
 
@@ -7054,7 +7109,7 @@
     sceneEl.style.transition = '';
     sceneEl.style.transform = '';
     if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
-    document.body.style.overflow = '';
+    unlockPageScroll();
     demoOpen = false;
     animating = false;
   }
@@ -7168,7 +7223,7 @@
     const scale = Math.max(window.innerWidth / r.width, window.innerHeight / r.height) * 1.02;
     heroInner.style.transformOrigin = ox + 'px ' + oy + 'px';
 
-    document.body.style.overflow = 'hidden';
+    lockPageScroll();
     heroInner.classList.add('zooming');
     if (!reduced) {
       void heroInner.offsetWidth;
@@ -7223,7 +7278,7 @@
       heroInner.classList.remove('zooming');
       later(() => {
         heroInner.style.transitionDuration = '';
-        document.body.style.overflow = '';
+        unlockPageScroll();
         demoOpen = false; animating = false;
         unfreezeScene();
         sceneEl.style.transition = '';
