@@ -1439,6 +1439,19 @@
       0 10px 26px -10px rgba(0, 0, 0, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.05);
   }
+  /* Large desktops: use more of the viewport (cap 90vw) + wider side nav
+     so labels like "CityCentral™ Citizen Portal" are not ellipsized. */
+  @media (min-width: 1300px) {
+    .demo-screen {
+      width: min(90vw, 132vh);
+    }
+    .demo-base {
+      width: calc(min(90vw, 132vh) * 1.035) !important;
+    }
+    #sideNav {
+      width: 15.5rem !important; /* ~248px; sm:w-44 (11rem) was too narrow */
+    }
+  }
   /* Lift shadow: the intense multi-layer shadow lives on its own layer and
      only its OPACITY animates — transitioning box-shadow itself would
      repaint every frame */
