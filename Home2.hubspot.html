@@ -1987,7 +1987,7 @@
     #hero, #heroInner { min-height: 0 !important; }
   }
   /* Tablet & mobile: zoom the scene stage so the LAPTOP becomes the large,
-     centered subject of the video loop. Stage is a cover box scaled 1.3x and
+     centered subject of the video loop. Stage is a cover box scaled up and
      positioned (clamped) to keep the laptop centered without exposing gaps. */
   @media (max-width: 1023.98px) {
     #scene {
@@ -2005,6 +2005,18 @@
       height: var(--sh) !important;
       right: clamp(calc(100cqw - var(--sw)), calc(50cqw - 0.32 * var(--sw)), 0px) !important;
       top: clamp(calc(100cqh - var(--sh)), calc(50cqh - 0.60 * var(--sh)), 0px) !important;
+    }
+  }
+
+  /* Tablet only (not phones): zoom the town scene OUT 20% vs the 1.06 crop */
+  @media (min-width: 640px) and (max-width: 1023.98px) {
+    #sceneZoom {
+      --sw: calc(max(100cqw, 100cqh * 16 / 9) * 0.848); /* 1.06 × 0.8 */
+      --sh: calc(max(100cqh, 100cqw * 9 / 16) * 0.848);
+      /* Center the smaller stage; keep a slight low bias toward the laptop */
+      right: auto !important;
+      left: max(0px, calc((100cqw - var(--sw)) * 0.5)) !important;
+      top: max(0px, calc((100cqh - var(--sh)) * 0.42)) !important;
     }
   }
 
