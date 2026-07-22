@@ -7467,13 +7467,17 @@
       heroInner.style.transform = '';
       heroInner.classList.remove('zooming');
       later(() => {
+        const y = lockedScrollY;
+        pinScrollY(y);
         heroInner.style.transitionDuration = '';
+        clearDemoScrollSizing();
         unlockPageScroll();
         demoOpen = false; animating = false;
         unfreezeScene();
         sceneEl.style.transition = '';
         sceneEl.style.transform = '';
         if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
+        pinScrollY(y);
       }, reduced ? 50 : UNZOOM_MS);
     }, 450);
   }
