@@ -1882,31 +1882,42 @@
   #screenHost::-webkit-scrollbar-thumb:horizontal:hover { background:#17a9b6; }
   #screenHost::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
 
-  /* iOS Safari: #screenHost must be a *bounded* flex scroller. flex-basis:0
-     + min-height:0 is the reliable flex overflow pattern; overflow-y:scroll
-     (not auto) keeps a touch scroll layer alive on WebKit. */
+  /* Demo category scroller — absolute-fill inside #screenHost.
+     iOS Safari reliably scrolls position:absolute + overflow-y:scroll
+     panes; flex-only overflow:auto often stays dead. */
   #appShell > .flex.min-h-0 {
     flex: 1 1 0%;
     min-height: 0;
     overflow: hidden;
+    position: relative;
   }
   #screenHost {
+    position: relative !important;
     flex: 1 1 0% !important;
     min-height: 0 !important;
-    max-height: 100%;
-    overflow-x: hidden !important;
-    overflow-y: scroll !important;
+    min-width: 0 !important;
+    overflow: hidden !important; /* not the scroller — #screenScroll is */
+    background: #eef2f6;
+  }
+  #screenScroll {
+    position: absolute;
+    inset: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     touch-action: pan-y;
+    background: #eef2f6;
   }
+  #screenScroll::-webkit-scrollbar { width:9px; height:13px; }
+  #screenScroll::-webkit-scrollbar-track:horizontal { background:#e6ebf1; }
+  #screenScroll::-webkit-scrollbar-thumb:horizontal { background:#1fc0cd; border-radius:6px; border:2px solid #e6ebf1; }
+  #screenScroll::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
   #sideNavItems {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     touch-action: pan-y;
   }
-  /* Do NOT set overflow:hidden on #demoOverlay while open — on iOS that can
-     deaden touch scrolling of overflow children inside the chassis. */
 
   /* Material-style filter field (matches the app screenshots) */
   .md-field { border-bottom:1px solid #9aa5b1; padding:2px 2px 4px 2px; position:relative; }
@@ -3956,8 +3967,8 @@
             </a>
           </aside>
 
-          <!-- Main content host (min-h-0 required for iOS overflow scroll) -->
-          <main id="screenHost" class="slim-scroll relative min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain bg-[#eef2f6]">
+          <!-- Main content host: #screenScroll (injected) is the real iOS scroller -->
+          <main id="screenHost" class="relative min-h-0 min-w-0 flex-1 bg-[#eef2f6]">
             <!-- Category screens -->
 
             <section class="app-screen" data-screen="financial">
@@ -6467,8 +6478,19 @@
   });
 
   /* â•â•â•â•â•â•â•â• 2. SCREEN SWITCHING (fade transitions) â•â•â•â•â•â•â•â• */
+  /* Wrap category screens in #screenScroll — absolute-fill overflow pane that
+     iOS Safari can actually pan (flex overflow on #screenHost alone is unreliable). */
+  (function ensureScreenScroll() {
+    const shell = document.getElementById('screenHost');
+    if (!shell || document.getElementById('screenScroll')) return;
+    const wrap = document.createElement('div');
+    wrap.id = 'screenScroll';
+    wrap.className = 'slim-scroll';
+    while (shell.firstChild) wrap.appendChild(shell.firstChild);
+    shell.appendChild(wrap);
+  })();
   const screens = document.querySelectorAll('.app-screen');
-  const host = document.getElementById('screenHost');
+  const host = document.getElementById('screenScroll') || document.getElementById('screenHost');
   let current = 'financial';
 
   /* ── Bottom tab workspace: every opened screen docks as a closable tab ── */
@@ -6665,24 +6687,29 @@
   }
 
   /* Page scroll lock while the demo is open.
-     Never use position:fixed on body — on iPhone Safari it (1) breaks nested
-     #screenHost scrolling and (2) causes the Exit jump (flash to section above
-     then scrollTo restore). Use overflow:hidden + non-passive touchmove
-     guard that still allows pans inside demo scrollers. */
-  let touchLockHandler = null;
-  function isDemoTouchScroller(el) {
-    while (el && el !== document.documentElement) {
-      if (el.nodeType !== 1) break;
-      if (el.id === 'screenHost' || el.id === 'sideNavItems' || el.id === 'tabStrip') return true;
-      if (el.classList && el.classList.contains('slim-scroll') && el.closest && el.closest('#appShell')) {
-        return true;
-      }
-      el = el.parentElement;
-    }
-    return false;
+     Do NOT use position:fixed (Exit jump) and do NOT preventDefault touchmove
+     on document (kills #screenScroll pans on iOS). Instead: overflow:hidden
+     + rAF freeze that continuously re-pins window.scrollY. */
+  let scrollLocked = false;
+  let freezeRaf = 0;
+  function readScrollY() {
+    return window.scrollY
+      || window.pageYOffset
+      || document.documentElement.scrollTop
+      || document.body.scrollTop
+      || 0;
+  }
+  function pinScrollY(y) {
+    const top = (typeof y === 'number') ? y : lockedScrollY;
+    window.scrollTo(0, top);
+    try { document.documentElement.scrollTop = top; } catch (_) {}
+    try { document.body.scrollTop = top; } catch (_) {}
   }
   function lockPageScroll() {
-    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+    if (!scrollLocked) {
+      lockedScrollY = readScrollY();
+      scrollLocked = true;
+    }
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     // Clear any leftover fixed pin from older HubSpot pastes
@@ -6691,20 +6718,24 @@
     document.body.style.left = '';
     document.body.style.right = '';
     document.body.style.width = '';
-    if (!touchLockHandler) {
-      touchLockHandler = function (e) {
-        if (!demoOpen) return;
-        if (isDemoTouchScroller(e.target)) return;
-        e.preventDefault();
-      };
-      document.addEventListener('touchmove', touchLockHandler, { passive: false });
-    }
+    cancelAnimationFrame(freezeRaf);
+    const tick = function () {
+      if (!scrollLocked) return;
+      if (Math.abs(readScrollY() - lockedScrollY) > 0.5) pinScrollY(lockedScrollY);
+      freezeRaf = requestAnimationFrame(tick);
+    };
+    freezeRaf = requestAnimationFrame(tick);
   }
   function unlockPageScroll() {
     const y = lockedScrollY || 0;
+    scrollLocked = false;
+    cancelAnimationFrame(freezeRaf);
+    freezeRaf = 0;
     try {
       if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     } catch (_) {}
+    // Pin BEFORE restoring overflow so iOS never paints at y=0
+    pinScrollY(y);
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     document.body.style.position = '';
@@ -6712,15 +6743,12 @@
     document.body.style.left = '';
     document.body.style.right = '';
     document.body.style.width = '';
-    if (touchLockHandler) {
-      document.removeEventListener('touchmove', touchLockHandler);
-      touchLockHandler = null;
-    }
-    // Restore only if we drifted (should be rare without position:fixed)
-    if (Math.abs((window.scrollY || 0) - y) > 1) {
-      window.scrollTo(0, y);
-      requestAnimationFrame(function () { window.scrollTo(0, y); });
-    }
+    pinScrollY(y);
+    requestAnimationFrame(function () { pinScrollY(y); });
+    setTimeout(function () { pinScrollY(y); }, 0);
+    setTimeout(function () { pinScrollY(y); }, 50);
+    setTimeout(function () { pinScrollY(y); }, 120);
+    setTimeout(function () { pinScrollY(y); }, 280);
   }
 
   /* Hard reset used when a transition stalls — recovers without reload */
@@ -6803,21 +6831,87 @@
     renderTabs();
   }
 
-  /* After the chassis lands, drop transform animation layers and nudge
-     #screenHost so iOS creates a real touch-scroll layer. */
+  /* After the chassis lands: kill transform layers + size the absolute
+     #screenScroll pane so iOS has a real overflow box to pan. */
   function armDemoScroll() {
     try {
       demoLaptop.style.animation = 'none';
       demoLaptop.style.transform = 'none';
       demoLaptop.style.willChange = 'auto';
     } catch (_) {}
-    if (!host) return;
-    host.style.overflowY = 'scroll';
-    host.style.webkitOverflowScrolling = 'touch';
-    const t = host.scrollTop;
-    host.scrollTop = t + 1;
-    host.scrollTop = t;
+
+    const screen = document.querySelector('#demoLaptop .demo-screen');
+    const appShell = document.getElementById('appShell');
+    const hostPane = document.getElementById('screenHost');
+    const scroller = document.getElementById('screenScroll') || host;
+
+    if (screen) {
+      const vv = window.visualViewport;
+      const vh = (vv && vv.height) ? vv.height : window.innerHeight;
+      const h = Math.round(Math.min(vh * 0.68, Math.max(280, vh - 148)));
+      screen.style.height = h + 'px';
+      screen.style.maxHeight = h + 'px';
+    }
+
+    if (appShell) {
+      appShell.style.minHeight = '0';
+      appShell.style.height = '100%';
+      appShell.style.maxHeight = '100%';
+      appShell.style.overflow = 'hidden';
+      appShell.style.display = 'flex';
+      appShell.style.flexDirection = 'column';
+    }
+
+    const mid = appShell && appShell.querySelector(':scope > .flex');
+    if (mid) {
+      mid.style.flex = '1 1 0%';
+      mid.style.minHeight = '0';
+      mid.style.overflow = 'hidden';
+      mid.style.position = 'relative';
+    }
+
+    if (hostPane) {
+      hostPane.style.position = 'relative';
+      hostPane.style.flex = '1 1 0%';
+      hostPane.style.minHeight = '0';
+      hostPane.style.overflow = 'hidden';
+    }
+
+    if (scroller) {
+      scroller.style.position = 'absolute';
+      scroller.style.left = '0';
+      scroller.style.right = '0';
+      scroller.style.top = '0';
+      scroller.style.bottom = '0';
+      scroller.style.width = '100%';
+      scroller.style.height = '100%';
+      scroller.style.overflowX = 'hidden';
+      scroller.style.overflowY = 'scroll';
+      scroller.style.webkitOverflowScrolling = 'touch';
+      scroller.style.touchAction = 'pan-y';
+      // Nudge to force WebKit scroll layer
+      const t = scroller.scrollTop;
+      scroller.scrollTop = t + 1;
+      scroller.scrollTop = t;
+    }
   }
+
+  function clearDemoScrollSizing() {
+    const screen = document.querySelector('#demoLaptop .demo-screen');
+    if (screen) {
+      screen.style.height = '';
+      screen.style.maxHeight = '';
+    }
+  }
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function () {
+      if (demoOpen && !animating) armDemoScroll();
+    });
+  }
+  window.addEventListener('resize', function () {
+    if (demoOpen && !animating) armDemoScroll();
+  });
 
   /* Replay chart intro animations on each open so the dashboard reads as
      freshly computed every time the laptop lifts */
@@ -7181,6 +7275,8 @@
   }
 
   function finishCloseCleanup() {
+    const y = lockedScrollY;
+    pinScrollY(y);
     resetOverlayClasses();
     resetZoomClip();
     try {
@@ -7199,10 +7295,12 @@
     demoLaptop.style.willChange = '';
     sceneEl.style.transition = '';
     sceneEl.style.transform = '';
+    clearDemoScrollSizing();
     if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
     unlockPageScroll();
     demoOpen = false;
     animating = false;
+    pinScrollY(y);
   }
 
   /* EXIT: play FUNDVIEW-Zoom-Out.mp4, then hand back to the live town scene */
@@ -7369,13 +7467,17 @@
       heroInner.style.transform = '';
       heroInner.classList.remove('zooming');
       later(() => {
+        const y = lockedScrollY;
+        pinScrollY(y);
         heroInner.style.transitionDuration = '';
+        clearDemoScrollSizing();
         unlockPageScroll();
         demoOpen = false; animating = false;
         unfreezeScene();
         sceneEl.style.transition = '';
         sceneEl.style.transform = '';
         if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
+        pinScrollY(y);
       }, reduced ? 50 : UNZOOM_MS);
     }, 450);
   }
