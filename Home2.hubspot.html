@@ -1623,10 +1623,11 @@
     visibility: hidden;
   }
 
-  /* Exit Preview — explicit coords (compiled Tailwind lacks left-4/top-4) */
+  /* Exit Preview — mobile: top-right (swapped with Book Demo); desktop: top-right */
   #exitDemo {
     position: absolute;
-    left: 12px;
+    left: auto;
+    right: 12px;
     top: 12px;
     display: inline-flex;
     align-items: center;
@@ -1784,10 +1785,11 @@
     #bookDemoMobile.book-demo--chrome { display: none !important; }
   }
 
-  /* Mobile chrome CTA — only while demo overlay is open */
+  /* Mobile chrome CTA — top-left (swapped with Exit Preview); only while open */
   #bookDemoMobile.book-demo--chrome {
     position: absolute;
-    right: 12px;
+    left: 12px;
+    right: auto;
     top: 12px;
     display: inline-flex;
     max-width: min(200px, calc(100vw - 7.25rem));
