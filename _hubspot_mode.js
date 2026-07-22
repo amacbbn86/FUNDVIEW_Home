@@ -1,5 +1,5 @@
 /**
- * HubSpot dual-mode helper for home.html / home2.html
+ * HubSpot dual-mode helper for home.html / home2.html / home3.html
  *
  * EDIT (default / local preview):
  *   node _hubspot_mode.js edit
@@ -9,11 +9,12 @@
  * UPLOAD (Design Manager paste):
  *   node _hubspot_mode.js upload          → Home.hubspot.html  (from home.html)
  *   node _hubspot_mode.js upload home2    → Home2.hubspot.html (from home2.html)
+ *   node _hubspot_mode.js upload home3    → Home3.hubspot.html (from home3.html)
  *   → HubSpot page template metadata + HubL includes
  *   → header + footer INLINED (fetch of local files does not work on HubSpot)
- *   → for home2: experience Tailwind CSS is also inlined
+ *   → for home2/home3: experience Tailwind CSS is also inlined
  *
- * Usage: node _hubspot_mode.js [edit|upload|status] [home|home2]
+ * Usage: node _hubspot_mode.js [edit|upload|status] [home|home2|home3]
  */
 const fs = require("fs");
 const path = require("path");
@@ -31,6 +32,15 @@ const TAILWIND = path.join(
 
 function resolveTarget(name) {
   const key = (name || "home").toLowerCase();
+  if (key === "home3" || key === "home3.html") {
+    return {
+      key: "home3",
+      source: path.join(ROOT, "home3.html"),
+      output: path.join(ROOT, "Home3.hubspot.html"),
+      label: "FUNDVIEW Home 3 (Experience)",
+      preview: "http://localhost:5500/home3.html",
+    };
+  }
   if (key === "home2" || key === "home2.html") {
     return {
       key: "home2",
@@ -321,7 +331,7 @@ function upload(targetName) {
   console.log("UPLOAD mode — wrote " + path.basename(target.output));
   console.log(
     "Includes: HubSpot HubL + INLINED header + INLINED footer" +
-      (target.key === "home2" ? " + inlined Experience Tailwind CSS" : "") +
+      (target.key === "home2" || target.key === "home3" ? " + inlined Experience Tailwind CSS" : "") +
       "."
   );
   console.log("Size: " + (bytes / 1024).toFixed(1) + " KB");
@@ -342,7 +352,7 @@ try {
   else if (cmd === "upload") upload(targetArg);
   else if (cmd === "status") status(targetArg);
   else {
-    console.error("Usage: node _hubspot_mode.js [edit|upload|status] [home|home2]");
+    console.error("Usage: node _hubspot_mode.js [edit|upload|status] [home|home2|home3]");
     process.exit(1);
   }
 } catch (err) {
