@@ -1411,13 +1411,18 @@
   /* ---- Compositor-only shadow / light stack ---- */
   /* Resting shadow is painted once on the chassis and never animated */
   .demo-screen {
-    width: min(82vw, 124vh);
-    aspect-ratio: 1.68;
-    /* Never taller than the viewport: dense screens scroll INSIDE the
-       laptop (screenHost is overflow-y auto) instead of stretching the
-       chassis past the fold */
+    --demo-screen-w: min(82vw, 124vh);
+    width: var(--demo-screen-w);
+    /* Explicit height (not aspect-ratio alone): #appShell used height:100%,
+       which does not resolve against aspect-ratio parents — the shell grew
+       with content and #screenHost never became a scroll box (Chrome + iOS). */
+    height: min(calc(var(--demo-screen-w) / 1.68), calc(100dvh - 96px));
     max-height: calc(100vh - 96px);
     max-height: calc(100dvh - 96px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
     box-shadow:
       0 10px 26px -10px rgba(0, 0, 0, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -1426,7 +1431,9 @@
      so labels like "CityCentral™ Citizen Portal" are not ellipsized. */
   @media (min-width: 1300px) {
     .demo-screen {
-      width: min(90vw, 132vh);
+      --demo-screen-w: min(90vw, 132vh);
+      width: var(--demo-screen-w);
+      height: min(calc(var(--demo-screen-w) / 1.68), calc(100dvh - 96px));
     }
     .demo-base {
       width: calc(min(90vw, 132vh) * 1.035) !important;
@@ -1434,6 +1441,16 @@
     #sideNav {
       width: 15.5rem !important; /* ~248px; sm:w-44 (11rem) was too narrow */
     }
+  }
+  /* App shell fills the bezel via flex — never height:100% against aspect-ratio */
+  #appShell {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
   }
   /* Lift shadow: the intense multi-layer shadow lives on its own layer and
      only its OPACITY animates — transitioning box-shadow itself would
@@ -1536,7 +1553,9 @@
 
   @media (max-width: 640px) {
     .demo-screen {
-      width: 94vw; aspect-ratio: auto;
+      --demo-screen-w: 94vw;
+      width: 94vw;
+      aspect-ratio: auto;
       /* Leave room for top CTAs + iOS Safari chrome so the chassis isn't flush */
       height: min(68dvh, calc(100dvh - 148px));
       max-height: calc(100dvh - 148px);
@@ -1544,12 +1563,6 @@
       min-height: 0;
       display: flex;
       flex-direction: column;
-    }
-    #appShell {
-      min-height: 0;
-      height: 100%;
-      max-height: 100%;
-      flex: 1 1 auto;
     }
     /* Base deck tracks the mobile screen width (94vw * 1.035) */
     .demo-base { width: 97.3vw !important; }
@@ -1859,54 +1872,41 @@
   #screenHost::-webkit-scrollbar-thumb:vertical,
   #screenScroll::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
 
-  /* Desktop / tablet: normal flex scroller. #screenScroll is just a wrapper. */
+  /* #screenHost is THE scroller for category pages (Chrome + iOS).
+     Height chain: .demo-screen (explicit height, flex col) → #appShell
+     (flex 1, min-height 0) → mid row → #screenHost (flex 1, overflow-y scroll). */
   #appShell > .flex.min-h-0 {
-    flex: 1 1 0%;
-    min-height: 0;
-    overflow: hidden;
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    position: relative;
   }
   #screenHost {
-    position: relative;
-    flex: 1 1 0%;
-    min-height: 0;
-    min-width: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+    position: relative !important;
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
     background: #eef2f6;
   }
+  /* Content wrapper only — must NOT be its own scroll/absolute layer */
   #screenScroll {
-    position: static;
     display: block;
+    position: static !important;
     width: 100%;
-    height: auto;
-    min-height: 100%;
-    overflow: visible;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
     background: #eef2f6;
   }
-
-  /* Phones only: absolute-fill #screenScroll (iOS needs a bounded overflow pane). */
-  @media (max-width: 640px) {
-    #screenHost {
-      overflow: hidden !important;
-    }
-    #screenScroll {
-      position: absolute;
-      inset: 0;
-      width: auto;
-      height: auto;
-      min-height: 0;
-      overflow-x: hidden;
-      overflow-y: scroll;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      touch-action: pan-y;
-    }
-    #sideNavItems {
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      touch-action: pan-y;
-    }
+  #sideNavItems {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
   }
 
   /* Material-style filter field (matches the app screenshots) */
@@ -7653,8 +7653,8 @@ img, video { max-width: 100%; height: auto; }
   });
 
   /* â•â•â•â•â•â•â•â• 2. SCREEN SWITCHING (fade transitions) â•â•â•â•â•â•â•â• */
-  /* Wrap category screens in #screenScroll — absolute-fill overflow pane that
-     iOS Safari can actually pan (flex overflow on #screenHost alone is unreliable). */
+  /* Wrap category screens in #screenScroll (content wrapper only).
+     #screenHost is the overflow scroller — do not put overflow on the wrap. */
   (function ensureScreenScroll() {
     const shell = document.getElementById('screenHost');
     if (!shell || document.getElementById('screenScroll')) return;
@@ -7665,7 +7665,8 @@ img, video { max-width: 100%; height: auto; }
     shell.appendChild(wrap);
   })();
   const screens = document.querySelectorAll('.app-screen');
-  const host = document.getElementById('screenScroll') || document.getElementById('screenHost');
+  /* IMPORTANT: scroll the host pane, not the inner wrap */
+  const host = document.getElementById('screenHost');
   let current = 'financial';
 
   /* ── Bottom tab workspace: every opened screen docks as a closable tab ── */
@@ -8006,9 +8007,8 @@ img, video { max-width: 100%; height: auto; }
     renderTabs();
   }
 
-  /* After the chassis lands: kill transform layers. Pixel-size + absolute
-     #screenScroll only on phones — applying that on desktop blew a huge
-     empty gap into the laptop modal (content pinned to the bottom). */
+  /* After chassis lands: kill transform layers and verify #screenHost can
+     scroll. If the flex height chain still failed, force a pixel height. */
   function isPhoneDemo() {
     try { return window.matchMedia('(max-width: 640px)').matches; }
     catch (_) { return false; }
@@ -8023,57 +8023,12 @@ img, video { max-width: 100%; height: auto; }
     const screen = document.querySelector('#demoLaptop .demo-screen');
     const appShell = document.getElementById('appShell');
     const hostPane = document.getElementById('screenHost');
-    const scroller = document.getElementById('screenScroll') || host;
     const mid = appShell && (appShell.querySelector(':scope > .flex.min-h-0') || appShell.querySelector(':scope > .flex'));
 
-    // Always clear desktop-breaking leftovers first
-    if (screen) {
-      screen.style.height = '';
-      screen.style.maxHeight = '';
-    }
-    if (appShell) {
-      appShell.style.minHeight = '';
-      appShell.style.height = '';
-      appShell.style.maxHeight = '';
-      appShell.style.overflow = '';
-      appShell.style.display = '';
-      appShell.style.flexDirection = '';
-    }
-    if (mid) {
-      mid.style.flex = '';
-      mid.style.minHeight = '';
-      mid.style.overflow = '';
-      mid.style.position = '';
-    }
-    if (hostPane) {
-      hostPane.style.position = '';
-      hostPane.style.flex = '';
-      hostPane.style.minHeight = '';
-      hostPane.style.overflow = '';
-      hostPane.style.height = '';
-    }
-    if (scroller) {
-      scroller.style.position = '';
-      scroller.style.left = '';
-      scroller.style.right = '';
-      scroller.style.top = '';
-      scroller.style.bottom = '';
-      scroller.style.width = '';
-      scroller.style.height = '';
-      scroller.style.overflowX = '';
-      scroller.style.overflowY = '';
-      scroller.style.webkitOverflowScrolling = '';
-      scroller.style.touchAction = '';
-    }
+    // Clear any leftover inline styles from earlier scroll experiments
+    clearDemoScrollSizing();
 
-    if (!isPhoneDemo()) {
-      // Desktop: #screenHost scrolls normally; keep content at the top
-      if (hostPane) hostPane.scrollTop = 0;
-      if (scroller && scroller !== hostPane) scroller.scrollTop = 0;
-      return;
-    }
-
-    if (screen) {
+    if (isPhoneDemo() && screen) {
       const vv = window.visualViewport;
       const vh = (vv && vv.height) ? vv.height : window.innerHeight;
       const h = Math.round(Math.min(vh * 0.68, Math.max(280, vh - 148)));
@@ -8081,46 +8036,51 @@ img, video { max-width: 100%; height: auto; }
       screen.style.maxHeight = h + 'px';
     }
 
-    if (appShell) {
-      appShell.style.minHeight = '0';
-      appShell.style.height = '100%';
-      appShell.style.maxHeight = '100%';
-      appShell.style.overflow = 'hidden';
-      appShell.style.display = 'flex';
-      appShell.style.flexDirection = 'column';
-    }
+    if (!hostPane) return;
+    hostPane.style.overflowY = 'scroll';
+    hostPane.style.webkitOverflowScrolling = 'touch';
+    hostPane.style.minHeight = '0';
+    hostPane.style.flex = '1 1 0%';
+    hostPane.style.touchAction = 'pan-y';
+    hostPane.scrollTop = 0;
 
-    if (mid) {
-      mid.style.flex = '1 1 0%';
-      mid.style.minHeight = '0';
-      mid.style.overflow = 'hidden';
-      mid.style.position = 'relative';
-    }
-
-    if (hostPane) {
-      hostPane.style.position = 'relative';
-      hostPane.style.flex = '1 1 0%';
-      hostPane.style.minHeight = '0';
-      hostPane.style.overflow = 'hidden';
-    }
-
-    if (scroller) {
-      scroller.style.position = 'absolute';
-      scroller.style.left = '0';
-      scroller.style.right = '0';
-      scroller.style.top = '0';
-      scroller.style.bottom = '0';
-      scroller.style.width = '100%';
-      scroller.style.height = '100%';
-      scroller.style.overflowX = 'hidden';
-      scroller.style.overflowY = 'scroll';
-      scroller.style.webkitOverflowScrolling = 'touch';
-      scroller.style.touchAction = 'pan-y';
-      scroller.scrollTop = 0;
-      const t = scroller.scrollTop;
-      scroller.scrollTop = t + 1;
-      scroller.scrollTop = t;
-    }
+    // Next frame: if still not overflow-scrollable, pin an explicit height
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        if (!hostPane || !demoOpen) return;
+        const midH = mid ? mid.clientHeight : 0;
+        if (midH > 80 && hostPane.clientHeight < 80) {
+          hostPane.style.height = midH + 'px';
+          hostPane.style.maxHeight = midH + 'px';
+        } else if (midH > 80 && hostPane.scrollHeight <= hostPane.clientHeight + 1) {
+          // Host filled the mid row but content isn't overflowing — mid may
+          // have grown with content. Cap host to mid's laid-out size after
+          // forcing mid to a flex budget from appShell.
+          if (appShell) {
+            const header = appShell.querySelector(':scope > header');
+            const tabBar = document.getElementById('tabBar');
+            const budget = appShell.clientHeight
+              - (header ? header.offsetHeight : 0)
+              - (tabBar ? tabBar.offsetHeight : 0);
+            if (budget > 80) {
+              if (mid) {
+                mid.style.flex = '1 1 0%';
+                mid.style.minHeight = '0';
+                mid.style.height = budget + 'px';
+                mid.style.maxHeight = budget + 'px';
+                mid.style.overflow = 'hidden';
+              }
+              hostPane.style.height = budget + 'px';
+              hostPane.style.maxHeight = budget + 'px';
+            }
+          }
+        }
+        // Nudge WebKit scroll layer
+        const t = hostPane.scrollTop;
+        hostPane.scrollTop = t + 1;
+        hostPane.scrollTop = t;
+      });
+    });
   }
 
   function clearDemoScrollSizing() {
@@ -8144,6 +8104,8 @@ img, video { max-width: 100%; height: auto; }
     if (mid) {
       mid.style.flex = '';
       mid.style.minHeight = '';
+      mid.style.height = '';
+      mid.style.maxHeight = '';
       mid.style.overflow = '';
       mid.style.position = '';
     }
@@ -8151,8 +8113,12 @@ img, video { max-width: 100%; height: auto; }
       hostPane.style.position = '';
       hostPane.style.flex = '';
       hostPane.style.minHeight = '';
-      hostPane.style.overflow = '';
       hostPane.style.height = '';
+      hostPane.style.maxHeight = '';
+      hostPane.style.overflow = '';
+      hostPane.style.overflowY = '';
+      hostPane.style.webkitOverflowScrolling = '';
+      hostPane.style.touchAction = '';
     }
     if (scroller) {
       scroller.style.position = '';
