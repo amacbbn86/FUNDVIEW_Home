@@ -6995,7 +6995,7 @@
 
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', function () {
-      if (demoOpen && !animating) armDemoScroll();
+      if (demoOpen && !animating && isPhoneDemo()) armDemoScroll();
     });
   }
   window.addEventListener('resize', function () {
