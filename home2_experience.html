@@ -2017,7 +2017,7 @@
     }
   }
 
-  /* Tablet only (not phones): zoom OUT 20%, shift stage 30% right, shorten frame 15% */
+  /* Tablet only (not phones): zoom OUT 20%, center stage, shorten frame 15% */
   @media (min-width: 640px) and (max-width: 1023.98px) {
     #scene {
       height: min(56.1vh, 102vw) !important; /* min(66vh, 120vw) × 0.85 */
@@ -2026,8 +2026,8 @@
       --sw: calc(max(100cqw, 100cqh * 16 / 9) * 0.848); /* 1.06 × 0.8 */
       --sh: calc(max(100cqh, 100cqw * 9 / 16) * 0.848);
       right: auto !important;
-      /* Sit the stage 30% from the left (clipped on the right by #scene) */
-      left: 30% !important;
+      /* Horizontally center the smaller stage in the frame */
+      left: max(0px, calc((100cqw - var(--sw)) * 0.5)) !important;
       top: max(0px, calc((100cqh - var(--sh)) * 0.42)) !important;
     }
   }
