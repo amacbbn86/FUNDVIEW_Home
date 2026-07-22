@@ -1252,13 +1252,34 @@
      Below the lg breakpoint the laptop scene stacks on top of the copy. Pull
      it to the very top of the page: kill the hero's top padding, pin the grid
      rows to the start so a tall phone never vertically centers the scene, and
-     drop the top edge-fade so the sky meets the top edge cleanly. */
+     drop the top edge-fade so the sky meets the top edge cleanly.
+     Also drop min-h-screen / flex-1 stretch so copy doesn't leave a huge empty
+     band under the prompt — keep a clean bottom pad instead. */
   @media (max-width: 1023.98px) {
+    #hero,
+    #heroInner {
+      min-height: 0 !important;
+    }
     #heroContent {
+      flex: none !important;
       padding-top: 0 !important;
+      padding-bottom: 2rem !important;
       align-content: start;
+      align-items: start;
+    }
+    #heroContent > .fade-left {
+      justify-content: flex-start !important;
+      align-self: auto !important;
     }
     .scene-blend-top { display: none; }
+  }
+
+  /* Phones: a little more breathing room under the copy */
+  @media (max-width: 639.98px) {
+    #heroContent {
+      padding-bottom: 2.5rem !important;
+      gap: 1.5rem !important;
+    }
   }
 
   /* Handwritten annotation gently floats */
