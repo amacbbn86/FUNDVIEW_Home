@@ -1228,13 +1228,13 @@
     }
   }
 
-  /* ---------- Mobile / stacked layout: scene flush to the top ----------
-     Below the lg breakpoint the laptop scene stacks on top of the copy. Pull
-     it to the very top of the page: kill the hero's top padding, pin the grid
-     rows to the start so a tall phone never vertically centers the scene, and
-     drop the top edge-fade so the sky meets the top edge cleanly.
+  /* ---------- Mobile / stacked layout ----------
+     Below lg: eyebrow ("EXPERIENCE FUNDVIEW") stacks above the town scene,
+     then the scene, then the copy. Eyebrow is centered with breathing room
+     above (section → title) and below (title → scene).
      Also drop min-h-screen / flex-1 stretch so copy doesn't leave a huge empty
      band under the prompt — keep a clean bottom pad instead. */
+  .experience-eyebrow--stack { display: none; }
   @media (max-width: 1023.98px) {
     #hero,
     #heroInner {
@@ -1246,10 +1246,23 @@
       padding-bottom: 2rem !important;
       align-content: start;
       align-items: start;
+      gap: 0 !important; /* eyebrow padding owns the title↔scene gap */
     }
+    .experience-eyebrow--stack {
+      display: block;
+      order: 0;
+      width: 100%;
+      text-align: center;
+      padding-top: clamp(2.25rem, 6vw, 3.25rem);
+      padding-bottom: clamp(1.5rem, 4vw, 2.25rem);
+    }
+    .experience-eyebrow--rail { display: none !important; }
+    #sceneWrap { order: 1; }
     #heroContent > .fade-left {
+      order: 2;
       justify-content: flex-start !important;
       align-self: auto !important;
+      padding-top: clamp(1.5rem, 4vw, 2.25rem);
     }
     .scene-blend-top { display: none; }
   }
@@ -1258,8 +1271,16 @@
   @media (max-width: 639.98px) {
     #heroContent {
       padding-bottom: 2.5rem !important;
-      gap: 1.5rem !important;
     }
+    .experience-eyebrow--stack {
+      padding-top: 2.5rem;
+      padding-bottom: 1.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .experience-eyebrow--stack { display: none !important; }
+    .experience-eyebrow--rail { display: block !important; }
   }
 
   /* Handwritten annotation gently floats */
@@ -3755,6 +3776,12 @@
          spread to fill its column height. -->
     <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-0 sm:px-10 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(360px,38%)_1fr] lg:grid-rows-none lg:gap-4 lg:pl-14 lg:pr-0">
 
+      <!-- Tablet/mobile: eyebrow stacked above the town scene (centered).
+           Desktop: hidden here — the copy column keeps its own eyebrow. -->
+      <div class="experience-eyebrow experience-eyebrow--stack order-0 text-center lg:hidden">
+        <div class="text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal">Experience FUNDVIEW</div>
+      </div>
+
       <!-- Left column: copy + CTAs.
            order-2 below lg so it sits BELOW the laptop scene when stacked.
            md→<lg (single-column stacked layout) it becomes a self-stretching
@@ -3765,8 +3792,8 @@
            stretch/justify-between rules fight the tall image column and blow
            a huge gap between the subhead and CTAs (seen on iPad Pro 1024px). -->
       <div class="hero-fade fade-left order-2 flex w-full max-w-xl flex-col items-center justify-center text-center mx-auto md:items-center md:justify-between md:self-stretch md:text-center lg:order-1 lg:mx-0 lg:items-start lg:justify-center lg:self-auto lg:text-left">
-        <!-- Eyebrow -->
-        <div class="mb-4 text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal">Experience FUNDVIEW</div>
+        <!-- Eyebrow (desktop / lg+ only — stacked version is used below lg) -->
+        <div class="experience-eyebrow experience-eyebrow--rail mb-4 hidden text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal lg:block">Experience FUNDVIEW</div>
 
         <!-- Headline -->
         <h1 class="text-[clamp(30px,3.3vw,50px)] font-black leading-[1.07] tracking-tight text-white">
