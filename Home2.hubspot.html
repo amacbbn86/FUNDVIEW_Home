@@ -983,8 +983,8 @@
       }
     }
 
-    /* ——— experience_FUNDVIEW (from HOME_Section_Explore FUNDVIEW2) ——— */
-    .experience_FUNDVIEW {
+    /* ——— experience_fundview (from HOME_Section_Explore FUNDVIEW2) ——— */
+    .experience_fundview {
       position: relative;
       width: 100%;
       /* No isolation:isolate here — it creates a stacking context that traps
@@ -994,22 +994,22 @@
   /* Desktop: drop hero top padding to tighten section height.
      Compiled Tailwind has pt-6 / sm:pt-8 but no lg:pt-0 utility. */
   @media (min-width: 1024px) {
-    #experience_FUNDVIEW #heroContent,
-    #experience_FUNDVIEW #heroInner,
-    #experience_FUNDVIEW #hero {
+    #experience_fundview #heroContent,
+    #experience_fundview #heroInner,
+    #experience_fundview #hero {
       padding-top: 0 !important;
     }
   }
 
   /* Lift the whole Experience section above site-header while demo/zoom chrome
      is active, then stack the fixed overlays inside it. */
-  #experience_FUNDVIEW:has(#demoOverlay.open),
-  #experience_FUNDVIEW:has(#demoOverlay.bridging),
-  #experience_FUNDVIEW:has(#demoOverlay.handoff-cover),
-  #experience_FUNDVIEW:has(#demoOverlay.closing),
-  #experience_FUNDVIEW:has(#zoomClip.active),
-  #experience_FUNDVIEW:has(#zoomOutClip.active),
-  #experience_FUNDVIEW:has(#zoomBridge.visible) {
+  #experience_fundview:has(#demoOverlay.open),
+  #experience_fundview:has(#demoOverlay.bridging),
+  #experience_fundview:has(#demoOverlay.handoff-cover),
+  #experience_fundview:has(#demoOverlay.closing),
+  #experience_fundview:has(#zoomClip.active),
+  #experience_fundview:has(#zoomOutClip.active),
+  #experience_fundview:has(#zoomBridge.visible) {
     z-index: 6000;
     isolation: isolate;
   }
@@ -1028,7 +1028,7 @@
 
   /* ---------- Global ---------- */
   html { scroll-behavior: smooth; }
-  .experience_FUNDVIEW { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; background:#081426; }
+  .experience_fundview { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; background:#081426; }
 
   /* ---------- Hero camera push-in (cinematic dolly toward the laptop screen) ----------
      The zoom scale + origin are computed in JS from the on-screen position of
@@ -4861,7 +4861,7 @@ img, video { max-width: 100%; height: auto; }
     </div>
   </section>
 
-  <section class="experience_FUNDVIEW antialiased text-white overflow-x-hidden" id="experience_FUNDVIEW" aria-label="Experience FUNDVIEW">
+  <section class="experience_fundview antialiased text-white overflow-x-hidden" id="experience_fundview" aria-label="Experience FUNDVIEW">
 <template id="__bundler_thumbnail">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
     <rect width="100" height="100" fill="#081426"/>
@@ -6002,7 +6002,7 @@ img, video { max-width: 100%; height: auto; }
       if (!btn) return;
 
       const sections = [...document.querySelectorAll(
-        ".hero, .news_and_updates, .stats, .experience_FUNDVIEW, .solution_delivers, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .resources, .ready_to_see_fundview"
+        ".hero, .news_and_updates, .stats, .experience_fundview, .solution_delivers, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .resources, .ready_to_see_fundview"
       )];
       if (!sections.length) return;
 
@@ -7651,7 +7651,7 @@ img, video { max-width: 100%; height: auto; }
     </div>
   </footer>
 
-<!-- experience_FUNDVIEW scripts -->
+<!-- experience_fundview scripts -->
   <script data-experience-fundview="">
 (function () {
   'use strict';
