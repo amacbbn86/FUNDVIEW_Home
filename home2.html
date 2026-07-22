@@ -1394,19 +1394,21 @@
      path (ui-ready) gets this; the CSS-dolly fallback keeps its own spring. */
   @keyframes demoLandIn {
     from { transform: scale(0.982) translate3d(0, 10px, 0); }
+    to   { transform: none; }
   }
   #demoOverlay.open.ui-ready:not(.handoff-cover):not(.closing) #demoLaptop {
-    animation: demoLandIn 0.52s var(--ease-out) both;
+    animation: demoLandIn 0.52s var(--ease-out) forwards;
   }
   /* After open (past bridge/handoff), drop perspective/transform promotion
-     so iOS Safari can scroll overflow:auto inside #screenHost — nested
-     scrollers inside transformed/perspectived fixed layers often go dead. */
+     so iOS Safari can scroll overflow inside #screenHost — nested scrollers
+     inside transformed/perspectived fixed layers often go dead. */
   #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) {
     perspective: none;
     transform: none;
   }
   #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop {
     will-change: auto;
+    transform: none;
   }
 
   /* Luminance continuity: the zoom clip ends on a DARK vignetted scene, but
@@ -1563,12 +1565,20 @@
   @media (max-width: 640px) {
     .demo-screen {
       width: 94vw; aspect-ratio: auto;
-      height: 76vh; height: 76dvh;
-      max-height: calc(100dvh - 88px);
+      /* Leave room for top CTAs + iOS Safari chrome so the chassis isn't flush */
+      height: min(68dvh, calc(100dvh - 148px));
+      max-height: calc(100dvh - 148px);
       overflow: hidden;
       min-height: 0;
+      display: flex;
+      flex-direction: column;
     }
-    #appShell { min-height: 0; height: 100%; }
+    #appShell {
+      min-height: 0;
+      height: 100%;
+      max-height: 100%;
+      flex: 1 1 auto;
+    }
     /* Base deck tracks the mobile screen width (94vw * 1.035) */
     .demo-base { width: 97.3vw !important; }
     .demo-contact-shadow { bottom: -26px; height: 38px; }
@@ -1872,11 +1882,20 @@
   #screenHost::-webkit-scrollbar-thumb:horizontal:hover { background:#17a9b6; }
   #screenHost::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
 
-  /* iOS Safari: #screenHost must shrink inside the flex column or overflow-y
-     never gets a bounded box (min-height:auto sizes to content → no scroll). */
-  #appShell > .flex.min-h-0 { overflow: hidden; }
-  #screenHost {
+  /* iOS Safari: #screenHost must be a *bounded* flex scroller. flex-basis:0
+     + min-height:0 is the reliable flex overflow pattern; overflow-y:scroll
+     (not auto) keeps a touch scroll layer alive on WebKit. */
+  #appShell > .flex.min-h-0 {
+    flex: 1 1 0%;
     min-height: 0;
+    overflow: hidden;
+  }
+  #screenHost {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    max-height: 100%;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     touch-action: pan-y;
@@ -1886,8 +1905,8 @@
     overscroll-behavior: contain;
     touch-action: pan-y;
   }
-  /* Contain page rubber-banding while the demo is open */
-  #demoOverlay.open { overflow: hidden; }
+  /* Do NOT set overflow:hidden on #demoOverlay while open — on iOS that can
+     deaden touch scrolling of overflow children inside the chassis. */
 
   /* Material-style filter field (matches the app screenshots) */
   .md-field { border-bottom:1px solid #9aa5b1; padding:2px 2px 4px 2px; position:relative; }
@@ -1913,6 +1932,9 @@
     max-width:150px; border-right:1px solid #d3dae2; background:#dfe5ec;
     color:#475569; font-size:10px; white-space:nowrap; cursor:pointer;
     transition:background-color .12s ease, color .12s ease;
+  }
+  @media (max-width: 640px) {
+    .tab-item { max-width: 118px; font-size: 9px; padding: 0 7px; }
   }
   .tab-item:hover { background:#eef2f6; color:#0f172a; }
   .tab-item.active { background:#fff; color:#0c2440; font-weight:600; box-shadow:inset 0 2px 0 #1fc0cd; }
@@ -6646,32 +6668,46 @@
   }
 
   /* Page scroll lock while the demo is open.
-     Desktop: overflow:hidden is enough (position:fixed caused a visible
-     jump-up-then-scroll-down on Exit when top was cleared before scrollTo).
-     iOS/coarse touch: still pin with position:fixed so #screenHost can pan. */
-  function needsFixedScrollLock() {
-    try {
-      return window.matchMedia('(hover: none) and (pointer: coarse)').matches
-        || /iP(hone|ad|od)/.test(navigator.userAgent || '');
-    } catch (_) {
-      return false;
+     Never use position:fixed on body — on iPhone Safari it (1) breaks nested
+     #screenHost scrolling and (2) causes the Exit jump (flash to section above
+     then scrollTo restore). Use overflow:hidden + non-passive touchmove
+     guard that still allows pans inside demo scrollers. */
+  let touchLockHandler = null;
+  function isDemoTouchScroller(el) {
+    while (el && el !== document.documentElement) {
+      if (el.nodeType !== 1) break;
+      if (el.id === 'screenHost' || el.id === 'sideNavItems' || el.id === 'tabStrip') return true;
+      if (el.classList && el.classList.contains('slim-scroll') && el.closest && el.closest('#appShell')) {
+        return true;
+      }
+      el = el.parentElement;
     }
+    return false;
   }
   function lockPageScroll() {
     lockedScrollY = window.scrollY || window.pageYOffset || 0;
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
-    if (needsFixedScrollLock()) {
-      document.body.style.position = 'fixed';
-      document.body.style.top = '-' + lockedScrollY + 'px';
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.width = '100%';
+    // Clear any leftover fixed pin from older HubSpot pastes
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    if (!touchLockHandler) {
+      touchLockHandler = function (e) {
+        if (!demoOpen) return;
+        if (isDemoTouchScroller(e.target)) return;
+        e.preventDefault();
+      };
+      document.addEventListener('touchmove', touchLockHandler, { passive: false });
     }
   }
   function unlockPageScroll() {
     const y = lockedScrollY || 0;
-    const usedFixed = document.body.style.position === 'fixed';
+    try {
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    } catch (_) {}
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     document.body.style.position = '';
@@ -6679,8 +6715,12 @@
     document.body.style.left = '';
     document.body.style.right = '';
     document.body.style.width = '';
-    if (usedFixed) {
-      // Restore in the same turn + next frame so iOS never paints at y=0
+    if (touchLockHandler) {
+      document.removeEventListener('touchmove', touchLockHandler);
+      touchLockHandler = null;
+    }
+    // Restore only if we drifted (should be rare without position:fixed)
+    if (Math.abs((window.scrollY || 0) - y) > 1) {
       window.scrollTo(0, y);
       requestAnimationFrame(function () { window.scrollTo(0, y); });
     }
@@ -6764,6 +6804,22 @@
     host.scrollTop = 0;
     current = 'financial';
     renderTabs();
+  }
+
+  /* After the chassis lands, drop transform animation layers and nudge
+     #screenHost so iOS creates a real touch-scroll layer. */
+  function armDemoScroll() {
+    try {
+      demoLaptop.style.animation = 'none';
+      demoLaptop.style.transform = 'none';
+      demoLaptop.style.willChange = 'auto';
+    } catch (_) {}
+    if (!host) return;
+    host.style.overflowY = 'scroll';
+    host.style.webkitOverflowScrolling = 'touch';
+    const t = host.scrollTop;
+    host.scrollTop = t + 1;
+    host.scrollTop = t;
   }
 
   /* Replay chart intro animations on each open so the dashboard reads as
@@ -7087,6 +7143,7 @@
             hero.classList.add('demo-recede');
             if (!reduced) runCountUps();
             animating = false;
+            armDemoScroll();
             zoomClip.style.transitionDuration = '280ms';
             zoomClip.classList.remove('active');
             zoomClip.pause();
@@ -7104,6 +7161,7 @@
         zoomClip.pause();
         hero.classList.add('demo-recede');
         animating = false;
+        armDemoScroll();
       }
     };
 
@@ -7139,6 +7197,9 @@
     handoffStarted = false;
     overlay.style.transition = '';
     demoLaptop.style.transition = '';
+    demoLaptop.style.animation = '';
+    demoLaptop.style.transform = '';
+    demoLaptop.style.willChange = '';
     sceneEl.style.transition = '';
     sceneEl.style.transform = '';
     if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
@@ -7281,6 +7342,7 @@
       prepareDashboard();
       later(() => {
         animating = false;
+        armDemoScroll();
         const fresh = !built.has('financial');
         initCharts('financial');
         if (!reduced) {
