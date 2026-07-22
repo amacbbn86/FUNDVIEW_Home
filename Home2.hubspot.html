@@ -7821,19 +7821,33 @@ img, video { max-width: 100%; height: auto; }
     return id;
   }
 
-  /* iOS Safari ignores overflow:hidden on body alone — pin the page so
-     category pages inside #screenHost receive the touch pans. */
+  /* Page scroll lock while the demo is open.
+     Desktop: overflow:hidden is enough (position:fixed caused a visible
+     jump-up-then-scroll-down on Exit when top was cleared before scrollTo).
+     iOS/coarse touch: still pin with position:fixed so #screenHost can pan. */
+  function needsFixedScrollLock() {
+    try {
+      return window.matchMedia('(hover: none) and (pointer: coarse)').matches
+        || /iP(hone|ad|od)/.test(navigator.userAgent || '');
+    } catch (_) {
+      return false;
+    }
+  }
   function lockPageScroll() {
     lockedScrollY = window.scrollY || window.pageYOffset || 0;
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = '-' + lockedScrollY + 'px';
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.width = '100%';
+    if (needsFixedScrollLock()) {
+      document.body.style.position = 'fixed';
+      document.body.style.top = '-' + lockedScrollY + 'px';
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+    }
   }
   function unlockPageScroll() {
+    const y = lockedScrollY || 0;
+    const usedFixed = document.body.style.position === 'fixed';
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     document.body.style.position = '';
@@ -7841,7 +7855,11 @@ img, video { max-width: 100%; height: auto; }
     document.body.style.left = '';
     document.body.style.right = '';
     document.body.style.width = '';
-    window.scrollTo(0, lockedScrollY || 0);
+    if (usedFixed) {
+      // Restore in the same turn + next frame so iOS never paints at y=0
+      window.scrollTo(0, y);
+      requestAnimationFrame(function () { window.scrollTo(0, y); });
+    }
   }
 
   /* Hard reset used when a transition stalls — recovers without reload */
