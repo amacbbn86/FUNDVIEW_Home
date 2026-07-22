@@ -1921,9 +1921,20 @@
     }
   }
 
-  /* Phones: town scene frame taller (+15% then +10%); stage zoom + note/arrow unchanged */
+  /* Phones: town scene frame taller (+15% then +10%). Frame-pinned note/arrow
+     percentages were tuned for the old 53.6vw frame — retune so they sit on
+     the laptop again after the taller cover-crop. */
   @media (max-width: 639.98px) {
     #scene { height: min(67.8vw, 75.9vh) !important; }
+    div.scene-note-m {
+      left: 2% !important;
+      bottom: 27% !important;
+      width: 56% !important;
+    }
+    svg.scene-note-m {
+      left: 4% !important;
+      top: -11% !important;
+    }
   }
 
   /* Side navy edge-fades into the town scene — narrower on mobile so more sky shows */
