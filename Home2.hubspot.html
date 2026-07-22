@@ -1877,21 +1877,55 @@
   .side-item.active svg { color:#04222b; }
   .side-item:not(.active):hover { background:rgba(255,255,255,.08); color:#fff; }
 
-  /* Slim scrollbars inside the laptop */
-  /* Inner scrollers (sidebar, tables) — browser-default look */
-  .slim-scroll::-webkit-scrollbar { width:10px; height:10px; }
-  .slim-scroll::-webkit-scrollbar-thumb { background:#c2ccd6; border-radius:5px; }
-  /* Main content: keep ONLY the horizontal scrollbar prominent (teal); vertical stays slim/default */
+  /* Slim scrollbars inside the laptop — always show gutter (not overlay-only) */
+  .slim-scroll {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    scrollbar-width: thin;
+    scrollbar-color: #c2ccd6 #e6ebf1;
+  }
+  .slim-scroll::-webkit-scrollbar { width:10px; height:10px; -webkit-appearance: none; display: block; }
+  .slim-scroll::-webkit-scrollbar-track { background:#e6ebf1; }
+  .slim-scroll::-webkit-scrollbar-thumb { background:#c2ccd6; border-radius:5px; border:2px solid #e6ebf1; }
+  /* Main content: teal horizontal bar, gray vertical — forced visible gutters */
+  #screenHost,
+  #screenScroll {
+    scrollbar-width: thin;
+    scrollbar-color: #1fc0cd #e6ebf1;
+  }
   #screenHost::-webkit-scrollbar,
-  #screenScroll::-webkit-scrollbar { width:9px; height:13px; }
+  #screenScroll::-webkit-scrollbar {
+    width: 9px;
+    height: 13px;
+    -webkit-appearance: none;
+    display: block;
+    background: #e6ebf1;
+  }
+  #screenHost::-webkit-scrollbar-track,
+  #screenScroll::-webkit-scrollbar-track { background: #e6ebf1; }
   #screenHost::-webkit-scrollbar-track:horizontal,
   #screenScroll::-webkit-scrollbar-track:horizontal { background:#e6ebf1; }
   #screenHost::-webkit-scrollbar-thumb:horizontal,
-  #screenScroll::-webkit-scrollbar-thumb:horizontal { background:#1fc0cd; border-radius:6px; border:2px solid #e6ebf1; }
+  #screenScroll::-webkit-scrollbar-thumb:horizontal {
+    background:#1fc0cd; border-radius:6px; border:2px solid #e6ebf1;
+  }
   #screenHost::-webkit-scrollbar-thumb:horizontal:hover,
   #screenScroll::-webkit-scrollbar-thumb:horizontal:hover { background:#17a9b6; }
   #screenHost::-webkit-scrollbar-thumb:vertical,
-  #screenScroll::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
+  #screenScroll::-webkit-scrollbar-thumb:vertical {
+    background:#c2ccd6; border-radius:4px; border:2px solid #e6ebf1;
+  }
+  /* Wide data tables must overflow so horizontal pan has somewhere to go */
+  #screenScroll .slim-scroll {
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+  #screenScroll table {
+    width: max-content;
+    min-width: 100%;
+  }
 
   /* Demo category scroll (Chrome + iOS Safari):
      - Mid row stays a normal flex row so #sideNav is never covered
@@ -1928,10 +1962,10 @@
     bottom: 0 !important;
     width: auto !important;
     height: auto !important;
-    overflow: auto !important;
+    overflow: scroll !important; /* scroll (not auto) keeps gutters available */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    touch-action: pan-y;
+    touch-action: pan-x pan-y;
     background: #eef2f6;
     z-index: 1;
   }
@@ -5215,9 +5249,9 @@ img, video { max-width: 100%; height: auto; }
                         <div class="rounded-md bg-[#eef2f6] p-2"><div class="text-[16px] font-black text-slate-800">10</div><div class="text-[8.5px] text-slate-600">Anniversaries</div></div>
                       </div>
                     </div>
-                    <div class="fv-card overflow-hidden">
+                    <div class="fv-card">
                       <div class="border-b border-slate-200 px-3 py-2 text-[11px] font-bold text-slate-900">Employee Anniversaries</div>
-                      <div class="max-h-[236px] overflow-y-auto slim-scroll">
+                      <div class="max-h-[236px] overflow-auto slim-scroll">
                         <table class="w-full border-collapse"><thead class="sticky top-0 z-10 bg-[#eef4fb]"><tr><th class="grid-th">Employee</th><th class="grid-th">Anniversary</th><th class="grid-th">Yrs</th></tr></thead><tbody id="tbWfAnniv"></tbody></table>
                       </div>
                     </div>
@@ -5358,9 +5392,9 @@ img, video { max-width: 100%; height: auto; }
               <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
                 <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
 
-                  <div class="fv-card overflow-hidden">
+                  <div class="fv-card">
                     <div class="border-b border-slate-200 px-3 py-2 text-[12px] font-bold text-slate-900">Invoices</div>
-                    <div class="max-h-[300px] overflow-y-auto slim-scroll">
+                    <div class="max-h-[300px] overflow-auto slim-scroll">
                       <table class="w-full border-collapse">
                         <thead class="sticky top-0 z-10 bg-[#eef4fb]"><tr><th class="grid-th">Vendor</th><th class="grid-th">Invoice #</th><th class="grid-th">Invoice Date</th><th class="grid-th">Batch #</th><th class="grid-th">Description</th><th class="grid-th">Paid</th><th class="grid-th text-right">Amount</th></tr></thead>
                         <tbody id="tbCourtInv"></tbody>
@@ -8196,11 +8230,12 @@ img, video { max-width: 100%; height: auto; }
       scroller.style.bottom = '0';
       scroller.style.width = 'auto';
       scroller.style.height = 'auto';
-      scroller.style.overflow = 'auto';
+      scroller.style.overflow = 'scroll';
       scroller.style.webkitOverflowScrolling = 'touch';
-      scroller.style.touchAction = 'pan-y';
+      scroller.style.touchAction = 'pan-x pan-y';
       scroller.style.overscrollBehavior = 'contain';
       scroller.scrollTop = 0;
+      scroller.scrollLeft = 0;
     }
 
     requestAnimationFrame(function () {
@@ -8218,33 +8253,50 @@ img, video { max-width: 100%; height: auto; }
   }
 
   /* iPhone Safari often refuses nested overflow pans inside a fixed overlay.
-     Drive #screenScroll.scrollTop from touch deltas on phones so category
-     pages always move, even when native nested scroll is dead. */
+     Drive #screenScroll from touch deltas on phones (both axes). Nested
+     table/tab scrollers keep native pan — we don't steal those gestures. */
   let touchScrollBound = false;
   let tsActive = false;
+  let tsStartX = 0;
   let tsStartY = 0;
-  let tsStartScroll = 0;
+  let tsStartScrollX = 0;
+  let tsStartScrollY = 0;
+  let tsNested = false;
   function onDemoScrollTouchStart(e) {
     if (!demoOpen || !isPhoneDemo()) return;
     const pane = scrollPane();
     if (!pane || !e.touches || !e.touches[0]) return;
     if (!pane.contains(e.target)) return;
+    // Nested horizontal/vertical regions (tables, tab strip, sidebar lists)
+    tsNested = !!(e.target.closest && e.target.closest(
+      '#tabStrip, #sideNavItems, #screenScroll .slim-scroll, #demoLaptop .overflow-y-auto, #demoLaptop .overflow-x-auto'
+    ));
+    if (tsNested) {
+      tsActive = false;
+      return;
+    }
     tsActive = true;
+    tsStartX = e.touches[0].clientX;
     tsStartY = e.touches[0].clientY;
-    tsStartScroll = pane.scrollTop;
+    tsStartScrollX = pane.scrollLeft;
+    tsStartScrollY = pane.scrollTop;
   }
   function onDemoScrollTouchMove(e) {
     if (!tsActive || !demoOpen || !isPhoneDemo()) return;
     const pane = scrollPane();
     if (!pane || !e.touches || !e.touches[0]) return;
-    const max = pane.scrollHeight - pane.clientHeight;
-    if (max <= 1) return;
+    const maxY = pane.scrollHeight - pane.clientHeight;
+    const maxX = pane.scrollWidth - pane.clientWidth;
+    if (maxY <= 1 && maxX <= 1) return;
+    const dx = tsStartX - e.touches[0].clientX;
     const dy = tsStartY - e.touches[0].clientY;
-    pane.scrollTop = Math.max(0, Math.min(max, tsStartScroll + dy));
+    if (maxY > 1) pane.scrollTop = Math.max(0, Math.min(maxY, tsStartScrollY + dy));
+    if (maxX > 1) pane.scrollLeft = Math.max(0, Math.min(maxX, tsStartScrollX + dx));
     e.preventDefault();
   }
   function onDemoScrollTouchEnd() {
     tsActive = false;
+    tsNested = false;
   }
   function bindDemoTouchScroll() {
     const pane = scrollPane();
@@ -8254,6 +8306,47 @@ img, video { max-width: 100%; height: auto; }
     pane.addEventListener('touchmove', onDemoScrollTouchMove, { passive: false });
     pane.addEventListener('touchend', onDemoScrollTouchEnd, { passive: true });
     pane.addEventListener('touchcancel', onDemoScrollTouchEnd, { passive: true });
+    // Nested table/list panes: drive both axes when Safari won't
+    pane.addEventListener('touchstart', onNestedScrollTouchStart, { passive: true, capture: true });
+    pane.addEventListener('touchmove', onNestedScrollTouchMove, { passive: false, capture: true });
+    pane.addEventListener('touchend', onNestedScrollTouchEnd, { passive: true, capture: true });
+    pane.addEventListener('touchcancel', onNestedScrollTouchEnd, { passive: true, capture: true });
+  }
+
+  let nestActive = false;
+  let nestEl = null;
+  let nestX = 0, nestY = 0, nestSX = 0, nestSY = 0;
+  function nestedScrollEl(target) {
+    if (!target || !target.closest) return null;
+    return target.closest('#screenScroll .slim-scroll, #tabStrip');
+  }
+  function onNestedScrollTouchStart(e) {
+    if (!demoOpen || !isPhoneDemo() || !e.touches || !e.touches[0]) return;
+    const el = nestedScrollEl(e.target);
+    if (!el) { nestActive = false; nestEl = null; return; }
+    nestActive = true;
+    nestEl = el;
+    nestX = e.touches[0].clientX;
+    nestY = e.touches[0].clientY;
+    nestSX = el.scrollLeft;
+    nestSY = el.scrollTop;
+  }
+  function onNestedScrollTouchMove(e) {
+    if (!nestActive || !nestEl || !demoOpen || !isPhoneDemo()) return;
+    if (!e.touches || !e.touches[0]) return;
+    const maxX = nestEl.scrollWidth - nestEl.clientWidth;
+    const maxY = nestEl.scrollHeight - nestEl.clientHeight;
+    if (maxX <= 1 && maxY <= 1) return;
+    const dx = nestX - e.touches[0].clientX;
+    const dy = nestY - e.touches[0].clientY;
+    if (maxX > 1) nestEl.scrollLeft = Math.max(0, Math.min(maxX, nestSX + dx));
+    if (maxY > 1) nestEl.scrollTop = Math.max(0, Math.min(maxY, nestSY + dy));
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  function onNestedScrollTouchEnd() {
+    nestActive = false;
+    nestEl = null;
   }
 
   function clearDemoScrollSizing() {
