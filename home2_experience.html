@@ -1906,6 +1906,14 @@
     #scene { height: min(61.64vw, 69vh) !important; }
   }
 
+  /* Side navy edge-fades into the town scene — narrower on mobile so more sky shows */
+  .scene-blend-side--left { width: 4.5rem; }
+  .scene-blend-side--right { width: 2.5rem; }
+  @media (max-width: 639.98px) {
+    .scene-blend-side--left { width: 2.25rem; }
+    .scene-blend-side--right { width: 1.25rem; }
+  }
+
   /* KPI cards: stack on phones so large currency values never overflow their card */
   .kpi-grid { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
   @media (min-width: 640px) { .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -3823,8 +3831,8 @@
 
           <!-- Blend edges into the navy background — kept OUTSIDE the zoom
                wrapper so they stay pinned to the frame while the scene magnifies -->
-          <div class="pointer-events-none absolute inset-y-0 left-0 z-30 w-28" style="background:linear-gradient(to right,#081426,rgba(8,20,38,0));"></div>
-          <div class="pointer-events-none absolute inset-y-0 right-0 z-30 w-16" style="background:linear-gradient(to left,#081426,rgba(8,20,38,0));"></div>
+          <div class="scene-blend-side scene-blend-side--left pointer-events-none absolute inset-y-0 left-0 z-30" style="background:linear-gradient(to right,#081426,rgba(8,20,38,0));"></div>
+          <div class="scene-blend-side scene-blend-side--right pointer-events-none absolute inset-y-0 right-0 z-30" style="background:linear-gradient(to left,#081426,rgba(8,20,38,0));"></div>
           <div class="scene-blend-top pointer-events-none absolute inset-x-0 top-0 z-30 h-16" style="background:linear-gradient(to bottom,#081426,rgba(8,20,38,0));"></div>
           <div class="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-24" style="background:linear-gradient(to top,#081426,rgba(8,20,38,0));"></div>
           <!-- Mobile-only note: EXACT desktop text + EXACT desktop arrow, repositioned (frame-pinned) -->
