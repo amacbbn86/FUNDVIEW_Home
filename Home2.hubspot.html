@@ -1893,18 +1893,33 @@
   #screenHost::-webkit-scrollbar-thumb:vertical,
   #screenScroll::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
 
-  /* #screenHost is THE scroller for category pages (Chrome + iOS Safari).
-     Mid row is a POSITIONED clip box; #screenHost fills it with absolute
-     inset — flex-only height chains are unreliable for nested touch scroll
-     on iOS inside a position:fixed overlay. Use overflow:auto (not the
-     overflow-x/overflow-y split) so WebKit creates one scrollable layer. */
+  /* Demo category scroll (Chrome + iOS Safari):
+     - Mid row stays a normal flex row so #sideNav is never covered
+     - #screenHost is a relative flex:1 clip box (overflow:hidden)
+     - #screenScroll is the absolute-fill overflow:auto scroller
+       (WebKit needs a positioned overflow layer with a bounded box;
+        putting absolute on #screenHost itself covered the sidebar) */
   #appShell > .flex.min-h-0 {
     flex: 1 1 0% !important;
     min-height: 0 !important;
     overflow: hidden !important;
     position: relative !important;
   }
+  #sideNav {
+    position: relative !important;
+    z-index: 2 !important;
+    flex-shrink: 0 !important;
+  }
   #screenHost {
+    position: relative !important;
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    height: auto !important;
+    overflow: hidden !important;
+    background: #eef2f6;
+  }
+  #screenScroll {
     position: absolute !important;
     inset: 0 !important;
     left: 0 !important;
@@ -1913,25 +1928,12 @@
     bottom: 0 !important;
     width: auto !important;
     height: auto !important;
-    max-height: none !important;
-    flex: none !important;
-    min-height: 0 !important;
-    min-width: 0 !important;
     overflow: auto !important;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     touch-action: pan-y;
     background: #eef2f6;
-  }
-  /* Content wrapper only — must NOT be its own scroll/absolute layer */
-  #screenScroll {
-    display: block;
-    position: static !important;
-    width: 100%;
-    height: auto !important;
-    min-height: 0 !important;
-    overflow: visible !important;
-    background: #eef2f6;
+    z-index: 1;
   }
   /* Once demo is settled, hard-kill transforms/animations on the chassis
      so iOS does not keep a compositing layer that disables nested scroll. */
@@ -5142,7 +5144,7 @@ img, video { max-width: 100%; height: auto; }
             </a>
           </aside>
 
-          <!-- Main content host: absolute-fill overflow scroller (iOS-safe) -->
+          <!-- Main content host: relative clip; #screenScroll (injected) scrolls -->
           <main id="screenHost" class="relative min-h-0 min-w-0 flex-1 bg-[#eef2f6]">
             <!-- Category screens -->
 
@@ -7712,20 +7714,21 @@ img, video { max-width: 100%; height: auto; }
   });
 
   /* â•â•â•â•â•â•â•â• 2. SCREEN SWITCHING (fade transitions) â•â•â•â•â•â•â•â• */
-  /* Wrap category screens in #screenScroll (content wrapper only).
-     #screenHost is the overflow scroller — do not put overflow on the wrap. */
+  /* Wrap category screens in #screenScroll — THAT element is the scroller.
+     #screenHost is only the relative clip box beside #sideNav. */
   (function ensureScreenScroll() {
     const shell = document.getElementById('screenHost');
     if (!shell || document.getElementById('screenScroll')) return;
     const wrap = document.createElement('div');
     wrap.id = 'screenScroll';
-    wrap.className = 'slim-scroll';
     while (shell.firstChild) wrap.appendChild(shell.firstChild);
     shell.appendChild(wrap);
   })();
   const screens = document.querySelectorAll('.app-screen');
-  /* IMPORTANT: scroll the host pane, not the inner wrap */
   const host = document.getElementById('screenHost');
+  function scrollPane() {
+    return document.getElementById('screenScroll') || host;
+  }
   let current = 'financial';
 
   /* ── Bottom tab workspace: every opened screen docks as a closable tab ── */
@@ -7785,7 +7788,7 @@ img, video { max-width: 100%; height: auto; }
     const swap = () => {
       screens.forEach(s => s.classList.remove('active', 'visible'));
       next.classList.add('active');
-      host.scrollTop = 0;
+      scrollPane().scrollTop = 0;
       requestAnimationFrame(() => requestAnimationFrame(() => {
         next.classList.add('visible');
         // Chart construction blocks the main thread; during the hero dolly
@@ -7949,7 +7952,7 @@ img, video { max-width: 100%; height: auto; }
   function isDemoScrollerTarget(target) {
     if (!target || !target.closest) return false;
     return !!target.closest(
-      '#screenHost, #sideNavItems, #tabStrip, .slim-scroll, #demoLaptop .overflow-y-auto'
+      '#screenScroll, #screenHost, #sideNavItems, #tabStrip, .slim-scroll, #demoLaptop .overflow-y-auto'
     );
   }
   function onDemoTouchStart(e) {
@@ -8108,13 +8111,13 @@ img, video { max-width: 100%; height: auto; }
     dash.classList.add('active', 'visible');
     void dash.offsetWidth;              // commit opacity:1 before restoring the fade
     dash.style.transition = '';
-    host.scrollTop = 0;
+    scrollPane().scrollTop = 0;
     current = 'financial';
     renderTabs();
   }
 
-  /* After chassis lands: kill transform layers and pin #screenHost as an
-     absolute fill scroller (required for reliable iOS Safari touch pans). */
+  /* After chassis lands: keep #sideNav in normal flex flow; make
+     #screenScroll the absolute-fill overflow scroller inside #screenHost. */
   function isPhoneDemo() {
     try { return window.matchMedia('(max-width: 640px)').matches; }
     catch (_) { return false; }
@@ -8129,13 +8132,12 @@ img, video { max-width: 100%; height: auto; }
     const screen = document.querySelector('#demoLaptop .demo-screen');
     const appShell = document.getElementById('appShell');
     const hostPane = document.getElementById('screenHost');
+    const scroller = document.getElementById('screenScroll');
+    const side = document.getElementById('sideNav');
     const mid = appShell && (appShell.querySelector(':scope > .flex.min-h-0') || appShell.querySelector(':scope > .flex'));
 
-    // Clear any leftover inline styles from earlier scroll experiments
     clearDemoScrollSizing();
 
-    // Always give the chassis an explicit pixel height on phones (dvh/flex
-    // alone is flaky under HubSpot + iOS Safari chrome).
     if (screen) {
       const vv = window.visualViewport;
       const vh = (vv && vv.height) ? vv.height : window.innerHeight;
@@ -8147,11 +8149,8 @@ img, video { max-width: 100%; height: auto; }
     }
 
     if (!hostPane || !appShell) return;
-
-    // Force layout before measuring — screen height may have just changed
     void appShell.offsetHeight;
 
-    // Mid row = positioned clip box with a hard pixel budget
     const header = appShell.querySelector(':scope > header');
     const tabBar = document.getElementById('tabBar');
     const shellH = appShell.clientHeight || (screen ? Math.max(0, screen.clientHeight - 16) : 0);
@@ -8159,41 +8158,102 @@ img, video { max-width: 100%; height: auto; }
       120,
       shellH - (header ? header.offsetHeight : 0) - (tabBar ? tabBar.offsetHeight : 0)
     );
+
+    // Mid row: hard pixel height, normal flex (sidebar + host side-by-side)
     if (mid) {
-      mid.style.position = 'relative';
+      mid.style.display = 'flex';
       mid.style.flex = '1 1 0%';
       mid.style.minHeight = '0';
       mid.style.height = budget + 'px';
       mid.style.maxHeight = budget + 'px';
       mid.style.overflow = 'hidden';
+      mid.style.position = 'relative';
+    }
+    if (side) {
+      side.style.position = 'relative';
+      side.style.zIndex = '2';
+      side.style.flexShrink = '0';
     }
 
-    // Absolute-fill scroller — the iOS-reliable nested overflow pattern
-    hostPane.style.position = 'absolute';
-    hostPane.style.left = '0';
-    hostPane.style.right = '0';
-    hostPane.style.top = '0';
-    hostPane.style.bottom = '0';
-    hostPane.style.width = 'auto';
-    hostPane.style.height = 'auto';
-    hostPane.style.maxHeight = 'none';
-    hostPane.style.flex = 'none';
+    // Host = relative clip box beside the nav (NOT absolute over the mid row)
+    hostPane.style.position = 'relative';
+    hostPane.style.flex = '1 1 0%';
+    hostPane.style.minWidth = '0';
     hostPane.style.minHeight = '0';
-    hostPane.style.overflow = 'auto';
-    hostPane.style.webkitOverflowScrolling = 'touch';
-    hostPane.style.touchAction = 'pan-y';
-    hostPane.style.overscrollBehavior = 'contain';
-    hostPane.scrollTop = 0;
+    hostPane.style.height = '100%';
+    hostPane.style.overflow = 'hidden';
+    hostPane.style.left = '';
+    hostPane.style.right = '';
+    hostPane.style.top = '';
+    hostPane.style.bottom = '';
 
-    // Nudge WebKit to attach a scroll layer after layout
+    // Scroller = absolute fill of host — iOS nested-scroll pattern
+    if (scroller) {
+      scroller.style.position = 'absolute';
+      scroller.style.left = '0';
+      scroller.style.right = '0';
+      scroller.style.top = '0';
+      scroller.style.bottom = '0';
+      scroller.style.width = 'auto';
+      scroller.style.height = 'auto';
+      scroller.style.overflow = 'auto';
+      scroller.style.webkitOverflowScrolling = 'touch';
+      scroller.style.touchAction = 'pan-y';
+      scroller.style.overscrollBehavior = 'contain';
+      scroller.scrollTop = 0;
+    }
+
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        if (!hostPane || !demoOpen) return;
-        const t = hostPane.scrollTop;
-        hostPane.scrollTop = t + 1;
-        hostPane.scrollTop = t;
+        if (!demoOpen) return;
+        const pane = scrollPane();
+        if (!pane) return;
+        const t = pane.scrollTop;
+        pane.scrollTop = t + 1;
+        pane.scrollTop = t;
       });
     });
+
+    bindDemoTouchScroll();
+  }
+
+  /* iPhone Safari often refuses nested overflow pans inside a fixed overlay.
+     Drive #screenScroll.scrollTop from touch deltas on phones so category
+     pages always move, even when native nested scroll is dead. */
+  let touchScrollBound = false;
+  let tsActive = false;
+  let tsStartY = 0;
+  let tsStartScroll = 0;
+  function onDemoScrollTouchStart(e) {
+    if (!demoOpen || !isPhoneDemo()) return;
+    const pane = scrollPane();
+    if (!pane || !e.touches || !e.touches[0]) return;
+    if (!pane.contains(e.target)) return;
+    tsActive = true;
+    tsStartY = e.touches[0].clientY;
+    tsStartScroll = pane.scrollTop;
+  }
+  function onDemoScrollTouchMove(e) {
+    if (!tsActive || !demoOpen || !isPhoneDemo()) return;
+    const pane = scrollPane();
+    if (!pane || !e.touches || !e.touches[0]) return;
+    const max = pane.scrollHeight - pane.clientHeight;
+    if (max <= 1) return;
+    const dy = tsStartY - e.touches[0].clientY;
+    pane.scrollTop = Math.max(0, Math.min(max, tsStartScroll + dy));
+    e.preventDefault();
+  }
+  function onDemoScrollTouchEnd() {
+    tsActive = false;
+  }
+  function bindDemoTouchScroll() {
+    const pane = scrollPane();
+    if (!pane || touchScrollBound) return;
+    touchScrollBound = true;
+    pane.addEventListener('touchstart', onDemoScrollTouchStart, { passive: true });
+    pane.addEventListener('touchmove', onDemoScrollTouchMove, { passive: false });
+    pane.addEventListener('touchend', onDemoScrollTouchEnd, { passive: true });
+    pane.addEventListener('touchcancel', onDemoScrollTouchEnd, { passive: true });
   }
 
   function clearDemoScrollSizing() {
@@ -8201,6 +8261,7 @@ img, video { max-width: 100%; height: auto; }
     const appShell = document.getElementById('appShell');
     const hostPane = document.getElementById('screenHost');
     const scroller = document.getElementById('screenScroll');
+    const side = document.getElementById('sideNav');
     const mid = appShell && (appShell.querySelector(':scope > .flex.min-h-0') || appShell.querySelector(':scope > .flex'));
     if (screen) {
       screen.style.height = '';
@@ -8215,12 +8276,18 @@ img, video { max-width: 100%; height: auto; }
       appShell.style.flexDirection = '';
     }
     if (mid) {
+      mid.style.display = '';
       mid.style.flex = '';
       mid.style.minHeight = '';
       mid.style.height = '';
       mid.style.maxHeight = '';
       mid.style.overflow = '';
       mid.style.position = '';
+    }
+    if (side) {
+      side.style.position = '';
+      side.style.zIndex = '';
+      side.style.flexShrink = '';
     }
     if (hostPane) {
       hostPane.style.position = '';
@@ -8230,6 +8297,7 @@ img, video { max-width: 100%; height: auto; }
       hostPane.style.bottom = '';
       hostPane.style.width = '';
       hostPane.style.flex = '';
+      hostPane.style.minWidth = '';
       hostPane.style.minHeight = '';
       hostPane.style.height = '';
       hostPane.style.maxHeight = '';
@@ -8247,10 +8315,12 @@ img, video { max-width: 100%; height: auto; }
       scroller.style.bottom = '';
       scroller.style.width = '';
       scroller.style.height = '';
+      scroller.style.overflow = '';
       scroller.style.overflowX = '';
       scroller.style.overflowY = '';
       scroller.style.webkitOverflowScrolling = '';
       scroller.style.touchAction = '';
+      scroller.style.overscrollBehavior = '';
     }
   }
 
