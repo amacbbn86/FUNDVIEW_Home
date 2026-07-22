@@ -1857,47 +1857,65 @@
   .slim-scroll::-webkit-scrollbar { width:10px; height:10px; }
   .slim-scroll::-webkit-scrollbar-thumb { background:#c2ccd6; border-radius:5px; }
   /* Main content: keep ONLY the horizontal scrollbar prominent (teal); vertical stays slim/default */
-  #screenHost::-webkit-scrollbar { width:9px; height:13px; }
-  #screenHost::-webkit-scrollbar-track:horizontal { background:#e6ebf1; }
-  #screenHost::-webkit-scrollbar-thumb:horizontal { background:#1fc0cd; border-radius:6px; border:2px solid #e6ebf1; }
-  #screenHost::-webkit-scrollbar-thumb:horizontal:hover { background:#17a9b6; }
-  #screenHost::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
+  #screenHost::-webkit-scrollbar,
+  #screenScroll::-webkit-scrollbar { width:9px; height:13px; }
+  #screenHost::-webkit-scrollbar-track:horizontal,
+  #screenScroll::-webkit-scrollbar-track:horizontal { background:#e6ebf1; }
+  #screenHost::-webkit-scrollbar-thumb:horizontal,
+  #screenScroll::-webkit-scrollbar-thumb:horizontal { background:#1fc0cd; border-radius:6px; border:2px solid #e6ebf1; }
+  #screenHost::-webkit-scrollbar-thumb:horizontal:hover,
+  #screenScroll::-webkit-scrollbar-thumb:horizontal:hover { background:#17a9b6; }
+  #screenHost::-webkit-scrollbar-thumb:vertical,
+  #screenScroll::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
 
-  /* Demo category scroller — absolute-fill inside #screenHost.
-     iOS Safari reliably scrolls position:absolute + overflow-y:scroll
-     panes; flex-only overflow:auto often stays dead. */
+  /* Desktop / tablet: normal flex scroller. #screenScroll is just a wrapper. */
   #appShell > .flex.min-h-0 {
     flex: 1 1 0%;
     min-height: 0;
     overflow: hidden;
-    position: relative;
   }
   #screenHost {
-    position: relative !important;
-    flex: 1 1 0% !important;
-    min-height: 0 !important;
-    min-width: 0 !important;
-    overflow: hidden !important; /* not the scroller — #screenScroll is */
+    position: relative;
+    flex: 1 1 0%;
+    min-height: 0;
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     background: #eef2f6;
   }
   #screenScroll {
-    position: absolute;
-    inset: 0;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    touch-action: pan-y;
+    position: static;
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
     background: #eef2f6;
   }
-  #screenScroll::-webkit-scrollbar { width:9px; height:13px; }
-  #screenScroll::-webkit-scrollbar-track:horizontal { background:#e6ebf1; }
-  #screenScroll::-webkit-scrollbar-thumb:horizontal { background:#1fc0cd; border-radius:6px; border:2px solid #e6ebf1; }
-  #screenScroll::-webkit-scrollbar-thumb:vertical { background:#c2ccd6; border-radius:4px; }
-  #sideNavItems {
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    touch-action: pan-y;
+
+  /* Phones only: absolute-fill #screenScroll (iOS needs a bounded overflow pane). */
+  @media (max-width: 640px) {
+    #screenHost {
+      overflow: hidden !important;
+    }
+    #screenScroll {
+      position: absolute;
+      inset: 0;
+      width: auto;
+      height: auto;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      touch-action: pan-y;
+    }
+    #sideNavItems {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      touch-action: pan-y;
+    }
   }
 
   /* Material-style filter field (matches the app screenshots) */
@@ -6812,8 +6830,13 @@
     renderTabs();
   }
 
-  /* After the chassis lands: kill transform layers + size the absolute
-     #screenScroll pane so iOS has a real overflow box to pan. */
+  /* After the chassis lands: kill transform layers. Pixel-size + absolute
+     #screenScroll only on phones — applying that on desktop blew a huge
+     empty gap into the laptop modal (content pinned to the bottom). */
+  function isPhoneDemo() {
+    try { return window.matchMedia('(max-width: 640px)').matches; }
+    catch (_) { return false; }
+  }
   function armDemoScroll() {
     try {
       demoLaptop.style.animation = 'none';
@@ -6825,6 +6848,54 @@
     const appShell = document.getElementById('appShell');
     const hostPane = document.getElementById('screenHost');
     const scroller = document.getElementById('screenScroll') || host;
+    const mid = appShell && (appShell.querySelector(':scope > .flex.min-h-0') || appShell.querySelector(':scope > .flex'));
+
+    // Always clear desktop-breaking leftovers first
+    if (screen) {
+      screen.style.height = '';
+      screen.style.maxHeight = '';
+    }
+    if (appShell) {
+      appShell.style.minHeight = '';
+      appShell.style.height = '';
+      appShell.style.maxHeight = '';
+      appShell.style.overflow = '';
+      appShell.style.display = '';
+      appShell.style.flexDirection = '';
+    }
+    if (mid) {
+      mid.style.flex = '';
+      mid.style.minHeight = '';
+      mid.style.overflow = '';
+      mid.style.position = '';
+    }
+    if (hostPane) {
+      hostPane.style.position = '';
+      hostPane.style.flex = '';
+      hostPane.style.minHeight = '';
+      hostPane.style.overflow = '';
+      hostPane.style.height = '';
+    }
+    if (scroller) {
+      scroller.style.position = '';
+      scroller.style.left = '';
+      scroller.style.right = '';
+      scroller.style.top = '';
+      scroller.style.bottom = '';
+      scroller.style.width = '';
+      scroller.style.height = '';
+      scroller.style.overflowX = '';
+      scroller.style.overflowY = '';
+      scroller.style.webkitOverflowScrolling = '';
+      scroller.style.touchAction = '';
+    }
+
+    if (!isPhoneDemo()) {
+      // Desktop: #screenHost scrolls normally; keep content at the top
+      if (hostPane) hostPane.scrollTop = 0;
+      if (scroller && scroller !== hostPane) scroller.scrollTop = 0;
+      return;
+    }
 
     if (screen) {
       const vv = window.visualViewport;
@@ -6843,7 +6914,6 @@
       appShell.style.flexDirection = 'column';
     }
 
-    const mid = appShell && appShell.querySelector(':scope > .flex');
     if (mid) {
       mid.style.flex = '1 1 0%';
       mid.style.minHeight = '0';
@@ -6870,7 +6940,7 @@
       scroller.style.overflowY = 'scroll';
       scroller.style.webkitOverflowScrolling = 'touch';
       scroller.style.touchAction = 'pan-y';
-      // Nudge to force WebKit scroll layer
+      scroller.scrollTop = 0;
       const t = scroller.scrollTop;
       scroller.scrollTop = t + 1;
       scroller.scrollTop = t;
@@ -6879,9 +6949,47 @@
 
   function clearDemoScrollSizing() {
     const screen = document.querySelector('#demoLaptop .demo-screen');
+    const appShell = document.getElementById('appShell');
+    const hostPane = document.getElementById('screenHost');
+    const scroller = document.getElementById('screenScroll');
+    const mid = appShell && (appShell.querySelector(':scope > .flex.min-h-0') || appShell.querySelector(':scope > .flex'));
     if (screen) {
       screen.style.height = '';
       screen.style.maxHeight = '';
+    }
+    if (appShell) {
+      appShell.style.minHeight = '';
+      appShell.style.height = '';
+      appShell.style.maxHeight = '';
+      appShell.style.overflow = '';
+      appShell.style.display = '';
+      appShell.style.flexDirection = '';
+    }
+    if (mid) {
+      mid.style.flex = '';
+      mid.style.minHeight = '';
+      mid.style.overflow = '';
+      mid.style.position = '';
+    }
+    if (hostPane) {
+      hostPane.style.position = '';
+      hostPane.style.flex = '';
+      hostPane.style.minHeight = '';
+      hostPane.style.overflow = '';
+      hostPane.style.height = '';
+    }
+    if (scroller) {
+      scroller.style.position = '';
+      scroller.style.left = '';
+      scroller.style.right = '';
+      scroller.style.top = '';
+      scroller.style.bottom = '';
+      scroller.style.width = '';
+      scroller.style.height = '';
+      scroller.style.overflowX = '';
+      scroller.style.overflowY = '';
+      scroller.style.webkitOverflowScrolling = '';
+      scroller.style.touchAction = '';
     }
   }
 
