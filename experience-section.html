@@ -1,8 +1,1594 @@
-﻿<!--
-  Working copy of the Experience FUNDVIEW section extracted for editing.
-  Source: home4.html section#experience_fundview (full outer section markup).
-  home4.html was not modified — this file is a copy only.
+<!DOCTYPE html>
+<!--
+  Experience FUNDVIEW — standalone working copy for editing.
+  Source of truth while iterating: this file.
+  When ready, copy the <section id="experience_fundview"> … </section> block
+  back into home4.html (and keep CSS/JS in sync if those changed).
+
+  Preview: http://localhost:5500/experience-section.html
+  Built from home4.html experience CSS + markup + scripts.
 -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experience FUNDVIEW — section preview</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" rel="stylesheet" data-experience-fundview="">
+  <link rel="stylesheet" href="HOME_Section_Explore FUNDVIEW2/assets_experience/tailwind-compiled.css" data-experience-fundview="">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" data-experience-fundview=""></script>
+
+  <style>
+    :root {
+      --fv-navy: #0a2e57;
+      --fv-navy-soft: #3a4756;
+      --fv-teal: #00b7b3;
+      --fv-teal-hover: #00a39f;
+      --fv-cta: #f2b632;
+      --fv-cta-hover: #e0a628;
+      --fv-cta-text: #0a2e57;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--fv-navy-soft);
+      background: #081426;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    /* ——— experience_fundview (from HOME_Section_Explore FUNDVIEW2) ——— */
+    .experience_fundview {
+      position: relative;
+      width: 100%;
+      /* No isolation:isolate here — it creates a stacking context that traps
+         #demoOverlay / zoom clips below the sticky site-header (z-index:5000). */
+      font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      background: #081426;
+    }
+
+  /* Desktop: drop hero top padding to tighten section height.
+     Compiled Tailwind has pt-6 / sm:pt-8 but no lg:pt-0 utility. */
+  @media (min-width: 1024px) {
+    #experience_fundview #heroContent,
+    #experience_fundview #heroInner,
+    #experience_fundview #hero {
+      padding-top: 0 !important;
+    }
+  }
+
+  /* Lift the whole Experience section above site-header while demo/zoom chrome
+     is active, then stack the fixed overlays inside it. */
+  #experience_fundview:has(#demoOverlay.open),
+  #experience_fundview:has(#demoOverlay.bridging),
+  #experience_fundview:has(#demoOverlay.handoff-cover),
+  #experience_fundview:has(#demoOverlay.closing),
+  #experience_fundview:has(#zoomClip.active),
+  #experience_fundview:has(#zoomOutClip.active),
+  #experience_fundview:has(#zoomBridge.visible) {
+    z-index: 6000;
+    isolation: isolate;
+  }
+  #demoOverlay { z-index: 6000 !important; }
+  #zoomClip, #zoomOutClip { z-index: 6010 !important; }
+  #zoomBridge { z-index: 6020 !important; }
+  #sceneChange { z-index: 6015 !important; }
+  #demoOverlay #exitDemo,
+  #demoOverlay #bookDemoMobile {
+    z-index: 40;
+    /* Keep off the site header until demo is open — pointer-events:auto on
+       children still hit-tests even when #demoOverlay is pointer-events:none. */
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  /* ---------- Global ---------- */
+  html { scroll-behavior: smooth; }
+
+  /* ---------- Hero camera push-in (cinematic dolly toward the laptop screen) ----------
+     The zoom scale + origin are computed in JS from the on-screen position of
+     #screenTarget so the photo's laptop screen lands exactly filling the viewport. */
+  #heroInner {
+    transition: transform 0.75s cubic-bezier(0.32, 0.0, 0.14, 1);
+    will-change: transform;
+  }
+
+  /* NOTE: hero copy, nav and feature bar do NOT fade during the dolly —
+     they ride the camera move and slide out of frame naturally,
+     matching the reference video. */
+  .hero-fade { transition: opacity .9s cubic-bezier(0.4,0,0.2,1), transform .9s cubic-bezier(0.4,0,0.2,1); }
+
+  /* Mobile: keep checkmark + prompt copy as one compact centered unit
+     (compiled Tailwind lacks the arbitrary max-width used here). */
+  .experience-prompt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    max-width: 19rem;
+    margin-top: 1.5rem;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.375;
+    color: #1fc0cd;
+  }
+  .experience-prompt svg {
+    flex-shrink: 0;
+  }
+  @media (min-width: 1024px) {
+    .experience-prompt {
+      max-width: 32rem;
+    }
+  }
+
+  /* Experience hero CTA — gold pill under the prompt */
+  .experience-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.95rem 1.75rem;
+    border-radius: 12px;
+    background: var(--fv-cta, #f2b632);
+    color: #0a0a0a;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 10px 28px rgba(242, 182, 50, 0.32);
+    transition:
+      transform 0.2s ease,
+      background-color 0.18s ease,
+      box-shadow 0.25s ease;
+  }
+  .experience-cta:hover {
+    transform: translate3d(0, -1px, 0);
+    background: var(--fv-cta-hover, #e0a628);
+    box-shadow: 0 14px 34px rgba(242, 182, 50, 0.42);
+  }
+  .experience-cta:active {
+    transform: translate3d(0, 0, 0) scale(0.98);
+  }
+  .experience-cta__arrow {
+    flex-shrink: 0;
+    font-size: 1.05em;
+    font-weight: 700;
+    line-height: 1;
+  }
+  @media (max-width: 419px) {
+    .experience-cta {
+      padding: 0.85rem 1.25rem;
+      font-size: 14px;
+    }
+  }
+
+  /* ---------- Zoom-in clip (click path) ----------
+     Primary open: cross-dissolve hero -> #zoomClip (1s dolly), lock the
+     true final frame onto #zoomBridge (opaque), assemble #demoOverlay at
+     rest under the cover, then HARD-CUT on double-rAF paint (no long
+     settle freeze; no opacity crossfade — photo bezel vs flat HTML
+     chassis always ghosts). CSS dolly remains as openDemoCssDolly fallback. */
+  #zoomClip, #zoomOutClip {
+    position: fixed; inset: 0; z-index: 40;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    background: #081426;
+    opacity: 0; pointer-events: none;
+    transform: translateZ(0);
+    transition: opacity .28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #zoomClip.active, #zoomOutClip.active { opacity: 1; }
+
+  /* Pixel-perfect handoff layer: true last frame of the zoom clip, held FULLY
+     opaque only long enough for open pose + first paint (double-rAF), then
+     instant hard cut (no opacity crossfade). Photo end-frame and flat HTML
+     laptop never share geometry; dissolving always double-images. */
+  #zoomBridge {
+    position: fixed; inset: 0; z-index: 55;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    pointer-events: none; opacity: 0;
+    transform: translateZ(0);
+    background: #05080f;
+    will-change: opacity;
+    transition: none;
+  }
+  #zoomBridge.visible { opacity: 1; }
+
+  /* Barely-there shade for depth — deepens into the scene-change handoff
+     (used by the CSS-dolly fallback path) */
+  #sceneShade { transition: opacity 0.75s cubic-bezier(0.32,0,0.14,1); opacity:0; }
+  .zooming #sceneShade { opacity:.18; }
+  .zooming.scene-change #sceneShade { opacity:.42; transition-duration: .35s; }
+
+  /* End-of-dolly scene change: soft exposure bloom that bridges the photo
+     laptop screen into the live demo — reads as "entering" the UI */
+  #sceneChange {
+    position: fixed; inset: 0; z-index: 45; pointer-events: none;
+    opacity: 0; transform: translateZ(0);
+    background:
+      radial-gradient(ellipse 55% 50% at 50% 48%, rgba(255,255,255,.55) 0%, rgba(43,212,224,.18) 38%, transparent 72%),
+      rgba(8,20,38,.35);
+  }
+  #sceneChange.flash {
+    animation: sceneChangeBloom .55s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+  @keyframes sceneChangeBloom {
+    0%   { opacity: 0; }
+    35%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #sceneChange.flash { animation: none; opacity: 0; }
+  }
+
+  /* While the camera dolly runs, kill backdrop blurs inside the scaled hero —
+     backdrop-filter forces expensive re-rasterization on every animation frame */
+  #heroInner.zooming [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Laptop hotspot hover: soft teal glow behind the machine */
+  #laptopGlow { transition: opacity .5s ease; opacity:0; }
+  #laptopHotspot:hover ~ #laptopGlow, #laptopHotspot:focus-visible ~ #laptopGlow { opacity:1; }
+
+  /* Hover push-in: the scene imagery eases gently toward the laptop screen,
+     previewing the click-to-zoom dolly. It scales INSIDE the fixed, clipped
+     scene frame so the edge blends never move. Origin = #screenTarget centre. */
+  #sceneZoom {
+    transform-origin: 75.75% 54%;
+    transition: transform .9s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: transform;
+  }
+  #sceneZoom.hover-zoom { transform: scale(1.05); }
+  @media (prefers-reduced-motion: reduce) {
+    #sceneZoom { transition: none; }
+    #sceneZoom.hover-zoom { transform: none; }
+  }
+
+  /* ---------- Responsive scene sizing (cover stage) ----------
+     The photo/video + all its hotspot overlays live on a fixed 16/9 STAGE
+     (#sceneZoom) that COVERS a variable-height frame (#scene), the same way
+     object-fit: cover works — but for the whole overlay group, so every
+     %-positioned hotspot stays glued to the imagery. The stage is anchored
+     85% toward the laptop side and biased low, so no screen size ever crops
+     the laptop or the handwritten note. */
+  #scene { aspect-ratio: 16 / 9; }   /* baseline: stage == frame */
+  @supports (container-type: size) {
+    #scene { container-type: size; }
+    /* Portrait phones/small tablets: the scene bleeds edge-to-edge at its
+       natural 16/9 — frame == stage, ZERO crop — so the whole townscape and
+       laptop show at maximum width, with the copy stacked directly below
+       (a full-width 16/9 band is short enough that the headline + body stay
+       on screen). margin-left pulls the frame out of the padded grid. */
+    @media (max-width: 1023.9px) and (orientation: portrait) {
+      #scene {
+        aspect-ratio: 16 / 9;
+        max-height: none;
+        width: 100vw;
+        max-width: none;
+        margin-left: calc(50% - 50vw);
+      }
+    }
+    /* Desktop: the frame uses the real vertical space available under the
+       nav (100vh - chrome), but its WIDTH is capped to what that height can
+       show at 16/9 — so the stage NEVER crops vertically (sky, courthouse
+       and water tower always stay in frame). On squarish/narrow windows the
+       frame instead grows taller than 16/9 (floored at a 1.2 ratio) and the
+       stage crops sideways toward the laptop, which is always safe. The
+       right-anchored frame leaves any spare column width to the left edge
+       blend, exactly like the original design. */
+    #sceneWrap { container-type: inline-size; }
+    @media (min-width: 1024px) {
+      #scene {
+        aspect-ratio: auto;
+        height: min(max(calc(100vh - 240px), 340px), 700px, calc(100cqw / 1.2));
+        max-width: calc(min(max(calc(100vh - 240px), 340px), 700px) * 16 / 9);
+      }
+    }
+    #sceneZoom {
+      inset: auto;
+      width:  max(100cqw, calc(100cqh * 16 / 9));
+      height: max(100cqh, calc(100cqw * 9 / 16));
+      /* keep 85% of any horizontal crop off the left (note side is safe,
+         laptop side nearly untouched) */
+      right: calc(max(0px, calc(100cqh * 16 / 9) - 100cqw) * -0.15);
+      /* keep 70% of any vertical crop off the top (sky is expendable,
+         the desk and laptop are not) */
+      top:   calc(max(0px, calc(100cqw * 9 / 16) - 100cqh) * -0.7);
+    }
+  }
+
+  /* Tall tablet-portrait (e.g. iPad Pro 1024x1366): the lg breakpoint
+     (min-width 1024) normally switches to the 2-col grid, but a portrait
+     tablet is too narrow for side-by-side columns to look premium. Keep the
+     STACKED layout instead: full-width laptop scene on top, centered copy
+     beneath it — the same composition as md, just larger. The feature bar
+     stays pinned to the bottom edge via space-between so leftover height
+     lands in one intentional band. !important is needed because these
+     override Tailwind lg: utilities and the @supports #scene sizing above
+     (equal-or-higher specificity, earlier source order). */
+  @media (min-width: 1024px) and (orientation: portrait) {
+    #heroInner { justify-content: space-between; }
+    #heroContent {
+      flex: none;
+      grid-template-columns: 1fr !important;   /* kill the 2-col grid */
+      padding-top: clamp(40px, 6vh, 96px);
+      padding-right: 2.5rem !important;        /* undo lg:pr-0 — symmetric margins */
+      gap: 2.5rem;
+    }
+    /* Copy column: back below the scene, centered like the md layout */
+    #heroContent > .fade-left {
+      order: 2 !important;
+      margin-inline: auto;
+      align-items: center !important;
+      text-align: center !important;
+      align-self: auto !important;
+      justify-content: flex-start !important;
+    }
+    #heroContent > .fade-left .mt-8 { justify-content: center !important; }  /* CTAs */
+    /* Scene: full viewport width when stacked (break out of padded grid),
+       natural 16/9 (frame == stage, zero crop — full townscape + sky) */
+    #sceneWrap { order: 1 !important; max-width: none !important; width: 100% !important; }
+    #scene {
+      aspect-ratio: 16 / 9 !important;
+      height: auto !important;
+      width: 100vw !important;
+      max-width: none !important;
+      margin-left: calc(50% - 50vw) !important;
+    }
+  }
+
+  /* ---------- Mobile / stacked layout ----------
+     Below lg: eyebrow ("EXPERIENCE FUNDVIEW") stacks above the town scene,
+     then the scene, then the copy. Eyebrow is centered with breathing room
+     above (section → title) and below (title → scene).
+     Also drop min-h-screen / flex-1 stretch so copy doesn't leave a huge empty
+     band under the prompt — keep a clean bottom pad instead. */
+  .experience-eyebrow--stack { display: none; }
+  @media (max-width: 1023.98px) {
+    #hero,
+    #heroInner {
+      min-height: 0 !important;
+    }
+    #heroContent {
+      flex: none !important;
+      padding-top: 0 !important;
+      padding-bottom: 2rem !important;
+      align-content: start;
+      align-items: start;
+      gap: 0 !important; /* eyebrow padding owns the title↔scene gap */
+    }
+    .experience-eyebrow--stack {
+      display: block;
+      order: 0;
+      width: 100%;
+      text-align: center;
+      padding-top: clamp(2.25rem, 6vw, 3.25rem);
+      padding-bottom: clamp(1.5rem, 4vw, 2.25rem);
+    }
+    .experience-eyebrow--rail { display: none !important; }
+    #sceneWrap { order: 1; }
+    #heroContent > .fade-left {
+      order: 2;
+      justify-content: flex-start !important;
+      align-self: auto !important;
+      padding-top: clamp(1.5rem, 4vw, 2.25rem);
+    }
+    .scene-blend-top { display: none; }
+  }
+
+  /* Phones: a little more breathing room under the copy */
+  @media (max-width: 639.98px) {
+    #heroContent {
+      padding-bottom: 2.5rem !important;
+    }
+    .experience-eyebrow--stack {
+      padding-top: 2.5rem;
+      padding-bottom: 1.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .experience-eyebrow--stack { display: none !important; }
+    .experience-eyebrow--rail { display: block !important; }
+  }
+
+  /* Handwritten annotation gently floats */
+  @keyframes floatNote { 0%,100% { transform: translateY(0) rotate(-4deg);} 50% { transform: translateY(-6px) rotate(-4deg);} }
+  #handNote { animation: floatNote 4.5s ease-in-out infinite; }
+  .zooming #handNote { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) {
+    #handNote { animation: none; }
+    #heroInner { transition: none; }
+  }
+
+  /* ---------- Demo overlay — cinematic lift / return system ----------
+     OPEN (video path — zero-jump handoff)
+       Zoom clip carries the camera. Near clip end, #zoomBridge locks the
+       true last frame OPAQUE. Live #demoLaptop assembles underneath already
+       at final rest pose with UI painted. Only then does the bridge HARD-CUT
+       away (no opacity crossfade). Soft dissolves always ghosted dual-scale
+       UI (photo bezel + larger flat HTML chassis) for ~hundreds of ms.
+     CLOSE ("the return", ~560ms)
+       The laptop is set back down TOWARD the photo laptop on the desk —
+       recede direction computed per-close in JS via --exit-x/y — while the
+       veil lifts and the hero racks back into focus.
+     DEPTH
+       Sold by compositor-only layers: a crossfaded shadow stack (box-shadow
+       painted once, only opacity animates), a grounding contact shadow, a
+       teal monitor bloom, and true DoF from receding the hero itself.
+     Every animated property is transform / opacity — no animated
+     box-shadow, no backdrop-filter — so the whole move stays on the
+     compositor at 60fps even while screen-recording. */
+  #demoOverlay {
+    --spring: cubic-bezier(0.22, 1, 0.36, 1);        /* fallback spring */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* expo-ish out    */
+    --ease-exit: cubic-bezier(0.5, 0.04, 0.7, 0.3);  /* graceful leave  */
+    perspective: 1500px;                             /* 3D stage for rotateX */
+    transition: opacity .01s linear;
+    will-change: opacity;
+    transform: translateZ(0);
+  }
+  /* Real damped spring (~2% overshoot, calm tail) where linear() exists */
+  @supports (transition-timing-function: linear(0, 1)) {
+    #demoOverlay {
+      --spring: linear(
+        0, 0.0361 2.1%, 0.1367 4.3%, 0.2962 6.9%, 0.5586 10.8%,
+        0.7724 14.2%, 0.8721 16.4%, 0.951 18.7%, 1.0056 21.3%,
+        1.0196 24%, 1.0184 27.2%, 1.0059 33.4%, 0.9985 41.2%,
+        0.9996 54.6%, 1
+      );
+    }
+  }
+
+  /* Depth-of-field recession: applied ONLY after the demo is up (never mid
+     zoom-clip). Blurring #hero during the video stalls Chrome's decoder and
+     freezes the dolly mid-frame. Once the overlay covers the hero, a light
+     scale + dim is enough — skip live blur (veil already separates depth). */
+  #hero {
+    transform-origin: 50% 40%;
+    transition:
+      transform 400ms cubic-bezier(0.23, 1, 0.32, 1),
+      filter 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  #hero.demo-recede {
+    transform: scale(0.966);
+    filter: brightness(0.72) saturate(0.88);
+  }
+
+  /* Veil: plain gradient dim (no backdrop-filter — see above) with a faint
+     teal key light pooled behind the laptop. Click closes; cursor hints it. */
+  #demoOverlay .demo-backdrop {
+    opacity: 0;
+    cursor: zoom-out;
+    background:
+      radial-gradient(1100px 620px at 50% 44%, rgba(31, 192, 205, 0.10), transparent 64%),
+      linear-gradient(180deg, rgba(5, 11, 22, 0.86) 0%, rgba(7, 15, 30, 0.83) 45%, rgba(4, 9, 18, 0.92) 100%);
+    transition: opacity 620ms var(--ease-out);
+    will-change: opacity;
+  }
+  #demoOverlay.open .demo-backdrop,
+  #demoOverlay.bridging .demo-backdrop { opacity: 1; }
+  #demoOverlay.closing .demo-backdrop {
+    opacity: 0;
+    /* Laptop leads, veil follows — the layered exit reads as depth */
+    transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  /* Laptop chassis: hidden pose -> final rest under opaque bridge -> reveal.
+     transform-origin sits low so the EXIT rotateX still reads as tipping
+     back onto the desk. Open path must NOT spring while the bridge fades. */
+  #demoLaptop {
+    transform-origin: 50% 62%;
+    opacity: 0;
+    transform: scale(0.9) translate3d(0, 36px, 0) rotateX(6.5deg);
+    transition:
+      transform 520ms var(--ease-out),
+      opacity 400ms var(--ease-out);
+    will-change: transform, opacity;
+    /* Hard cap: never wider than the viewport (base deck is 1.035× screen) */
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  /* Final rest pose under the opaque bridge — identical to .open so the
+     hard cut lands on a settled chassis (no mid-spring mismatch) */
+  #demoOverlay.bridging #demoLaptop,
+  #demoOverlay.handoff-cover #demoLaptop,
+  #demoOverlay.open #demoLaptop {
+    opacity: 1;
+    transform: none;
+  }
+  #demoOverlay.bridging #demoLaptop,
+  #demoOverlay.handoff-cover #demoLaptop {
+    transition: none;
+  }
+  /* Landing momentum: the clip is a forward dolly, so the reveal continues
+     that motion — the chassis arrives a hair small/low and settles to rest
+     on the spring. Small enough to avoid any geometry-mismatch ghosting,
+     but the camera never reads as slamming to a dead stop. Only the video
+     path (ui-ready) gets this; the CSS-dolly fallback keeps its own spring. */
+  @keyframes demoLandIn {
+    from { transform: scale(0.982) translate3d(0, 10px, 0); }
+    to   { transform: none; }
+  }
+  #demoOverlay.open.ui-ready:not(.handoff-cover):not(.closing) #demoLaptop {
+    animation: demoLandIn 0.52s var(--ease-out) forwards;
+  }
+  /* After open (past bridge/handoff), drop perspective/transform promotion
+     so iOS Safari can scroll overflow inside #screenHost — nested scrollers
+     inside transformed/perspectived fixed layers often go dead. */
+  #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) {
+    perspective: none;
+    transform: none;
+  }
+  #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop {
+    will-change: auto;
+    transform: none;
+  }
+
+  /* Luminance continuity: the zoom clip ends on a DARK vignetted scene, but
+     the demo veil + blurred hero read brighter. A black shade sits at 42%
+     under the opaque cover and eases off after the cut, so the reveal
+     brightens INTO the demo instead of jumping exposure. Opacity-only. */
+  #demoOverlay .demo-backdrop::after {
+    content: ""; position: absolute; inset: 0;
+    background: #04070d; opacity: 0; pointer-events: none;
+    transition: opacity 700ms var(--ease-out);
+  }
+  #demoOverlay.handoff-cover .demo-backdrop::after {
+    opacity: 0.42;
+    transition: none;
+  }
+  /* The return: recede toward the photo laptop (direction set in JS),
+     tipping back down as if being set on the desk */
+  #demoOverlay.closing #demoLaptop {
+    opacity: 0;
+    transform:
+      translate3d(var(--exit-x, 0px), calc(var(--exit-y, 0px) + 10px), 0)
+      scale(0.88) rotateX(4deg);
+    transition:
+      transform 400ms cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 360ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  /* ---- Compositor-only shadow / light stack ---- */
+  /* Resting shadow is painted once on the chassis and never animated */
+  .demo-screen {
+    /* Cap at ≤96vw so screen + 1.035× base deck stay inside the viewport */
+    --demo-screen-w: min(96vw, 148.8vh);
+    width: var(--demo-screen-w);
+    max-width: 96vw;
+    min-width: 0; /* prevent flex/content min-size from expanding past max-width */
+    /* Explicit height (not aspect-ratio alone): #appShell used height:100%,
+       which does not resolve against aspect-ratio parents — the shell grew
+       with content and #screenHost never became a scroll box (Chrome + iOS). */
+    height: min(calc(var(--demo-screen-w) / 1.68), calc(100dvh - 96px));
+    max-height: calc(100vh - 96px);
+    max-height: calc(100dvh - 96px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    box-shadow:
+      0 10px 26px -10px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  .demo-base {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  /* Large desktops: roomier vh cap + wider side nav
+     so labels like "CityCentral™ Citizen Portal" are not ellipsized.
+     Width stays ≤96vw (never >100vw) so #demoLaptop cannot spill horizontally. */
+  @media (min-width: 1300px) {
+    .demo-screen {
+      --demo-screen-w: min(96vw, 158.4vh);
+      width: var(--demo-screen-w);
+      max-width: 96vw;
+      height: min(calc(var(--demo-screen-w) / 1.68), calc(100dvh - 96px));
+    }
+    .demo-base {
+      width: calc(min(96vw, 158.4vh) * 1.035) !important;
+      max-width: 99.36vw;
+    }
+    #demoLaptop {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    #sideNav {
+      width: 15.5rem !important; /* ~248px; sm:w-44 (11rem) was too narrow */
+    }
+  }
+  /* Tablet / small desktop (640–1299): taller usable chrome + roomier rail
+     so the Book Demo CTA and nav labels fit without clipping into #screenHost. */
+  @media (min-width: 640px) and (max-width: 1299.98px) {
+    #demoOverlay.open,
+    #demoOverlay.bridging,
+    #demoOverlay.handoff-cover {
+      overflow: hidden;
+    }
+    .demo-screen {
+      --demo-screen-w: min(96vw, 140vh);
+      width: var(--demo-screen-w);
+      /* Taller than the 1.68 desktop ratio so mid-height windows are usable */
+      height: min(calc(var(--demo-screen-w) / 1.42), calc(100dvh - 88px));
+      max-height: calc(100dvh - 88px);
+    }
+    .demo-base {
+      width: calc(min(96vw, 140vh) * 1.035) !important;
+    }
+    #demoLaptop {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      max-width: none;
+      width: auto;
+    }
+    #sideNav {
+      overflow: hidden !important;
+    }
+  }
+  /* 800–1299: roomy rail for larger menu type */
+  @media (min-width: 800px) and (max-width: 1299.98px) {
+    #sideNav {
+      width: 14rem !important; /* ~224px — matches larger side-item type */
+    }
+  }
+  /* 640–799: narrower rail so #screenHost keeps more content room */
+  @media (min-width: 640px) and (max-width: 799.98px) {
+    #sideNav {
+      width: 10.25rem !important; /* ~164px */
+    }
+  }
+  /* App shell fills the bezel via flex — never height:100% against aspect-ratio */
+  #appShell {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+  /* Lift shadow: the intense multi-layer shadow lives on its own layer and
+     only its OPACITY animates — transitioning box-shadow itself would
+     repaint every frame */
+  .demo-shadow-lift {
+    position: absolute; inset: 0; z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    box-shadow:
+      0 48px 92px -18px rgba(0, 0, 0, 0.62),
+      0 22px 44px -14px rgba(0, 0, 0, 0.45),
+      0 96px 170px -30px rgba(0, 0, 0, 0.5),
+      0 0 92px -8px rgba(31, 192, 205, 0.16);
+    transition: opacity 700ms var(--ease-out);
+    will-change: opacity;
+  }
+  #demoOverlay.open .demo-shadow-lift,
+  #demoOverlay.bridging .demo-shadow-lift,
+  #demoOverlay.handoff-cover .demo-shadow-lift { opacity: 1; }
+  #demoOverlay.bridging .demo-shadow-lift,
+  #demoOverlay.handoff-cover .demo-shadow-lift { transition: none; }
+  #demoOverlay.closing .demo-shadow-lift { opacity: 0; transition-duration: 400ms; }
+
+  /* Contact shadow: a pre-blurred ellipse under the base that widens and
+     deepens as the machine lifts — grounds the float without filters */
+  .demo-contact-shadow {
+    position: absolute; left: 50%; bottom: -38px;
+    width: 82%; height: 52px;
+    z-index: -1; pointer-events: none;
+    background: radial-gradient(ellipse 50% 50% at 50% 50%,
+      rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.18) 55%, transparent 75%);
+    opacity: 0;
+    transform: translateX(-50%) scale(0.7, 0.8);
+    transition:
+      transform 700ms var(--spring),
+      opacity 560ms var(--ease-out);
+    will-change: transform, opacity;
+  }
+  /* Contact shadow at final lift depth while covered — no morph on reveal */
+  #demoOverlay.bridging .demo-contact-shadow,
+  #demoOverlay.handoff-cover .demo-contact-shadow,
+  #demoOverlay.open .demo-contact-shadow {
+    opacity: 0.6;
+    transform: translateX(-50%) scale(1, 1);
+  }
+  #demoOverlay.bridging .demo-contact-shadow,
+  #demoOverlay.handoff-cover .demo-contact-shadow {
+    transition: none;
+  }
+  #demoOverlay.closing .demo-contact-shadow {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.72, 0.8);
+    transition-duration: 420ms;
+  }
+
+  /* Monitor bloom: teal key light blooms as the UI powers on, settles, then
+     breathes almost imperceptibly — the scene stays alive on camera */
+  .demo-glow {
+    position: absolute; inset: -8% -12% -14% -12%;
+    z-index: -2; pointer-events: none;
+    background: radial-gradient(ellipse 60% 55% at 50% 42%,
+      rgba(31, 192, 205, 0.32), rgba(31, 192, 205, 0.07) 48%, transparent 74%);
+    opacity: 0;
+    transition: opacity 450ms ease;
+    will-change: opacity;
+  }
+  #demoOverlay.open:not(.closing):not(.handoff-cover) .demo-glow {
+    animation:
+      demoGlowBloom 1.15s var(--ease-out) 0.1s both,
+      demoGlowBreathe 7s ease-in-out 1.5s infinite;
+  }
+  @keyframes demoGlowBloom { 0% { opacity: 0; } 45% { opacity: 0.5; } 100% { opacity: 0.26; } }
+  @keyframes demoGlowBreathe { 0%, 100% { opacity: 0.26; } 50% { opacity: 0.34; } }
+
+  /* Base deck: static shadow, painted once */
+  .demo-base { box-shadow: 0 26px 48px -12px rgba(0, 0, 0, 0.5); }
+
+  /* Power-on sheen: one soft light sweep across the glass as the UI wakes.
+     Transform-only, clipped to the screen radius. */
+  .demo-sheen {
+    position: absolute; inset: 0; z-index: 40;
+    border-radius: inherit; overflow: hidden; pointer-events: none;
+  }
+  .demo-sheen::before {
+    content: ""; position: absolute; top: -25%; bottom: -25%; left: 0; width: 34%;
+    background: linear-gradient(100deg,
+      transparent, rgba(255, 255, 255, 0.085) 45%, rgba(43, 212, 224, 0.05) 62%, transparent);
+    transform: translate3d(-160%, 0, 0) skewX(-16deg);
+    opacity: 0;
+  }
+  #demoOverlay.open:not(.closing):not(.handoff-cover) .demo-sheen::before {
+    animation: demoSheenSweep 1.25s cubic-bezier(0.6, 0.1, 0.3, 0.9) 0.38s both;
+  }
+  @keyframes demoSheenSweep {
+    0%   { transform: translate3d(-160%, 0, 0) skewX(-16deg); opacity: 0; }
+    12%  { opacity: 1; }
+    82%  { opacity: 1; }
+    100% { transform: translate3d(460%, 0, 0) skewX(-16deg); opacity: 0; }
+  }
+
+  @media (max-width: 640px) {
+    .demo-screen {
+      --demo-screen-w: 96vw;
+      width: 96vw !important;
+      max-width: 96vw !important;
+      aspect-ratio: auto;
+      overflow: hidden;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Base deck tracks the mobile screen width */
+    .demo-base { width: calc(96vw * 1.035) !important; }
+    .demo-contact-shadow { bottom: -26px; height: 38px; }
+  }
+
+  /* ≤999px: keep laptop under Exit/Book CTAs (top fixed) and grow
+     downward into spare viewport — phones + tablets (same fill behavior).
+     Width MUST use vw only (never 100%): #demoLaptop is align-items:center
+     and percentage width collapses into a phone-narrow strip. */
+  @media (max-width: 999.98px) {
+    #demoOverlay.open,
+    #demoOverlay.bridging,
+    #demoOverlay.handoff-cover {
+      justify-content: flex-start !important;
+      align-items: center;
+      padding-top: 4.75rem;   /* clears matched mobile/tablet top CTAs */
+      padding-bottom: 0.5rem;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    #demoLaptop {
+      width: 96vw !important;
+      max-width: 96vw !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    .demo-screen {
+      --demo-screen-w: 96vw;
+      width: 96vw !important;
+      max-width: 96vw !important;
+      /* Remaining viewport under top chrome, minus laptop base deck */
+      height: calc(100dvh - 4.75rem - 0.5rem - 22px) !important;
+      max-height: calc(100dvh - 5.5rem) !important;
+    }
+    .demo-base {
+      width: calc(96vw * 1.035) !important;
+      max-width: none !important;
+    }
+  }
+
+  /* ---- Inner UI choreography: the app wakes AFTER the chassis lands ----
+     header drops in -> sidebar items cascade -> content rises -> KPI cards
+     stack in -> charts replay their intro + numbers count up (JS) */
+  @keyframes demoFadeIn  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes demoDropIn  { from { opacity: 0; transform: translate3d(0, -10px, 0); } to { opacity: 1; transform: none; } }
+  @keyframes demoSlideIn { from { opacity: 0; transform: translate3d(-14px, 0, 0); } to { opacity: 1; transform: none; } }
+  @keyframes demoRiseIn  { from { opacity: 0; transform: translate3d(0, 14px, 0); } to { opacity: 1; transform: none; } }
+  @keyframes demoCardIn  { from { opacity: 0; transform: translate3d(0, 16px, 0) scale(0.975); } to { opacity: 1; transform: none; } }
+
+  /* Under the opaque bridge: UI is fully painted (no empty shell flash).
+     Entrance staggers only run when NOT covered / already settled. */
+  #demoOverlay.bridging #appShell > header,
+  #demoOverlay.bridging #sideNav,
+  #demoOverlay.bridging #sideNav .side-item,
+  #demoOverlay.bridging #screenHost,
+  #demoOverlay.bridging [data-screen="financial"] .fv-card,
+  #demoOverlay.handoff-cover #appShell > header,
+  #demoOverlay.handoff-cover #sideNav,
+  #demoOverlay.handoff-cover #sideNav .side-item,
+  #demoOverlay.handoff-cover #screenHost,
+  #demoOverlay.handoff-cover [data-screen="financial"] .fv-card,
+  #demoOverlay.ui-ready #appShell > header,
+  #demoOverlay.ui-ready #sideNav,
+  #demoOverlay.ui-ready #sideNav .side-item,
+  #demoOverlay.ui-ready #screenHost,
+  #demoOverlay.ui-ready [data-screen="financial"] .fv-card {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) #appShell > header {
+    animation: demoDropIn 0.45s var(--ease-out) 0.1s both;
+  }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) #sideNav {
+    animation: demoFadeIn 0.45s var(--ease-out) 0.12s both;
+  }
+  /* Nav items cascade behind the panel fade; --i is set at build time */
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) #sideNav .side-item {
+    animation: demoSlideIn 0.42s var(--ease-out) both;
+    animation-delay: calc(0.2s + var(--i, 0) * 24ms);
+  }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) #screenHost {
+    animation: demoRiseIn 0.55s var(--ease-out) 0.16s both;
+  }
+  /* Dashboard cards stack in: KPI trio first, then the chart quartet */
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] .fv-card {
+    animation: demoCardIn 0.6s var(--ease-out) both;
+  }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:first-child .fv-card:nth-child(1) { animation-delay: 0.2s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:first-child .fv-card:nth-child(2) { animation-delay: 0.26s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:first-child .fv-card:nth-child(3) { animation-delay: 0.32s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:last-child  .fv-card:nth-child(1) { animation-delay: 0.34s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:last-child  .fv-card:nth-child(2) { animation-delay: 0.4s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:last-child  .fv-card:nth-child(3) { animation-delay: 0.46s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:last-child  .fv-card:nth-child(4) { animation-delay: 0.52s; }
+  /* On exit the screen "powers down" a beat before the chassis fades */
+  #demoOverlay.closing #appShell {
+    opacity: 0;
+    transition: opacity 0.22s ease;
+  }
+
+  #demoOverlay #exitDemo,
+  #demoOverlay #bookDemoMobile {
+    z-index: 40;
+    /* Keep off the site header until demo is open — pointer-events:auto on
+       children still hit-tests even when #demoOverlay is pointer-events:none. */
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  /* Exit Preview — mobile: top-right (swapped with Book Demo); desktop: top-right */
+  #exitDemo {
+    position: absolute;
+    left: auto;
+    right: 12px;
+    top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 192, 205, 0.5);
+    background: rgba(12, 36, 64, 0.92);
+    color: #1fc0cd;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      background-color 0.18s ease,
+      color 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.25s ease;
+  }
+  #exitDemo .book-demo-esc {
+    margin-left: 2px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0.6;
+  }
+  @keyframes demoExitBtnIn {
+    from { opacity: 0; transform: translate3d(0, -10px, 0) scale(0.94); }
+  }
+  #demoOverlay.open:not(.closing) #exitDemo {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    animation: demoExitBtnIn 0.55s var(--ease-out) 0.48s backwards;
+  }
+  #demoOverlay.bridging #exitDemo,
+  #demoOverlay.handoff-cover #exitDemo,
+  #demoOverlay.closing #exitDemo {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  #exitDemo:hover {
+    transform: translate3d(0, -1px, 0);
+    background: #1fc0cd;
+    color: #04222b;
+    border-color: #1fc0cd;
+    box-shadow: 0 10px 30px rgba(31, 192, 205, 0.45);
+  }
+  #exitDemo:active { transform: translate3d(0, 0, 0) scale(0.97); }
+  @media (min-width: 640px) {
+    #exitDemo {
+      left: auto;
+      right: 2rem;
+      top: 1.75rem;
+      font-size: 13px;
+      padding: 8px 16px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    /* Compact pill so long category names can still fit via JS font fit */
+    #activeCatTitle {
+      gap: 5px !important;
+      padding: 5px 8px !important;
+      font-size: 12px !important;
+      max-width: 100%;
+    }
+    #activeCatIcon svg {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  /* Shared Book a Live Demo CTA */
+  .book-demo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: #f5b83d;
+    color: #0a1a30;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(245, 184, 61, 0.35);
+    transition:
+      transform 0.2s ease,
+      background-color 0.18s ease,
+      box-shadow 0.25s ease;
+  }
+  .book-demo__icon {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: rgba(10, 26, 48, 0.1);
+    color: #0a1a30;
+  }
+  .book-demo__copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 1px;
+    line-height: 1.15;
+  }
+  .book-demo__eyebrow {
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    opacity: 0.78;
+  }
+  .book-demo__label {
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .book-demo__arrow {
+    flex: none;
+    margin-left: 2px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0.85;
+  }
+  .book-demo:hover {
+    transform: translate3d(0, -1px, 0);
+    background: #f0a820;
+    box-shadow: 0 10px 24px rgba(245, 184, 61, 0.48);
+  }
+  .book-demo:active { transform: translate3d(0, 0, 0) scale(0.98); }
+
+  /* Desktop: pinned to bottom of side nav, above Close All Tabs */
+  #bookDemo.book-demo--rail {
+    display: none;
+    position: relative;
+    isolation: isolate;
+    flex-shrink: 0;
+    align-self: stretch;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+    margin: auto 10px 12px;
+    padding: 11px 12px;
+    gap: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    /* Hidden until scheduleBookCta adds .cta-in (2s after demo lands) */
+    opacity: 0;
+    pointer-events: none;
+  }
+  #bookDemo.book-demo--rail::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%);
+    transform: translateX(-130%) skewX(-12deg);
+  }
+  #bookDemo.book-demo--rail.cta-in {
+    opacity: 1;
+    pointer-events: auto;
+    animation: bookCtaIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  }
+  #bookDemo.book-demo--rail.cta-in::after {
+    animation: bookCtaShine 0.55s ease-out 0.9s both;
+  }
+  @keyframes bookCtaIn {
+    0% { opacity: 0; transform: translateY(22px) scale(0.85); }
+  }
+  @keyframes bookCtaShine {
+    0% { transform: translateX(-130%) skewX(-12deg); }
+    100% { transform: translateX(130%) skewX(-12deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #bookDemo.book-demo--rail.cta-in,
+    #bookDemo.book-demo--rail.cta-in::after {
+      animation: none !important;
+    }
+  }
+  #bookDemo.book-demo--rail .book-demo__copy {
+    flex: 0 1 auto;
+    min-width: 0;
+    gap: 2px;
+    line-height: 1.2;
+  }
+  #bookDemo.book-demo--rail .book-demo__label {
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  #bookDemo.book-demo--rail .book-demo__eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+  #bookDemo.book-demo--rail .book-demo__icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+  #bookDemo.book-demo--rail .book-demo__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  /* Mid widths: compact rail CTA that stays inside the sidebar */
+  @media (min-width: 640px) and (max-width: 1299.98px) {
+    #bookDemo.book-demo--rail {
+      justify-content: flex-start;
+      margin: auto 10px 12px;
+      padding: 9px 10px;
+      gap: 8px;
+      border-radius: 10px;
+    }
+    #bookDemo.book-demo--rail .book-demo__label {
+      font-size: 12px;
+    }
+    #bookDemo.book-demo--rail .book-demo__eyebrow {
+      font-size: 8px;
+      letter-spacing: 0.05em;
+    }
+    #bookDemo.book-demo--rail .book-demo__icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+    }
+    #bookDemo.book-demo--rail .book-demo__icon svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+  @media (min-width: 640px) {
+    #bookDemo.book-demo--rail { display: flex; }
+    #bookDemoMobile.book-demo--chrome { display: none !important; }
+  }
+
+  /* Mobile chrome CTA — top-left; only while open */
+  #bookDemoMobile.book-demo--chrome {
+    position: absolute;
+    left: 12px;
+    right: auto;
+    top: 12px;
+    display: inline-flex;
+    max-width: min(200px, calc(100vw - 7.25rem));
+    opacity: 0;
+    gap: 7px;
+    padding: 7px 9px;
+    pointer-events: none;
+    visibility: hidden;
+  }
+  #bookDemoMobile.book-demo--chrome .book-demo__label { font-size: 12px; }
+  #bookDemoMobile.book-demo--chrome .book-demo__eyebrow { font-size: 8px; }
+  #demoOverlay.open:not(.closing) #bookDemoMobile {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    animation: demoExitBtnIn 0.55s var(--ease-out) 0.52s backwards;
+  }
+  #demoOverlay.bridging #bookDemoMobile,
+  #demoOverlay.handoff-cover #bookDemoMobile,
+  #demoOverlay.closing #bookDemoMobile {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  @media (max-width: 639.98px) {
+    #bookDemo.book-demo--rail { display: none !important; }
+
+    /* Matched mobile chrome CTAs: same height, shared top inset, clean spacing */
+    #exitDemo,
+    #bookDemoMobile.book-demo--chrome {
+      top: 12px;
+      box-sizing: border-box;
+      min-height: 44px;
+      height: 44px;
+      padding: 0 11px;
+      align-items: center;
+      border-radius: 10px;
+      gap: 6px;
+    }
+    #exitDemo {
+      left: auto;
+      right: 12px;
+      font-size: 11px;
+      line-height: 1;
+    }
+    #exitDemo .book-demo-esc {
+      margin-left: 0;
+      padding: 2px 5px;
+      font-size: 8px;
+    }
+    #bookDemoMobile.book-demo--chrome {
+      left: 12px;
+      right: auto;
+      max-width: min(210px, calc(100vw - 8.75rem));
+      overflow: hidden;
+    }
+    #bookDemoMobile.book-demo--chrome .book-demo__icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+    }
+    #bookDemoMobile.book-demo--chrome .book-demo__icon svg {
+      width: 14px;
+      height: 14px;
+    }
+    #bookDemoMobile.book-demo--chrome .book-demo__copy {
+      gap: 1px;
+      line-height: 1.1;
+      min-width: 0;
+    }
+    #bookDemoMobile.book-demo--chrome .book-demo__eyebrow {
+      font-size: 7.5px;
+      letter-spacing: 0.04em;
+    }
+    #bookDemoMobile.book-demo--chrome .book-demo__label {
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    #bookDemoMobile.book-demo--chrome .book-demo__arrow {
+      font-size: 12px;
+      margin-left: 0;
+    }
+  }
+
+  /* Reduced motion: overlay states resolve instantly — nothing sweeps,
+     breathes, springs, or counts (JS honours the same media query) */
+  @media (prefers-reduced-motion: reduce) {
+    #demoOverlay, #demoOverlay * {
+      transition-duration: 0.01ms !important;
+      animation: none !important;
+    }
+    #hero { transition: none; }
+    #hero.demo-recede { transform: none; filter: none; }
+  }
+
+  /* ---------- In-app screens ---------- */
+  .app-screen { display:none; opacity:0; transition: opacity .18s ease; }
+  .app-screen.active { display:block; }
+  .app-screen.visible { opacity:1; }
+
+  .side-item { transition: background-color .15s ease, color .15s ease; }
+  .side-item.active { background:#1fc0cd; color:#04222b; font-weight:600; }
+  .side-item.active svg { color:#04222b; }
+  .side-item:not(.active):hover { background:rgba(255,255,255,.08); color:#fff; }
+
+  /* Demo side nav menu: desktop (≥800) — larger type/icons, even spacing */
+  @media (min-width: 800px) {
+    #demoLaptop #sideNavItems {
+      gap: 5px;
+      padding-top: 0.7rem;
+      padding-bottom: 0.7rem;
+    }
+    #demoLaptop #sideNavItems .side-item {
+      gap: 0.7rem;
+      padding: 9px 14px;
+      font-size: 12.5px;
+      line-height: 1.25;
+      letter-spacing: 0.01em;
+    }
+    #demoLaptop #sideNavItems .side-item svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  /* Demo side nav menu: mid band (640–799) — compact type + tighter rail */
+  @media (min-width: 640px) and (max-width: 799.98px) {
+    #demoLaptop #sideNavItems {
+      gap: 2px;
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+    }
+    #demoLaptop #sideNavItems .side-item {
+      gap: 0.45rem;
+      padding: 6px 8px;
+      font-size: 9.5px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+    #demoLaptop #sideNavItems .side-item svg {
+      width: 12px;
+      height: 12px;
+    }
+    /* Keep Book Demo CTA readable inside the narrowed rail */
+    #bookDemo.book-demo--rail {
+      margin: auto 6px 10px;
+      padding: 7px 8px;
+      gap: 6px;
+    }
+    #bookDemo.book-demo--rail .book-demo__label {
+      font-size: 10.5px;
+    }
+    #bookDemo.book-demo--rail .book-demo__eyebrow {
+      font-size: 7px;
+      letter-spacing: 0.04em;
+    }
+    #bookDemo.book-demo--rail .book-demo__icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+    }
+    #bookDemo.book-demo--rail .book-demo__icon svg {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  /* Slim scrollbars inside the laptop — always show gutter (not overlay-only) */
+  .slim-scroll {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+    scrollbar-width: thin;
+    scrollbar-color: #c2ccd6 #e6ebf1;
+  }
+  .slim-scroll::-webkit-scrollbar { width:10px; height:10px; -webkit-appearance: none; display: block; }
+  .slim-scroll::-webkit-scrollbar-track { background:#e6ebf1; }
+  .slim-scroll::-webkit-scrollbar-thumb { background:#c2ccd6; border-radius:5px; border:2px solid #e6ebf1; }
+  /* Main content: teal horizontal bar, gray vertical — forced visible gutters */
+  #screenHost,
+  #screenScroll {
+    scrollbar-width: thin;
+    scrollbar-color: #1fc0cd #e6ebf1;
+  }
+  #screenHost::-webkit-scrollbar,
+  #screenScroll::-webkit-scrollbar {
+    width: 9px;
+    height: 13px;
+    -webkit-appearance: none;
+    display: block;
+    background: #e6ebf1;
+  }
+  #screenHost::-webkit-scrollbar-track,
+  #screenScroll::-webkit-scrollbar-track { background: #e6ebf1; }
+  #screenHost::-webkit-scrollbar-track:horizontal,
+  #screenScroll::-webkit-scrollbar-track:horizontal { background:#e6ebf1; }
+  #screenHost::-webkit-scrollbar-thumb:horizontal,
+  #screenScroll::-webkit-scrollbar-thumb:horizontal {
+    background:#1fc0cd; border-radius:6px; border:2px solid #e6ebf1;
+  }
+  #screenHost::-webkit-scrollbar-thumb:horizontal:hover,
+  #screenScroll::-webkit-scrollbar-thumb:horizontal:hover { background:#17a9b6; }
+  #screenHost::-webkit-scrollbar-thumb:vertical,
+  #screenScroll::-webkit-scrollbar-thumb:vertical {
+    background:#c2ccd6; border-radius:4px; border:2px solid #e6ebf1;
+  }
+  /* Desktop: #screenScroll +20% wider, default grey thumbs (match .slim-scroll) */
+  @media (min-width: 640px) {
+    #screenScroll {
+      scrollbar-width: auto;
+      scrollbar-color: #c2ccd6 #e6ebf1;
+    }
+    #screenScroll::-webkit-scrollbar {
+      width: 11px;  /* 9px + 20% */
+      height: 16px; /* 13px + ~20% */
+    }
+    #screenScroll::-webkit-scrollbar-thumb:horizontal,
+    #screenScroll::-webkit-scrollbar-thumb:vertical {
+      background: #c2ccd6;
+      border-radius: 5px;
+      border: 2px solid #e6ebf1;
+    }
+    #screenScroll::-webkit-scrollbar-thumb:horizontal:hover,
+    #screenScroll::-webkit-scrollbar-thumb:vertical:hover {
+      background: #aeb8c4;
+    }
+  }
+  /* Wide data tables must overflow so horizontal pan has somewhere to go */
+  #screenScroll .slim-scroll {
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+  #screenScroll table {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  /* Demo category scroll (Chrome + iOS Safari):
+     - Mid row stays a normal flex row so #sideNav is never covered
+     - #screenHost is a relative flex:1 clip box (overflow:hidden)
+     - #screenScroll is the absolute-fill overflow:auto scroller
+       (WebKit needs a positioned overflow layer with a bounded box;
+        putting absolute on #screenHost itself covered the sidebar) */
+  #appShell > .flex.min-h-0 {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  #sideNav {
+    position: relative !important;
+    z-index: 2 !important;
+    flex-shrink: 0 !important;
+  }
+  #screenHost {
+    position: relative !important;
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    height: auto !important;
+    overflow: hidden !important;
+    background: #eef2f6;
+  }
+  #screenScroll {
+    position: absolute !important;
+    inset: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    /* Vertical: scroll keeps the gutter; horizontal: auto — only when content overflows */
+    overflow-x: auto !important;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-x pan-y;
+    background: #eef2f6;
+    z-index: 1;
+  }
+  /* Once demo is settled, hard-kill transforms/animations on the chassis
+     so iOS does not keep a compositing layer that disables nested scroll. */
+  #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop,
+  #demoOverlay.open.ui-ready:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop {
+    animation: none !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+  #sideNavItems {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+
+  /* Material-style filter field (matches the app screenshots) */
+  .md-field { border-bottom:1px solid #9aa5b1; padding:2px 2px 4px 2px; position:relative; }
+  .md-field .md-label { font-size:9.5px; font-weight:600; color:#475569; letter-spacing:.01em; }
+  .md-field .md-value { font-size:11px; color:#94a3b8; margin-top:1px; display:flex; align-items:center; justify-content:space-between; gap:6px; }
+  .md-field .md-caret { width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent; border-top:5px solid #64748b; }
+
+  .app-link { color:#1a73e8; text-decoration:underline; text-underline-offset:2px; text-decoration-thickness:1px; cursor:pointer; }
+  .app-link:hover { color:#1557b0; }
+
+  .grid-th { font-size:10.5px; font-weight:600; color:#334155; text-align:left; padding:7px 10px; white-space:nowrap; }
+  .grid-td { font-size:10.5px; color:#1e293b; padding:7px 10px; white-space:nowrap; }
+  .grid-row { border-top:1px solid #e5eaf0; }
+  .grid-row:hover { background:#f4f8fc; }
+
+  .fv-card { background:#fff; border:1px solid #e3e8ee; border-radius:6px; box-shadow:0 1px 2px rgba(13,34,64,.05); }
+
+  /* ---------- Bottom tab workspace bar ----------
+     Signature FUNDVIEW UI: every screen/record you open docks as a closable
+     tab along the bottom of the app, with a "Close All Tabs" reset. */
+  .tab-item {
+    display:flex; align-items:center; gap:6px; padding:0 9px;
+    max-width:150px; border-right:1px solid #d3dae2; background:#dfe5ec;
+    color:#475569; font-size:10px; white-space:nowrap; cursor:pointer;
+    transition:background-color .12s ease, color .12s ease;
+  }
+  .tab-item:hover { background:#eef2f6; color:#0f172a; }
+  .tab-item.active { background:#fff; color:#0c2440; font-weight:600; box-shadow:inset 0 2px 0 #1fc0cd; }
+  .tab-item .tab-label { overflow:hidden; text-overflow:ellipsis; }
+  .tab-close { font-size:13px; line-height:1; color:#94a3b8; border-radius:3px; padding:0 3px; }
+  .tab-close:hover { background:#cbd5e1; color:#0f172a; }
+
+  /* Small action icons inside grids (receipting workflow, etc.) */
+  .grid-act { display:inline-flex; cursor:pointer; color:#1a73e8; }
+  .grid-act:hover { color:#1557b0; }
+
+  /* Calendar (month grid) */
+  .cal-cell { min-height:52px; border:1px solid #e5eaf0; padding:3px 4px; }
+  .cal-daynum { font-size:9.5px; color:#64748b; }
+  .cal-cell.cal-out { background:#f6f8fb; }
+  .cal-event { margin-top:2px; border-radius:3px; background:#1a73e8; padding:1px 4px; font-size:8.5px; line-height:1.25; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  /* Cash Receipting: in-screen sub-tabs + expandable batch rows */
+  .cr-tab { padding:4px 10px; font-weight:600; color:#64748b; border-bottom:2px solid transparent; cursor:pointer; background:none; }
+  .cr-tab:hover { color:#0f172a; }
+  .cr-tab.active { color:#0c2440; border-bottom-color:#1fc0cd; }
+  .cr-expand { display:inline-flex; height:14px; width:14px; align-items:center; justify-content:center; color:#94a3b8; transition:transform .15s ease; }
+  tr.cr-open .cr-expand { transform:rotate(90deg); color:#1a73e8; }
+  tr.cr-batch { cursor:pointer; }
+  tr.cr-batch.cr-open { background:#eef5fb; }
+  .cr-detail > td { background:#f7fafd; padding:0; }
+
+  /* ---------- Layout refinements (requested) ---------- */
+  /* Desktop: section height follows its content — no forced full-viewport */
+  @media (min-width: 1024px) {
+    #hero, #heroInner { min-height: 0 !important; }
+  }
+  /* Tablet & mobile: zoom the scene stage so the LAPTOP becomes the large,
+     centered subject of the video loop. Stage is a cover box scaled up and
+     positioned (clamped) to keep the laptop centered without exposing gaps. */
+  @media (max-width: 1023.98px) {
+    #sceneWrap {
+      max-width: none !important;
+    }
+    #scene {
+      aspect-ratio: auto !important;
+      width: 100vw !important;
+      max-width: none !important;
+      margin-left: calc(50% - 50vw) !important;
+      height: min(66vh, 120vw) !important;
+      max-height: none !important;
+    }
+    #sceneZoom {
+      --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.06);
+      --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.06);
+      inset: auto !important;
+      left: auto !important; bottom: auto !important;
+      width: var(--sw) !important;
+      height: var(--sh) !important;
+      right: clamp(calc(100cqw - var(--sw)), calc(50cqw - 0.32 * var(--sw)), 0px) !important;
+      top: clamp(calc(100cqh - var(--sh)), calc(50cqh - 0.60 * var(--sh)), 0px) !important;
+    }
+  }
+
+  /* Tablet only (not phones): slightly shorter frame, but stage must still
+     COVER the full frame width — never zoom out / letterbox (navy gutters). */
+  @media (min-width: 640px) and (max-width: 1023.98px) {
+    #scene {
+      width: 100vw !important;
+      max-width: none !important;
+      margin-left: calc(50% - 50vw) !important;
+      height: min(56.1vh, 102vw) !important; /* min(66vh, 120vw) × 0.85 */
+    }
+    #sceneZoom {
+      /* Keep cover scale (≥ frame) — same fill strategy as mobile */
+      --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.06);
+      --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.06);
+      left: auto !important;
+      right: clamp(calc(100cqw - var(--sw)), calc(50cqw - 0.32 * var(--sw)), 0px) !important;
+      top: clamp(calc(100cqh - var(--sh)), calc(50cqh - 0.55 * var(--sh)), 0px) !important;
+    }
+  }
+
+  /* Phones: town scene frame taller (+15% then +10%). Frame-pinned note/arrow
+     percentages were tuned for the old 53.6vw frame — retune so they sit on
+     the laptop again after the taller cover-crop. */
+  @media (max-width: 639.98px) {
+    #scene { height: min(67.8vw, 75.9vh) !important; }
+    div.scene-note-m {
+      left: 12% !important;
+      bottom: 31% !important;
+      width: 34% !important;
+    }
+    svg.scene-note-m {
+      left: 4% !important;
+      top: -11% !important;
+    }
+  }
+
+  /* Side navy edge-fades into the town scene — narrower on mobile so more sky shows */
+  .scene-blend-side--left { width: 4.5rem; }
+  .scene-blend-side--right { width: 2.5rem; }
+  @media (max-width: 639.98px) {
+    .scene-blend-side--left { width: 2.25rem; }
+    .scene-blend-side--right { width: 1.25rem; }
+  }
+
+  /* KPI cards: stack on phones so large currency values never overflow their card */
+  .kpi-grid { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
+  @media (min-width: 640px) { .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  /* Mobile-only note override: hide the in-scene desktop note, show frame-pinned copy */
+  .scene-note-m { display: none; }
+  @media (max-width: 640.98px) {
+    #handNote { display: none !important; }
+    #sceneZoom svg[viewBox="0 0 100 101"] { display: none !important; }
+    .scene-note-m { display: block !important; }
+    #sceneZoom { --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.08); --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.08); }
+  }
+
+
+    /* ——— Every FUNDVIEW Solution Delivers ——— */
+  </style>
+</head>
+<body>
 
   <section class="experience_fundview antialiased text-white overflow-x-hidden" id="experience_fundview" aria-label="Experience FUNDVIEW">
 
@@ -613,3 +2199,1372 @@
 
 <!-- Experience section end -->
   </section>
+
+  <!-- experience_fundview scripts -->
+  <script data-experience-fundview="">
+(function () {
+  'use strict';
+
+  /* 1. Sidebar nav */
+  const MODULES = [
+    { id:'financial', label:"Financial Management", icon:'<path d="M3 21h18"/><path d="M5 21V9l7-4 7 4v12"/><path d="M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01"/>' },
+    { id:'workforce', label:"Workforce Management", icon:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><circle cx="17" cy="10" r="2.5"/><path d="M15 15.5a5 5 0 016 4.5"/>' },
+    { id:'utility', label:"Utility & Field Services", icon:'<path d="M12 3s6 6.3 6 11a6 6 0 01-12 0c0-4.7 6-11 6-11Z"/>' },
+    { id:'community', label:"Community Development", icon:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>' },
+    { id:'court', label:"Municipal Court", icon:'<path d="M12 3v18"/><path d="M6 21h12"/><path d="M5 7h14"/><path d="M5 7l-2.5 5a3 3 0 006 0Z"/><path d="M19 7l-2.5 5a3 3 0 006 0Z"/>' },
+    { id:'citizen', label:"CityCentral™ Citizen Portal", icon:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>' },
+    { id:'platform', label:"The FUNDVIEW Platform", icon:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>' },
+  ]
+
+  const sideNav = document.getElementById('sideNav');
+  const sideNavItems = document.getElementById('sideNavItems') || sideNav;
+  MODULES.forEach((m, i) => {
+    const b = document.createElement('button');
+    b.className = 'side-item flex w-full items-center gap-2.5 px-3 py-[7px] text-left text-[11px] text-slate-300' + (i === 0 ? ' active' : '');
+    b.dataset.target = m.id;
+    b.style.setProperty('--i', i);   // cascade index for the open stagger
+    b.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">${m.icon}</svg><span class="hidden truncate sm:inline">${m.label}</span>`;
+    b.addEventListener('click', () => showScreen(m.id));
+    sideNavItems.appendChild(b);
+  });
+
+  /* 2. Screen switching */
+  /* Wrap category screens in #screenScroll — THAT element is the scroller.
+     #screenHost is only the relative clip box beside #sideNav. */
+  (function ensureScreenScroll() {
+    const shell = document.getElementById('screenHost');
+    if (!shell || document.getElementById('screenScroll')) return;
+    const wrap = document.createElement('div');
+    wrap.id = 'screenScroll';
+    while (shell.firstChild) wrap.appendChild(shell.firstChild);
+    shell.appendChild(wrap);
+  })();
+  const screens = document.querySelectorAll('.app-screen');
+  const host = document.getElementById('screenHost');
+  function scrollPane() {
+    return document.getElementById('screenScroll') || host;
+  }
+  let current = 'financial';
+
+  /* Bottom tab workspace */
+  const tabStrip = document.getElementById('tabStrip');
+  const SCREEN_LABELS = {};
+  MODULES.forEach(m => { SCREEN_LABELS[m.id] = m.label; });
+  SCREEN_LABELS.calendar = 'Calendar';
+  SCREEN_LABELS.notifications = 'Notifications';
+  SCREEN_LABELS['employee-profile'] = 'Employee';   // label overridden per employee on drill-down
+
+  /* Mobile only: shrink #activeCatTitle font until the label fits the pill */
+  function fitActiveCatTitle() {
+    var title = document.getElementById('activeCatTitle');
+    var text = document.getElementById('activeCatText');
+    if (!title || !text) return;
+    var mobile = false;
+    try { mobile = window.matchMedia('(max-width: 640px)').matches; } catch (_) {}
+    if (!mobile) {
+      title.style.fontSize = '';
+      return;
+    }
+    var size = 12;
+    var min = 8.5;
+    title.style.fontSize = size + 'px';
+    // Allow layout to settle, then step down while the label overflows
+    var steps = 16;
+    while (steps-- && text.scrollWidth > text.clientWidth + 0.5 && size > min) {
+      size -= 0.5;
+      title.style.fontSize = size + 'px';
+    }
+  }
+  function scheduleFitActiveCatTitle() {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(fitActiveCatTitle);
+    });
+  }
+  window.addEventListener('resize', scheduleFitActiveCatTitle);
+  let openTabs = ['financial'];
+
+  function renderTabs() {
+    tabStrip.innerHTML = openTabs.map(id =>
+      `<div class="tab-item${id === current ? ' active' : ''}" data-tab="${id}">` +
+        `<span class="tab-label">${SCREEN_LABELS[id] || id}</span>` +
+        (id === 'financial' ? '' : `<span class="tab-close" data-close="${id}" role="button" aria-label="Close tab">&times;</span>`) +
+      `</div>`).join('');
+  }
+  function openTab(id) {
+    if (!openTabs.includes(id)) openTabs.push(id);
+    renderTabs();
+  }
+  function closeTab(id) {
+    const i = openTabs.indexOf(id);
+    if (i === -1) return;
+    openTabs.splice(i, 1);
+    if (current === id) {
+      showScreen(openTabs[Math.min(i, openTabs.length - 1)] || 'financial');
+    } else {
+      renderTabs();
+    }
+  }
+  tabStrip.addEventListener('click', e => {
+    const closeEl = e.target.closest('.tab-close');
+    if (closeEl) { e.stopPropagation(); closeTab(closeEl.dataset.close); return; }
+    const tabEl = e.target.closest('.tab-item');
+    if (tabEl) showScreen(tabEl.dataset.tab);
+  });
+  document.getElementById('closeAllTabs').addEventListener('click', () => {
+    openTabs = ['financial'];
+    showScreen('financial', true);
+  });
+
+  function showScreen(id, instant, deferCharts) {
+    if (id === current && !instant) { openTab(id); return; }
+    sideNav.querySelectorAll('.side-item').forEach(el => el.classList.toggle('active', el.dataset.target === id));
+    const prev = document.querySelector(`.app-screen[data-screen="${current}"]`);
+    const next = document.querySelector(`.app-screen[data-screen="${id}"]`);
+    if (!next) return;
+    current = id;
+    var _cat = document.getElementById('activeCatText');
+    if (_cat) _cat.textContent = SCREEN_LABELS[id] || id;
+    var _icon = document.getElementById('activeCatIcon');
+    var _mod = MODULES.find(function (x) { return x.id === id; });
+    if (_icon && _mod) _icon.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + _mod.icon + '</svg>';
+    scheduleFitActiveCatTitle();
+    openTab(id);
+    const swap = () => {
+      screens.forEach(s => s.classList.remove('active', 'visible'));
+      next.classList.add('active');
+      scrollPane().scrollTop = 0;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        next.classList.add('visible');
+        // Chart construction blocks the main thread; during the hero dolly
+        // the caller defers it until the camera move has finished.
+        if (!deferCharts) { const wasBuilt = built.has(id); initCharts(id); if (wasBuilt) replayCharts(id); if (!reduced) runCountUps(); }
+      }));
+    };
+    if (instant || !prev || !prev.classList.contains('active')) { swap(); return; }
+    prev.classList.remove('visible');
+    setTimeout(swap, 180);
+  }
+
+  /* Header shortcuts open Calendar / Notifications as their own tabs */
+  const hdrCalendar = document.getElementById('hdrCalendar');
+  const hdrNotifs   = document.getElementById('hdrNotifs');
+  if (hdrCalendar) hdrCalendar.addEventListener('click', () => showScreen('calendar'));
+  if (hdrNotifs)   hdrNotifs.addEventListener('click',   () => showScreen('notifications'));
+
+  renderTabs();
+
+  /* 3. Table data */
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.font.size = 9.5;
+  Chart.defaults.color = '#475569';
+  const money = v => '$' + v.toLocaleString();
+  const leg = (pos, size) => ({ position: pos, labels: { boxWidth: 8, boxHeight: 8, font: { size: size || 8 } } });
+  const linkT = t => '<span class="app-link">' + t + '</span>';
+
+  const INVOICES = [
+    ['Southern Petrol...','3135153345','05/19/2026','141487','Chemical Labs T...','Yes','$801.21'],
+    ['AT&amp;T','987546126','05/19/2026','141487','Mobile Hotspot','Yes','$252.11'],
+    ['Absolute Termi...','6745354565','05/19/2026','141487','Pest and Termit...','Yes','$536.66'],
+    ['Mr Rooter Plum...','5748124','05/11/2026','141485','Bolt - Little Main...','Yes','$13.28'],
+    ["Leslie's Swimm...",'2541645','05/11/2026','141485','TG Phosphate R...','Yes','$86.99'],
+    ['Empire Paper C...','08339921','04/09/2026','141484','Toilet Paper...','No','$328.24'],
+    ['Apsco, Inc','S1564070.001','04/16/2026','140835',"500' Black Roll P...",'No','$2,265.74'],
+    ['Jackson Constr...','15997','04/17/2026','141480','Clearing &amp; Grubbing','Yes','$29,700.00'],
+  ];
+  const tbCI = document.getElementById('tbCourtInv');
+  if (tbCI) tbCI.innerHTML = INVOICES.map(r => '<tr class="grid-row"><td class="grid-td">'+linkT(r[0])+'</td><td class="grid-td">'+linkT(r[1])+'</td><td class="grid-td">'+r[2]+'</td><td class="grid-td">'+linkT(r[3])+'</td><td class="grid-td">'+r[4]+'</td><td class="grid-td">'+r[5]+'</td><td class="grid-td text-right font-semibold">'+r[6]+'</td></tr>').join('');
+
+  const ANNIV = [
+    ['Jason A Aguilar','06/24/2024','2'],['Jonah Christian Bailey','06/23/2025','1'],
+    ['Dylan Balentine','07/29/2024','2'],['Kendrick M Bilby','08/12/2025','1'],
+    ['Tedra D Bilby','04/27/2022','4'],['Connor W Booher','01/23/2019','7'],
+    ['Alex B Brooker','06/30/2008','18'],['Zachary A Davies','06/28/2021','5'],
+  ];
+  const tbWA = document.getElementById('tbWfAnniv');
+  if (tbWA) tbWA.innerHTML = ANNIV.map(r => '<tr class="grid-row"><td class="grid-td">'+r[0]+'</td><td class="grid-td">'+r[1]+'</td><td class="grid-td">'+r[2]+'</td></tr>').join('');
+
+  const built = new Set();
+  function financeCharts(pfx) {
+    const bva = document.getElementById(pfx+'Bva');
+    const pie = document.getElementById(pfx+'Pie');
+    if (bva) new Chart(bva, { type:'bar',
+      data:{ labels:['Jan','Feb','Mar','Apr','May','Jun','Aug'], datasets:[
+        { label:'Budget', data:[87000,73000,57000,89000,68000,77000,0], backgroundColor:'#2563eb' },
+        { label:'Actual', data:[57000,43000,43000,38000,35000,43000,0], backgroundColor:'#22c55e' }]},
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:leg('bottom') }, scales:{ y:{ max:100000, ticks:{ callback:money } }, x:{ grid:{ display:false } } } } });
+    if (pie) new Chart(pie, { type:'pie',
+      data:{ labels:['Property & Sales Taxes','Grants & Donations','Service Charges','Other Revenue','Fines & Fees','Intergovernmental'],
+        datasets:[{ data:[30,22,14,12,10,12], backgroundColor:['#2563eb','#14b8a6','#22c55e','#f97316','#facc15','#1e40af'], borderWidth:1, borderColor:'#fff' }]},
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:leg('right') } } });
+  }
+  function initCharts(id) {
+    if (built.has(id)) return;
+    if (id === 'financial') financeCharts('chFin');
+    if (id === 'platform')  financeCharts('chPlat');
+    if (id === 'community') {
+      const team = document.getElementById('chComTeam');
+      const st = document.getElementById('chComStatus');
+      const ty = document.getElementById('chComType');
+      if (team) new Chart(team, { type:'bar',
+        data:{ labels:['W. Goggins','Unassigned','D. Fariman','Z. Buza','C. Askew'], datasets:[
+          { label:'Open', data:[0,0,9,1,2], backgroundColor:'#3b82c4' },
+          { label:'Past Due', data:[8,1,0,0,0], backgroundColor:'#e53935' }]},
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:leg('bottom') }, scales:{ y:{ max:10 }, x:{ stacked:true, grid:{ display:false } } } } });
+      if (st) new Chart(st, { type:'pie', data:{ labels:['Open','Past Due'], datasets:[{ data:[72,28], backgroundColor:['#3b82c4','#43a047'], borderWidth:1, borderColor:'#fff' }]}, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:leg('bottom') } } });
+      if (ty) new Chart(ty, { type:'pie', data:{ labels:['Reconnect Cutoff','Cutoff - Nonpayment','Connect','General'], datasets:[{ data:[8,50,32,10], backgroundColor:['#ab47bc','#26c6da','#5c6bc0','#8bc34a'], borderWidth:1, borderColor:'#fff' }]}, options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:leg('bottom') } } });
+    }
+    built.add(id);
+  }
+
+  const heroInner   = document.getElementById('heroInner');
+  const hero        = document.getElementById('hero');
+  const hotspot     = document.getElementById('laptopHotspot');
+  const target      = document.getElementById('screenTarget');
+  const overlay     = document.getElementById('demoOverlay');
+  const demoLaptop  = document.getElementById('demoLaptop');
+  const exitBtn     = document.getElementById('exitDemo');
+  const sceneChange = document.getElementById('sceneChange');
+  const zoomClip    = document.getElementById('zoomClip');
+  const zoomOutClip = document.getElementById('zoomOutClip');
+  const zoomBridge  = document.getElementById('zoomBridge');
+  const reduced     = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sceneVid    = document.getElementById('sceneImg');
+  const sceneSnap   = document.getElementById('sceneSnap');
+  const sceneEl     = document.getElementById('sceneZoom');
+  const bookDemoCta = document.getElementById('bookDemo');
+
+  /* Flip to false to restore the CSS transform dolly instead of the clip */
+  const USE_ZOOM_VIDEO = true;
+
+  /* Video-zoom timeline (ms)
+     OPEN: FUNDVIEW-Zoom-In.mp4 then matched-frame handoff + SaaS lift
+     EXIT: FUNDVIEW-Zoom-Out.mp4 (forward play), with lift fallback */
+  const CROSS_IN_MS    = 180;
+  const CLIP_MS        = 1000;
+  const OPEN_MS        = 520;
+  const CLOSE_MS       = 400;
+  const EASE_IO        = 'cubic-bezier(0.23, 1, 0.32, 1)';
+  /* CSS-dolly fallback timing */
+  const ZOOM_MS = 750, BLOOM_AT = 380, CSS_REVEAL_AT = 450, UNZOOM_MS = 700;
+  /* Rail Book Demo CTA: pop in 2s after the demo lands (own timer, not zoomTimers) */
+  const BOOK_CTA_DELAY_MS = 2000;
+  let bookCtaTimer = null;
+  let demoOpen = false, animating = false;
+  let zoomTimers = [];
+  let endFrameReady = false;
+  let reverseRaf = 0;
+  let handoffStarted = false;
+  let openGen = 0;           // cancels stale async open work
+  let zoomInReady = false;
+  let zoomOutReady = false;
+  let zoomInBlobUrl = '';
+  let zoomOutBlobUrl = '';
+  let lockedScrollY = 0;
+
+  function clearZoomTimers() {
+    zoomTimers.forEach(clearTimeout);
+    zoomTimers = [];
+    if (reverseRaf) { cancelAnimationFrame(reverseRaf); reverseRaf = 0; }
+  }
+  function later(fn, ms) {
+    const id = setTimeout(fn, ms);
+    zoomTimers.push(id);
+    return id;
+  }
+
+  /* Page scroll lock while the demo is open.
+     Do NOT use position:fixed on body (Exit jump on iPhone).
+     Do NOT blanket-preventDefault every touchmove (kills nested pans).
+     Do NOT rAF-pin window.scrollY while a finger is inside #screenHost —
+     continuous scrollTo() cancels iOS Safari's nested overflow gesture.
+     Strategy: overflow:hidden + conditional touchmove block outside demo
+     scrollers + light rAF pin only when NOT touching a scroller. */
+  let scrollLocked = false;
+  let freezeRaf = 0;
+  let touchingDemoScroller = false;
+  let pageTouchMoveBlocker = null;
+  let lockTouchListenersBound = false;
+  function readScrollY() {
+    return window.scrollY
+      || window.pageYOffset
+      || document.documentElement.scrollTop
+      || document.body.scrollTop
+      || 0;
+  }
+  function pinScrollY(y) {
+    const top = (typeof y === 'number') ? y : lockedScrollY;
+    window.scrollTo(0, top);
+    try { document.documentElement.scrollTop = top; } catch (_) {}
+    try { document.body.scrollTop = top; } catch (_) {}
+  }
+  function isDemoScrollerTarget(target) {
+    if (!target || !target.closest) return false;
+    return !!target.closest(
+      '#screenScroll, #screenHost, #sideNavItems, #tabStrip, .slim-scroll, #demoLaptop .overflow-y-auto'
+    );
+  }
+  function onDemoTouchStart(e) {
+    touchingDemoScroller = isDemoScrollerTarget(e.target);
+  }
+  function onDemoTouchEnd() {
+    touchingDemoScroller = false;
+  }
+  function onPageTouchMoveBlock(e) {
+    if (!scrollLocked) return;
+    if (isDemoScrollerTarget(e.target)) return;
+    e.preventDefault();
+  }
+  function lockPageScroll() {
+    if (!scrollLocked) {
+      lockedScrollY = readScrollY();
+      scrollLocked = true;
+    }
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    // Clear any leftover fixed pin from older HubSpot pastes
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    if (!lockTouchListenersBound) {
+      lockTouchListenersBound = true;
+      document.addEventListener('touchstart', onDemoTouchStart, { passive: true, capture: true });
+      document.addEventListener('touchend', onDemoTouchEnd, { passive: true, capture: true });
+      document.addEventListener('touchcancel', onDemoTouchEnd, { passive: true, capture: true });
+    }
+    if (!pageTouchMoveBlocker) {
+      pageTouchMoveBlocker = onPageTouchMoveBlock;
+      document.addEventListener('touchmove', pageTouchMoveBlocker, { passive: false, capture: true });
+    }
+    cancelAnimationFrame(freezeRaf);
+    const tick = function () {
+      if (!scrollLocked) return;
+      // Never fight an in-progress nested pan on iOS
+      if (!touchingDemoScroller && Math.abs(readScrollY() - lockedScrollY) > 0.5) {
+        pinScrollY(lockedScrollY);
+      }
+      freezeRaf = requestAnimationFrame(tick);
+    };
+    freezeRaf = requestAnimationFrame(tick);
+  }
+  function unlockPageScroll() {
+    const y = lockedScrollY || 0;
+    scrollLocked = false;
+    touchingDemoScroller = false;
+    cancelAnimationFrame(freezeRaf);
+    freezeRaf = 0;
+    if (lockTouchListenersBound) {
+      document.removeEventListener('touchstart', onDemoTouchStart, true);
+      document.removeEventListener('touchend', onDemoTouchEnd, true);
+      document.removeEventListener('touchcancel', onDemoTouchEnd, true);
+      lockTouchListenersBound = false;
+    }
+    if (pageTouchMoveBlocker) {
+      document.removeEventListener('touchmove', pageTouchMoveBlocker, true);
+      pageTouchMoveBlocker = null;
+    }
+    try {
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    } catch (_) {}
+    // Pin BEFORE restoring overflow so iOS never paints at y=0
+    pinScrollY(y);
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    pinScrollY(y);
+    requestAnimationFrame(function () { pinScrollY(y); });
+    setTimeout(function () { pinScrollY(y); }, 0);
+    setTimeout(function () { pinScrollY(y); }, 50);
+    setTimeout(function () { pinScrollY(y); }, 120);
+    setTimeout(function () { pinScrollY(y); }, 280);
+  }
+
+  /* Hard reset used when a transition stalls — recovers without reload */
+  function forceResetDemo() {
+    clearZoomTimers();
+    stopCountUps();
+    cancelBookCta();
+    handoffStarted = false;
+    openGen++;
+    try { zoomClip.pause(); } catch (_) {}
+    try { zoomOutClip.pause(); } catch (_) {}
+    zoomClip.classList.remove('active');
+    zoomOutClip.classList.remove('active');
+    zoomClip.style.transitionDuration = '';
+    zoomOutClip.style.transitionDuration = '';
+    zoomOutClip.style.zIndex = '';
+    hideBridge(true);
+    resetOverlayClasses();
+    resetZoomClip();
+    hero.classList.remove('demo-recede');
+    sceneEl.style.transition = '';
+    sceneEl.style.transform = '';
+    sceneEl.classList.remove('hover-zoom');
+    unlockPageScroll();
+    sceneVid.play().catch(function () {});
+    demoOpen = false;
+    animating = false;
+  }
+
+  /* Hover push-in toward the laptop (suppressed while the dolly runs) */
+  hotspot.addEventListener('mouseenter', () => {
+    if (!demoOpen && !animating && !reduced) sceneEl.classList.add('hover-zoom');
+  });
+  hotspot.addEventListener('mouseleave', () => {
+    if (!demoOpen && !animating) sceneEl.classList.remove('hover-zoom');
+  });
+  hotspot.addEventListener('focus', () => {
+    if (!demoOpen && !animating && !reduced) sceneEl.classList.add('hover-zoom');
+  });
+  hotspot.addEventListener('blur', () => {
+    if (!demoOpen && !animating) sceneEl.classList.remove('hover-zoom');
+  });
+
+  /* Scaling a live <video> layer forces a re-rasterization on every frame of
+     the CSS dolly (measured ~4 fps). Freezing the current frame onto a canvas
+     and hiding the video for the duration of that move restores 60 fps. */
+  function freezeScene() {
+    if (!sceneVid.videoWidth) { sceneVid.pause(); return; }
+    sceneSnap.width  = sceneVid.videoWidth;
+    sceneSnap.height = sceneVid.videoHeight;
+    sceneSnap.getContext('2d').drawImage(sceneVid, 0, 0);
+    sceneSnap.classList.remove('hidden');
+    sceneVid.pause();
+    sceneVid.style.visibility = 'hidden';
+  }
+  function unfreezeScene() {
+    sceneVid.style.visibility = '';
+    sceneSnap.classList.add('hidden');
+    sceneVid.play().catch(() => {});
+  }
+
+  function prepareDashboard() {
+    const dash = document.querySelector('.app-screen[data-screen="financial"]');
+    openTabs = ['financial'];       // each fresh laptop-open starts with a clean tab bar
+    if (current === 'financial' && dash.classList.contains('active') && dash.classList.contains('visible')) { renderTabs(); return; }
+    // SYNCHRONOUS, transition-free swap. showScreen()'s double-rAF + .18s
+    // opacity fade is right for in-app switching, but during the matched-
+    // frame handoff it RACES the hard-cut's own double-rAF — losing means
+    // the cut reveals an empty white host that then ghost-fades in (seen
+    // on camera). Painting the dashboard synchronously under the opaque
+    // bridge makes the cut deterministic: content is always already there.
+    sideNav.querySelectorAll('.side-item').forEach(el =>
+      el.classList.toggle('active', el.dataset.target === 'financial'));
+    screens.forEach(s => s.classList.remove('active', 'visible'));
+    dash.style.transition = 'none';
+    dash.classList.add('active', 'visible');
+    void dash.offsetWidth;              // commit opacity:1 before restoring the fade
+    dash.style.transition = '';
+    scrollPane().scrollTop = 0;
+    current = 'financial';
+    renderTabs();
+  }
+
+  /* After chassis lands: keep #sideNav in normal flex flow; make
+     #screenScroll the absolute-fill overflow scroller inside #screenHost. */
+  function isPhoneDemo() {
+    try { return window.matchMedia('(max-width: 640px)').matches; }
+    catch (_) { return false; }
+  }
+  function armDemoScroll() {
+    try {
+      demoLaptop.style.animation = 'none';
+      demoLaptop.style.transform = 'none';
+      demoLaptop.style.willChange = 'auto';
+    } catch (_) {}
+
+    const screen = document.querySelector('#demoLaptop .demo-screen');
+    const appShell = document.getElementById('appShell');
+    const hostPane = document.getElementById('screenHost');
+    const scroller = document.getElementById('screenScroll');
+    const side = document.getElementById('sideNav');
+    const mid = appShell && (appShell.querySelector(':scope > .flex.min-h-0') || appShell.querySelector(':scope > .flex'));
+
+    clearDemoScrollSizing();
+
+    if (screen) {
+      const vv = window.visualViewport;
+      const vh = (vv && vv.height) ? vv.height : window.innerHeight;
+      if (isPhoneDemo()) {
+        /* Match CSS fill-bottom: keep top CTA clearance, grow into lower gap */
+        const topChrome = Math.round(4.75 * 16); /* 4.75rem */
+        const bottomPad = 8;
+        const baseDeck = 22;
+        const h = Math.round(Math.max(280, vh - topChrome - bottomPad - baseDeck));
+        screen.style.height = h + 'px';
+        screen.style.maxHeight = h + 'px';
+      }
+    }
+
+    if (!hostPane || !appShell) return;
+    void appShell.offsetHeight;
+
+    const header = appShell.querySelector(':scope > header');
+    const tabBar = document.getElementById('tabBar');
+    const shellH = appShell.clientHeight || (screen ? Math.max(0, screen.clientHeight - 16) : 0);
+    const budget = Math.max(
+      120,
+      shellH - (header ? header.offsetHeight : 0) - (tabBar ? tabBar.offsetHeight : 0)
+    );
+
+    // Mid row: hard pixel height, normal flex (sidebar + host side-by-side)
+    if (mid) {
+      mid.style.display = 'flex';
+      mid.style.flex = '1 1 0%';
+      mid.style.minHeight = '0';
+      mid.style.height = budget + 'px';
+      mid.style.maxHeight = budget + 'px';
+      mid.style.overflow = 'hidden';
+      mid.style.position = 'relative';
+    }
+    if (side) {
+      side.style.position = 'relative';
+      side.style.zIndex = '2';
+      side.style.flexShrink = '0';
+    }
+
+    // Host = relative clip box beside the nav (NOT absolute over the mid row)
+    hostPane.style.position = 'relative';
+    hostPane.style.flex = '1 1 0%';
+    hostPane.style.minWidth = '0';
+    hostPane.style.minHeight = '0';
+    hostPane.style.height = '100%';
+    hostPane.style.overflow = 'hidden';
+    hostPane.style.left = '';
+    hostPane.style.right = '';
+    hostPane.style.top = '';
+    hostPane.style.bottom = '';
+
+    // Scroller = absolute fill of host — iOS nested-scroll pattern
+    if (scroller) {
+      scroller.style.position = 'absolute';
+      scroller.style.left = '0';
+      scroller.style.right = '0';
+      scroller.style.top = '0';
+      scroller.style.bottom = '0';
+      scroller.style.width = 'auto';
+      scroller.style.height = 'auto';
+      scroller.style.overflow = 'scroll';
+      scroller.style.webkitOverflowScrolling = 'touch';
+      scroller.style.touchAction = 'pan-x pan-y';
+      scroller.style.overscrollBehavior = 'contain';
+      scroller.scrollTop = 0;
+      scroller.scrollLeft = 0;
+    }
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        if (!demoOpen) return;
+        scheduleFitActiveCatTitle();
+        const pane = scrollPane();
+        if (!pane) return;
+        const t = pane.scrollTop;
+        pane.scrollTop = t + 1;
+        pane.scrollTop = t;
+      });
+    });
+
+    bindDemoTouchScroll();
+  }
+
+  /* iPhone Safari often refuses nested overflow pans inside a fixed overlay.
+     Drive #screenScroll from touch deltas on phones (both axes). Nested
+     table/tab scrollers keep native pan — we don't steal those gestures. */
+  let touchScrollBound = false;
+  let tsActive = false;
+  let tsStartX = 0;
+  let tsStartY = 0;
+  let tsStartScrollX = 0;
+  let tsStartScrollY = 0;
+  let tsNested = false;
+  function onDemoScrollTouchStart(e) {
+    if (!demoOpen || !isPhoneDemo()) return;
+    const pane = scrollPane();
+    if (!pane || !e.touches || !e.touches[0]) return;
+    if (!pane.contains(e.target)) return;
+    // Nested horizontal/vertical regions (tables, tab strip, sidebar lists)
+    tsNested = !!(e.target.closest && e.target.closest(
+      '#tabStrip, #sideNavItems, #screenScroll .slim-scroll, #demoLaptop .overflow-y-auto, #demoLaptop .overflow-x-auto'
+    ));
+    if (tsNested) {
+      tsActive = false;
+      return;
+    }
+    tsActive = true;
+    tsStartX = e.touches[0].clientX;
+    tsStartY = e.touches[0].clientY;
+    tsStartScrollX = pane.scrollLeft;
+    tsStartScrollY = pane.scrollTop;
+  }
+  function onDemoScrollTouchMove(e) {
+    if (!tsActive || !demoOpen || !isPhoneDemo()) return;
+    const pane = scrollPane();
+    if (!pane || !e.touches || !e.touches[0]) return;
+    const maxY = pane.scrollHeight - pane.clientHeight;
+    const maxX = pane.scrollWidth - pane.clientWidth;
+    if (maxY <= 1 && maxX <= 1) return;
+    const dx = tsStartX - e.touches[0].clientX;
+    const dy = tsStartY - e.touches[0].clientY;
+    if (maxY > 1) pane.scrollTop = Math.max(0, Math.min(maxY, tsStartScrollY + dy));
+    if (maxX > 1) pane.scrollLeft = Math.max(0, Math.min(maxX, tsStartScrollX + dx));
+    e.preventDefault();
+  }
+  function onDemoScrollTouchEnd() {
+    tsActive = false;
+    tsNested = false;
+  }
+  function bindDemoTouchScroll() {
+    const pane = scrollPane();
+    if (!pane || touchScrollBound) return;
+    touchScrollBound = true;
+    pane.addEventListener('touchstart', onDemoScrollTouchStart, { passive: true });
+    pane.addEventListener('touchmove', onDemoScrollTouchMove, { passive: false });
+    pane.addEventListener('touchend', onDemoScrollTouchEnd, { passive: true });
+    pane.addEventListener('touchcancel', onDemoScrollTouchEnd, { passive: true });
+    // Nested table/list panes: drive both axes when Safari won't
+    pane.addEventListener('touchstart', onNestedScrollTouchStart, { passive: true, capture: true });
+    pane.addEventListener('touchmove', onNestedScrollTouchMove, { passive: false, capture: true });
+    pane.addEventListener('touchend', onNestedScrollTouchEnd, { passive: true, capture: true });
+    pane.addEventListener('touchcancel', onNestedScrollTouchEnd, { passive: true, capture: true });
+  }
+
+  let nestActive = false;
+  let nestEl = null;
+  let nestX = 0, nestY = 0, nestSX = 0, nestSY = 0;
+  function nestedScrollEl(target) {
+    if (!target || !target.closest) return null;
+    return target.closest('#screenScroll .slim-scroll, #tabStrip');
+  }
+  function onNestedScrollTouchStart(e) {
+    if (!demoOpen || !isPhoneDemo() || !e.touches || !e.touches[0]) return;
+    const el = nestedScrollEl(e.target);
+    if (!el) { nestActive = false; nestEl = null; return; }
+    nestActive = true;
+    nestEl = el;
+    nestX = e.touches[0].clientX;
+    nestY = e.touches[0].clientY;
+    nestSX = el.scrollLeft;
+    nestSY = el.scrollTop;
+  }
+  function onNestedScrollTouchMove(e) {
+    if (!nestActive || !nestEl || !demoOpen || !isPhoneDemo()) return;
+    if (!e.touches || !e.touches[0]) return;
+    const maxX = nestEl.scrollWidth - nestEl.clientWidth;
+    const maxY = nestEl.scrollHeight - nestEl.clientHeight;
+    if (maxX <= 1 && maxY <= 1) return;
+    const dx = nestX - e.touches[0].clientX;
+    const dy = nestY - e.touches[0].clientY;
+    if (maxX > 1) nestEl.scrollLeft = Math.max(0, Math.min(maxX, nestSX + dx));
+    if (maxY > 1) nestEl.scrollTop = Math.max(0, Math.min(maxY, nestSY + dy));
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  function onNestedScrollTouchEnd() {
+    nestActive = false;
+    nestEl = null;
+  }
+
+  function clearDemoScrollSizing() {
+    const screen = document.querySelector('#demoLaptop .demo-screen');
+    const appShell = document.getElementById('appShell');
+    const hostPane = document.getElementById('screenHost');
+    const scroller = document.getElementById('screenScroll');
+    const side = document.getElementById('sideNav');
+    const mid = appShell && (appShell.querySelector(':scope > .flex.min-h-0') || appShell.querySelector(':scope > .flex'));
+    if (screen) {
+      screen.style.height = '';
+      screen.style.maxHeight = '';
+    }
+    if (appShell) {
+      appShell.style.minHeight = '';
+      appShell.style.height = '';
+      appShell.style.maxHeight = '';
+      appShell.style.overflow = '';
+      appShell.style.display = '';
+      appShell.style.flexDirection = '';
+    }
+    if (mid) {
+      mid.style.display = '';
+      mid.style.flex = '';
+      mid.style.minHeight = '';
+      mid.style.height = '';
+      mid.style.maxHeight = '';
+      mid.style.overflow = '';
+      mid.style.position = '';
+    }
+    if (side) {
+      side.style.position = '';
+      side.style.zIndex = '';
+      side.style.flexShrink = '';
+    }
+    if (hostPane) {
+      hostPane.style.position = '';
+      hostPane.style.left = '';
+      hostPane.style.right = '';
+      hostPane.style.top = '';
+      hostPane.style.bottom = '';
+      hostPane.style.width = '';
+      hostPane.style.flex = '';
+      hostPane.style.minWidth = '';
+      hostPane.style.minHeight = '';
+      hostPane.style.height = '';
+      hostPane.style.maxHeight = '';
+      hostPane.style.overflow = '';
+      hostPane.style.overflowY = '';
+      hostPane.style.webkitOverflowScrolling = '';
+      hostPane.style.touchAction = '';
+      hostPane.style.overscrollBehavior = '';
+    }
+    if (scroller) {
+      scroller.style.position = '';
+      scroller.style.left = '';
+      scroller.style.right = '';
+      scroller.style.top = '';
+      scroller.style.bottom = '';
+      scroller.style.width = '';
+      scroller.style.height = '';
+      scroller.style.overflow = '';
+      scroller.style.overflowX = '';
+      scroller.style.overflowY = '';
+      scroller.style.webkitOverflowScrolling = '';
+      scroller.style.touchAction = '';
+      scroller.style.overscrollBehavior = '';
+    }
+  }
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function () {
+      if (demoOpen && !animating && isPhoneDemo()) armDemoScroll();
+    });
+  }
+  window.addEventListener('resize', function () {
+    if (demoOpen && !animating) armDemoScroll();
+  });
+
+  /* Replay chart intro animations on each open so the dashboard reads as
+     freshly computed every time the laptop lifts */
+  function replayCharts(id) {
+    document.querySelectorAll('.app-screen[data-screen="' + id + '"] canvas').forEach(function (c) {
+      const ch = Chart.getChart(c);
+      if (ch) { ch.reset(); ch.update(); }
+    });
+  }
+
+  /* KPI count-up: the headline numbers roll to their value with an
+     expo-out tail — cancelled (and snapped to final) on close */
+  let countRafs = [];
+  function fmtKpi(el, v) {
+    const dec = +(el.dataset.dec || 0);
+    return (el.dataset.prefix || '') + v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  }
+  function stopCountUps() {
+    countRafs.forEach(cancelAnimationFrame);
+    countRafs = [];
+    document.querySelectorAll('#demoOverlay .kpi-num').forEach(function (el) {
+      el.textContent = fmtKpi(el, parseFloat(el.dataset.count));
+    });
+  }
+  function runCountUps() {
+    stopCountUps();
+    document.querySelectorAll('#demoOverlay .kpi-num').forEach(function (el) {
+      const end = parseFloat(el.dataset.count);
+      const t0 = performance.now();
+      const tick = function (now) {
+        const p = Math.min(1, (now - t0) / 950);
+        const e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+        el.textContent = fmtKpi(el, end * e);
+        if (p < 1) countRafs.push(requestAnimationFrame(tick));
+      };
+      countRafs.push(requestAnimationFrame(tick));
+    });
+  }
+
+  /* Draw the current zoom-clip frame (or a preloaded end still) onto #zoomBridge
+     at device-pixel resolution so the dissolve stays sharp. */
+  function paintBridgeFromVideo() {
+    const src = zoomClip;
+    if (!src.videoWidth) return false;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = src.videoWidth, h = src.videoHeight;
+    zoomBridge.width  = Math.round(w * dpr);
+    zoomBridge.height = Math.round(h * dpr);
+    const ctx = zoomBridge.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.drawImage(src, 0, 0, w, h);
+    endFrameReady = true;
+    return true;
+  }
+
+  function paintBridgeFromImage(img) {
+    if (!img || !img.naturalWidth) return false;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = img.naturalWidth, h = img.naturalHeight;
+    zoomBridge.width  = Math.round(w * dpr);
+    zoomBridge.height = Math.round(h * dpr);
+    const ctx = zoomBridge.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.drawImage(img, 0, 0, w, h);
+    endFrameReady = true;
+    return true;
+  }
+
+  function showBridge() {
+    zoomBridge.classList.add('visible');
+  }
+  function hideBridge(instant) {
+    if (instant) {
+      zoomBridge.style.transition = 'none';
+      zoomBridge.classList.remove('visible', 'zoom-through');
+      void zoomBridge.offsetWidth;
+      zoomBridge.style.transition = '';
+    } else {
+      zoomBridge.classList.remove('visible', 'zoom-through');
+    }
+  }
+
+  function resetZoomClip() {
+    zoomClip.pause();
+    zoomClip.classList.remove('active');
+    try { zoomClip.currentTime = 0; } catch (_) {}
+  }
+
+  function resetOverlayClasses() {
+    overlay.classList.remove('open', 'bridging', 'closing', 'handoff-cover', 'ui-ready');
+    overlay.classList.add('pointer-events-none');
+    overlay.style.opacity = '0';
+    overlay.setAttribute('aria-hidden', 'true');
+    demoLaptop.style.removeProperty('--exit-x');
+    demoLaptop.style.removeProperty('--exit-y');
+  }
+
+  function scheduleBookCta() {
+    cancelBookCta();
+    if (!bookDemoCta) return;
+    bookCtaTimer = setTimeout(() => {
+      bookCtaTimer = null;
+      if (demoOpen) bookDemoCta.classList.add('cta-in');
+    }, BOOK_CTA_DELAY_MS);
+  }
+  function cancelBookCta() {
+    if (bookCtaTimer) { clearTimeout(bookCtaTimer); bookCtaTimer = null; }
+    if (bookDemoCta) bookDemoCta.classList.remove('cta-in');
+  }
+
+  /* Preload the known end still so the handoff never paints a mid-dolly frame */
+  const endStill = new Image();
+  endStill.decoding = 'async';
+  endStill.src = 'https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/zoom-in-end-frame.png';
+
+  function paintTrueEndBridge() {
+    // Prefer the preloaded end still (pixel-stable). Fall back to the seeked
+    // last video frame only if the still is not ready yet.
+    if (paintBridgeFromImage(endStill)) return true;
+    return paintBridgeFromVideo();
+  }
+
+  function seekClipToEnd(done) {
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      done();
+    };
+    try {
+      zoomClip.pause();
+      if (zoomClip.duration && isFinite(zoomClip.duration)) {
+        const endT = Math.max(0, zoomClip.duration - 0.033);
+        if (Math.abs(zoomClip.currentTime - endT) > 0.02) {
+          const onSeeked = () => {
+            zoomClip.removeEventListener('seeked', onSeeked);
+            finish();
+          };
+          zoomClip.addEventListener('seeked', onSeeked);
+          zoomClip.currentTime = endT;
+          later(finish, 120); // safety if seeked never fires
+          return;
+        }
+      }
+    } catch (_) { /* fall through */ }
+    finish();
+  }
+
+  function whenVideoReady(video, cb, timeoutMs) {
+    if (video.readyState >= 3 /* HAVE_FUTURE_DATA */) { cb(true); return; }
+    let done = false;
+    const finish = (ok) => {
+      if (done) return;
+      done = true;
+      video.removeEventListener('canplaythrough', onReady);
+      video.removeEventListener('canplay', onReady);
+      video.removeEventListener('loadeddata', onReady);
+      video.removeEventListener('error', onErr);
+      cb(ok);
+    };
+    const onReady = () => finish(true);
+    const onErr = () => finish(false);
+    video.addEventListener('canplaythrough', onReady, { once: true });
+    video.addEventListener('canplay', onReady, { once: true });
+    video.addEventListener('loadeddata', onReady, { once: true });
+    video.addEventListener('error', onErr, { once: true });
+    later(() => finish(video.readyState >= 2), timeoutMs || 900);
+  }
+
+  /* Warm zoom clips into blob URLs so open/close play from memory */
+  function warmOneClip(video, setReady, getBlob, setBlob) {
+    const src = video.getAttribute('src') || video.currentSrc;
+    if (!src) return;
+    fetch(src, { cache: 'force-cache' }).then(function (r) {
+      if (!r.ok) throw new Error('zoom fetch failed');
+      return r.blob();
+    }).then(function (blob) {
+      const prev = getBlob();
+      if (prev) URL.revokeObjectURL(prev);
+      const url = URL.createObjectURL(blob);
+      setBlob(url);
+      video.src = url;
+      video.preload = 'auto';
+      video.load();
+      whenVideoReady(video, function (ok) { setReady(!!ok); }, 4000);
+    }).catch(function () {
+      try { video.load(); } catch (_) {}
+      whenVideoReady(video, function (ok) { setReady(!!ok); }, 4000);
+    });
+  }
+
+  function warmZoomAssets() {
+    if (!USE_ZOOM_VIDEO || !zoomClip) return;
+    if (endStill.decode) endStill.decode().catch(function () {});
+    warmOneClip(
+      zoomClip,
+      function (ok) { zoomInReady = ok; },
+      function () { return zoomInBlobUrl; },
+      function (u) { zoomInBlobUrl = u; }
+    );
+    if (zoomOutClip) {
+      warmOneClip(
+        zoomOutClip,
+        function (ok) { zoomOutReady = ok; },
+        function () { return zoomOutBlobUrl; },
+        function (u) { zoomOutBlobUrl = u; }
+      );
+    }
+  }
+
+  /* Primary: pre-rendered zoom clip + opaque matched-frame bridge */
+  function openDemoVideo() {
+    if (demoOpen || animating) return;
+    animating = true; demoOpen = true;
+    handoffStarted = false;
+    const gen = ++openGen;
+    clearZoomTimers();
+    hideBridge(true);
+    resetOverlayClasses();
+
+    // Freeze hover push-in so the loop frame is stable under the dissolve
+    sceneEl.style.transform = getComputedStyle(sceneEl).transform;
+    sceneEl.style.transition = 'none';
+    sceneEl.classList.remove('hover-zoom');
+
+    lockPageScroll();
+    sceneVid.pause();
+
+    // Do NOT apply demo-recede here — blur/filter mid-clip freezes playback.
+    // Recede only after the hard cut when the overlay already covers the hero.
+
+    const failToCss = () => {
+      if (gen !== openGen) return;
+      // Video path unavailable — fall through to CSS dolly without getting stuck
+      demoOpen = false; animating = false;
+      unlockPageScroll();
+      openDemoCssDolly();
+    };
+
+    const armHandoffWatchers = () => {
+      // Prefer real clip progress over wall-clock (avoids cutting while stalled)
+      const onTime = () => {
+        if (gen !== openGen || !demoOpen || handoffStarted) return;
+        const d = zoomClip.duration;
+        if (d && isFinite(d) && zoomClip.currentTime >= d - 0.05) {
+          zoomClip.removeEventListener('timeupdate', onTime);
+          beginMatchedHandoff(gen);
+        }
+      };
+      zoomClip.addEventListener('timeupdate', onTime);
+      zoomClip.addEventListener('ended', () => {
+        if (gen !== openGen || !demoOpen || handoffStarted) return;
+        beginMatchedHandoff(gen);
+      }, { once: true });
+      // Absolute safety: never leave the UI frozen mid-dolly
+      later(() => {
+        if (gen !== openGen || !demoOpen || handoffStarted) return;
+        beginMatchedHandoff(gen);
+      }, CLIP_MS + CROSS_IN_MS + 700);
+    };
+
+    const startClip = () => {
+      if (gen !== openGen || !demoOpen) return;
+      zoomClip.style.transitionDuration = CROSS_IN_MS + 'ms';
+      zoomClip.classList.add('active');
+      const playPromise = zoomClip.play();
+      armHandoffWatchers();
+      if (playPromise && playPromise.catch) {
+        playPromise.catch(() => {
+          if (gen !== openGen) return;
+          // Autoplay/play failed — land via handoff or CSS fallback
+          later(() => {
+            if (handoffStarted || gen !== openGen) return;
+            if (zoomClip.readyState >= 2) beginMatchedHandoff(gen);
+            else failToCss();
+          }, 200);
+        });
+      }
+    };
+
+    whenVideoReady(zoomClip, (ok) => {
+      if (gen !== openGen || !demoOpen) return;
+      if (!ok && zoomClip.readyState < 2) { failToCss(); return; }
+      try { zoomClip.currentTime = 0; } catch (_) {}
+      // Small rAF so currentTime=0 commits before play (avoids mid-frame starts)
+      requestAnimationFrame(() => {
+        if (gen !== openGen || !demoOpen) return;
+        startClip();
+      });
+    }, zoomInReady ? 200 : 1000);
+  }
+
+  function beginMatchedHandoff(gen) {
+    if (gen != null && gen !== openGen) return;
+    if (!demoOpen || handoffStarted) return;
+    handoffStarted = true;
+
+    const finishOpen = () => {
+      if (gen != null && gen !== openGen) return;
+      if (!demoOpen) return;
+      try {
+        paintTrueEndBridge();
+        showBridge();
+
+        prepareDashboard();
+
+        overlay.classList.remove('pointer-events-none', 'closing');
+        overlay.classList.add('bridging', 'handoff-cover');
+        overlay.style.opacity = '1';
+        overlay.setAttribute('aria-hidden', 'false');
+        void demoLaptop.offsetWidth;
+
+        overlay.classList.remove('bridging');
+        overlay.classList.add('open', 'ui-ready');
+
+        const fresh = !built.has('financial');
+        try {
+          initCharts('financial');
+          if (!reduced) {
+            if (!fresh) replayCharts('financial');
+            stopCountUps();
+          }
+        } catch (err) {
+          console.warn('demo charts init', err);
+        }
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            if ((gen != null && gen !== openGen) || !demoOpen) return;
+            hideBridge(true);
+            overlay.classList.remove('handoff-cover');
+            // Recede hero only now that the overlay fully covers it
+            hero.classList.add('demo-recede');
+            if (!reduced) runCountUps();
+            scheduleBookCta(); // CTA pops in 2s after the demo lands
+            animating = false;
+            armDemoScroll();
+            zoomClip.style.transitionDuration = '280ms';
+            zoomClip.classList.remove('active');
+            zoomClip.pause();
+          });
+        });
+      } catch (err) {
+        console.warn('demo handoff failed', err);
+        // Last resort: show overlay even if bridge paint failed
+        overlay.classList.remove('pointer-events-none', 'closing', 'bridging', 'handoff-cover');
+        overlay.classList.add('open', 'ui-ready');
+        overlay.style.opacity = '1';
+        overlay.setAttribute('aria-hidden', 'false');
+        hideBridge(true);
+        zoomClip.classList.remove('active');
+        zoomClip.pause();
+        hero.classList.add('demo-recede');
+        scheduleBookCta();
+        animating = false;
+        armDemoScroll();
+      }
+    };
+
+    seekClipToEnd(finishOpen);
+  }
+
+  function setExitVector() {
+    // Aim the reverse-lift fallback toward the on-page laptop screen hotspot
+    try {
+      const from = demoLaptop.getBoundingClientRect();
+      const to = (target || hotspot).getBoundingClientRect();
+      const dx = (to.left + to.width / 2) - (from.left + from.width / 2);
+      const dy = (to.top + to.height / 2) - (from.top + from.height / 2);
+      demoLaptop.style.setProperty('--exit-x', (dx * 0.22).toFixed(1) + 'px');
+      demoLaptop.style.setProperty('--exit-y', (dy * 0.22).toFixed(1) + 'px');
+    } catch (_) {
+      demoLaptop.style.setProperty('--exit-x', '0px');
+      demoLaptop.style.setProperty('--exit-y', '28px');
+    }
+  }
+
+  function finishCloseCleanup() {
+    const y = lockedScrollY;
+    pinScrollY(y);
+    cancelBookCta();
+    resetOverlayClasses();
+    resetZoomClip();
+    try {
+      zoomOutClip.pause();
+      zoomOutClip.currentTime = 0;
+    } catch (_) {}
+    zoomOutClip.classList.remove('active');
+    zoomOutClip.style.zIndex = '';
+    zoomOutClip.style.transitionDuration = '';
+    hideBridge(true);
+    handoffStarted = false;
+    overlay.style.transition = '';
+    demoLaptop.style.transition = '';
+    demoLaptop.style.animation = '';
+    demoLaptop.style.transform = '';
+    demoLaptop.style.willChange = '';
+    sceneEl.style.transition = '';
+    sceneEl.style.transform = '';
+    clearDemoScrollSizing();
+    if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
+    unlockPageScroll();
+    demoOpen = false;
+    animating = false;
+    pinScrollY(y);
+  }
+
+  /* EXIT: play FUNDVIEW-Zoom-Out.mp4, then hand back to the live town scene */
+  function closeDemoVideo() {
+    if (!demoOpen) return;
+    // Allow exit even if open handoff is mid-flight (prevents "stuck" reloads)
+    if (animating && !overlay.classList.contains('open')) {
+      forceResetDemo();
+      return;
+    }
+    if (animating) return;
+    animating = true;
+    clearZoomTimers();
+    stopCountUps();
+    cancelBookCta();
+    openGen++; // cancel any stray open watchers
+
+    hero.classList.remove('demo-recede');
+    sceneVid.play().catch(function () {});
+    sceneEl.style.transition = '';
+    sceneEl.style.transform = '';
+    resetZoomClip();
+    hideBridge(true);
+
+    if (reduced) {
+      overlay.classList.add('closing');
+      overlay.classList.remove('open', 'bridging', 'ui-ready', 'handoff-cover');
+      later(finishCloseCleanup, 40);
+      return;
+    }
+
+    const clip = zoomOutClip;
+    if (!clip) {
+      // No out clip — CSS reverse lift fallback
+      setExitVector();
+      demoLaptop.style.transition =
+        'transform ' + CLOSE_MS + 'ms ' + EASE_IO + ', opacity ' + Math.max(280, CLOSE_MS - 40) + 'ms ' + EASE_IO;
+      overlay.classList.add('closing');
+      overlay.classList.remove('bridging', 'handoff-cover');
+      void demoLaptop.offsetWidth;
+      overlay.classList.remove('open', 'ui-ready');
+      later(finishCloseCleanup, CLOSE_MS + 40);
+      return;
+    }
+
+    let done = false;
+    const finish = function () {
+      if (done) return;
+      done = true;
+      clip.style.transitionDuration = '280ms';
+      clip.classList.remove('active');
+      later(finishCloseCleanup, 300);
+    };
+
+    const startOut = function () {
+      clip.style.zIndex = '60';
+      clip.style.transitionDuration = '0ms';
+      try { clip.currentTime = 0; } catch (_) {}
+      clip.classList.add('active');
+
+      overlay.classList.add('closing');
+      overlay.classList.remove('open', 'bridging', 'ui-ready', 'handoff-cover');
+      overlay.style.transition = 'opacity .14s linear';
+      overlay.style.opacity = '0';
+
+      const play = function () {
+        const p = clip.play();
+        if (p && p.catch) {
+          p.catch(function () {
+            // Play failed — finish via lift so we never stick
+            finish();
+          });
+        }
+      };
+      requestAnimationFrame(play);
+      clip.addEventListener('ended', finish, { once: true });
+      later(finish, 2200); // safety if ended never fires
+    };
+
+    whenVideoReady(clip, function (ok) {
+      if (!ok && clip.readyState < 2) {
+        // Out clip not ready — CSS reverse lift fallback
+        setExitVector();
+        demoLaptop.style.transition =
+          'transform ' + CLOSE_MS + 'ms ' + EASE_IO + ', opacity ' + Math.max(280, CLOSE_MS - 40) + 'ms ' + EASE_IO;
+        overlay.classList.add('closing');
+        overlay.classList.remove('bridging', 'handoff-cover');
+        void demoLaptop.offsetWidth;
+        overlay.classList.remove('open', 'ui-ready');
+        later(finishCloseCleanup, CLOSE_MS + 40);
+        return;
+      }
+      startOut();
+    }, zoomOutReady ? 200 : 800);
+  }
+
+  function openDemoCssDolly() {
+    if (demoOpen || animating) return;
+    animating = true; demoOpen = true;
+    clearZoomTimers();
+
+    freezeScene();
+    sceneEl.style.transform = getComputedStyle(sceneEl).transform;
+    sceneEl.style.transition = 'none';
+
+    const r = target.getBoundingClientRect();
+    const h = heroInner.getBoundingClientRect();
+    const ox = r.left - h.left + r.width  / 2;
+    const oy = r.top  - h.top  + r.height / 2;
+    const scale = Math.max(window.innerWidth / r.width, window.innerHeight / r.height) * 1.02;
+    heroInner.style.transformOrigin = ox + 'px ' + oy + 'px';
+
+    lockPageScroll();
+    heroInner.classList.add('zooming');
+    if (!reduced) {
+      void heroInner.offsetWidth;
+      heroInner.style.transform = 'scale(' + scale.toFixed(3) + ')';
+    }
+
+    later(() => {
+      if (!demoOpen) return;
+      heroInner.classList.add('scene-change');
+      if (!reduced) {
+        sceneChange.classList.remove('flash');
+        void sceneChange.offsetWidth;
+        sceneChange.classList.add('flash');
+      }
+    }, reduced ? 20 : BLOOM_AT);
+
+    later(() => {
+      overlay.classList.remove('pointer-events-none');
+      overlay.classList.add('open');
+      overlay.style.opacity = '1';
+      overlay.setAttribute('aria-hidden', 'false');
+      prepareDashboard();
+      later(() => {
+        animating = false;
+        armDemoScroll();
+        const fresh = !built.has('financial');
+        initCharts('financial');
+        if (!reduced) {
+          if (!fresh) replayCharts('financial');
+          runCountUps();
+        }
+        heroInner.classList.remove('scene-change');
+        sceneChange.classList.remove('flash');
+        hero.classList.add('demo-recede');
+        scheduleBookCta(); // CTA pops in 2s after the demo lands (CSS-dolly path)
+      }, ZOOM_MS - CSS_REVEAL_AT + 200);
+    }, reduced ? 50 : CSS_REVEAL_AT);
+  }
+
+  function closeDemoCssDolly() {
+    if (!demoOpen || animating) return;
+    animating = true;
+    clearZoomTimers();
+    stopCountUps();
+    cancelBookCta();
+    hero.classList.remove('demo-recede');
+    heroInner.classList.remove('scene-change');
+    sceneChange.classList.remove('flash');
+    overlay.classList.add('closing');
+    overlay.classList.remove('open', 'bridging');
+    later(() => {
+      resetOverlayClasses();
+      heroInner.style.transitionDuration = UNZOOM_MS + 'ms';
+      heroInner.style.transform = '';
+      heroInner.classList.remove('zooming');
+      later(() => {
+        const y = lockedScrollY;
+        pinScrollY(y);
+        heroInner.style.transitionDuration = '';
+        clearDemoScrollSizing();
+        unlockPageScroll();
+        demoOpen = false; animating = false;
+        unfreezeScene();
+        sceneEl.style.transition = '';
+        sceneEl.style.transform = '';
+        if (!(hotspot.matches(':hover') && !reduced)) sceneEl.classList.remove('hover-zoom');
+        pinScrollY(y);
+      }, reduced ? 50 : UNZOOM_MS);
+    }, 450);
+  }
+
+  function openDemo() {
+    if (USE_ZOOM_VIDEO && !reduced && zoomClip) openDemoVideo();
+    else openDemoCssDolly();
+  }
+  function closeDemo() {
+    if (USE_ZOOM_VIDEO && !reduced && zoomClip) closeDemoVideo();
+    else closeDemoCssDolly();
+  }
+
+  hotspot.addEventListener('click', openDemo);
+  exitBtn.addEventListener('click', closeDemo);
+  // Clicking the veil closes too (cursor: zoom-out signals it)
+  overlay.querySelector('.demo-backdrop').addEventListener('click', closeDemo);
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (animating && demoOpen) { forceResetDemo(); return; }
+    closeDemo();
+  });
+
+  // Warm the zoom clip + end still so the first click doesn't wait on decode
+  if (USE_ZOOM_VIDEO && zoomClip) {
+    warmZoomAssets();
+  }
+
+  // initial screen ready; pre-build its charts during idle time so the first
+  // laptop click doesn't pay the Chart.js construction cost mid-animation
+  document.querySelector('.app-screen[data-screen="financial"]').classList.add('active', 'visible');
+  if (window.requestIdleCallback) requestIdleCallback(() => initCharts('financial'), { timeout: 1500 });
+  else setTimeout(() => initCharts('financial'), 400);
+})();
+
+  </script>
+</body>
+</html>
