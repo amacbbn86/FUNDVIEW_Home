@@ -905,6 +905,44 @@
     min-width: 0;
     max-width: 100%;
   }
+  .fin-copy .fin-copy-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .fin-copy .fin-copy-heading .fin-feature-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .fin-copy h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: #0c2440;
+  }
+  .fin-copy p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #475569;
+  }
+  .fin-copy p + p {
+    margin-top: 0.7rem;
+  }
+  .fin-copy .fin-copy-heading + p {
+    margin-top: 0.95rem;
+  }
+  @container fin (min-width: 720px) {
+    .fin-copy h2 {
+      font-size: 24px;
+    }
+    .fin-copy p {
+      font-size: 14.5px;
+      line-height: 1.6;
+    }
+  }
   .fin-stat {
     display: flex;
     width: 100%;
@@ -2039,17 +2077,17 @@
 
                 <!-- Top: title + copy | 70% stat -->
                 <div class="fin-hero">
-                  <div class="min-w-0 flex-1">
-                    <div class="flex items-center gap-2.5">
-                      <svg class="fin-feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <div class="fin-copy min-w-0 flex-1">
+                    <div class="fin-copy-heading">
+                      <svg class="fin-feature-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M4 19V9"/><path d="M9 19V5"/><path d="M14 19v-7"/><path d="M19 19V8"/>
                         <circle cx="7.5" cy="17.5" r="2.4"/>
                         <path d="M7.5 16.4v2.2M6.7 17.5h1.6"/>
                       </svg>
-                      <h2 class="text-[20px] font-extrabold tracking-tight text-[#0c2440] sm:text-[22px]">Financial Management</h2>
+                      <h2>Financial Management</h2>
                     </div>
-                    <p class="mt-3 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW Financial Management connects every aspect of your organization's financial operations into one fully integrated platform.</p>
-                    <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information.</p>
+                    <p>FUNDVIEW Financial Management connects every aspect of your organization's financial operations into one fully integrated platform.</p>
+                    <p>FUNDVIEW helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information.</p>
                   </div>
                   <div class="fin-stat">
                     <div class="fin-stat-value">70%</div>
