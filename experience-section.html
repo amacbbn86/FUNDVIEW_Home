@@ -981,8 +981,7 @@
     min-width: 0;
     max-width: 100%;
   }
-  /* Mid/tablet panel: keep stacked larger icons in the 2-col grid */
-  /* Wide panel only: 4 feature cols + side-by-side hero/outcomes + compact row cards */
+  /* Wide panel: 4 feature cols + roomier horizontal cards (match desktop mockup sizing) */
   @container fin (min-width: 720px) {
     .fin-hero {
       flex-direction: row;
@@ -996,17 +995,22 @@
     }
     .fin-features {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
     }
     .fin-features .fv-card {
       flex-direction: row;
       align-items: center;
-      gap: 0.625rem;
-      padding: 0.625rem 0.75rem;
+      gap: 0.75rem;
+      min-height: 3.25rem;
+      padding: 0.875rem 1rem;
       text-align: left;
     }
     .fin-features .fin-feature-icon {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
+    }
+    .fin-features .fv-card > span {
+      white-space: nowrap;
     }
     .fin-columns {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1028,17 +1032,22 @@
       }
       .fin-features {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.75rem;
       }
       .fin-features .fv-card {
         flex-direction: row;
         align-items: center;
-        gap: 0.625rem;
-        padding: 0.625rem 0.75rem;
+        gap: 0.75rem;
+        min-height: 3.25rem;
+        padding: 0.875rem 1rem;
         text-align: left;
       }
       .fin-features .fin-feature-icon {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
+      }
+      .fin-features .fv-card > span {
+        white-space: nowrap;
       }
       .fin-columns {
         grid-template-columns: repeat(2, minmax(0, 1fr));
