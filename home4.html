@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!--
-  FUNDVIEW home3 — dual mode
-  • EDIT (default): preview http://localhost:5500/home3.html locally.
+  FUNDVIEW home4 — dual mode
+  • EDIT (default): preview http://localhost:5500/home4.html locally.
     HubSpot HubL lives in <template data-hubspot> blocks and does not render on screen.
     Header/footer load from fundview-header-local.html / fundview-footer-local.html via fetch (local preview only).
-  • UPLOAD (when ready for HubSpot): run `node _hubspot_mode.js upload home3`
-    → regenerates Home3.hubspot.html from this file (inlines header + footer + Experience Tailwind).
-    Paste Home3.hubspot.html into your HubSpot coded page template.
+  • UPLOAD (when ready for HubSpot): run `node _hubspot_mode.js upload home4`
+    → regenerates Home4.hubspot.html from this file (inlines header + footer + Experience Tailwind).
+    Paste Home4.hubspot.html into your HubSpot coded page template.
   Tell the agent "working on edits" or "ready to upload to HubSpot" to switch.
 -->
 <html lang="en">
@@ -78,8 +78,8 @@
        Styles and markup are loaded dynamically from fundview-header-local.html
        so edits to that file show up here automatically. */
 
-    /* ——— Hero (from swiss.html .hero) ——— */
-    .hero {
+    /* ——— Hero intro (first page section; distinct from Experience #hero) ——— */
+    .hero_intro {
       position: relative;
       display: block;
       padding: 0;
@@ -105,7 +105,6 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 1.25rem;
       width: min(700px, 60%);
       padding: clamp(2.5rem, 4vw, 3.5rem) clamp(5rem, 9vw, 8.5rem) clamp(2.5rem, 4vw, 3.5rem) clamp(2.5rem, 5vw, 4.5rem);
       background: linear-gradient(165deg, rgba(255, 255, 255, 0.92) 0%, rgba(230, 247, 245, 0.88) 55%, rgba(211, 240, 237, 0.85) 100%);
@@ -120,6 +119,17 @@
       min-width: 0;
     }
 
+    /* Desktop: lift copy text/CTAs only — glass panel stays put */
+    .hero-copy-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      min-width: 0;
+      transform: translateY(-15%);
+      container-type: inline-size;
+      container-name: hero-copy;
+    }
+
     .hero-copy-top {
       display: grid;
       gap: 1.15rem;
@@ -129,7 +139,7 @@
 
     .hero__title {
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: clamp(1.9rem, 3.2vw, 2.4rem);
+      font-size: clamp(1.9rem, 3.2vw, 2.7rem);
       font-weight: 800;
       line-height: 1.15;
       max-width: 15ch;
@@ -167,9 +177,10 @@
       margin: 0;
       padding: 0;
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 1.25rem;
+      grid-template-columns: repeat(2, max-content);
+      column-gap: 0.85rem;
       row-gap: 0.7rem;
+      justify-content: start;
     }
 
     .checklist li {
@@ -183,6 +194,40 @@
 
     .checklist li svg {
       flex-shrink: 0;
+    }
+
+    /* Desktop: checklist + CTAs share one 2-col grid so col 2 lines up with the 2nd button */
+    .hero-copy-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      min-width: 0;
+    }
+
+    @media (min-width: 961px) {
+      .hero-copy-pair {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        column-gap: 0.85rem;
+        row-gap: 0.7rem;
+        justify-content: start;
+        align-items: center;
+      }
+
+      .hero-copy-pair .checklist,
+      .hero-copy-pair .hero-copy-foot {
+        display: contents;
+      }
+
+      .hero-copy-pair .btn-dark,
+      .hero-copy-pair .btn-outline {
+        margin-top: 0.55rem;
+      }
+
+      /* Nudge checklist column 2 right by 5% of the copy content width */
+      .hero-copy-pair .checklist li:nth-child(even) {
+        transform: translateX(5cqi);
+      }
     }
 
     .hero-copy-foot {
@@ -268,7 +313,7 @@
       background: #0d2436;
     }
 
-    /* Amperity-style thin logo ticker overlaid on the bottom of the full-width hero video (reuses client_slider logos) */
+    /* Hero logo ticker (bottom of full-width video) */
     .hero__ticker {
       position: absolute;
       left: 0;
@@ -278,7 +323,7 @@
       order: 3;
       /* Extra top padding lifts the logos; bottom padding keeps them clear of the edge while the scrim still reaches bottom */
       padding: 2.25rem 0 1.1rem;
-      background: linear-gradient(180deg, rgba(10, 24, 42, 0) 0%, rgba(10, 24, 42, 0.35) 32%, rgba(10, 24, 42, 0.78) 100%);
+      background: linear-gradient(180deg, rgba(10, 37, 64, 0) 16%, rgba(10, 37, 64, 0.36) 60%, rgba(10, 37, 64, 0.7) 100%);
       display: flex;
       justify-content: center;
       align-items: flex-end;
@@ -349,7 +394,7 @@
     }
 
     @media (max-width: 960px) {
-      .hero {
+      .hero_intro {
         background: var(--bg);
       }
 
@@ -383,6 +428,20 @@
         border-radius: 20px;
         border: 1px solid rgba(255, 255, 255, 0.65);
         box-shadow: 0 24px 60px rgba(7, 31, 58, 0.28);
+        align-items: center;
+        text-align: center;
+      }
+
+      .hero-copy-content {
+        transform: none;
+        gap: 1.25rem;
+        align-items: center;
+        width: 100%;
+      }
+
+      .hero-copy-top {
+        justify-items: center;
+        width: 100%;
       }
 
       .hero-media {
@@ -391,20 +450,43 @@
         min-height: 230px;
       }
 
-      .hero h1,
+      .hero_intro h1,
       .hero__title {
         max-width: 18ch;
         font-size: clamp(2.1rem, 8vw, 2.75rem);
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .hero__main {
+        justify-items: center;
+        width: 100%;
+      }
+
+      .hero__subtitle {
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .hero-copy-pair {
+        align-items: center;
+        width: 100%;
       }
 
       .checklist {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, max-content);
+        width: fit-content;
+        margin: 0 auto;
+        justify-content: center;
+        column-gap: clamp(2rem, 8vw, 2.75rem);
+        text-align: left;
       }
 
       .hero-copy-foot {
         flex-direction: column;
         align-items: stretch;
         gap: 0.85rem;
+        width: 100%;
       }
 
       .hero-copy-foot .btn-dark,
@@ -414,11 +496,21 @@
       }
     }
 
+    /* ≤600px: keep stacked card; reinforce centered copy (inherits ≤960 centering) */
+    @media (max-width: 600px) {
+      .hero-copy-content,
+      .hero-copy-top,
+      .hero__main,
+      .hero-copy-pair {
+        align-items: center;
+        justify-items: center;
+      }
+    }
+
     /* Center + balance the hero card content in the mid/tablet band so the full-width card
        uses its space, the title/main breathe, and the CTAs aren't stretched edge-to-edge */
     @media (min-width: 601px) and (max-width: 960px) {
       .hero-copy-col {
-        gap: 1.1rem;
         margin: -2rem 1.15rem 1.25rem;
         padding: 1.75rem 1.5rem 1.85rem;
         border-radius: 20px;
@@ -426,12 +518,18 @@
         text-align: center;
       }
 
+      .hero-copy-content {
+        gap: 1.1rem;
+        align-items: center;
+        width: 100%;
+      }
+
       .hero-copy-top {
         gap: 1.25rem;
         justify-items: center;
       }
 
-      .hero h1,
+      .hero_intro h1,
       .hero__title {
         font-size: clamp(2rem, 5vw, 2.4rem);
         max-width: 22ch;
@@ -453,7 +551,8 @@
       .checklist {
         width: fit-content;
         margin: 0 auto;
-        column-gap: 2.5rem;
+        grid-template-columns: repeat(3, max-content);
+        column-gap: clamp(1.75rem, 4vw, 3rem);
         row-gap: 0.65rem;
         justify-content: center;
       }
@@ -670,180 +769,6 @@
       }
     }
 
-    /* ——— Client slider — trusted-cities logo carousel (from town_scene.html) ——— */
-    .client_slider {
-      --navy: #0a2e57;
-      --teal: #00b7b3;
-      --teal-dark: #00928f;
-      --teal-light: #ccf5f4;
-      --teal-50: #e8fafa;
-      --gray-50: #f0f4f8;
-      --gray-100: #e4ebf2;
-      --gray-200: #d1dae3;
-      --gray-300: #b7c3d0;
-      --gray-400: #8a97a5;
-      --gray-500: #4b5c6e;
-      --gray-600: #4b5c6e;
-      --gray-700: #3a4756;
-      --white: #ffffff;
-      --transition: 0.2s ease;
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      padding: 72px 0 48px;
-      text-align: center;
-      background: var(--white);
-      border-top: 1px solid var(--gray-100);
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    .client_slider__title {
-      margin: 0 0 clamp(2.5rem, 5vw, 3.5rem);
-      text-align: center;
-      font-size: clamp(1.75rem, 3vw, 2.5rem);
-      font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      color: #0a2e57;
-    }
-
-    .trust__carousel {
-      width: 100%;
-      max-width: 100vw;
-      margin: 0 auto 16px;
-      padding: 0 16px;
-      box-sizing: border-box;
-    }
-
-    .trust__carousel-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .trust__viewport {
-      overflow: hidden;
-      width: 100%;
-      min-height: 160px;
-      flex: 1;
-    }
-
-    .trust__track {
-      display: flex;
-      align-items: center;
-      will-change: transform;
-    }
-
-    .trust__logo-item {
-      flex: 0 0 auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-    }
-
-    .trust__logo-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-    }
-
-    .trust__logo-item img {
-      height: 130px;
-      width: auto;
-      max-width: 100%;
-      object-fit: contain;
-      filter: grayscale(100%);
-      opacity: 0.85;
-      transition: opacity 0.3s ease, filter 0.3s ease;
-    }
-
-    .trust__logo-item img:hover {
-      filter: grayscale(0%);
-      opacity: 1;
-    }
-
-    .trust__nav-btn {
-      position: relative;
-      z-index: 2;
-      flex-shrink: 0;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 1px solid var(--gray-200);
-      background: var(--white);
-      color: var(--gray-500);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      padding: 0;
-      transition: background var(--transition), color var(--transition), border-color var(--transition);
-    }
-
-    .trust__nav-btn:hover {
-      background: var(--teal);
-      color: var(--white);
-      border-color: var(--teal);
-    }
-
-    .trust__pause-btn {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin: 12px auto 0;
-      padding: 6px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--gray-200);
-      background: var(--white);
-      color: var(--gray-500);
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background var(--transition), color var(--transition), border-color var(--transition);
-    }
-
-    .trust__pause-btn:hover {
-      background: var(--gray-50);
-      border-color: var(--gray-300);
-      color: var(--gray-700);
-    }
-
-    .trust__pause-btn.is-playing {
-      color: var(--teal-dark);
-      border-color: var(--teal);
-      background: var(--teal-50);
-    }
-
-    .trust__pause-btn.is-playing:hover {
-      background: var(--teal-light);
-      color: var(--teal-dark);
-      border-color: var(--teal);
-    }
-
-    .trust__pause-btn.is-paused {
-      color: var(--gray-600);
-      border-color: var(--gray-300);
-      background: var(--gray-50);
-    }
-
-    .trust__pause-btn.is-paused:hover {
-      color: var(--navy);
-      border-color: var(--gray-400);
-      background: var(--white);
-    }
-
-    /* Global svg rules elsewhere on the page override the hidden attribute; restore it */
-    .trust__pause-btn svg[hidden] {
-      display: none;
-    }
-
     /* ——— Stats ——— */
     .stats {
       width: 100%;
@@ -1000,6 +925,8 @@
       width: 100%;
       /* No isolation:isolate here — it creates a stacking context that traps
          #demoOverlay / zoom clips below the sticky site-header (z-index:5000). */
+      font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      background: #081426;
     }
 
   /* Desktop: drop hero top padding to tighten section height.
@@ -1039,7 +966,6 @@
 
   /* ---------- Global ---------- */
   html { scroll-behavior: smooth; }
-  .experience_fundview { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; background:#081426; }
 
   /* ---------- Hero camera push-in (cinematic dolly toward the laptop screen) ----------
      The zoom scale + origin are computed in JS from the on-screen position of
@@ -1053,6 +979,74 @@
      they ride the camera move and slide out of frame naturally,
      matching the reference video. */
   .hero-fade { transition: opacity .9s cubic-bezier(0.4,0,0.2,1), transform .9s cubic-bezier(0.4,0,0.2,1); }
+
+  /* Mobile: keep checkmark + prompt copy as one compact centered unit
+     (compiled Tailwind lacks the arbitrary max-width used here). */
+  .experience-prompt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    max-width: 19rem;
+    margin-top: 1.5rem;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.375;
+    color: #1fc0cd;
+  }
+  .experience-prompt svg {
+    flex-shrink: 0;
+  }
+  @media (min-width: 1024px) {
+    .experience-prompt {
+      max-width: 32rem;
+    }
+  }
+
+  /* Experience hero CTA — gold pill under the prompt */
+  .experience-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.95rem 1.75rem;
+    border-radius: 12px;
+    background: var(--fv-cta, #f2b632);
+    color: #0a0a0a;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 10px 28px rgba(242, 182, 50, 0.32);
+    transition:
+      transform 0.2s ease,
+      background-color 0.18s ease,
+      box-shadow 0.25s ease;
+  }
+  .experience-cta:hover {
+    transform: translate3d(0, -1px, 0);
+    background: var(--fv-cta-hover, #e0a628);
+    box-shadow: 0 14px 34px rgba(242, 182, 50, 0.42);
+  }
+  .experience-cta:active {
+    transform: translate3d(0, 0, 0) scale(0.98);
+  }
+  .experience-cta__arrow {
+    flex-shrink: 0;
+    font-size: 1.05em;
+    font-weight: 700;
+    line-height: 1;
+  }
+  @media (max-width: 419px) {
+    .experience-cta {
+      padding: 0.85rem 1.25rem;
+      font-size: 14px;
+    }
+  }
 
   /* ---------- Zoom-in clip (click path) ----------
      Primary open: cross-dissolve hero -> #zoomClip (1s dolly), lock the
@@ -1380,6 +1374,9 @@
       transform 520ms var(--ease-out),
       opacity 400ms var(--ease-out);
     will-change: transform, opacity;
+    /* Hard cap: never wider than the viewport (base deck is 1.035× screen) */
+    max-width: 100vw;
+    box-sizing: border-box;
   }
   /* Final rest pose under the opaque bridge — identical to .open so the
      hard cut lands on a settled chassis (no mid-spring mismatch) */
@@ -1445,9 +1442,11 @@
   /* ---- Compositor-only shadow / light stack ---- */
   /* Resting shadow is painted once on the chassis and never animated */
   .demo-screen {
-    /* Desktop demo +20% wider vs prior min(82vw, 124vh) */
-    --demo-screen-w: min(98.4vw, 148.8vh);
+    /* Cap at ≤96vw so screen + 1.035× base deck stay inside the viewport */
+    --demo-screen-w: min(96vw, 148.8vh);
     width: var(--demo-screen-w);
+    max-width: 96vw;
+    min-width: 0; /* prevent flex/content min-size from expanding past max-width */
     /* Explicit height (not aspect-ratio alone): #appShell used height:100%,
        which does not resolve against aspect-ratio parents — the shell grew
        with content and #screenHost never became a scroll box (Chrome + iOS). */
@@ -1462,16 +1461,27 @@
       0 10px 26px -10px rgba(0, 0, 0, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.05);
   }
-  /* Large desktops: +20% vs prior min(90vw, 132vh) + wider side nav
-     so labels like "CityCentral™ Citizen Portal" are not ellipsized. */
+  .demo-base {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  /* Large desktops: roomier vh cap + wider side nav
+     so labels like "CityCentral™ Citizen Portal" are not ellipsized.
+     Width stays ≤96vw (never >100vw) so #demoLaptop cannot spill horizontally. */
   @media (min-width: 1300px) {
     .demo-screen {
-      --demo-screen-w: min(108vw, 158.4vh);
+      --demo-screen-w: min(96vw, 158.4vh);
       width: var(--demo-screen-w);
+      max-width: 96vw;
       height: min(calc(var(--demo-screen-w) / 1.68), calc(100dvh - 96px));
     }
     .demo-base {
-      width: calc(min(108vw, 158.4vh) * 1.035) !important;
+      width: calc(min(96vw, 158.4vh) * 1.035) !important;
+      max-width: 99.36vw;
+    }
+    #demoLaptop {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
     #sideNav {
       width: 15.5rem !important; /* ~248px; sm:w-44 (11rem) was too narrow */
@@ -1502,8 +1512,19 @@
       width: auto;
     }
     #sideNav {
-      width: 13.5rem !important; /* ~216px — fits compact rail CTA */
       overflow: hidden !important;
+    }
+  }
+  /* 800–1299: roomy rail for larger menu type */
+  @media (min-width: 800px) and (max-width: 1299.98px) {
+    #sideNav {
+      width: 14rem !important; /* ~224px — matches larger side-item type */
+    }
+  }
+  /* 640–799: narrower rail so #screenHost keeps more content room */
+  @media (min-width: 640px) and (max-width: 799.98px) {
+    #sideNav {
+      width: 10.25rem !important; /* ~164px */
     }
   }
   /* App shell fills the bezel via flex — never height:100% against aspect-ratio */
@@ -1888,6 +1909,8 @@
   /* Desktop: pinned to bottom of side nav, above Close All Tabs */
   #bookDemo.book-demo--rail {
     display: none;
+    position: relative;
+    isolation: isolate;
     flex-shrink: 0;
     align-self: stretch;
     justify-content: center;
@@ -1900,7 +1923,39 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    /* Hidden until scheduleBookCta adds .cta-in (2s after demo lands) */
+    opacity: 0;
+    pointer-events: none;
+  }
+  #bookDemo.book-demo--rail::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%);
+    transform: translateX(-130%) skewX(-12deg);
+  }
+  #bookDemo.book-demo--rail.cta-in {
+    opacity: 1;
     pointer-events: auto;
+    animation: bookCtaIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  }
+  #bookDemo.book-demo--rail.cta-in::after {
+    animation: bookCtaShine 0.55s ease-out 0.9s both;
+  }
+  @keyframes bookCtaIn {
+    0% { opacity: 0; transform: translateY(22px) scale(0.85); }
+  }
+  @keyframes bookCtaShine {
+    0% { transform: translateX(-130%) skewX(-12deg); }
+    100% { transform: translateX(130%) skewX(-12deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #bookDemo.book-demo--rail.cta-in,
+    #bookDemo.book-demo--rail.cta-in::after {
+      animation: none !important;
+    }
   }
   #bookDemo.book-demo--rail .book-demo__copy {
     flex: 0 1 auto;
@@ -2070,6 +2125,67 @@
   .side-item.active svg { color:#04222b; }
   .side-item:not(.active):hover { background:rgba(255,255,255,.08); color:#fff; }
 
+  /* Demo side nav menu: desktop (≥800) — larger type/icons, even spacing */
+  @media (min-width: 800px) {
+    #demoLaptop #sideNavItems {
+      gap: 5px;
+      padding-top: 0.7rem;
+      padding-bottom: 0.7rem;
+    }
+    #demoLaptop #sideNavItems .side-item {
+      gap: 0.7rem;
+      padding: 9px 14px;
+      font-size: 12.5px;
+      line-height: 1.25;
+      letter-spacing: 0.01em;
+    }
+    #demoLaptop #sideNavItems .side-item svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  /* Demo side nav menu: mid band (640–799) — compact type + tighter rail */
+  @media (min-width: 640px) and (max-width: 799.98px) {
+    #demoLaptop #sideNavItems {
+      gap: 2px;
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+    }
+    #demoLaptop #sideNavItems .side-item {
+      gap: 0.45rem;
+      padding: 6px 8px;
+      font-size: 9.5px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+    #demoLaptop #sideNavItems .side-item svg {
+      width: 12px;
+      height: 12px;
+    }
+    /* Keep Book Demo CTA readable inside the narrowed rail */
+    #bookDemo.book-demo--rail {
+      margin: auto 6px 10px;
+      padding: 7px 8px;
+      gap: 6px;
+    }
+    #bookDemo.book-demo--rail .book-demo__label {
+      font-size: 10.5px;
+    }
+    #bookDemo.book-demo--rail .book-demo__eyebrow {
+      font-size: 7px;
+      letter-spacing: 0.04em;
+    }
+    #bookDemo.book-demo--rail .book-demo__icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+    }
+    #bookDemo.book-demo--rail .book-demo__icon svg {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
   /* Slim scrollbars inside the laptop — always show gutter (not overlay-only) */
   .slim-scroll {
     overflow: auto;
@@ -2108,6 +2224,27 @@
   #screenHost::-webkit-scrollbar-thumb:vertical,
   #screenScroll::-webkit-scrollbar-thumb:vertical {
     background:#c2ccd6; border-radius:4px; border:2px solid #e6ebf1;
+  }
+  /* Desktop: #screenScroll +20% wider, default grey thumbs (match .slim-scroll) */
+  @media (min-width: 640px) {
+    #screenScroll {
+      scrollbar-width: auto;
+      scrollbar-color: #c2ccd6 #e6ebf1;
+    }
+    #screenScroll::-webkit-scrollbar {
+      width: 11px;  /* 9px + 20% */
+      height: 16px; /* 13px + ~20% */
+    }
+    #screenScroll::-webkit-scrollbar-thumb:horizontal,
+    #screenScroll::-webkit-scrollbar-thumb:vertical {
+      background: #c2ccd6;
+      border-radius: 5px;
+      border: 2px solid #e6ebf1;
+    }
+    #screenScroll::-webkit-scrollbar-thumb:horizontal:hover,
+    #screenScroll::-webkit-scrollbar-thumb:vertical:hover {
+      background: #aeb8c4;
+    }
   }
   /* Wide data tables must overflow so horizontal pan has somewhere to go */
   #screenScroll .slim-scroll {
@@ -2155,7 +2292,9 @@
     bottom: 0 !important;
     width: auto !important;
     height: auto !important;
-    overflow: scroll !important; /* scroll (not auto) keeps gutters available */
+    /* Vertical: scroll keeps the gutter; horizontal: auto — only when content overflows */
+    overflow-x: auto !important;
+    overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     touch-action: pan-x pan-y;
@@ -2284,9 +2423,9 @@
   @media (max-width: 639.98px) {
     #scene { height: min(67.8vw, 75.9vh) !important; }
     div.scene-note-m {
-      left: 12% !important; /* 17% then −5% */
-      bottom: 27% !important;
-      width: 56% !important;
+      left: 12% !important;
+      bottom: 31% !important;
+      width: 34% !important;
     }
     svg.scene-note-m {
       left: 4% !important;
@@ -2313,8 +2452,6 @@
     .scene-note-m { display: block !important; }
     #sceneZoom { --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.08); --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.08); }
   }
-
-
 
 
     /* ——— Every FUNDVIEW Solution Delivers ——— */
@@ -3180,12 +3317,10 @@
 
     .listening_evolving__brand {
       display: block;
-      margin-bottom: 0.35rem;
-      font-size: clamp(1.1rem, 2vw, 1.35rem);
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #00b7b3;
+      width: auto;
+      /* +20% from prior logo size (was clamp(2.23rem, 4.06vw, 2.74rem)) */
+      height: clamp(2.68rem, 4.87vw, 3.29rem);
+      margin: 0 auto 1.15rem;
     }
 
     .listening_evolving__lead {
@@ -3304,111 +3439,6 @@
         width: 100%;
         max-width: 420px;
         justify-content: center;
-      }
-    }
-
-    /* ——— Resources ——— */
-    .resources {
-      width: 100%;
-      padding: clamp(3.5rem, 7vw, 5.5rem) 1.5rem;
-      background: #f0f4f8;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #0a2e57;
-    }
-
-    .resources__inner {
-      width: min(1240px, 100%);
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .resources__title {
-      margin: 0 0 clamp(2.25rem, 4.5vw, 3.25rem);
-      font-size: clamp(1.75rem, 3vw, 2.5rem);
-      font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      color: #0a2e57;
-    }
-
-    .resources__grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: clamp(1rem, 1.8vw, 1.5rem);
-    }
-
-    .resources__card {
-      flex: 0 1 278px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.85rem;
-      padding: 1.75rem 1.4rem 1.6rem;
-      border: 1px solid #d1dae3;
-      border-radius: 14px;
-      background: #fff;
-      text-align: center;
-      text-decoration: none;
-      color: inherit;
-      transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-    }
-
-    .resources__card:hover,
-    .resources__card:focus-visible {
-      transform: translateY(-3px);
-      border-color: #00b7b3;
-      box-shadow: 0 14px 34px rgba(10, 46, 87, 0.12);
-      outline: none;
-    }
-
-    .resources__icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background: rgba(0, 183, 179, 0.12);
-      color: #00928f;
-    }
-
-    .resources__icon svg {
-      width: 26px;
-      height: 26px;
-    }
-
-    .resources__card-title {
-      margin: 0;
-      font-size: 1.0625rem;
-      font-weight: 700;
-      line-height: 1.3;
-      color: #0a2e57;
-    }
-
-    .resources__card-copy {
-      margin: 0;
-      font-size: 0.875rem;
-      line-height: 1.55;
-      color: #4b5c6e;
-    }
-
-    /* Keep 2 cards per row down to 500px (flex-basis 278px alone stacks earlier). */
-    @media (max-width: 900px) and (min-width: 501px) {
-      .resources__card {
-        flex: 1 1 calc(50% - 0.75rem);
-        max-width: none;
-      }
-    }
-
-    @media (max-width: 500px) {
-      .resources {
-        padding: 3rem 1.15rem;
-      }
-
-      .resources__card {
-        flex-basis: 100%;
-        max-width: 420px;
       }
     }
 
@@ -3829,8 +3859,6 @@
       border: 0;
     }
 
-    /* ——— Core Areas of Expertise ——— */
-
     /* ——— Scroll guide arrow (floating site tour button) ——— */
     .scroll-guide {
       position: fixed;
@@ -3951,13 +3979,17 @@
   </script>
 
   <!-- Hero from swiss.html -->
-  <section class="hero" id="top">
+  <section class="hero_intro" id="top">
     <div class="hero-shell">
       <div class="hero-copy-col">
-        <div class="hero-copy-top">
-          <h1 class="hero__title">The Platform That <span class="text-accent">Powers</span> Local Government</h1>
-          <div class="hero__main">
-            <p class="hero__subtitle">One connected ERP platform that gives local governments <strong>more time</strong>, <strong>better visibility</strong>, and the <strong>confidence</strong> to serve their communities.</p>
+        <div class="hero-copy-content">
+          <div class="hero-copy-top">
+            <h1 class="hero__title">The Platform That <span class="text-accent">Powers</span> Local Government</h1>
+            <div class="hero__main">
+              <p class="hero__subtitle">One connected ERP platform that gives local governments <strong>more time</strong>, <strong>better visibility</strong>, and the <strong>confidence</strong> to serve their communities.</p>
+            </div>
+          </div>
+          <div class="hero-copy-pair">
             <ul class="checklist">
               <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(0,183,179,0.22)"/><path d="M6 10l3 3 5-6" stroke="#00B7B3" stroke-width="2" fill="none"/></svg> Accuracy</li>
               <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(0,183,179,0.22)"/><path d="M6 10l3 3 5-6" stroke="#00B7B3" stroke-width="2" fill="none"/></svg> Compliance</li>
@@ -3966,11 +3998,11 @@
               <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(0,183,179,0.22)"/><path d="M6 10l3 3 5-6" stroke="#00B7B3" stroke-width="2" fill="none"/></svg> Continuity</li>
               <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(0,183,179,0.22)"/><path d="M6 10l3 3 5-6" stroke="#00B7B3" stroke-width="2" fill="none"/></svg> Confidence</li>
             </ul>
+            <div class="hero-copy-foot">
+              <a class="btn-dark" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1">See FUNDVIEW <span aria-hidden="true">→</span></a>
+              <button type="button" class="btn-outline" id="hero-watch-overview">Watch Overview</button>
+            </div>
           </div>
-        </div>
-        <div class="hero-copy-foot">
-          <a class="btn-dark" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1">See FUNDVIEW <span aria-hidden="true">→</span></a>
-          <button type="button" class="btn-outline" id="hero-watch-overview">Watch Overview</button>
         </div>
       </div>
       <div class="hero-media">
@@ -4163,20 +4195,8 @@
   </section>
 
   <section class="experience_fundview antialiased text-white overflow-x-hidden" id="experience_fundview" aria-label="Experience FUNDVIEW">
-<template id="__bundler_thumbnail">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-    <rect width="100" height="100" fill="#081426"/>
-    <rect x="22" y="30" width="56" height="34" rx="3" fill="#0c2440" stroke="#1fc0cd" stroke-width="2"/>
-    <rect x="27" y="35" width="46" height="24" rx="1.5" fill="#eef2f6"/>
-    <rect x="18" y="66" width="64" height="4" rx="2" fill="#3a4a63"/>
-    <path d="M40 44l4-5 4 4 5-7 4 5" fill="none" stroke="#1fc0cd" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="50" cy="20" r="6" fill="#f5b83d"/>
-  </svg>
-</template>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     HERO  — pixel-faithful recreation of the FUNDVIEW campaign header
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- Experience hero -->
 <section id="hero" class="relative min-h-screen overflow-hidden bg-navy-900">
   <!-- ambient background: deep navy with faint teal/blue radial washes -->
   <div class="pointer-events-none absolute inset-0"
@@ -4187,11 +4207,7 @@
 
   <div id="heroInner" class="relative flex min-h-screen flex-col">
 
-    <!-- â”€â”€â”€ Main hero grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         Header nav removed — the grid is flex-1 and vertically centered, so
-         the content rises to fill the space the navbar used to occupy.
-         On tablet/small-desktop the content row becomes 1fr so the copy can
-         spread to fill its column height. -->
+    <!-- Main hero grid: stacked below lg, 2-col at lg+ -->
     <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-0 sm:px-10 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(360px,38%)_1fr] lg:grid-rows-none lg:gap-4 lg:pl-14 lg:pr-0">
 
       <!-- Tablet/mobile: eyebrow stacked above the town scene (centered).
@@ -4200,15 +4216,7 @@
         <div class="text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal">Experience FUNDVIEW</div>
       </div>
 
-      <!-- Left column: copy + CTAs.
-           order-2 below lg so it sits BELOW the laptop scene when stacked.
-           md→<lg (single-column stacked layout) it becomes a self-stretching
-           flex column (justify-between + centered) so the copy spreads to
-           fill its column height; lg+ (once the 2-col grid activates) reverts
-           to the natural, top-anchored, left-aligned flow — this must switch
-           at the SAME breakpoint the grid becomes 2-column, otherwise the
-           stretch/justify-between rules fight the tall image column and blow
-           a huge gap between the subhead and CTAs (seen on iPad Pro 1024px). -->
+      <!-- Left column: copy + CTAs -->
       <div class="hero-fade fade-left order-2 flex w-full max-w-xl flex-col items-center justify-center text-center mx-auto md:items-center md:justify-between md:self-stretch md:text-center lg:order-1 lg:mx-0 lg:items-start lg:justify-center lg:self-auto lg:text-left">
         <!-- Eyebrow (desktop / lg+ only — stacked version is used below lg) -->
         <div class="experience-eyebrow experience-eyebrow--rail mb-4 hidden text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal lg:block">Experience FUNDVIEW</div>
@@ -4223,11 +4231,16 @@
           Experience how FUNDVIEW connects finance, payroll, utility billing, municipal court, permitting, code enforcement, citizen services, and more in one fully integrated platform.
         </p>
 
-        <!-- Prompt -->
-        <p class="mt-6 flex items-center gap-2 text-[15px] font-bold text-fvteal">
+        <!-- Prompt: compact icon + copy unit (centered on mobile via parent items-center) -->
+        <p class="experience-prompt">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-          Click the laptop, then choose a department to explore the software.
+          <span>Click the laptop, then choose a department to explore the software.</span>
         </p>
+
+        <a class="experience-cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          See Why Cities Are Switching
+          <span class="experience-cta__arrow" aria-hidden="true">→</span>
+        </a>
 
       </div>
 
@@ -4278,7 +4291,7 @@
 
             <!-- Handwritten annotation + premium arrow -->
             <div id="handNote" class="pointer-events-none absolute z-20 hero-fade fade-plain"
-                 style="left:33%; top:70%; width:20%;">
+                 style="left:35%; top:68%; width:20%;">
               <p class="font-script text-[clamp(18px,2vw,27px)] font-semibold leading-tight text-white"
                  style="text-shadow:0 2px 14px rgba(0,0,0,.75), 0 0 30px rgba(43,212,224,.25);">
                 Click Laptop to Explore FUNDVIEW
@@ -4334,9 +4347,7 @@
 <!-- Frozen final frame of the zoom clip — pixel bridge during handoff/exit -->
 <canvas id="zoomBridge" aria-hidden="true"></canvas>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     DEMO OVERLAY — interactive FUNDVIEW inside a laptop frame
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- Demo overlay -->
 <div id="demoOverlay" class="pointer-events-none fixed inset-0 z-50 flex flex-col items-center justify-center opacity-0" aria-hidden="true">
   <!-- Depth veil + blur: separates the lifted dashboard from the hero -->
   <div class="demo-backdrop absolute inset-0"></div>
@@ -4783,16 +4794,14 @@
     </div>
 
     <!-- Laptop base / keyboard deck — width tracks .demo-screen -->
-    <div class="demo-base relative h-[14px] w-[calc(min(98.4vw,148.8vh)*1.035)] rounded-b-2xl"
+    <div class="demo-base relative h-[14px] w-[calc(min(96vw,148.8vh)*1.035)] rounded-b-2xl"
          style="background:linear-gradient(180deg,#8a9199 0%,#5c636b 40%,#2a2e34 100%);">
       <div class="absolute left-1/2 top-0 h-[5px] w-28 -translate-x-1/2 rounded-b-lg bg-[#3a3f46]"></div>
     </div>
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     SCRIPT — interactions, screens, tables, charts
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- Experience section end -->
   </section>
 
 
@@ -5023,7 +5032,14 @@
   <section class="listening_evolving" id="listening_evolving" aria-labelledby="listening-evolving-heading">
     <div class="listening_evolving__inner">
       <h2 class="listening_evolving__title" id="listening-evolving-heading">
-        <span class="listening_evolving__brand">FUNDVIEW</span>
+        <img
+          class="listening_evolving__brand"
+          src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/fundview-logo-official.png"
+          alt="FUNDVIEW"
+          width="220"
+          height="44"
+          decoding="async"
+        >
         Always listening. Always Evolving.
       </h2>
       <p class="listening_evolving__lead">FUNDVIEW never stands still. Explore what&rsquo;s new, what&rsquo;s next, and how customer feedback shapes the platform.</p>
@@ -5093,78 +5109,6 @@
     </div>
   </section>
 
-  <section class="resources" id="resources" aria-labelledby="resources-heading">
-    <div class="resources__inner">
-      <h2 class="resources__title" id="resources-heading">Resources</h2>
-
-      <div class="resources__grid">
-        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
-          <span class="resources__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 5.5h12v15h-12a1 1 0 01-1-1v-13a1 1 0 011-1z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/><path d="M16.5 9h3a1 1 0 011 1v9a1.5 1.5 0 01-1.5 1.5h-2.5" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/><path d="M6.75 9h6.5M6.75 12.5h6.5M6.75 16h4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-          </span>
-          <h3 class="resources__card-title">Articles</h3>
-          <p class="resources__card-copy">Insights and best practices for local government teams.</p>
-        </a>
-
-        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
-          <span class="resources__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/><path d="M10 8.5v7l6-3.5-6-3.5z" fill="currentColor"/></svg>
-          </span>
-          <h3 class="resources__card-title">Product Videos</h3>
-          <p class="resources__card-copy">Watch FUNDVIEW in action, feature by feature.</p>
-        </a>
-
-        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
-          <span class="resources__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4.5" width="17" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.75"/><path d="M12 16v3.5M8.5 19.5h7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M8 8.25h8M8 11.25h5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-          </span>
-          <h3 class="resources__card-title">Webinars</h3>
-          <p class="resources__card-copy">Live and on-demand sessions with our experts.</p>
-        </a>
-
-        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
-          <span class="resources__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="1.5" stroke="currentColor" stroke-width="1.75"/><path d="M8.5 8l1.2 1.2 2.3-2.4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 8.5h2M8.5 13.5l1.2 1.2 2.3-2.4M14 14h2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <h3 class="resources__card-title">Buying Guides</h3>
-          <p class="resources__card-copy">Everything you need to evaluate ERP software.</p>
-        </a>
-
-        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
-          <span class="resources__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M7.5 5.5h9a2 2 0 012 2v6a2 2 0 01-2 2H12l-4 3.5V15.5h-.5a2 2 0 01-2-2v-6a2 2 0 012-2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/><path d="M9.25 9.25h5.5M9.25 12h3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-          </span>
-          <h3 class="resources__card-title">Customer Stories</h3>
-          <p class="resources__card-copy">How cities like yours succeed with FUNDVIEW.</p>
-        </a>
-
-        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
-          <span class="resources__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.75"/><path d="M12 3v5M12 16v5M3 12h5M16 12h5" stroke="currentColor" stroke-width="1.75"/></svg>
-          </span>
-          <h3 class="resources__card-title">Help Center</h3>
-          <p class="resources__card-copy">Answers and support for FUNDVIEW users.</p>
-        </a>
-
-        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
-          <span class="resources__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/><path d="M9.5 9.3a2.5 2.5 0 114.1 1.9c-.8.7-1.6 1.1-1.6 2.3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1" fill="currentColor"/></svg>
-          </span>
-          <h3 class="resources__card-title">FAQs</h3>
-          <p class="resources__card-copy">Quick answers to common questions.</p>
-        </a>
-
-        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
-          <span class="resources__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M19.5 12a7.5 7.5 0 11-2.2-5.3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M19.5 3.5v3.5H16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8.5V12l2.5 1.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <h3 class="resources__card-title">Product Updates</h3>
-          <p class="resources__card-copy">The latest releases and enhancements.</p>
-        </a>
-      </div>
-    </div>
-  </section>
-
   <section class="ready_to_see_fundview" id="ready_to_see_fundview" aria-labelledby="ready-to-see-fundview-heading">
     <div class="ready_to_see_fundview__inner">
       <h2 class="ready_to_see_fundview__title" id="ready-to-see-fundview-heading">Ready to See FUNDVIEW?</h2>
@@ -5177,7 +5121,7 @@
           </span>
           <h3 class="ready_to_see_fundview__card-title">15-Minute Q&amp;A</h3>
           <p class="ready_to_see_fundview__card-copy">Ask questions. Get to know FUNDVIEW.</p>
-          <a class="ready_to_see_fundview__card-cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <a class="ready_to_see_fundview__card-cta" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1">
             Ask a Question
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
@@ -5189,7 +5133,7 @@
           </span>
           <h3 class="ready_to_see_fundview__card-title">60-Minute Personalized Demo</h3>
           <p class="ready_to_see_fundview__card-copy">See FUNDVIEW configured around your city.</p>
-          <a class="ready_to_see_fundview__card-cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <a class="ready_to_see_fundview__card-cta" href="https://meetings-na2.hubspot.com/danielle-womack?uuid=9a1d3500-dad0-4328-ad78-3ce8efae2303">
             See FUNDVIEW
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
@@ -5305,7 +5249,7 @@
       if (!btn) return;
 
       const sectionSelector =
-        ".hero, .news_and_updates, .stats, .experience_fundview, .solution_delivers, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .resources, .ready_to_see_fundview, .site-footer";
+        ".hero_intro, .news_and_updates, .stats, .experience_fundview, .solution_delivers, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .ready_to_see_fundview, .site-footer";
 
       function getSections() {
         return [...document.querySelectorAll(sectionSelector)];
@@ -5316,7 +5260,7 @@
 
       /* Dark backgrounds → white guide + navy arrow; light → navy guide + white arrow */
       const DARK = {
-        hero: true,
+        hero_intro: true,
         news_and_updates: true,
         experience_fundview: true,
         see_in_action: true,
@@ -5328,8 +5272,7 @@
         stats: true,
         solution_delivers: true,
         helping_local_testimonial: true,
-        listening_evolving: true,
-        resources: true
+        listening_evolving: true
       };
 
       function headerOffset() {
@@ -5621,740 +5564,6 @@
           { once: true }
         );
       });
-    })();
-
-    /* Client slider — trusted-cities logo carousel (from town_scene.html) */
-    (function initTrustCarousel() {
-      var trustTrack = document.getElementById('trust-track');
-      if (!trustTrack) return;
-
-      var trustViewport = trustTrack.parentElement;
-      var trustPrev = document.getElementById('trust-prev');
-      var trustNext = document.getElementById('trust-next');
-      var trustPause = document.getElementById('trust-pause');
-      var trustPauseIcon = trustPause ? trustPause.querySelector('.trust__pause-icon') : null;
-      var trustPlayIcon = trustPause ? trustPause.querySelector('.trust__play-icon') : null;
-      var trustPauseLabel = trustPause ? trustPause.querySelector('.trust__pause-label') : null;
-      var trustSlides = trustTrack.querySelectorAll('.trust__logo-item:not(.trust__logo-item--clone)');
-      var trustVisible = window.innerWidth > 1024 ? 5 : 3;
-      var trustTotal = trustSlides.length;
-      var trustCenterIndex = 0;
-      var trustOffset = 0;
-      var trustSetWidth = 0;
-      var trustLastSlideW = 0;
-      var trustPaused = false;
-      var trustStepping = false;
-      var trustLastTime = null;
-      var trustRafId = null;
-      var trustStepEndHandler = null;
-      var trustStepFallbackTimer = null;
-      var TRUST_LOOP_SECONDS = 28;
-      var TRUST_SPEED_REFERENCE_SLIDES = 5;
-      var TRUST_STEP_MS = 500;
-      var TRUST_TICK_MAX_MS = 100;
-
-      function trustGetVisible() {
-        return window.innerWidth > 1024 ? 5 : 3;
-      }
-
-      function trustCenterSlot() {
-        return Math.floor(trustVisible / 2);
-      }
-
-      function trustSlideWidth() {
-        return trustViewport.offsetWidth / trustVisible;
-      }
-
-      function trustTickerSpeed() {
-        var slideW = trustSlideWidth();
-        return slideW > 0 ? (slideW * TRUST_SPEED_REFERENCE_SLIDES) / TRUST_LOOP_SECONDS : 40;
-      }
-
-      function trustRemoveClones() {
-        trustTrack.querySelectorAll('.trust__logo-item--clone').forEach(function (clone) {
-          clone.remove();
-        });
-      }
-
-      function trustApplySlideWidths() {
-        var slideW = trustSlideWidth();
-        trustTrack.querySelectorAll('.trust__logo-item').forEach(function (item) {
-          item.style.flex = '0 0 ' + slideW + 'px';
-          item.style.width = slideW + 'px';
-        });
-        trustSetWidth = slideW * trustTotal;
-        trustLastSlideW = slideW;
-        return slideW;
-      }
-
-      function trustOffsetForCenter(index) {
-        var slideW = trustSlideWidth();
-        var slideCenter = (trustTotal + index) * slideW + slideW / 2;
-        return slideCenter - trustViewport.offsetWidth / 2;
-      }
-
-      function trustNormalizeOffsetTarget(targetOffset) {
-        var currentOffset = trustOffset;
-        while (targetOffset < currentOffset - trustSetWidth / 2) {
-          targetOffset += trustSetWidth;
-        }
-        while (targetOffset > currentOffset + trustSetWidth / 2) {
-          targetOffset -= trustSetWidth;
-        }
-        return targetOffset;
-      }
-
-      function trustRebuildClones() {
-        trustRemoveClones();
-
-        var prependFrag = document.createDocumentFragment();
-        trustSlides.forEach(function (slide) {
-          var clone = slide.cloneNode(true);
-          clone.classList.add('trust__logo-item--clone');
-          clone.setAttribute('aria-hidden', 'true');
-          prependFrag.appendChild(clone);
-        });
-        trustTrack.insertBefore(prependFrag, trustTrack.firstChild);
-
-        trustSlides.forEach(function (slide) {
-          var clone = slide.cloneNode(true);
-          clone.classList.add('trust__logo-item--clone');
-          clone.setAttribute('aria-hidden', 'true');
-          trustTrack.appendChild(clone);
-        });
-
-        trustApplySlideWidths();
-      }
-
-      function trustApplyTransform(animate) {
-        trustTrack.style.transition = animate
-          ? 'transform ' + (TRUST_STEP_MS / 1000) + 's cubic-bezier(0.4, 0, 0.2, 1)'
-          : 'none';
-        trustTrack.style.transform = 'translate3d(-' + trustOffset + 'px, 0, 0)';
-      }
-
-      function trustWrapOffset() {
-        if (trustSetWidth <= 0) return;
-        while (trustOffset >= trustSetWidth * 2) {
-          trustOffset -= trustSetWidth;
-        }
-        while (trustOffset < trustSetWidth) {
-          trustOffset += trustSetWidth;
-        }
-      }
-
-      function trustSnapToCenter() {
-        trustOffset = trustNormalizeOffsetTarget(trustOffsetForCenter(trustCenterIndex));
-        trustWrapOffset();
-      }
-
-      function trustSyncCenterIndexFromOffset() {
-        var slideW = trustSlideWidth();
-        if (slideW <= 0 || trustTotal <= 0) return;
-        trustWrapOffset();
-
-        var viewportCenterPx = trustOffset + trustViewport.offsetWidth / 2;
-        var trackIndex = Math.round((viewportCenterPx - slideW / 2) / slideW);
-        var logicalIndex = trackIndex - trustTotal;
-        trustCenterIndex = ((logicalIndex % trustTotal) + trustTotal) % trustTotal;
-      }
-
-      function trustSnapOffsetToCenter() {
-        trustWrapOffset();
-        trustSyncCenterIndexFromOffset();
-        trustOffset = trustOffsetForCenter(trustCenterIndex);
-        trustWrapOffset();
-      }
-
-      function trustSnapToNearestCenter(animate) {
-        if (trustSetWidth <= 0) return;
-        if (trustStepping) {
-          trustCompleteStep();
-        }
-
-        trustWrapOffset();
-        trustSyncCenterIndexFromOffset();
-        var targetOffset = trustNormalizeOffsetTarget(trustOffsetForCenter(trustCenterIndex));
-        var distance = Math.abs(targetOffset - trustOffset);
-
-        if (!animate || distance < 0.5) {
-          trustOffset = targetOffset;
-          trustWrapOffset();
-          trustApplyTransform(false);
-          return;
-        }
-
-        trustStepping = true;
-
-        trustStepEndHandler = function onTrustSnapEnd(e) {
-          if (e.target !== trustTrack) return;
-          if (e.propertyName !== 'transform' && e.propertyName !== '-webkit-transform') return;
-          trustCompleteStep();
-        };
-
-        trustTrack.addEventListener('transitionend', trustStepEndHandler);
-        trustStepFallbackTimer = setTimeout(trustCompleteStep, TRUST_STEP_MS + 100);
-
-        trustApplyTransform(false);
-        void trustTrack.offsetWidth;
-        trustOffset = targetOffset;
-        requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            trustApplyTransform(true);
-          });
-        });
-      }
-
-      function trustUpdatePauseUI(paused) {
-        trustPaused = paused;
-
-        if (trustPause) {
-          trustPause.setAttribute('aria-pressed', paused ? 'true' : 'false');
-          trustPause.setAttribute('aria-label', paused ? 'Resume carousel rotation' : 'Pause carousel rotation');
-          trustPause.classList.toggle('is-playing', !paused);
-          trustPause.classList.toggle('is-paused', paused);
-        }
-        if (trustPauseIcon) trustPauseIcon.hidden = paused;
-        if (trustPlayIcon) trustPlayIcon.hidden = !paused;
-        if (trustPauseLabel) trustPauseLabel.textContent = paused ? 'Paused' : 'Playing';
-      }
-
-      function trustClearStepTimers() {
-        if (trustStepEndHandler) {
-          trustTrack.removeEventListener('transitionend', trustStepEndHandler);
-          trustStepEndHandler = null;
-        }
-        if (trustStepFallbackTimer) {
-          clearTimeout(trustStepFallbackTimer);
-          trustStepFallbackTimer = null;
-        }
-      }
-
-      function trustCompleteStep() {
-        if (!trustStepping) return;
-        trustClearStepTimers();
-        trustSnapOffsetToCenter();
-        trustApplyTransform(false);
-        trustStepping = false;
-      }
-
-      function trustTick(timestamp) {
-        if (!trustLastTime) trustLastTime = timestamp;
-        var elapsed = Math.min(timestamp - trustLastTime, TRUST_TICK_MAX_MS);
-        trustLastTime = timestamp;
-
-        if (!trustPaused && !trustStepping && trustSetWidth > 0) {
-          trustOffset += trustTickerSpeed() * (elapsed / 1000);
-          trustWrapOffset();
-          trustApplyTransform(false);
-        }
-
-        trustRafId = requestAnimationFrame(trustTick);
-      }
-
-      function trustStartTicker() {
-        trustWrapOffset();
-        trustUpdatePauseUI(false);
-        trustLastTime = null;
-      }
-
-      function trustStopTicker(animate) {
-        trustUpdatePauseUI(true);
-        trustLastTime = null;
-        trustWrapOffset();
-        trustSnapToNearestCenter(!!animate);
-      }
-
-      function trustManualStep(direction) {
-        if (trustSetWidth <= 0) return;
-        if (trustStepping) {
-          trustCompleteStep();
-        }
-
-        trustStepping = true;
-        trustWrapOffset();
-        trustSyncCenterIndexFromOffset();
-
-        var slideW = trustSlideWidth();
-        var prevIndex = trustCenterIndex;
-        trustCenterIndex = (trustCenterIndex + direction + trustTotal) % trustTotal;
-
-        if (direction < 0 && trustOffset - slideW < trustSetWidth) {
-          trustOffset += trustSetWidth;
-          trustApplyTransform(false);
-          void trustTrack.offsetWidth;
-        }
-
-        if (direction > 0 && prevIndex === trustTotal - 1) {
-          trustOffset -= trustSetWidth;
-          trustApplyTransform(false);
-          void trustTrack.offsetWidth;
-        }
-
-        trustStepEndHandler = function onTrustStepEnd(e) {
-          if (e.target !== trustTrack) return;
-          if (e.propertyName !== 'transform' && e.propertyName !== '-webkit-transform') return;
-          trustCompleteStep();
-        };
-
-        trustTrack.addEventListener('transitionend', trustStepEndHandler);
-        trustStepFallbackTimer = setTimeout(trustCompleteStep, TRUST_STEP_MS + 100);
-
-        trustOffset += direction * slideW;
-        requestAnimationFrame(function () {
-          trustApplyTransform(true);
-        });
-      }
-
-      function trustOnArrowClick(direction) {
-        if (!trustPaused) {
-          if (trustStepping) {
-            trustCompleteStep();
-          }
-          trustSnapToNearestCenter(false);
-          trustUpdatePauseUI(true);
-          trustLastTime = null;
-        }
-        trustManualStep(direction);
-      }
-
-      function trustMeasureOnResize() {
-        var oldSlideW = trustLastSlideW || trustSlideWidth();
-        var nextVisible = trustGetVisible();
-        var visibleChanged = nextVisible !== trustVisible;
-
-        if (visibleChanged) {
-          trustVisible = nextVisible;
-          trustCenterIndex = Math.min(trustCenterSlot(), trustTotal - 1);
-          trustStepping = false;
-          trustClearStepTimers();
-          trustRebuildClones();
-          trustSnapToCenter();
-        } else {
-          var newSlideW = trustApplySlideWidths();
-          if (oldSlideW > 0) {
-            trustOffset *= newSlideW / oldSlideW;
-          }
-          trustWrapOffset();
-          trustSyncCenterIndexFromOffset();
-          trustOffset = trustNormalizeOffsetTarget(trustOffsetForCenter(trustCenterIndex));
-          trustWrapOffset();
-        }
-
-        trustApplyTransform(false);
-      }
-
-      function trustInit() {
-        trustCenterIndex = Math.min(trustCenterSlot(), trustTotal - 1);
-        trustRebuildClones();
-        trustSnapToCenter();
-        trustApplyTransform(false);
-        trustUpdatePauseUI(false);
-        if (!trustRafId) {
-          trustRafId = requestAnimationFrame(trustTick);
-        }
-      }
-
-      trustInit();
-      window.addEventListener('load', trustMeasureOnResize);
-
-      document.addEventListener('visibilitychange', function () {
-        trustLastTime = null;
-        if (!document.hidden && trustSetWidth > 0) {
-          trustWrapOffset();
-          if (trustPaused) {
-            trustSnapToNearestCenter(false);
-          }
-        }
-      });
-
-      if (trustPrev) {
-        trustPrev.addEventListener('click', function (event) {
-          event.preventDefault();
-          trustOnArrowClick(-1);
-        });
-      }
-
-      if (trustNext) {
-        trustNext.addEventListener('click', function (event) {
-          event.preventDefault();
-          trustOnArrowClick(1);
-        });
-      }
-
-      if (trustPause) {
-        trustPause.addEventListener('click', function (event) {
-          event.preventDefault();
-          if (trustPaused) {
-            trustStartTicker();
-          } else {
-            trustStopTicker(true);
-          }
-        });
-      }
-
-      var trustResizeTimer;
-      window.addEventListener('resize', function () {
-        clearTimeout(trustResizeTimer);
-        trustResizeTimer = setTimeout(trustMeasureOnResize, 150);
-      });
-    })();
-
-    /* Experience FUNDVIEW — interactive platform explorer with spotlight */
-    (function experienceFundview() {
-      const section = document.getElementById("experience_fundview");
-      const tabsWrap = document.getElementById("ef-tabs");
-      const panelBody = document.getElementById("ef-panel-body");
-      const backdrop = document.getElementById("ef-backdrop");
-      if (!section || !tabsWrap || !panelBody) return;
-
-      const CHECK_SVG = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8.2l2 2 4-4.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      const CTA_HREF = "https://245865092.hs-sites-na2.com/book-a-demo";
-      const SHOT_BASE = "https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Landing%20Page/";
-
-      const departments = [
-        {
-          id: "financial",
-          name: "Financial Management",
-          icon: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3L3 9h18L12 3z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/><path d="M5 9v10M9 9v10M15 9v10M19 9v10M3 19h18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>',
-          desc: [
-            "FUNDVIEW Financial Management connects every aspect of your organization's financial operations into one fully integrated platform.",
-            "FUNDVIEW helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information."
-          ],
-          features: [
-            { label: "General Ledger", desc: "The foundation of your financial operations with real-time posting, fund accounting, journal entries, reporting, and complete financial visibility." },
-            { label: "Budget Manager", desc: "Build, manage, monitor, and report on budgets with real-time visibility into revenues, expenditures, and available balances." },
-            { label: "Bank Reconciliation", desc: "Automate reconciliation, identify discrepancies quickly, and reduce reconciliation time by up to 50%." },
-            { label: "Accounts Payable", desc: "Manage vendors, invoices, approvals, payment processing, and secure digital check generation from one connected workflow." },
-            { label: "Purchasing", desc: "Streamline requisitions, purchase orders, approvals, encumbrances, and purchasing workflows while maintaining budget control." },
-            { label: "Asset Management", desc: "Track capital assets, depreciation, maintenance history, insurance information, utilization, and inventory from one centralized system." },
-            { label: "Cash Receipting", desc: "Record and manage payments from multiple departments while automatically updating the General Ledger in real time." },
-            { label: "Financial Reporting", desc: "Generate accurate financial statements, operational reports, audit documentation, and management reports using real-time financial data." }
-          ],
-          outcomes: [
-            "Reduce month-end close by up to 70%",
-            "Improve financial visibility with a Real-Time General Ledger",
-            "Eliminate duplicate data entry across departments",
-            "Simplify budgeting, purchasing, and financial reporting",
-            "Reduce bank reconciliation time by up to 50%",
-            "Maintain 100% GASB & GAAP compliance",
-            "Improve audit readiness and financial transparency",
-            "Give leadership greater confidence in every financial decision"
-          ],
-          why: {
-            title: "Why Finance Directors Choose FUNDVIEW",
-            items: ["One connected financial platform", "Real-time financial visibility", "Purpose-built for local government accounting", "Built-in compliance and audit readiness", "Faster month-end close", "Connected purchasing and budgeting", "Reduced manual reconciliation", "U.S.-based support from experts who understand municipal finance"]
-          },
-          stat: { value: "70%", label: "Faster month-end close" },
-          quote: { text: "Month-end used to take us weeks. With FUNDVIEW, our books are closed and our council reports are ready in days.", cite: "Finance Director, Texas Municipality" },
-          cta: "Explore Financial Management",
-          shot: { src: SHOT_BASE + "DEMO_Finances%20(General%20Ledger).png", alt: "FUNDVIEW Financial Management screenshot" }
-        },
-        {
-          id: "workforce",
-          name: "Workforce Management",
-          icon: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.25" stroke="currentColor" stroke-width="1.75"/><path d="M3.5 19c.6-3 2.9-4.5 5.5-4.5s4.9 1.5 5.5 4.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M15.5 5.6a3.25 3.25 0 010 5.8M17.6 14.9c1.6.7 2.6 2 3 4.1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>',
-          desc: [
-            "Simplify payroll, human resources, and employee time management with one connected workforce solution designed specifically for local government. FUNDVIEW helps you pay employees accurately, manage employee information with confidence, and eliminate manual processes that slow your team down."
-          ],
-          features: [
-            { label: "Payroll", desc: "Process payroll accurately and efficiently with integrated earnings, deductions, taxes, direct deposit, benefits, and reporting\u2014all connected to your financial system." },
-            { label: "Human Resources", desc: "Maintain complete employee records, certifications, evaluations, training, benefits, communications, and personnel history in one secure location." },
-            { label: "Distributed Time Entry", desc: "Allow departments to enter and approve employee time directly within FUNDVIEW, reducing manual entry and accelerating payroll processing." },
-            "Employee Management",
-            "Benefits Administration",
-            "Accrual & Leave Tracking",
-            "Payroll Reporting",
-            "Real-Time Financial Integration"
-          ],
-          outcomes: [
-            "Process payroll with greater speed and accuracy",
-            "Eliminate duplicate entry between payroll and finance",
-            "Empower departments with distributed time entry",
-            "Improve employee record management",
-            "Simplify leave and accrual tracking",
-            "Reduce payroll errors and manual processes",
-            "Automatically update the General Ledger in real time",
-            "Strengthen compliance and reporting"
-          ],
-          why: {
-            title: "Why HR & Finance Teams Choose FUNDVIEW",
-            items: ["One connected workforce platform", "Payroll integrated with financial management", "Real-Time General Ledger updates", "Department-approved time entry", "Improved payroll accuracy", "Simplified HR administration", "Built specifically for local government", "U.S.-based support from experts who understand municipal operations"]
-          },
-          stat: { value: "30%", label: "Average workload reclaimed" },
-          quote: { text: "Payroll that used to take days now runs smoothly every cycle — and it posts straight to the General Ledger.", cite: "HR & Payroll Coordinator, City Government" },
-          cta: "Explore Workforce Management",
-          shot: { src: SHOT_BASE + "DEMO_Payroll.png", alt: "FUNDVIEW Workforce Management screenshot" }
-        },
-        {
-          id: "utility",
-          name: "Utility & Field Services",
-          icon: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5S6.5 9.6 6.5 13.5a5.5 5.5 0 0011 0C17.5 9.6 12 3.5 12 3.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/><path d="M9.5 13.8a2.5 2.5 0 002.5 2.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>',
-          desc: [
-            "Manage utility billing, field operations, service requests, and customer payments from one connected platform. FUNDVIEW helps local governments improve efficiency, deliver better customer service, and keep utility operations moving with real-time information."
-          ],
-          features: [
-            { label: "Utility Billing", desc: "Manage metered and non-metered utility billing, customer accounts, payment processing, adjustments, deposits, penalties, and complete account history from one integrated platform." },
-            { label: "Service Orders", desc: "Create, assign, and manage field work including connects, disconnects, rereads, meter exchanges, inspections, and service requests with real-time status updates." },
-            "Customer Account Management",
-            "Meter Reading & Consumption Tracking",
-            "Connects & Disconnects",
-            "Meter Exchanges",
-            "Payment Processing",
-            { label: "Online Payments", desc: "Give customers a secure, convenient way to pay utility bills online while automatically updating account balances and financial records." },
-            "Customer Payment History",
-            "Real-Time Financial Integration",
-            "Mobile Friendly",
-            "Real-Time Text and Email Notifications"
-          ],
-          outcomes: [
-            "Simplify utility billing and payment processing",
-            "Reduce manual work between departments",
-            "Improve customer service and response times",
-            "Manage field work with real-time updates",
-            "Eliminate duplicate data entry",
-            "Automatically update financial records",
-            "Improve operational visibility",
-            "Deliver faster, more accurate utility services"
-          ],
-          why: {
-            title: "Why Utility Departments Choose FUNDVIEW",
-            items: ["One connected utility platform", "Billing integrated with financial management", "Real-time account and payment updates", "Improved field service coordination", "Faster response to customer requests", "Better visibility into utility operations", "Built specifically for local government", "U.S.-based support from people who understand municipal utilities"]
-          },
-          stat: { value: "24/7", label: "Online payments & account access" },
-          quote: { text: "Billing, service orders, and payments finally live in one place. Our field crews and office staff see the same information in real time.", cite: "Utility Billing Supervisor, Texas City" },
-          cta: "Explore Utility & Field Services",
-          shot: { src: SHOT_BASE + "DEMO_Utility%20Billing.png", alt: "FUNDVIEW Utility Billing screenshot" }
-        },
-        {
-          id: "community",
-          name: "Community Development",
-          icon: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20V9.5L12 4l8 5.5V20" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/><path d="M4 20h16M9.5 20v-5h5v5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-          desc: [
-            "Support responsible growth, protect your community, and streamline development with one connected solution for permitting, inspections, and code enforcement. FUNDVIEW helps local governments simplify processes, improve communication, and keep projects moving."
-          ],
-          features: [
-            { label: "Permitting", desc: "Manage permit applications, reviews, approvals, inspections, renewals, and payments through one streamlined workflow. Track every permit from submission to completion while improving communication with contractors, developers, and residents." },
-            { label: "Code Enforcement", desc: "Track complaints, inspections, violations, notices, images, and case activity from one centralized system. Manage every case through resolution while improving documentation, communication, and compliance." },
-            "Permit Applications",
-            "Plan Review",
-            "Inspections",
-            "Violation & Case Management",
-            "Image & Document Management",
-            "Contractor & Property Records",
-            "Citizen Communication",
-            "Real-Time Financial Integration"
-          ],
-          outcomes: [
-            "Streamline permitting and inspection workflows",
-            "Improve communication between departments",
-            "Track violations and enforcement activities with confidence",
-            "Reduce manual paperwork and duplicate entry",
-            "Improve visibility into active projects and cases",
-            "Provide faster service to contractors and citizens",
-            "Automatically update financial records",
-            "Support responsible community growth"
-          ],
-          why: {
-            title: "Why Community Development Teams Choose FUNDVIEW",
-            items: ["One connected platform for permits and code enforcement", "Simplified permit review and approval workflows", "Better visibility into inspections and active cases", "Improved communication with contractors and citizens", "Integrated financial tracking for permit fees", "Reduced paperwork and manual processes", "Built specifically for local government", "U.S.-based support from experts who understand municipal operations"]
-          },
-          stat: { value: "One", label: "Platform for permits, inspections & code enforcement" },
-          quote: { text: "Contractors get answers faster, inspectors stay organized, and every permit fee posts to finance automatically.", cite: "Community Development Director" },
-          cta: "Explore Community Development",
-          shot: { src: SHOT_BASE + "DEMO_Service%20Orders.png", alt: "FUNDVIEW Community Development screenshot" }
-        },
-        {
-          id: "court",
-          name: "Municipal Court",
-          icon: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.5 8.5l5-5 7 7-5 5-7-7z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/><path d="M11 11l-7.5 7.5M3 21h9" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>',
-          desc: [
-            "FUNDVIEW Municipal Court simplifies every stage of court administration\u2014from citation entry and case management to payments, reporting, and compliance. Fully integrated with FUNDVIEW's financial platform, court activity updates in real time, eliminating duplicate entry and giving staff greater visibility into daily operations."
-          ],
-          features: ["Citation & Case Management", "Docket & Court Scheduling", "Warrants & Collections", "Payment Processing", "Online Payments", "Document & Case History", "Reporting & Compliance", "Real-Time Financial Integration"],
-          outcomes: [
-            "Reduce manual case management",
-            "Improve staff efficiency",
-            "Increase payment convenience",
-            "Maintain accurate financial records",
-            "Keep court operations connected with the rest of your city"
-          ],
-          why: null,
-          stat: { value: "Real-time", label: "Court activity posted to finance" },
-          quote: { text: "Citations, dockets, and payments all flow through one system \u2014 our clerks no longer re-key anything.", cite: "Municipal Court Clerk" },
-          cta: "Explore Municipal Court",
-          shot: { src: SHOT_BASE + "DEMO_Payments%20(Accounts%20Payable).png", alt: "FUNDVIEW Municipal Court screenshot" }
-        },
-        {
-          id: "citycentral",
-          name: "CityCentral\u2122 Citizen Portal",
-          icon: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.75"/><path d="M3.5 12h17M12 3.5c2.5 2.3 3.8 5.2 3.8 8.5S14.5 18.2 12 20.5c-2.5-2.3-3.8-5.2-3.8-8.5S9.5 5.8 12 3.5z" stroke="currentColor" stroke-width="1.75"/></svg>',
-          desc: [
-            "Give citizens secure, convenient online access to utility billing and municipal court services through one easy-to-use self-service portal."
-          ],
-          features: ["Online Utility Payments", "Municipal Court Payments", "Account Lookup & Payment History", "Secure Citizen Portal", "24/7 Self-Service Access", "Payment Receipts & Confirmations", "Reduced Counter Traffic", "Fully Integrated with FUNDVIEW"],
-          outcomes: [
-            "Improve the citizen experience",
-            "Increase online payment adoption",
-            "Reduce phone calls and walk-in traffic",
-            "Provide 24/7 access to services",
-            "Eliminate duplicate payment entry",
-            "Keep financial records updated automatically"
-          ],
-          why: null,
-          stat: { value: "24/7", label: "Self-service citizen access" },
-          quote: { text: "Residents pay their bills online at any hour, and our front counter finally has room to breathe.", cite: "City Secretary" },
-          cta: "Explore CityCentral",
-          shot: { src: SHOT_BASE + "DEMO_Utility%20Billing.png", alt: "CityCentral Citizen Portal screenshot" }
-        },
-        {
-          id: "platform",
-          name: "The FUNDVIEW Platform",
-          icon: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.75"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.75"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.75"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.75"/></svg>',
-          desc: [
-            "The power of FUNDVIEW goes beyond individual departments. Every module works together on one connected platform, giving your organization real-time visibility, shared data, automated workflows, and the confidence that comes from having one reliable source of information."
-          ],
-          features: [
-            { label: "One Connected Platform", desc: "Every department works from the same connected ERP, eliminating disconnected software and improving collaboration across the organization." },
-            { label: "Real-Time General Ledger", desc: "Financial information updates automatically as work is completed, giving finance teams immediate visibility without waiting for end-of-day or batch processes." },
-            "Real-Time Visibility",
-            { label: "Cloud-Based ERP", desc: "Securely access FUNDVIEW from the office, in the field, or while working remotely through a modern cloud platform." },
-            { label: "Dashboards & Reporting", desc: "Access real-time dashboards and reports that provide leadership with the information they need to make confident decisions." },
-            { label: "Automated Text & Email Notifications", desc: "Automatically notify employees, departments, contractors, and citizens of important updates, approvals, reminders, and status changes." },
-            { label: "Document Management", desc: "Keep documents, images, and supporting records connected to the transactions, cases, permits, employees, and accounts they belong to." },
-            { label: "Approval Workflows", desc: "Automate routing and approvals for purchasing, payroll, permits, and other operational processes to improve accountability and reduce delays." },
-            { label: "Security & User Permissions", desc: "Protect sensitive information with role-based security, audit trails, and a platform built to support the compliance requirements of local government." },
-            "GASB & GAAP Compliance",
-            "Audit Trail",
-            "Mobile & Remote Access"
-          ],
-          outcomes: [
-            "One source of truth across every department",
-            "Real-time visibility into financial and operational activity",
-            "Eliminate duplicate data entry and disconnected systems",
-            "Improve collaboration across departments",
-            "Automate notifications and routine workflows",
-            "Increase security and accountability",
-            "Access information securely from anywhere",
-            "Support better decisions with real-time reporting"
-          ],
-          why: {
-            title: "Why Organizations Choose the FUNDVIEW Platform",
-            items: ["One connected ERP platform", "Real-time visibility across every department", "Built specifically for local government", "Cloud-based and secure", "Automated workflows and notifications", "Connected financial and operational data", "Scalable as your community grows", "U.S.-based support from experts who understand local government"]
-          },
-          stat: { value: "100%", label: "GASB & GAAP compliant" },
-          quote: { text: "Every department works from the same real-time data. FUNDVIEW replaced six disconnected systems for us.", cite: "City Administrator" },
-          cta: "Explore the FUNDVIEW Platform",
-          shot: { src: SHOT_BASE + "DEMO_Finances%20(General%20Ledger).png", alt: "The FUNDVIEW Platform screenshot" }
-        }
-      ];
-
-      let activeId = departments[0].id;
-      let spotlight = false;
-
-      function renderTabs() {
-        tabsWrap.innerHTML = departments.map(function (dept) {
-          const active = dept.id === activeId;
-          return (
-            '<button type="button" class="experience_fundview__tab' + (active ? " is-active" : "") + '" role="tab" aria-selected="' + active + '" data-dept="' + dept.id + '">' +
-            dept.icon + "<span>" + dept.name + "</span></button>"
-          );
-        }).join("");
-      }
-
-      function checklist(items) {
-        return '<ul class="experience_fundview__checklist">' + items.map(function (item) {
-          return "<li>" + CHECK_SVG + "<span>" + item + "</span></li>";
-        }).join("") + "</ul>";
-      }
-
-      function renderPanel() {
-        const dept = departments.find(function (d) { return d.id === activeId; });
-        if (!dept) return;
-
-        const listsClass = dept.why ? "experience_fundview__lists" : "experience_fundview__lists is-single";
-        let listsHtml =
-          '<div class="' + listsClass + '">' +
-          "<div>" +
-          '<h4 class="experience_fundview__subhead">Customer Outcomes</h4>' +
-          checklist(dept.outcomes) +
-          "</div>";
-        if (dept.why) {
-          listsHtml +=
-            "<div>" +
-            '<h4 class="experience_fundview__subhead">' + dept.why.title + "</h4>" +
-            checklist(dept.why.items) +
-            "</div>";
-        }
-        listsHtml += "</div>";
-
-        panelBody.innerHTML =
-          '<div class="experience_fundview__panel-grid">' +
-          "<div>" +
-          '<h3 class="experience_fundview__dept">' + dept.name + "</h3>" +
-          dept.desc.map(function (p) { return '<p class="experience_fundview__desc">' + p + "</p>"; }).join("") +
-          '<h4 class="experience_fundview__subhead">Feature Highlights</h4>' +
-          '<ul class="experience_fundview__chips">' + dept.features.map(function (f) {
-            if (typeof f === "string") return "<li>" + f + "</li>";
-            return '<li class="has-desc" tabindex="0"><span class="experience_fundview__chip-label">' + f.label +
-              '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.4v3.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5.2" r="0.85" fill="currentColor"/></svg>' +
-              '</span><span class="experience_fundview__chip-tip" role="tooltip">' + f.desc + "</span></li>";
-          }).join("") + "</ul>" +
-          '<a class="experience_fundview__cta" href="' + CTA_HREF + '">' + dept.cta + ' <span aria-hidden="true">&rarr;</span></a>' +
-          "</div>" +
-          "<div>" +
-          '<div class="experience_fundview__browser">' +
-          '<div class="experience_fundview__browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>' +
-          '<img src="' + dept.shot.src + '" alt="' + dept.shot.alt + '" loading="lazy">' +
-          "</div>" +
-          '<div class="experience_fundview__proof">' +
-          '<div class="experience_fundview__stat"><span class="experience_fundview__stat-value">' + dept.stat.value + '</span><span class="experience_fundview__stat-label">' + dept.stat.label + "</span></div>" +
-          '<blockquote class="experience_fundview__quote"><p>&ldquo;' + dept.quote.text + '&rdquo;</p><cite>&mdash; ' + dept.quote.cite + "</cite></blockquote>" +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          listsHtml;
-      }
-
-      function setSpotlight(on) {
-        spotlight = on;
-        section.classList.toggle("is-spotlight", on);
-      }
-
-      function selectDept(id, withSpotlight) {
-        const changed = id !== activeId;
-        activeId = id;
-        renderTabs();
-
-        if (changed) {
-          panelBody.classList.add("is-swapping");
-          setTimeout(function () {
-            renderPanel();
-            panelBody.classList.remove("is-swapping");
-          }, 180);
-        }
-
-        if (withSpotlight) setSpotlight(true);
-      }
-
-      tabsWrap.addEventListener("click", function (e) {
-        const tab = e.target.closest(".experience_fundview__tab");
-        if (!tab) return;
-        selectDept(tab.getAttribute("data-dept"), true);
-      });
-
-      if (backdrop) {
-        backdrop.addEventListener("click", function () {
-          setSpotlight(false);
-        });
-      }
-
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && spotlight) setSpotlight(false);
-      });
-
-      renderTabs();
-      renderPanel();
     })();
 
     /* See In Action — inline overview video player (same behavior as book-a-demo video-cta) */
@@ -6954,7 +6163,7 @@
 (function () {
   'use strict';
 
-  /* â•â•â•â•â•â•â•â• 1. SIDEBAR NAV â•â•â•â•â•â•â•â• */
+  /* 1. Sidebar nav */
   const MODULES = [
     { id:'financial', label:"Financial Management", icon:'<path d="M3 21h18"/><path d="M5 21V9l7-4 7 4v12"/><path d="M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01"/>' },
     { id:'workforce', label:"Workforce Management", icon:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><circle cx="17" cy="10" r="2.5"/><path d="M15 15.5a5 5 0 016 4.5"/>' },
@@ -6977,7 +6186,7 @@
     sideNavItems.appendChild(b);
   });
 
-  /* â•â•â•â•â•â•â•â• 2. SCREEN SWITCHING (fade transitions) â•â•â•â•â•â•â•â• */
+  /* 2. Screen switching */
   /* Wrap category screens in #screenScroll — THAT element is the scroller.
      #screenHost is only the relative clip box beside #sideNav. */
   (function ensureScreenScroll() {
@@ -6995,7 +6204,7 @@
   }
   let current = 'financial';
 
-  /* ── Bottom tab workspace: every opened screen docks as a closable tab ── */
+  /* Bottom tab workspace */
   const tabStrip = document.getElementById('tabStrip');
   const SCREEN_LABELS = {};
   MODULES.forEach(m => { SCREEN_LABELS[m.id] = m.label; });
@@ -7102,7 +6311,7 @@
 
   renderTabs();
 
-  /* â•â•â•â•â•â•â•â• 3. TABLE DATA â•â•â•â•â•â•â•â• */
+  /* 3. Table data */
   Chart.defaults.font.family = "'Inter', sans-serif";
   Chart.defaults.font.size = 9.5;
   Chart.defaults.color = '#475569';
@@ -7180,6 +6389,7 @@
   const sceneVid    = document.getElementById('sceneImg');
   const sceneSnap   = document.getElementById('sceneSnap');
   const sceneEl     = document.getElementById('sceneZoom');
+  const bookDemoCta = document.getElementById('bookDemo');
 
   /* Flip to false to restore the CSS transform dolly instead of the clip */
   const USE_ZOOM_VIDEO = true;
@@ -7194,6 +6404,9 @@
   const EASE_IO        = 'cubic-bezier(0.23, 1, 0.32, 1)';
   /* CSS-dolly fallback timing */
   const ZOOM_MS = 750, BLOOM_AT = 380, CSS_REVEAL_AT = 450, UNZOOM_MS = 700;
+  /* Rail Book Demo CTA: pop in 2s after the demo lands (own timer, not zoomTimers) */
+  const BOOK_CTA_DELAY_MS = 2000;
+  let bookCtaTimer = null;
   let demoOpen = false, animating = false;
   let zoomTimers = [];
   let endFrameReady = false;
@@ -7333,6 +6546,7 @@
   function forceResetDemo() {
     clearZoomTimers();
     stopCountUps();
+    cancelBookCta();
     handoffStarted = false;
     openGen++;
     try { zoomClip.pause(); } catch (_) {}
@@ -7786,6 +7000,19 @@
     demoLaptop.style.removeProperty('--exit-y');
   }
 
+  function scheduleBookCta() {
+    cancelBookCta();
+    if (!bookDemoCta) return;
+    bookCtaTimer = setTimeout(() => {
+      bookCtaTimer = null;
+      if (demoOpen) bookDemoCta.classList.add('cta-in');
+    }, BOOK_CTA_DELAY_MS);
+  }
+  function cancelBookCta() {
+    if (bookCtaTimer) { clearTimeout(bookCtaTimer); bookCtaTimer = null; }
+    if (bookDemoCta) bookDemoCta.classList.remove('cta-in');
+  }
+
   /* Preload the known end still so the handoff never paints a mid-dolly frame */
   const endStill = new Image();
   endStill.decoding = 'async';
@@ -8010,6 +7237,7 @@
             // Recede hero only now that the overlay fully covers it
             hero.classList.add('demo-recede');
             if (!reduced) runCountUps();
+            scheduleBookCta(); // CTA pops in 2s after the demo lands
             animating = false;
             armDemoScroll();
             zoomClip.style.transitionDuration = '280ms';
@@ -8028,6 +7256,7 @@
         zoomClip.classList.remove('active');
         zoomClip.pause();
         hero.classList.add('demo-recede');
+        scheduleBookCta();
         animating = false;
         armDemoScroll();
       }
@@ -8054,6 +7283,7 @@
   function finishCloseCleanup() {
     const y = lockedScrollY;
     pinScrollY(y);
+    cancelBookCta();
     resetOverlayClasses();
     resetZoomClip();
     try {
@@ -8092,6 +7322,7 @@
     animating = true;
     clearZoomTimers();
     stopCountUps();
+    cancelBookCta();
     openGen++; // cancel any stray open watchers
 
     hero.classList.remove('demo-recede');
@@ -8224,6 +7455,7 @@
         heroInner.classList.remove('scene-change');
         sceneChange.classList.remove('flash');
         hero.classList.add('demo-recede');
+        scheduleBookCta(); // CTA pops in 2s after the demo lands (CSS-dolly path)
       }, ZOOM_MS - CSS_REVEAL_AT + 200);
     }, reduced ? 50 : CSS_REVEAL_AT);
   }
@@ -8233,6 +7465,7 @@
     animating = true;
     clearZoomTimers();
     stopCountUps();
+    cancelBookCta();
     hero.classList.remove('demo-recede');
     heroInner.classList.remove('scene-change');
     sceneChange.classList.remove('flash');

@@ -1209,13 +1209,15 @@
       justify-content: flex-start !important;
     }
     #heroContent > .fade-left .mt-8 { justify-content: center !important; }  /* CTAs */
-    /* Scene: full container width, natural 16/9 (frame == stage, zero crop
-       — the full townscape + sky show, just like the md stacked view) */
-    #sceneWrap { order: 1 !important; max-width: none !important; }
+    /* Scene: full viewport width when stacked (break out of padded grid),
+       natural 16/9 (frame == stage, zero crop — full townscape + sky) */
+    #sceneWrap { order: 1 !important; max-width: none !important; width: 100% !important; }
     #scene {
       aspect-ratio: 16 / 9 !important;
       height: auto !important;
+      width: 100vw !important;
       max-width: none !important;
+      margin-left: calc(50% - 50vw) !important;
     }
   }
 
@@ -1432,7 +1434,8 @@
   /* ---- Compositor-only shadow / light stack ---- */
   /* Resting shadow is painted once on the chassis and never animated */
   .demo-screen {
-    --demo-screen-w: min(82vw, 124vh);
+    /* Desktop demo +20% wider vs prior min(82vw, 124vh) */
+    --demo-screen-w: min(98.4vw, 148.8vh);
     width: var(--demo-screen-w);
     /* Explicit height (not aspect-ratio alone): #appShell used height:100%,
        which does not resolve against aspect-ratio parents — the shell grew
@@ -1448,19 +1451,48 @@
       0 10px 26px -10px rgba(0, 0, 0, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.05);
   }
-  /* Large desktops: use more of the viewport (cap 90vw) + wider side nav
+  /* Large desktops: +20% vs prior min(90vw, 132vh) + wider side nav
      so labels like "CityCentral™ Citizen Portal" are not ellipsized. */
   @media (min-width: 1300px) {
     .demo-screen {
-      --demo-screen-w: min(90vw, 132vh);
+      --demo-screen-w: min(108vw, 158.4vh);
       width: var(--demo-screen-w);
       height: min(calc(var(--demo-screen-w) / 1.68), calc(100dvh - 96px));
     }
     .demo-base {
-      width: calc(min(90vw, 132vh) * 1.035) !important;
+      width: calc(min(108vw, 158.4vh) * 1.035) !important;
     }
     #sideNav {
       width: 15.5rem !important; /* ~248px; sm:w-44 (11rem) was too narrow */
+    }
+  }
+  /* Tablet / small desktop (640–1299): taller usable chrome + roomier rail
+     so the Book Demo CTA and nav labels fit without clipping into #screenHost. */
+  @media (min-width: 640px) and (max-width: 1299.98px) {
+    #demoOverlay.open,
+    #demoOverlay.bridging,
+    #demoOverlay.handoff-cover {
+      overflow: hidden;
+    }
+    .demo-screen {
+      --demo-screen-w: min(96vw, 140vh);
+      width: var(--demo-screen-w);
+      /* Taller than the 1.68 desktop ratio so mid-height windows are usable */
+      height: min(calc(var(--demo-screen-w) / 1.42), calc(100dvh - 88px));
+      max-height: calc(100dvh - 88px);
+    }
+    .demo-base {
+      width: calc(min(96vw, 140vh) * 1.035) !important;
+    }
+    #demoLaptop {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      max-width: none;
+      width: auto;
+    }
+    #sideNav {
+      width: 13.5rem !important; /* ~216px — fits compact rail CTA */
+      overflow: hidden !important;
     }
   }
   /* App shell fills the bezel via flex — never height:100% against aspect-ratio */
@@ -1588,6 +1620,59 @@
     /* Base deck tracks the mobile screen width (94vw * 1.035) */
     .demo-base { width: 97.3vw !important; }
     .demo-contact-shadow { bottom: -26px; height: 38px; }
+  }
+
+  /* 500–999px: keep laptop under Exit/Book CTAs (top fixed) and grow
+     downward into spare viewport — do not vertical-center (leaves a gap).
+     Width MUST use vw only (never 100%): #demoLaptop is align-items:center
+     and percentage width collapses into a phone-narrow strip. */
+  @media (min-width: 500px) and (max-width: 999.98px) {
+    #demoOverlay.open,
+    #demoOverlay.bridging,
+    #demoOverlay.handoff-cover {
+      justify-content: flex-start !important;
+      align-items: center;
+      padding-top: 4.5rem;   /* clears Exit Preview + mobile Book Demo */
+      padding-bottom: 0.5rem;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    #demoLaptop {
+      width: 96vw !important;
+      max-width: 96vw !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    .demo-screen {
+      --demo-screen-w: 96vw;
+      width: 96vw !important;
+      max-width: 96vw !important;
+      /* Remaining viewport under top chrome, minus laptop base deck */
+      height: calc(100dvh - 4.5rem - 0.5rem - 22px) !important;
+      max-height: calc(100dvh - 5.25rem) !important;
+    }
+    .demo-base {
+      width: calc(96vw * 1.035) !important;
+      max-width: none !important;
+    }
+  }
+
+  /* Phones under 500px: still near full width */
+  @media (max-width: 499.98px) {
+    #demoLaptop {
+      width: 96vw !important;
+      max-width: 96vw !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    .demo-screen {
+      --demo-screen-w: 96vw;
+      width: 96vw !important;
+      max-width: 96vw !important;
+    }
+    .demo-base {
+      width: calc(96vw * 1.035) !important;
+    }
   }
 
   /* ---- Inner UI choreography: the app wakes AFTER the chassis lands ----
@@ -1733,6 +1818,20 @@
     }
   }
 
+  @media (max-width: 640px) {
+    /* Compact pill so long category names can still fit via JS font fit */
+    #activeCatTitle {
+      gap: 5px !important;
+      padding: 5px 8px !important;
+      font-size: 12px !important;
+      max-width: 100%;
+    }
+    #activeCatIcon svg {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
   /* Shared Book a Live Demo CTA */
   .book-demo {
     display: inline-flex;
@@ -1800,23 +1899,70 @@
     display: none;
     flex-shrink: 0;
     align-self: stretch;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
     margin: auto 10px 12px;
-    padding: 9px 10px;
-    gap: 8px;
+    padding: 11px 12px;
+    gap: 10px;
+    border-radius: 12px;
+    overflow: hidden;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
     pointer-events: auto;
   }
-  #bookDemo.book-demo--rail .book-demo__label {
-    white-space: normal;
-    font-size: 12px;
+  #bookDemo.book-demo--rail .book-demo__copy {
+    flex: 0 1 auto;
+    min-width: 0;
+    gap: 2px;
     line-height: 1.2;
   }
+  #bookDemo.book-demo--rail .book-demo__label {
+    white-space: nowrap;
+    font-size: 14px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
   #bookDemo.book-demo--rail .book-demo__eyebrow {
-    font-size: 8px;
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    line-height: 1.15;
+    white-space: nowrap;
   }
   #bookDemo.book-demo--rail .book-demo__icon {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+  #bookDemo.book-demo--rail .book-demo__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  /* Mid widths: compact rail CTA that stays inside the sidebar */
+  @media (min-width: 640px) and (max-width: 1299.98px) {
+    #bookDemo.book-demo--rail {
+      justify-content: flex-start;
+      margin: auto 10px 12px;
+      padding: 9px 10px;
+      gap: 8px;
+      border-radius: 10px;
+    }
+    #bookDemo.book-demo--rail .book-demo__label {
+      font-size: 12px;
+    }
+    #bookDemo.book-demo--rail .book-demo__eyebrow {
+      font-size: 8px;
+      letter-spacing: 0.05em;
+    }
+    #bookDemo.book-demo--rail .book-demo__icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+    }
+    #bookDemo.book-demo--rail .book-demo__icon svg {
+      width: 15px;
+      height: 15px;
+    }
   }
   @media (min-width: 640px) {
     #bookDemo.book-demo--rail { display: flex; }
@@ -2043,9 +2189,14 @@
      centered subject of the video loop. Stage is a cover box scaled up and
      positioned (clamped) to keep the laptop centered without exposing gaps. */
   @media (max-width: 1023.98px) {
+    #sceneWrap {
+      max-width: none !important;
+    }
     #scene {
       aspect-ratio: auto !important;
-      width: 100vw; max-width: none; margin-left: calc(50% - 50vw);
+      width: 100vw !important;
+      max-width: none !important;
+      margin-left: calc(50% - 50vw) !important;
       height: min(66vh, 120vw) !important;
       max-height: none !important;
     }
@@ -2061,18 +2212,22 @@
     }
   }
 
-  /* Tablet only (not phones): zoom OUT 20%, center stage, shorten frame 15% */
+  /* Tablet only (not phones): slightly shorter frame, but stage must still
+     COVER the full frame width — never zoom out / letterbox (navy gutters). */
   @media (min-width: 640px) and (max-width: 1023.98px) {
     #scene {
+      width: 100vw !important;
+      max-width: none !important;
+      margin-left: calc(50% - 50vw) !important;
       height: min(56.1vh, 102vw) !important; /* min(66vh, 120vw) × 0.85 */
     }
     #sceneZoom {
-      --sw: calc(max(100cqw, 100cqh * 16 / 9) * 0.848); /* 1.06 × 0.8 */
-      --sh: calc(max(100cqh, 100cqw * 9 / 16) * 0.848);
-      right: auto !important;
-      /* Horizontally center the smaller stage in the frame */
-      left: max(0px, calc((100cqw - var(--sw)) * 0.5)) !important;
-      top: max(0px, calc((100cqh - var(--sh)) * 0.42)) !important;
+      /* Keep cover scale (≥ frame) — same fill strategy as mobile */
+      --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.06);
+      --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.06);
+      left: auto !important;
+      right: clamp(calc(100cqw - var(--sw)), calc(50cqw - 0.32 * var(--sw)), 0px) !important;
+      top: clamp(calc(100cqh - var(--sh)), calc(50cqh - 0.55 * var(--sh)), 0px) !important;
     }
   }
 
@@ -2111,6 +2266,9 @@
     .scene-note-m { display: block !important; }
     #sceneZoom { --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.08); --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.08); }
   }
+
+
+
 
     /* ——— Every FUNDVIEW Solution Delivers ——— */
     .solution_delivers {
@@ -3502,13 +3660,28 @@
       color: #fff;
       cursor: pointer;
       box-shadow: 0 12px 28px rgba(7, 31, 58, 0.35);
-      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Over dark sections: invert so the control stays visible */
+    .scroll-guide.is-on-dark {
+      background: #fff;
+      color: #0a2e57;
+      box-shadow: 0 12px 28px rgba(7, 31, 58, 0.22);
     }
 
     .scroll-guide:hover,
     .scroll-guide:focus-visible {
       background: #00b7b3;
+      color: #fff;
       transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(0, 183, 179, 0.4);
+    }
+
+    .scroll-guide.is-on-dark:hover,
+    .scroll-guide.is-on-dark:focus-visible {
+      background: #00b7b3;
+      color: #fff;
       box-shadow: 0 16px 32px rgba(0, 183, 179, 0.4);
     }
 
@@ -5155,7 +5328,7 @@ img, video { max-width: 100%; height: auto; }
           <div style="flex:1; display:flex; justify-content:center; min-width:0; padding:0 8px;">
             <div id="activeCatTitle" style="display:inline-flex; align-items:center; gap:7px; max-width:100%; overflow:hidden; border:1px solid rgba(31,192,205,.55); background:rgba(31,192,205,.10); color:#0c2440; font-weight:700; font-size:14px; line-height:1; padding:6px 14px; border-radius:8px;">
               <span id="activeCatIcon" style="display:inline-flex; color:#1fc0cd; flex:none;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V9l7-4 7 4v12"/><path d="M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01"/></svg></span>
-              <span id="activeCatText" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Financial Management</span>
+              <span id="activeCatText" style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Financial Management</span>
             </div>
           </div>
         </header>
@@ -5169,7 +5342,7 @@ img, video { max-width: 100%; height: auto; }
             <a id="bookDemo" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
                class="book-demo book-demo--rail">
               <span class="book-demo__icon" aria-hidden="true">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
               </span>
               <span class="book-demo__copy">
                 <span class="book-demo__eyebrow">Outgrown your ERP?</span>
@@ -5550,7 +5723,7 @@ img, video { max-width: 100%; height: auto; }
     </div>
 
     <!-- Laptop base / keyboard deck — width tracks .demo-screen -->
-    <div class="demo-base relative h-[14px] w-[calc(min(82vw,124vh)*1.035)] rounded-b-2xl"
+    <div class="demo-base relative h-[14px] w-[calc(min(98.4vw,148.8vh)*1.035)] rounded-b-2xl"
          style="background:linear-gradient(180deg,#8a9199 0%,#5c636b 40%,#2a2e34 100%);">
       <div class="absolute left-1/2 top-0 h-[5px] w-28 -translate-x-1/2 rounded-b-lg bg-[#3a3f46]"></div>
     </div>
@@ -5561,6 +5734,7 @@ img, video { max-width: 100%; height: auto; }
      SCRIPT — interactions, screens, tables, charts
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   </section>
+
 
   <section class="solution_delivers" id="solution_delivers" aria-labelledby="solution-delivers-heading">
     <div class="solution_delivers__inner">
@@ -5976,6 +6150,7 @@ img, video { max-width: 100%; height: auto; }
     </div>
   </section>
 
+
   <button class="scroll-guide" id="scroll-guide" type="button" aria-label="Scroll to next section">
     <span class="scroll-guide__inner">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -6069,10 +6244,33 @@ img, video { max-width: 100%; height: auto; }
       const btn = document.getElementById("scroll-guide");
       if (!btn) return;
 
-      const sections = [...document.querySelectorAll(
-        ".hero, .news_and_updates, .stats, .experience_fundview, .solution_delivers, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .resources, .ready_to_see_fundview"
-      )];
+      const sectionSelector =
+        ".hero, .news_and_updates, .stats, .experience_fundview, .solution_delivers, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .resources, .ready_to_see_fundview, .site-footer";
+
+      function getSections() {
+        return [...document.querySelectorAll(sectionSelector)];
+      }
+
+      let sections = getSections();
       if (!sections.length) return;
+
+      /* Dark backgrounds → white guide + navy arrow; light → navy guide + white arrow */
+      const DARK = {
+        hero: true,
+        news_and_updates: true,
+        experience_fundview: true,
+        see_in_action: true,
+        customer_story: true,
+        ready_to_see_fundview: true,
+        "site-footer": true
+      };
+      const LIGHT = {
+        stats: true,
+        solution_delivers: true,
+        helping_local_testimonial: true,
+        listening_evolving: true,
+        resources: true
+      };
 
       function headerOffset() {
         const header = document.querySelector(".site-header");
@@ -6083,19 +6281,51 @@ img, video { max-width: 100%; height: auto; }
         return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
       }
 
+      function sectionUnderGuide() {
+        sections = getSections();
+        const r = btn.getBoundingClientRect();
+        const x = r.left + r.width / 2;
+        const y = r.top + r.height / 2;
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const sr = sections[i].getBoundingClientRect();
+          if (y >= sr.top && y <= sr.bottom && x >= sr.left && x <= sr.right) {
+            return sections[i];
+          }
+        }
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const sr = sections[i].getBoundingClientRect();
+          if (y >= sr.top && y <= sr.bottom) return sections[i];
+        }
+        return null;
+      }
+
+      function isDarkSection(el) {
+        if (!el || !el.classList) return false;
+        for (const cls of Object.keys(DARK)) {
+          if (el.classList.contains(cls)) return true;
+        }
+        for (const cls of Object.keys(LIGHT)) {
+          if (el.classList.contains(cls)) return false;
+        }
+        return false;
+      }
+
       function update() {
         const up = atBottom();
         btn.classList.toggle("is-up", up);
         btn.setAttribute("aria-label", up ? "Back to top" : "Scroll to next section");
+        btn.classList.toggle("is-on-dark", isDarkSection(sectionUnderGuide()));
       }
 
       btn.addEventListener("click", function () {
+        sections = getSections();
         if (atBottom()) {
           window.scrollTo({ top: 0, behavior: "smooth" });
           return;
         }
         const offset = headerOffset() + 8;
         const next = sections.find(function (section) {
+          if (section.classList.contains("site-footer")) return false;
           return section.getBoundingClientRect().top > offset + 12;
         });
         if (next) {
@@ -6109,6 +6339,7 @@ img, video { max-width: 100%; height: auto; }
       });
 
       window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
       update();
     })();
 
@@ -7772,6 +8003,34 @@ img, video { max-width: 100%; height: auto; }
   SCREEN_LABELS.calendar = 'Calendar';
   SCREEN_LABELS.notifications = 'Notifications';
   SCREEN_LABELS['employee-profile'] = 'Employee';   // label overridden per employee on drill-down
+
+  /* Mobile only: shrink #activeCatTitle font until the label fits the pill */
+  function fitActiveCatTitle() {
+    var title = document.getElementById('activeCatTitle');
+    var text = document.getElementById('activeCatText');
+    if (!title || !text) return;
+    var mobile = false;
+    try { mobile = window.matchMedia('(max-width: 640px)').matches; } catch (_) {}
+    if (!mobile) {
+      title.style.fontSize = '';
+      return;
+    }
+    var size = 12;
+    var min = 8.5;
+    title.style.fontSize = size + 'px';
+    // Allow layout to settle, then step down while the label overflows
+    var steps = 16;
+    while (steps-- && text.scrollWidth > text.clientWidth + 0.5 && size > min) {
+      size -= 0.5;
+      title.style.fontSize = size + 'px';
+    }
+  }
+  function scheduleFitActiveCatTitle() {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(fitActiveCatTitle);
+    });
+  }
+  window.addEventListener('resize', scheduleFitActiveCatTitle);
   let openTabs = ['financial'];
 
   function renderTabs() {
@@ -7818,6 +8077,7 @@ img, video { max-width: 100%; height: auto; }
     var _icon = document.getElementById('activeCatIcon');
     var _mod = MODULES.find(function (x) { return x.id === id; });
     if (_icon && _mod) _icon.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + _mod.icon + '</svg>';
+    scheduleFitActiveCatTitle();
     openTab(id);
     const swap = () => {
       screens.forEach(s => s.classList.remove('active', 'visible'));
@@ -8241,6 +8501,7 @@ img, video { max-width: 100%; height: auto; }
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         if (!demoOpen) return;
+        scheduleFitActiveCatTitle();
         const pane = scrollPane();
         if (!pane) return;
         const t = pane.scrollTop;

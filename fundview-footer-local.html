@@ -61,11 +61,13 @@
 
     .site-footer__brand {
       max-width: 360px;
+      align-self: start;
     }
 
     .site-footer__logo {
       display: inline-block;
       line-height: 0;
+      vertical-align: top;
     }
 
     .site-footer__logo img {
@@ -78,6 +80,7 @@
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: clamp(1.5rem, 3vw, 2.5rem);
+      align-self: start;
     }
 
     .site-footer__col-title {
@@ -225,16 +228,61 @@
       height: 18px;
     }
 
-    /* — Responsive — */
+    /* — Responsive (≤960px: nav on top, centered logo below; 4 even columns) — */
     @media (max-width: 960px) {
       .site-footer__top {
         grid-template-columns: 1fr;
         gap: 2.5rem;
+        justify-items: center;
       }
 
       .site-footer__nav {
+        order: 1;
+        width: 100%;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: clamp(0.75rem, 2.5vw, 2rem);
+        justify-items: center;
+        text-align: center;
+      }
+
+      .site-footer__nav > div {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .site-footer__links {
+        justify-items: center;
+      }
+
+      .site-footer__links a {
+        justify-content: center;
+      }
+
+      .site-footer__brand {
+        order: 2;
+        width: 100%;
+        max-width: none;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+      }
+
+      .site-footer__logo {
+        display: block;
+      }
+
+      .site-footer__logo img {
+        margin-inline: auto;
+        width: min(100%, 220px);
+      }
+    }
+
+    @media (max-width: 750px) {
+      .site-footer__nav {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 2rem;
+        gap: 2rem 1.25rem;
       }
     }
 
@@ -243,14 +291,16 @@
         padding: 3rem 1.15rem 1.5rem;
       }
 
-      .site-footer__nav {
-        grid-template-columns: 1fr;
-        gap: 1.75rem;
-      }
-
       .site-footer__bottom {
         flex-direction: column;
         align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .site-footer__nav {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
       }
     }
   </style>
@@ -264,7 +314,7 @@
       <div class="site-footer__top">
         <div class="site-footer__brand">
           <a class="site-footer__logo" href="home.html" aria-label="FUNDVIEW home">
-            <img src="Assets_Footer/LOGO_FUNDVIEW_Stacked_WHITE.png" alt="FUNDVIEW" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Footer/LOGO_FUNDVIEW_Footer1_Compressed.png" alt="FUNDVIEW" loading="lazy">
           </a>
         </div>
 

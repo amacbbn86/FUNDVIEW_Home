@@ -1,5 +1,5 @@
 /**
- * HubSpot dual-mode helper for home.html / home2.html / home3.html
+ * HubSpot dual-mode helper for home.html / home2.html / home3.html / home4.html
  *
  * EDIT (default / local preview):
  *   node _hubspot_mode.js edit
@@ -10,11 +10,12 @@
  *   node _hubspot_mode.js upload          → Home.hubspot.html  (from home.html)
  *   node _hubspot_mode.js upload home2    → Home2.hubspot.html (from home2.html)
  *   node _hubspot_mode.js upload home3    → Home3.hubspot.html (from home3.html)
+ *   node _hubspot_mode.js upload home4    → Home4.hubspot.html (from home4.html)
  *   → HubSpot page template metadata + HubL includes
  *   → header + footer INLINED (fetch of local files does not work on HubSpot)
- *   → for home2/home3: experience Tailwind CSS is also inlined
+ *   → for home2/home3/home4: experience Tailwind CSS is also inlined
  *
- * Usage: node _hubspot_mode.js [edit|upload|status] [home|home2|home3]
+ * Usage: node _hubspot_mode.js [edit|upload|status] [home|home2|home3|home4]
  */
 const fs = require("fs");
 const path = require("path");
@@ -32,6 +33,15 @@ const TAILWIND = path.join(
 
 function resolveTarget(name) {
   const key = (name || "home").toLowerCase();
+  if (key === "home4" || key === "home4.html") {
+    return {
+      key: "home4",
+      source: path.join(ROOT, "home4.html"),
+      output: path.join(ROOT, "Home4.hubspot.html"),
+      label: "FUNDVIEW Home 4 (Experience)",
+      preview: "http://localhost:5500/home4.html",
+    };
+  }
   if (key === "home3" || key === "home3.html") {
     return {
       key: "home3",
@@ -331,7 +341,9 @@ function upload(targetName) {
   console.log("UPLOAD mode — wrote " + path.basename(target.output));
   console.log(
     "Includes: HubSpot HubL + INLINED header + INLINED footer" +
-      (target.key === "home2" || target.key === "home3" ? " + inlined Experience Tailwind CSS" : "") +
+      (target.key === "home2" || target.key === "home3" || target.key === "home4"
+        ? " + inlined Experience Tailwind CSS"
+        : "") +
       "."
   );
   console.log("Size: " + (bytes / 1024).toFixed(1) + " KB");
@@ -352,7 +364,7 @@ try {
   else if (cmd === "upload") upload(targetArg);
   else if (cmd === "status") status(targetArg);
   else {
-    console.error("Usage: node _hubspot_mode.js [edit|upload|status] [home|home2|home3]");
+    console.error("Usage: node _hubspot_mode.js [edit|upload|status] [home|home2|home3|home4]");
     process.exit(1);
   }
 } catch (err) {

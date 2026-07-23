@@ -1,0 +1,203 @@
+<!--
+  Backup: Resources section extracted from home4.html
+  Restore by pasting the <style> rules into home4.html’s page <style>
+  and the <section> markup between listening_evolving and ready_to_see_fundview.
+  Also re-add `.resources` to the scroll-guide sectionSelector and LIGHT map.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FUNDVIEW — Resources section (backup)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* ——— Resources ——— */
+    .resources {
+      width: 100%;
+      padding: clamp(3.5rem, 7vw, 5.5rem) 1.5rem;
+      background: #f0f4f8;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #0a2e57;
+    }
+
+    .resources__inner {
+      width: min(1240px, 100%);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .resources__title {
+      margin: 0 0 clamp(2.25rem, 4.5vw, 3.25rem);
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: #0a2e57;
+    }
+
+    .resources__grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(1rem, 1.8vw, 1.5rem);
+    }
+
+    .resources__card {
+      flex: 0 1 278px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 1.75rem 1.4rem 1.6rem;
+      border: 1px solid #d1dae3;
+      border-radius: 14px;
+      background: #fff;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .resources__card:hover,
+    .resources__card:focus-visible {
+      transform: translateY(-3px);
+      border-color: #00b7b3;
+      box-shadow: 0 14px 34px rgba(10, 46, 87, 0.12);
+      outline: none;
+    }
+
+    .resources__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: rgba(0, 183, 179, 0.12);
+      color: #00928f;
+    }
+
+    .resources__icon svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .resources__card-title {
+      margin: 0;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #0a2e57;
+    }
+
+    .resources__card-copy {
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: #4b5c6e;
+    }
+
+    /* Keep 2 cards per row down to 500px (flex-basis 278px alone stacks earlier). */
+    @media (max-width: 900px) and (min-width: 501px) {
+      .resources__card {
+        flex: 1 1 calc(50% - 0.75rem);
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .resources {
+        padding: 3rem 1.15rem;
+      }
+
+      .resources__card {
+        flex-basis: 100%;
+        max-width: 420px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="resources" id="resources" aria-labelledby="resources-heading">
+    <div class="resources__inner">
+      <h2 class="resources__title" id="resources-heading">Resources</h2>
+
+      <div class="resources__grid">
+        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <span class="resources__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 5.5h12v15h-12a1 1 0 01-1-1v-13a1 1 0 011-1z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/><path d="M16.5 9h3a1 1 0 011 1v9a1.5 1.5 0 01-1.5 1.5h-2.5" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/><path d="M6.75 9h6.5M6.75 12.5h6.5M6.75 16h4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+          </span>
+          <h3 class="resources__card-title">Articles</h3>
+          <p class="resources__card-copy">Insights and best practices for local government teams.</p>
+        </a>
+
+        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <span class="resources__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/><path d="M10 8.5v7l6-3.5-6-3.5z" fill="currentColor"/></svg>
+          </span>
+          <h3 class="resources__card-title">Product Videos</h3>
+          <p class="resources__card-copy">Watch FUNDVIEW in action, feature by feature.</p>
+        </a>
+
+        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <span class="resources__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4.5" width="17" height="11.5" rx="1.5" stroke="currentColor" stroke-width="1.75"/><path d="M12 16v3.5M8.5 19.5h7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M8 8.25h8M8 11.25h5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+          </span>
+          <h3 class="resources__card-title">Webinars</h3>
+          <p class="resources__card-copy">Live and on-demand sessions with our experts.</p>
+        </a>
+
+        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <span class="resources__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="1.5" stroke="currentColor" stroke-width="1.75"/><path d="M8.5 8l1.2 1.2 2.3-2.4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 8.5h2M8.5 13.5l1.2 1.2 2.3-2.4M14 14h2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h3 class="resources__card-title">Buying Guides</h3>
+          <p class="resources__card-copy">Everything you need to evaluate ERP software.</p>
+        </a>
+
+        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <span class="resources__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7.5 5.5h9a2 2 0 012 2v6a2 2 0 01-2 2H12l-4 3.5V15.5h-.5a2 2 0 01-2-2v-6a2 2 0 012-2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/><path d="M9.25 9.25h5.5M9.25 12h3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+          </span>
+          <h3 class="resources__card-title">Customer Stories</h3>
+          <p class="resources__card-copy">How cities like yours succeed with FUNDVIEW.</p>
+        </a>
+
+        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <span class="resources__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.75"/><path d="M12 3v5M12 16v5M3 12h5M16 12h5" stroke="currentColor" stroke-width="1.75"/></svg>
+          </span>
+          <h3 class="resources__card-title">Help Center</h3>
+          <p class="resources__card-copy">Answers and support for FUNDVIEW users.</p>
+        </a>
+
+        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <span class="resources__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/><path d="M9.5 9.3a2.5 2.5 0 114.1 1.9c-.8.7-1.6 1.1-1.6 2.3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1" fill="currentColor"/></svg>
+          </span>
+          <h3 class="resources__card-title">FAQs</h3>
+          <p class="resources__card-copy">Quick answers to common questions.</p>
+        </a>
+
+        <a class="resources__card" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          <span class="resources__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M19.5 12a7.5 7.5 0 11-2.2-5.3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M19.5 3.5v3.5H16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8.5V12l2.5 1.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h3 class="resources__card-title">Product Updates</h3>
+          <p class="resources__card-copy">The latest releases and enhancements.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
