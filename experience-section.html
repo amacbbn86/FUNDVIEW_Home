@@ -219,17 +219,10 @@
     #sceneChange.flash { animation: none; opacity: 0; }
   }
 
-  
-  #heroInner.zooming [class*="backdrop-blur"] {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-
   /* Laptop hotspot hover: soft teal glow behind the machine */
   #laptopGlow { transition: opacity .5s ease; opacity:0; }
   #laptopHotspot:hover ~ #laptopGlow, #laptopHotspot:focus-visible ~ #laptopGlow { opacity:1; }
 
-  
   #sceneZoom {
     transform-origin: 75.75% 54%;
     transition: transform .9s cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -442,24 +435,11 @@
     transition: none;
   }
   
-  @keyframes demoLandIn {
-    from { transform: scale(0.982) translate3d(0, 10px, 0); }
-    to   { transform: none; }
-  }
-  #demoOverlay.open.ui-ready:not(.handoff-cover):not(.closing) #demoLaptop {
-    animation: demoLandIn 0.52s var(--ease-out) forwards;
-  }
-  
   #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) {
     perspective: none;
     transform: none;
   }
-  #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop {
-    will-change: auto;
-    transform: none;
-  }
 
-  
   #demoOverlay .demo-backdrop::after {
     content: ""; position: absolute; inset: 0;
     background: #04070d; opacity: 0; pointer-events: none;
@@ -3017,8 +2997,7 @@
       scrollPane().scrollTop = 0;
       requestAnimationFrame(() => requestAnimationFrame(() => {
         next.classList.add('visible');
-        // Chart construction blocks the main thread; during the hero dolly
-        // the caller defers it until the camera move has finished.
+        // deferCharts: init after dolly finishes
         if (!deferCharts) {
           ensureChartJs().then(function () {
             const wasBuilt = built.has(id);
@@ -3148,10 +3127,9 @@
   const sceneEl     = document.getElementById('sceneZoom');
   const bookDemoCta = document.getElementById('bookDemo');
 
-  /* Flip to false to restore the CSS transform dolly instead of the clip */
+  /* false = CSS dolly fallback instead of zoom clip */
   const USE_ZOOM_VIDEO = true;
 
-  
   const CROSS_IN_MS    = 180;
   const CLIP_MS        = 1000;
   const OPEN_MS        = 520;
@@ -3159,7 +3137,7 @@
   const EASE_IO        = 'cubic-bezier(0.23, 1, 0.32, 1)';
   /* CSS-dolly fallback timing */
   const ZOOM_MS = 750, BLOOM_AT = 380, CSS_REVEAL_AT = 450, UNZOOM_MS = 700;
-  
+
   const BOOK_CTA_DELAY_MS = 2000;
   let bookCtaTimer = null;
   let demoOpen = false, animating = false;
@@ -3185,7 +3163,6 @@
     return id;
   }
 
-  
   let scrollLocked = false;
   let freezeRaf = 0;
   let touchingDemoScroller = false;
@@ -3332,7 +3309,6 @@
     if (!demoOpen && !animating) sceneEl.classList.remove('hover-zoom');
   });
 
-  
   function freezeScene() {
     if (!sceneVid.videoWidth) { sceneVid.pause(); return; }
     sceneSnap.width  = sceneVid.videoWidth;
@@ -3352,12 +3328,7 @@
     const dash = document.querySelector('.app-screen[data-screen="financial"]');
     openTabs = ['financial'];       // each fresh laptop-open starts with a clean tab bar
     if (current === 'financial' && dash.classList.contains('active') && dash.classList.contains('visible')) { renderTabs(); return; }
-    // SYNCHRONOUS, transition-free swap. showScreen()'s double-rAF + .18s
-    // opacity fade is right for in-app switching, but during the matched-
-    // frame handoff it RACES the hard-cut's own double-rAF — losing means
-    // the cut reveals an empty white host that then ghost-fades in (seen
-    // on camera). Painting the dashboard synchronously under the opaque
-    // bridge makes the cut deterministic: content is always already there.
+    // Sync paint under bridge — avoid fade race during handoff
     sideNav.querySelectorAll('.side-item').forEach(el =>
       el.classList.toggle('active', el.dataset.target === 'financial'));
     screens.forEach(s => s.classList.remove('active', 'visible'));
@@ -3370,7 +3341,6 @@
     renderTabs();
   }
 
-  
   function isPhoneDemo() {
     try { return window.matchMedia('(max-width: 640px)').matches; }
     catch (_) { return false; }
@@ -3432,7 +3402,7 @@
       side.style.flexShrink = '0';
     }
 
-    // Host = relative clip box beside the nav (NOT absolute over the mid row)
+    // Host: relative clip beside nav (not absolute over mid row)
     hostPane.style.position = 'relative';
     hostPane.style.flex = '1 1 0%';
     hostPane.style.minWidth = '0';
@@ -3760,8 +3730,7 @@
   endStill.src = 'https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/zoom-in-end-frame.png';
 
   function paintTrueEndBridge() {
-    // Prefer the preloaded end still (pixel-stable). Fall back to the seeked
-    // last video frame only if the still is not ready yet.
+    // Prefer end still; fall back to seeked last video frame
     if (paintBridgeFromImage(endStill)) return true;
     return paintBridgeFromVideo();
   }
@@ -3854,7 +3823,7 @@
     }
   }
 
-  /* Primary: pre-rendered zoom clip + opaque matched-frame bridge */
+  /* Zoom-in clip + matched-frame bridge */
   function openDemoVideo() {
     if (demoOpen || animating) return;
     animating = true; demoOpen = true;
@@ -3872,8 +3841,7 @@
     lockPageScroll();
     sceneVid.pause();
 
-    // Do NOT apply demo-recede here — blur/filter mid-clip freezes playback.
-    // Recede only after the hard cut when the overlay already covers the hero.
+    // Recede only after overlay covers hero (blur mid-clip freezes playback)
 
     const failToCss = () => {
       if (gen !== openGen) return;
@@ -4051,7 +4019,7 @@
     pinScrollY(y);
   }
 
-  /* EXIT: play FUNDVIEW-Zoom-Out.mp4, then hand back to the live town scene */
+  /* Zoom-out clip, then return to live town scene */
   function closeDemoVideo() {
     if (!demoOpen) return;
     // Allow exit even if open handoff is mid-flight (prevents "stuck" reloads)
