@@ -927,6 +927,23 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.625rem;
   }
+  /* Mobile: stacked icon-above-title for readable 2-col cards */
+  .fin-panel .fin-features .fv-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    padding: 0.875rem 0.625rem;
+    text-align: center;
+  }
+  .fin-panel .fin-features .fin-feature-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .fin-panel .fin-features .fv-card > span {
+    line-height: 1.3;
+  }
   .fin-panel .fin-columns {
     display: grid;
     grid-template-columns: 1fr;
@@ -944,6 +961,17 @@
     }
     .fin-panel .fin-features {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .fin-panel .fin-features .fv-card {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.625rem;
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+    }
+    .fin-panel .fin-features .fin-feature-icon {
+      width: 20px;
+      height: 20px;
     }
     .fin-panel .fin-columns {
       grid-template-columns: repeat(2, minmax(0, 1fr));
