@@ -1,0 +1,615 @@
+﻿<!--
+  Working copy of the Experience FUNDVIEW section extracted for editing.
+  Source: home4.html section#experience_fundview (full outer section markup).
+  home4.html was not modified — this file is a copy only.
+-->
+
+  <section class="experience_fundview antialiased text-white overflow-x-hidden" id="experience_fundview" aria-label="Experience FUNDVIEW">
+
+<!-- Experience hero -->
+<section id="hero" class="relative min-h-screen overflow-hidden bg-navy-900">
+  <!-- ambient background: deep navy with faint teal/blue radial washes -->
+  <div class="pointer-events-none absolute inset-0"
+       style="background:
+         radial-gradient(1200px 600px at 85% 20%, rgba(31,120,180,.14), transparent 60%),
+         radial-gradient(900px 500px at 10% 85%, rgba(31,192,205,.07), transparent 60%),
+         linear-gradient(160deg, #0a1a30 0%, #081426 55%, #060f1f 100%);"></div>
+
+  <div id="heroInner" class="relative flex min-h-screen flex-col">
+
+    <!-- Main hero grid: stacked below lg, 2-col at lg+ -->
+    <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-0 sm:px-10 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(360px,38%)_1fr] lg:grid-rows-none lg:gap-4 lg:pl-14 lg:pr-0">
+
+      <!-- Tablet/mobile: eyebrow stacked above the town scene (centered).
+           Desktop: hidden here — the copy column keeps its own eyebrow. -->
+      <div class="experience-eyebrow experience-eyebrow--stack order-0 text-center lg:hidden">
+        <div class="text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal">Experience FUNDVIEW</div>
+      </div>
+
+      <!-- Left column: copy + CTAs -->
+      <div class="hero-fade fade-left order-2 flex w-full max-w-xl flex-col items-center justify-center text-center mx-auto md:items-center md:justify-between md:self-stretch md:text-center lg:order-1 lg:mx-0 lg:items-start lg:justify-center lg:self-auto lg:text-left">
+        <!-- Eyebrow (desktop / lg+ only — stacked version is used below lg) -->
+        <div class="experience-eyebrow experience-eyebrow--rail mb-4 hidden text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal lg:block">Experience FUNDVIEW</div>
+
+        <!-- Headline -->
+        <h1 class="text-[clamp(30px,3.3vw,50px)] font-black leading-[1.07] tracking-tight text-white">
+          Run Your Entire Local Government From One Connected Platform
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="mt-6 max-w-lg text-[16px] leading-relaxed text-slate-300">
+          Experience how FUNDVIEW connects finance, payroll, utility billing, municipal court, permitting, code enforcement, citizen services, and more in one fully integrated platform.
+        </p>
+
+        <!-- Prompt: compact icon + copy unit (centered on mobile via parent items-center) -->
+        <p class="experience-prompt">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <span>Click the laptop, then choose a department to explore FUNDVIEW</span>
+        </p>
+
+        <a class="experience-cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+          See Why Cities Are Switching
+          <span class="experience-cta__arrow" aria-hidden="true">→</span>
+        </a>
+
+      </div>
+
+      <!-- Right column: laptop scene (photo) + interactive hotspot + annotation.
+           order-1 below lg so the laptop scene sits ON TOP when stacked, and it
+           spans the full viewport width (capped at 1200px, centered). At lg+ it
+           returns to the right side of the side-by-side layout. -->
+      <div id="sceneWrap" class="hero-fade fade-plain order-1 relative mx-auto w-full max-w-[1200px] lg:order-2 lg:max-w-none">
+        <div id="scene" class="relative mx-auto w-full overflow-hidden lg:mr-0">
+
+          <!-- Everything that should magnify on hover lives in this wrapper.
+               The scene frame and its edge-blend gradients stay fixed, so the
+               zoom happens INSIDE the frame with no moving border. -->
+          <div id="sceneZoom" class="absolute inset-0">
+
+            <!-- Looping hero video: town square, courthouse, water tower, desk & laptop.
+                 Poster falls back to the still image while the video loads. -->
+            <video id="sceneImg" class="absolute inset-0 h-full w-full select-none object-cover"
+                   style="max-width:none;"
+                   src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/FUNDVIEW-Hero-Loop.mp4"
+                   poster="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/hero-scene-wide.png"
+                   autoplay muted loop playsinline disablepictureinpicture
+                   controlslist="nodownload noremoteplayback"
+                   aria-label="FUNDVIEW dashboard on a laptop in front of a city hall and water tower"></video>
+
+            <!-- Static snapshot shown ONLY during the camera dolly: scaling a live
+                 <video> layer re-rasterizes every frame and tanks the frame rate,
+                 so we freeze the current frame onto this canvas for the move -->
+            <canvas id="sceneSnap" class="absolute inset-0 hidden h-full w-full select-none object-cover" aria-hidden="true"></canvas>
+
+            <!-- Darkening shade used during the camera push-in -->
+            <div id="sceneShade" class="pointer-events-none absolute inset-0 bg-navy-950"></div>
+
+            <!-- Clickable laptop hotspot: covers the laptop (screen + deck) in the photo -->
+            <button id="laptopHotspot" aria-label="Open the interactive FUNDVIEW preview"
+                    class="absolute z-10 cursor-pointer rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-fvteal/70"
+                    style="left:41%; top:28%; width:54%; height:68%; background:transparent;"></button>
+
+            <!-- Invisible marker over the photo laptop's SCREEN: the camera dolly
+                 computes its zoom origin + scale from this element's position -->
+            <div id="screenTarget" class="pointer-events-none absolute"
+                 style="left:59%; top:33%; width:33.5%; height:42%;"></div>
+
+            <!-- Hover glow behind the laptop -->
+            <div id="laptopGlow" class="pointer-events-none absolute"
+                 style="left:38%; top:22%; width:60%; height:76%;
+                        background:radial-gradient(ellipse 60% 55% at 50% 48%, rgba(43,212,224,.22), transparent 70%);"></div>
+
+            <!-- Handwritten annotation + premium arrow -->
+            <div id="handNote" class="pointer-events-none absolute z-20 hero-fade fade-plain"
+                 style="left:35%; top:68%; width:20%;">
+              <p class="font-script text-[clamp(18px,2vw,27px)] font-semibold leading-tight text-white"
+                 style="text-shadow:0 2px 14px rgba(0,0,0,.75), 0 0 30px rgba(43,212,224,.25);">
+                Click Laptop to Explore FUNDVIEW
+              </p>
+            </div>
+            <svg class="pointer-events-none absolute inset-0 z-20 h-full w-full hero-fade fade-plain" viewBox="0 0 100 101" aria-hidden="true">
+              <!-- short curve arcing above the note into the laptop screen -->
+              <path d="M 42 66 C 50 58, 60 57, 65 65"
+                    fill="none" stroke="rgba(255,255,255,.92)" stroke-width="1.6"
+                    stroke-linecap="round" vector-effect="non-scaling-stroke"
+                    style="filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));"/>
+              <path d="M 63.8 61.7 L 65 65 L 61.6 64.1"
+                    fill="none" stroke="rgba(255,255,255,.92)" stroke-width="1.6"
+                    stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"
+                    style="filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));"/>
+            </svg>
+          </div>
+
+          <!-- Blend edges into the navy background — kept OUTSIDE the zoom
+               wrapper so they stay pinned to the frame while the scene magnifies -->
+          <div class="scene-blend-side scene-blend-side--left pointer-events-none absolute inset-y-0 left-0 z-30" style="background:linear-gradient(to right,#081426,rgba(8,20,38,0));"></div>
+          <div class="scene-blend-side scene-blend-side--right pointer-events-none absolute inset-y-0 right-0 z-30" style="background:linear-gradient(to left,#081426,rgba(8,20,38,0));"></div>
+          <div class="scene-blend-top pointer-events-none absolute inset-x-0 top-0 z-30 h-16" style="background:linear-gradient(to bottom,#081426,rgba(8,20,38,0));"></div>
+          <div class="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-24" style="background:linear-gradient(to top,#081426,rgba(8,20,38,0));"></div>
+          <!-- Mobile-only note: EXACT desktop text + EXACT desktop arrow, repositioned (frame-pinned) -->
+          <div class="scene-note-m pointer-events-none absolute z-40" style="display:none; left:17%; top:auto; bottom:29%; width:52%;">
+            <p class="font-script text-[clamp(18px,2vw,27px)] font-semibold leading-tight text-white" style="text-shadow:0 2px 14px rgba(0,0,0,.75), 0 0 30px rgba(43,212,224,.25);">Click Laptop to Explore FUNDVIEW</p>
+          </div>
+          <svg class="scene-note-m pointer-events-none absolute z-40" style="display:none; left:12%; top:-30%; width:66%; height:auto; overflow:visible;" viewBox="0 0 100 101" fill="none" aria-hidden="true">
+            <path d="M 42 66 C 50 58, 60 57, 65 65" fill="none" stroke="rgba(255,255,255,.92)" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));"/>
+            <path d="M 63.8 61.7 L 65 65 L 61.6 64.1" fill="none" stroke="rgba(255,255,255,.92)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Soft bloom that bridges the CSS-dolly fallback into the live demo -->
+<div id="sceneChange" aria-hidden="true"></div>
+
+<!-- Pre-rendered 1s zoom-into-laptop clip — primary click animation -->
+<video id="zoomClip" muted playsinline preload="auto" disablepictureinpicture
+       controlslist="nodownload noremoteplayback"
+       aria-hidden="true" src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/FUNDVIEW-Zoom-In.mp4"></video>
+
+<!-- Pre-rendered zoom-OUT clip — plays on exit to return to the scene -->
+<video id="zoomOutClip" muted playsinline preload="auto" disablepictureinpicture
+       controlslist="nodownload noremoteplayback"
+       aria-hidden="true" src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/FUNDVIEW-Zoom-Out.mp4"></video>
+
+<!-- Frozen final frame of the zoom clip — pixel bridge during handoff/exit -->
+<canvas id="zoomBridge" aria-hidden="true"></canvas>
+
+<!-- Demo overlay -->
+<div id="demoOverlay" class="pointer-events-none fixed inset-0 z-50 flex flex-col items-center justify-center opacity-0" aria-hidden="true">
+  <!-- Depth veil + blur: separates the lifted dashboard from the hero -->
+  <div class="demo-backdrop absolute inset-0"></div>
+
+  <!-- Exit Preview — left on mobile, right on desktop (positions in CSS) -->
+  <button id="exitDemo" type="button">
+    <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg>
+    Exit Preview
+    <kbd class="book-demo-esc">ESC</kbd>
+  </button>
+
+  <!-- Mobile-only chrome CTA (top-right). Desktop CTA lives in #sideNav. -->
+  <a id="bookDemoMobile" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
+     class="book-demo book-demo--chrome">
+    <span class="book-demo__icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+    </span>
+    <span class="book-demo__copy">
+      <span class="book-demo__eyebrow">Outgrown your ERP?</span>
+      <span class="book-demo__label">Book a Live Demo</span>
+    </span>
+    <span class="book-demo__arrow" aria-hidden="true">→</span>
+  </a>
+
+  <!-- Laptop mockup — silver bezel tuned toward the zoom-clip end frame -->
+  <div id="demoLaptop" class="relative z-10 flex flex-col items-center px-2">
+    <!-- Compositor-only depth layers: opacity/transform animate, never box-shadow -->
+    <div class="demo-glow" aria-hidden="true"></div>
+    <div class="demo-contact-shadow" aria-hidden="true"></div>
+
+    <!-- Screen with bezel -->
+    <div class="demo-screen relative rounded-t-[14px] rounded-b-md border border-[#6b7280]/70 bg-[#1a1d22] p-[9px] pb-[7px]">
+      <!-- Pre-painted lift shadow, crossfaded in/out by opacity only -->
+      <div class="demo-shadow-lift" aria-hidden="true"></div>
+      <!-- camera dot -->
+      <div class="absolute left-1/2 top-[4px] h-[3px] w-[3px] -translate-x-1/2 rounded-full bg-[#4b5563]"></div>
+
+      <!-- APP SHELL -->
+      <div id="appShell" class="flex h-full w-full flex-col overflow-hidden rounded-[5px] bg-white text-slate-800">
+
+        <!-- App top header (matches the FUNDVIEW screenshots) -->
+        <header class="flex h-10 shrink-0 items-center justify-between border-b border-slate-200 bg-white pl-3 pr-2">
+          <div class="flex items-center gap-2">
+            <!-- Official FUNDVIEW logo (transparent PNG, ~5:1) — height-locked
+                 to the 40px header so the wordmark sits optically centered -->
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/fundview-logo-official.png" alt="FUNDVIEW"
+                 class="h-[17px] w-auto select-none" draggable="false">
+          </div>
+          <div style="flex:1; display:flex; justify-content:center; min-width:0; padding:0 8px;">
+            <div id="activeCatTitle" style="display:inline-flex; align-items:center; gap:7px; max-width:100%; overflow:hidden; border:1px solid rgba(31,192,205,.55); background:rgba(31,192,205,.10); color:#0c2440; font-weight:700; font-size:14px; line-height:1; padding:6px 14px; border-radius:8px;">
+              <span id="activeCatIcon" style="display:inline-flex; color:#1fc0cd; flex:none;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V9l7-4 7 4v12"/><path d="M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01"/></svg></span>
+              <span id="activeCatText" style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Financial Management</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="flex min-h-0 flex-1">
+          <!-- Dark sidebar navigation — CTA pinned above the Close All Tabs bar -->
+          <aside class="flex w-[46px] shrink-0 flex-col overflow-hidden bg-[#0c2440] sm:w-44" id="sideNav">
+            <div id="sideNavItems" class="slim-scroll flex min-h-0 flex-1 flex-col gap-[3px] overflow-y-auto py-2">
+              <!-- items injected by JS -->
+            </div>
+            <a id="bookDemo" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
+               class="book-demo book-demo--rail">
+              <span class="book-demo__icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+              </span>
+              <span class="book-demo__copy">
+                <span class="book-demo__eyebrow">Outgrown your ERP?</span>
+                <span class="book-demo__label">Book a Live Demo</span>
+              </span>
+            </a>
+          </aside>
+
+          <!-- Main content host: relative clip; #screenScroll (injected) scrolls -->
+          <main id="screenHost" class="relative min-h-0 min-w-0 flex-1 bg-[#eef2f6]">
+            <!-- Category screens -->
+
+            <section class="app-screen" data-screen="financial">
+              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
+                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+
+                  <div class="kpi-grid">
+                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Consolidated Cash Balance</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="3620179.95" data-prefix="$" data-dec="2">$3,620,179.95</div></div>
+                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Outstanding Payables</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="154.50" data-prefix="$" data-dec="2">$154.50</div></div>
+                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Accounts Overbudget</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="78">78</div></div>
+                  </div>
+                  <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Budget vs Actual</div><div class="h-36"><canvas id="chFinBva"></canvas></div></div>
+                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Revenue by Category</div><div class="h-36"><canvas id="chFinPie"></canvas></div></div>
+                  </div>
+                </div>
+                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">Financial Management</h2>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW Financial Management connects every aspect of your organization's financial operations into one fully integrated platform.</p>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information.</p>
+
+                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>General Ledger</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Budget Manager</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Bank Reconciliation</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Accounts Payable</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Purchasing</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Asset Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Cash Receipting</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Financial Reporting</span></li></ul>
+
+                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
+                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
+                    <div class="text-[26px] font-black leading-none text-fvteal">70%</div>
+                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">Faster month-end close</div>
+                  </div>
+                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
+                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Month-end used to take us weeks. With FUNDVIEW, our books are closed and our council reports are ready in days.&rdquo;</p>
+                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; Finance Director, Texas Municipality</p>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce month-end close by up to 70%</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve financial visibility with a Real-Time General Ledger</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate data entry across departments</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplify budgeting, purchasing, and financial reporting</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce bank reconciliation time by up to 50%</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Maintain 100% GASB &amp; GAAP compliance</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve audit readiness and financial transparency</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Give leadership greater confidence in every financial decision</span></li></ul>
+                  </div>
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Why Finance Directors Choose FUNDVIEW</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected financial platform</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time financial visibility</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Purpose-built for local government accounting</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built-in compliance and audit readiness</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Faster month-end close</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Connected purchasing and budgeting</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduced manual reconciliation</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand municipal finance</span></li></ul>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Financial Management <span>&rarr;</span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="app-screen" data-screen="workforce">
+              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
+                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+
+                  <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <div class="fv-card p-3">
+                      <div class="text-[12px] font-bold text-slate-900">Payroll Process</div>
+                      <div class="mt-1.5 space-y-1 text-[10.5px]">
+                        <div class="flex justify-between"><span class="text-slate-600">Biweekly Payroll</span><span class="app-link">6/6/2026 – 6/19/2026</span></div>
+                        <div class="flex justify-between"><span class="text-slate-600">Biweekly Pay Date</span><span class="font-semibold text-slate-800">6/25/2026</span></div>
+                      </div>
+                      <div class="mt-2.5 text-[11px] font-bold text-slate-900">Tax Payments Due</div>
+                      <p class="mt-0.5 text-[10px] text-slate-600">Reporting due 07/31/2026 — <span class="app-link">View payroll tasks</span></p>
+                      <div class="mt-2.5 grid grid-cols-2 gap-2 text-center">
+                        <div class="rounded-md bg-[#0c2440] p-2"><div class="text-[16px] font-black text-fvteal">30%</div><div class="text-[8.5px] text-slate-200">Workload reclaimed</div></div>
+                        <div class="rounded-md bg-[#eef2f6] p-2"><div class="text-[16px] font-black text-slate-800">10</div><div class="text-[8.5px] text-slate-600">Anniversaries</div></div>
+                      </div>
+                    </div>
+                    <div class="fv-card">
+                      <div class="border-b border-slate-200 px-3 py-2 text-[11px] font-bold text-slate-900">Employee Anniversaries</div>
+                      <div class="max-h-[236px] overflow-auto slim-scroll">
+                        <table class="w-full border-collapse"><thead class="sticky top-0 z-10 bg-[#eef4fb]"><tr><th class="grid-th">Employee</th><th class="grid-th">Anniversary</th><th class="grid-th">Yrs</th></tr></thead><tbody id="tbWfAnniv"></tbody></table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">Workforce Management</h2>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">Simplify payroll, human resources, and employee time management with one connected workforce solution designed specifically for local government.</p>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW helps you pay employees accurately, manage employee information with confidence, and eliminate manual processes that slow your team down.</p>
+
+                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Payroll</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Human Resources</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Distributed Time Entry</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Employee Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Benefits Administration</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Accrual &amp; Leave Tracking</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Payroll Reporting</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time Financial Integration</span></li></ul>
+
+                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
+                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
+                    <div class="text-[26px] font-black leading-none text-fvteal">30%</div>
+                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">Average workload reclaimed</div>
+                  </div>
+                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
+                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Payroll that used to take days now runs smoothly every cycle — and it posts straight to the General Ledger.&rdquo;</p>
+                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; HR &amp; Payroll Coordinator, City Government</p>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Process payroll with greater speed and accuracy</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate entry between payroll and finance</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Empower departments with distributed time entry</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve employee record management</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplify leave and accrual tracking</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce payroll errors and manual processes</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automatically update the General Ledger in real time</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Strengthen compliance and reporting</span></li></ul>
+                  </div>
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Why HR &amp; Finance Teams Choose FUNDVIEW</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected workforce platform</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Payroll integrated with financial management</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-Time General Ledger updates</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Department-approved time entry</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improved payroll accuracy</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplified HR administration</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built specifically for local government</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand municipal operations</span></li></ul>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Workforce Management <span>&rarr;</span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="app-screen" data-screen="utility">
+              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
+                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+
+                  <div class="fv-card p-3">
+                    <div class="text-[13px] font-bold text-slate-900">Utility Billing Dashboard</div>
+                    <div class="mt-2 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Current Billing Period</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">03/17/2026 – 04/16/2026</span> <span class="text-slate-600">Bill Date 04/20/2026</span></p><p class="mt-0.5 text-[10.5px]"><span class="app-link">124 Alerts</span></p></div>
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Previous Billing Period</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">02/17/2026 – 03/16/2026</span> <span class="text-slate-600">Bill Date 03/20/2026</span></p></div>
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Service Orders</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">0 Past due</span> · <span class="app-link">7 Open</span> <span class="text-slate-600">Service Orders</span></p></div>
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Pending Service Orders</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">3 Pending Connect</span> · <span class="app-link">0 Pending Disconnect</span></p></div>
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Past Due Agreements</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">11 Accounts</span> <span class="text-slate-600">have active payment plans</span></p></div>
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Portal Requests</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">0 Portal Requests</span> <span class="text-slate-600">for Service Orders</span></p></div>
+                    </div>
+                  </div>
+                </div>
+                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">Utility &amp; Field Services</h2>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">Manage utility billing, field operations, service requests, and customer payments from one connected platform.</p>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW helps local governments improve efficiency, deliver better customer service, and keep utility operations moving with real-time information.</p>
+
+                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Utility Billing</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Service Orders</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Customer Account Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Meter Reading &amp; Consumption Tracking</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Connects &amp; Disconnects</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Meter Exchanges</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Payment Processing</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Online Payments</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Customer Payment History</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time Financial Integration</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Mobile Friendly</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time Text and Email Notifications</span></li></ul>
+
+                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
+                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
+                    <div class="text-[26px] font-black leading-none text-fvteal">24/7</div>
+                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">Online payments &amp; account access</div>
+                  </div>
+                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
+                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Billing, service orders, and payments finally live in one place. Our field crews and office staff see the same information in real time.&rdquo;</p>
+                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; Utility Billing Supervisor, Texas City</p>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplify utility billing and payment processing</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce manual work between departments</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve customer service and response times</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Manage field work with real-time updates</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate data entry</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automatically update financial records</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve operational visibility</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Deliver faster, more accurate utility services</span></li></ul>
+                  </div>
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Why Utility Departments Choose FUNDVIEW</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected utility platform</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Billing integrated with financial management</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time account and payment updates</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improved field service coordination</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Faster response to customer requests</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Better visibility into utility operations</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built specifically for local government</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from people who understand municipal utilities</span></li></ul>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Utility &amp; Field Services <span>&rarr;</span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="app-screen" data-screen="community">
+              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
+                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+
+                  <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Service Orders by Team Member</div><div class="h-28"><canvas id="chComTeam"></canvas></div></div>
+                  <div class="mt-2 grid grid-cols-2 gap-2">
+                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Service Orders by Status</div><div class="h-32"><canvas id="chComStatus"></canvas></div></div>
+                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Service Order by Type</div><div class="h-32"><canvas id="chComType"></canvas></div></div>
+                  </div>
+                </div>
+                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">Community Development</h2>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">Support responsible growth, protect your community, and streamline development with one connected solution for permitting, inspections, and code enforcement.</p>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW helps local governments simplify processes, improve communication, and keep projects moving.</p>
+
+                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Permitting</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Code Enforcement</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Permit Applications</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Plan Review</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Inspections</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Violation &amp; Case Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Image &amp; Document Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Contractor &amp; Property Records</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Citizen Communication</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time Financial Integration</span></li></ul>
+
+                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
+                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
+                    <div class="text-[26px] font-black leading-none text-fvteal">One</div>
+                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">Platform for permits, inspections &amp; code enforcement</div>
+                  </div>
+                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
+                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Contractors get answers faster, inspectors stay informed, and every permit fee posts to finance automatically.&rdquo;</p>
+                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; Community Development Director</p>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Streamline permitting and inspection workflows</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve communication between departments</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Track violations and enforcement activities with confidence</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce manual paperwork and duplicate entry</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve visibility into active projects and cases</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Provide faster service to contractors and citizens</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automatically update financial records</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Support responsible community growth</span></li></ul>
+                  </div>
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Why Community Development Teams Choose FUNDVIEW</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected platform for permits and code enforcement</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplified permit review and approval workflows</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Better visibility into inspections and active cases</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improved communication with contractors and citizens</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Integrated financial tracking for permit fees</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduced paperwork and manual processes</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built specifically for local government</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand municipal operations</span></li></ul>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Community Development <span>&rarr;</span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="app-screen" data-screen="court">
+              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
+                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+
+                  <div class="fv-card">
+                    <div class="border-b border-slate-200 px-3 py-2 text-[12px] font-bold text-slate-900">Invoices</div>
+                    <div class="max-h-[300px] overflow-auto slim-scroll">
+                      <table class="w-full border-collapse">
+                        <thead class="sticky top-0 z-10 bg-[#eef4fb]"><tr><th class="grid-th">Vendor</th><th class="grid-th">Invoice #</th><th class="grid-th">Invoice Date</th><th class="grid-th">Batch #</th><th class="grid-th">Description</th><th class="grid-th">Paid</th><th class="grid-th text-right">Amount</th></tr></thead>
+                        <tbody id="tbCourtInv"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">Municipal Court</h2>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW Municipal Court simplifies every stage of court administration — from citation entry and case management to payments, reporting, and compliance.</p>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">Fully integrated with FUNDVIEW's financial platform, court activity updates in real time, eliminating duplicate entry and giving staff greater visibility into daily operations.</p>
+
+                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Citation &amp; Case Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Docket &amp; Court Scheduling</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Warrants &amp; Collections</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Payment Processing</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Online Payments</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Document &amp; Case History</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Reporting &amp; Compliance</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time Financial Integration</span></li></ul>
+
+                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
+                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
+                    <div class="text-[26px] font-black leading-none text-fvteal">Real-time</div>
+                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">Court activity posted to finance</div>
+                  </div>
+                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
+                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Citations, dockets, and payments all flow through one system — our clerks no longer re-key anything.&rdquo;</p>
+                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; Municipal Court Clerk</p>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce manual case management</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Increase payment convenience</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Keep court operations connected with the rest of your city</span></li></ul>
+                  </div>
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-transparent">&middot;</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve staff efficiency</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Maintain accurate financial records</span></li></ul>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Municipal Court <span>&rarr;</span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="app-screen" data-screen="citizen">
+              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
+                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+
+                  <div class="fv-card p-3">
+                    <div class="text-[13px] font-bold text-slate-900">Utility Billing Dashboard</div>
+                    <div class="mt-2 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Current Billing Period</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">03/17/2026 – 04/16/2026</span> <span class="text-slate-600">Bill Date 04/20/2026</span></p><p class="mt-0.5 text-[10.5px]"><span class="app-link">124 Alerts</span></p></div>
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Previous Billing Period</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">02/17/2026 – 03/16/2026</span> <span class="text-slate-600">Bill Date 03/20/2026</span></p></div>
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Service Orders</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">0 Past due</span> · <span class="app-link">7 Open</span> <span class="text-slate-600">Service Orders</span></p></div>
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Pending Service Orders</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">3 Pending Connect</span> · <span class="app-link">0 Pending Disconnect</span></p></div>
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Past Due Agreements</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">11 Accounts</span> <span class="text-slate-600">have active payment plans</span></p></div>
+                      <div><h4 class="text-[11px] font-bold text-slate-900">Portal Requests</h4><p class="mt-0.5 text-[10.5px]"><span class="app-link">0 Portal Requests</span> <span class="text-slate-600">for Service Orders</span></p></div>
+                    </div>
+                  </div>
+                </div>
+                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">CityCentral™ Citizen Portal</h2>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">Give citizens secure, convenient online access to utility billing and municipal court services through one easy-to-use self-service portal.</p>
+
+                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Online Utility Payments</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Municipal Court Payments</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Account Lookup &amp; Payment History</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Secure Citizen Portal</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>24/7 Self-Service Access</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Payment Receipts &amp; Confirmations</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Reduced Counter Traffic</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Fully Integrated with FUNDVIEW</span></li></ul>
+
+                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
+                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
+                    <div class="text-[26px] font-black leading-none text-fvteal">24/7</div>
+                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">Self-service citizen access</div>
+                  </div>
+                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
+                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Residents pay their bills online at any hour, and our front counter finally has room to breathe.&rdquo;</p>
+                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; City Secretary</p>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve the citizen experience</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce phone calls and walk-in traffic</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate payment entry</span></li></ul>
+                  </div>
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-transparent">&middot;</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Increase online payment adoption</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Provide 24/7 access to services</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Keep financial records updated automatically</span></li></ul>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore CityCentral™ Citizen Portal <span>&rarr;</span></a>
+                </div>
+              </div>
+            </section>
+
+            <section class="app-screen" data-screen="platform">
+              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
+                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+
+                  <div class="kpi-grid">
+                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Consolidated Cash Balance</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="3620179.95" data-prefix="$" data-dec="2">$3,620,179.95</div></div>
+                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Outstanding Payables</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="154.50" data-prefix="$" data-dec="2">$154.50</div></div>
+                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Accounts Overbudget</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="78">78</div></div>
+                  </div>
+                  <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Budget vs Actual</div><div class="h-36"><canvas id="chPlatBva"></canvas></div></div>
+                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Revenue by Category</div><div class="h-36"><canvas id="chPlatPie"></canvas></div></div>
+                  </div>
+                </div>
+                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">The FUNDVIEW Platform</h2>
+                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">The power of FUNDVIEW goes beyond individual departments. Every module works together on one connected platform, giving your organization real-time visibility, shared data, automated workflows, and the confidence that comes from having one reliable source of information.</p>
+
+                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>One Connected Platform</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time General Ledger</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time Visibility</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Cloud-Based ERP</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Dashboards &amp; Reporting</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Automated Text &amp; Email Notifications</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Document Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Approval Workflows</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Security &amp; User Permissions</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>GASB &amp; GAAP Compliance</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Audit Trail</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Mobile &amp; Remote Access</span></li></ul>
+
+                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
+                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
+                    <div class="text-[26px] font-black leading-none text-fvteal">100%</div>
+                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">GASB &amp; GAAP compliant</div>
+                  </div>
+                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
+                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Every department works from the same real-time data. FUNDVIEW replaced six disconnected systems for us.&rdquo;</p>
+                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; City Administrator</p>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One source of truth across every department</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time visibility into financial and operational activity</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate data entry and disconnected systems</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve collaboration across departments</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automate notifications and routine workflows</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Increase security and accountability</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Access information securely from anywhere</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Support better decisions with real-time reporting</span></li></ul>
+                  </div>
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Why Organizations Choose the FUNDVIEW Platform</div>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected ERP platform</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time visibility across every department</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built specifically for local government</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Cloud-based and secure</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automated workflows and notifications</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Connected financial and operational data</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Scalable as your community grows</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand local government</span></li></ul>
+                  </div>
+                </div>
+
+                <div class="mt-6">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore The FUNDVIEW Platform <span>&rarr;</span></a>
+                </div>
+              </div>
+            </section>
+
+          </main>
+        </div>
+
+        <!-- Bottom tab workspace bar — open screens accumulate as closable tabs -->
+        <div id="tabBar" class="flex h-7 shrink-0 items-stretch border-t border-slate-300 bg-[#e9edf2]">
+          <button id="closeAllTabs" class="shrink-0 border-r border-slate-300 px-3 text-[9.5px] font-bold uppercase tracking-wide text-slate-600 transition hover:bg-slate-200">Close All Tabs</button>
+          <div id="tabStrip" class="slim-scroll flex min-w-0 flex-1 items-stretch overflow-x-auto"></div>
+        </div>
+      </div>
+
+      <!-- Power-on sheen: one light sweep across the glass as the UI wakes -->
+      <div class="demo-sheen" aria-hidden="true"></div>
+    </div>
+
+    <!-- Laptop base / keyboard deck — width tracks .demo-screen -->
+    <div class="demo-base relative h-[14px] w-[calc(min(96vw,148.8vh)*1.035)] rounded-b-2xl"
+         style="background:linear-gradient(180deg,#8a9199 0%,#5c636b 40%,#2a2e34 100%);">
+      <div class="absolute left-1/2 top-0 h-[5px] w-28 -translate-x-1/2 rounded-b-lg bg-[#3a3f46]"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Experience section end -->
+  </section>
