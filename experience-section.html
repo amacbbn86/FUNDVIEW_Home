@@ -962,6 +962,10 @@
     letter-spacing: -0.025em;
     color: #1fc0cd;
   }
+  .fin-stat-value-lg {
+    font-size: 1.85rem;
+    letter-spacing: -0.02em;
+  }
   .fin-quote {
     display: flex;
     gap: 0.75rem;
@@ -1050,6 +1054,55 @@
     width: 16px;
     height: 16px;
     margin-top: 2px;
+  }
+  /* Single outcomes card with internal 2-col list (e.g. Court — fewer items) */
+  .fin-outcomes-card {
+    min-width: 0;
+    max-width: 100%;
+    padding: 1.15rem 1.2rem 1.25rem;
+  }
+  .fin-outcomes-card .fin-col-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #17a9b6;
+  }
+  .fin-outcomes-split {
+    margin-top: 0.9rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.7rem 1.5rem;
+  }
+  .fin-outcomes-split > ul {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .fin-outcomes-split li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: #334155;
+  }
+  .fin-outcomes-split li > span {
+    min-width: 0;
+    flex: 1;
+  }
+  .fin-outcomes-split .fin-check {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    color: #17a9b6;
+  }
+  @container fin (min-width: 720px) {
+    .fin-outcomes-split {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   /* Wide panel: 4 feature cols + roomier horizontal cards (match desktop mockup sizing) */
   @container fin (min-width: 720px) {
@@ -1144,6 +1197,9 @@
       .fin-columns {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1rem;
+      }
+      .fin-outcomes-split {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
   }
@@ -2553,50 +2609,96 @@
             </section>
 
             <section class="app-screen" data-screen="court">
-              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
-                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+              <div class="fin-panel mx-auto px-3 py-4 sm:px-5 sm:py-5">
 
-                  <div class="fv-card">
-                    <div class="border-b border-slate-200 px-3 py-2 text-[12px] font-bold text-slate-900">Invoices</div>
-                    <div class="max-h-[300px] overflow-auto slim-scroll">
-                      <table class="w-full border-collapse">
-                        <thead class="sticky top-0 z-10 bg-[#eef4fb]"><tr><th class="grid-th">Vendor</th><th class="grid-th">Invoice #</th><th class="grid-th">Invoice Date</th><th class="grid-th">Batch #</th><th class="grid-th">Description</th><th class="grid-th">Paid</th><th class="grid-th text-right">Amount</th></tr></thead>
-                        <tbody id="tbCourtInv"></tbody>
-                      </table>
+                <!-- Top: title + copy | Real-time stat -->
+                <div class="fin-hero">
+                  <div class="fin-copy min-w-0 flex-1">
+                    <div class="fin-copy-heading">
+                      <svg class="fin-feature-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 20.5h16"/>
+                        <path d="M6 20.5V10.5l6-5.5 6 5.5V20.5"/>
+                        <path d="M10 20.5v-4h4v4"/>
+                        <path d="M12 8.2l2.2 2.2-2.2 1.1-2.2-1.1L12 8.2z"/>
+                        <path d="M12 6.5V5"/>
+                      </svg>
+                      <h2>Municipal Court</h2>
                     </div>
+                    <p>FUNDVIEW Municipal Court simplifies every stage of court administration — from citation entry and case management to payments, reporting, and compliance.</p>
+                    <p>Fully integrated with FUNDVIEW’s financial platform, court activity updates in real time, eliminating duplicate entry and giving staff greater visibility into daily operations.</p>
                   </div>
-                </div>
-                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">Municipal Court</h2>
-                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW Municipal Court simplifies every stage of court administration — from citation entry and case management to payments, reporting, and compliance.</p>
-                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">Fully integrated with FUNDVIEW's financial platform, court activity updates in real time, eliminating duplicate entry and giving staff greater visibility into daily operations.</p>
-
-                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
-                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Citation &amp; Case Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Docket &amp; Court Scheduling</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Warrants &amp; Collections</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Payment Processing</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Online Payments</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Document &amp; Case History</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Reporting &amp; Compliance</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time Financial Integration</span></li></ul>
-
-                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
-                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
-                    <div class="text-[26px] font-black leading-none text-fvteal">Real-time</div>
-                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">Court activity posted to finance</div>
-                  </div>
-                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
-                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Citations, dockets, and payments all flow through one system — our clerks no longer re-key anything.&rdquo;</p>
-                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; Municipal Court Clerk</p>
+                  <div class="fin-stat">
+                    <div class="fin-stat-value fin-stat-value-lg">Real-time</div>
+                    <div class="mt-2 text-[12px] font-semibold leading-snug text-white">Court activity posted to finance</div>
                   </div>
                 </div>
 
-                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
-                  <div>
-                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
-                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce manual case management</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Increase payment convenience</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Keep court operations connected with the rest of your city</span></li></ul>
-                  </div>
-                  <div>
-                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-transparent">&middot;</div>
-                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve staff efficiency</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Maintain accurate financial records</span></li></ul>
-                  </div>
-                </div>
-
+                <!-- Feature Highlights -->
                 <div class="mt-6">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Municipal Court <span>&rarr;</span></a>
+                  <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                  <ul class="fin-features">
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M14 3v4h4"/><circle cx="11" cy="13" r="2"/><path d="M8.2 17.5c.6-1.3 1.7-2 2.8-2s2.2.7 2.8 2"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Citation &amp; Case Management</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M8 3.5V6M16 3.5V6"/><circle cx="16" cy="15" r="2.4"/><path d="M16 13.8v2.4M15.2 15h1.6"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Docket &amp; Court Scheduling</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5.2c0 4.4-2.9 7.6-7 9.3-4.1-1.7-7-4.9-7-9.3V6l7-3z"/><path d="M12 9.2l1.1 2.2 2.4.3-1.8 1.7.5 2.4L12 14.7l-2.2 1.1.5-2.4-1.8-1.7 2.4-.3L12 9.2z"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Warrants &amp; Collections</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M2.5 10h19"/><path d="M6.5 14.2h3.2"/><path d="M16.2 13.2v2.8M14.8 14.6h2.8"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Payment Processing</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="15" height="12" rx="2"/><path d="M2.5 10h15"/><path d="M6.5 14.2h3"/><circle cx="19.2" cy="16.2" r="2.8"/><path d="M18 16.3l.9.9 1.6-1.8"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Online Payments</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7.5V19a1.5 1.5 0 001.5 1.5h13A1.5 1.5 0 0020 19V8.5a1.5 1.5 0 00-1.5-1.5h-6.2L10 4.5H5.5A1.5 1.5 0 004 6v1.5z"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Document &amp; Case History</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M8 16V11"/><path d="M12 16V8"/><path d="M16 16v-4"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Reporting &amp; Compliance</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20.5h16"/><path d="M6.5 20.5V11l5.5-5 5.5 5v9.5"/><path d="M10.5 20.5v-3.5h3v3.5"/><circle cx="12" cy="13" r="2.1"/><path d="M12 11.7v2.6M11.1 13h1.8"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Real-Time Financial Integration</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Quote / testimonial -->
+                <blockquote class="fin-quote mt-5">
+                  <svg class="fin-feature-icon mt-0.5 shrink-0" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
+                  <div class="min-w-0">
+                    <p class="text-[12.5px] italic leading-relaxed text-[#0c2440]">&ldquo;Citations, dockets, and payments all flow through one system — our clerks no longer re-key anything.&rdquo;</p>
+                    <footer class="mt-1.5 text-[11px] font-bold text-[#17a9b6]">&mdash; Municipal Court Clerk</footer>
+                  </div>
+                </blockquote>
+
+                <!-- Customer Outcomes (fewer items — single card, two-column list) -->
+                <div class="fin-outcomes-card mt-5 rounded-xl border border-slate-200 bg-white">
+                  <div class="fin-col-title">Customer Outcomes</div>
+                  <div class="fin-outcomes-split">
+                    <ul>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce manual case management</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Increase payment convenience</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Keep court operations connected with the rest of your city</span></li>
+                    </ul>
+                    <ul>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve staff efficiency</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Maintain accurate financial records</span></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="mt-5">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Municipal Court <span aria-hidden="true">&rarr;</span></a>
                 </div>
               </div>
             </section>
