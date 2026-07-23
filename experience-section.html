@@ -19,7 +19,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" rel="stylesheet" data-experience-fundview="">
   <link rel="stylesheet" href="HOME_Section_Explore FUNDVIEW2/assets_experience/tailwind-compiled.css" data-experience-fundview="">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" data-experience-fundview=""></script>
 
   <style>
     :root {
@@ -50,18 +49,16 @@
       max-width: 100%;
     }
 
-    /* ——— experience_fundview (from HOME_Section_Explore FUNDVIEW2) ——— */
+    
     .experience_fundview {
       position: relative;
       width: 100%;
-      /* No isolation:isolate here — it creates a stacking context that traps
-         #demoOverlay / zoom clips below the sticky site-header (z-index:5000). */
+      
       font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
       background: #081426;
     }
 
-  /* Desktop: drop hero top padding to tighten section height.
-     Compiled Tailwind has pt-6 / sm:pt-8 but no lg:pt-0 utility. */
+  
   @media (min-width: 1024px) {
     #experience_fundview #heroContent,
     #experience_fundview #heroInner,
@@ -70,8 +67,7 @@
     }
   }
 
-  /* Lift the whole Experience section above site-header while demo/zoom chrome
-     is active, then stack the fixed overlays inside it. */
+  
   #experience_fundview:has(#demoOverlay.open),
   #experience_fundview:has(#demoOverlay.bridging),
   #experience_fundview:has(#demoOverlay.handoff-cover),
@@ -89,30 +85,24 @@
   #demoOverlay #exitDemo,
   #demoOverlay #bookDemoMobile {
     z-index: 40;
-    /* Keep off the site header until demo is open — pointer-events:auto on
-       children still hit-tests even when #demoOverlay is pointer-events:none. */
+    
     pointer-events: none;
     visibility: hidden;
   }
 
-  /* ---------- Global ---------- */
+  
   html { scroll-behavior: smooth; }
 
-  /* ---------- Hero camera push-in (cinematic dolly toward the laptop screen) ----------
-     The zoom scale + origin are computed in JS from the on-screen position of
-     #screenTarget so the photo's laptop screen lands exactly filling the viewport. */
+  
   #heroInner {
     transition: transform 0.75s cubic-bezier(0.32, 0.0, 0.14, 1);
     will-change: transform;
   }
 
-  /* NOTE: hero copy, nav and feature bar do NOT fade during the dolly —
-     they ride the camera move and slide out of frame naturally,
-     matching the reference video. */
+  
   .hero-fade { transition: opacity .9s cubic-bezier(0.4,0,0.2,1), transform .9s cubic-bezier(0.4,0,0.2,1); }
 
-  /* Mobile: keep checkmark + prompt copy as one compact centered unit
-     (compiled Tailwind lacks the arbitrary max-width used here). */
+  
   .experience-prompt {
     display: inline-flex;
     align-items: center;
@@ -179,12 +169,7 @@
     }
   }
 
-  /* ---------- Zoom-in clip (click path) ----------
-     Primary open: cross-dissolve hero -> #zoomClip (1s dolly), lock the
-     true final frame onto #zoomBridge (opaque), assemble #demoOverlay at
-     rest under the cover, then HARD-CUT on double-rAF paint (no long
-     settle freeze; no opacity crossfade — photo bezel vs flat HTML
-     chassis always ghosts). CSS dolly remains as openDemoCssDolly fallback. */
+  
   #zoomClip, #zoomOutClip {
     position: fixed; inset: 0; z-index: 40;
     width: 100%; height: 100%;
@@ -196,10 +181,7 @@
   }
   #zoomClip.active, #zoomOutClip.active { opacity: 1; }
 
-  /* Pixel-perfect handoff layer: true last frame of the zoom clip, held FULLY
-     opaque only long enough for open pose + first paint (double-rAF), then
-     instant hard cut (no opacity crossfade). Photo end-frame and flat HTML
-     laptop never share geometry; dissolving always double-images. */
+  
   #zoomBridge {
     position: fixed; inset: 0; z-index: 55;
     width: 100%; height: 100%;
@@ -212,14 +194,12 @@
   }
   #zoomBridge.visible { opacity: 1; }
 
-  /* Barely-there shade for depth — deepens into the scene-change handoff
-     (used by the CSS-dolly fallback path) */
+  
   #sceneShade { transition: opacity 0.75s cubic-bezier(0.32,0,0.14,1); opacity:0; }
   .zooming #sceneShade { opacity:.18; }
   .zooming.scene-change #sceneShade { opacity:.42; transition-duration: .35s; }
 
-  /* End-of-dolly scene change: soft exposure bloom that bridges the photo
-     laptop screen into the live demo — reads as "entering" the UI */
+  
   #sceneChange {
     position: fixed; inset: 0; z-index: 45; pointer-events: none;
     opacity: 0; transform: translateZ(0);
@@ -239,8 +219,7 @@
     #sceneChange.flash { animation: none; opacity: 0; }
   }
 
-  /* While the camera dolly runs, kill backdrop blurs inside the scaled hero —
-     backdrop-filter forces expensive re-rasterization on every animation frame */
+  
   #heroInner.zooming [class*="backdrop-blur"] {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -250,9 +229,7 @@
   #laptopGlow { transition: opacity .5s ease; opacity:0; }
   #laptopHotspot:hover ~ #laptopGlow, #laptopHotspot:focus-visible ~ #laptopGlow { opacity:1; }
 
-  /* Hover push-in: the scene imagery eases gently toward the laptop screen,
-     previewing the click-to-zoom dolly. It scales INSIDE the fixed, clipped
-     scene frame so the edge blends never move. Origin = #screenTarget centre. */
+  
   #sceneZoom {
     transform-origin: 75.75% 54%;
     transition: transform .9s cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -264,21 +241,11 @@
     #sceneZoom.hover-zoom { transform: none; }
   }
 
-  /* ---------- Responsive scene sizing (cover stage) ----------
-     The photo/video + all its hotspot overlays live on a fixed 16/9 STAGE
-     (#sceneZoom) that COVERS a variable-height frame (#scene), the same way
-     object-fit: cover works — but for the whole overlay group, so every
-     %-positioned hotspot stays glued to the imagery. The stage is anchored
-     85% toward the laptop side and biased low, so no screen size ever crops
-     the laptop or the handwritten note. */
+  
   #scene { aspect-ratio: 16 / 9; }   /* baseline: stage == frame */
   @supports (container-type: size) {
     #scene { container-type: size; }
-    /* Portrait phones/small tablets: the scene bleeds edge-to-edge at its
-       natural 16/9 — frame == stage, ZERO crop — so the whole townscape and
-       laptop show at maximum width, with the copy stacked directly below
-       (a full-width 16/9 band is short enough that the headline + body stay
-       on screen). margin-left pulls the frame out of the padded grid. */
+    
     @media (max-width: 1023.9px) and (orientation: portrait) {
       #scene {
         aspect-ratio: 16 / 9;
@@ -288,14 +255,7 @@
         margin-left: calc(50% - 50vw);
       }
     }
-    /* Desktop: the frame uses the real vertical space available under the
-       nav (100vh - chrome), but its WIDTH is capped to what that height can
-       show at 16/9 — so the stage NEVER crops vertically (sky, courthouse
-       and water tower always stay in frame). On squarish/narrow windows the
-       frame instead grows taller than 16/9 (floored at a 1.2 ratio) and the
-       stage crops sideways toward the laptop, which is always safe. The
-       right-anchored frame leaves any spare column width to the left edge
-       blend, exactly like the original design. */
+    
     #sceneWrap { container-type: inline-size; }
     @media (min-width: 1024px) {
       #scene {
@@ -308,24 +268,14 @@
       inset: auto;
       width:  max(100cqw, calc(100cqh * 16 / 9));
       height: max(100cqh, calc(100cqw * 9 / 16));
-      /* keep 85% of any horizontal crop off the left (note side is safe,
-         laptop side nearly untouched) */
+      
       right: calc(max(0px, calc(100cqh * 16 / 9) - 100cqw) * -0.15);
-      /* keep 70% of any vertical crop off the top (sky is expendable,
-         the desk and laptop are not) */
+      
       top:   calc(max(0px, calc(100cqw * 9 / 16) - 100cqh) * -0.7);
     }
   }
 
-  /* Tall tablet-portrait (e.g. iPad Pro 1024x1366): the lg breakpoint
-     (min-width 1024) normally switches to the 2-col grid, but a portrait
-     tablet is too narrow for side-by-side columns to look premium. Keep the
-     STACKED layout instead: full-width laptop scene on top, centered copy
-     beneath it — the same composition as md, just larger. The feature bar
-     stays pinned to the bottom edge via space-between so leftover height
-     lands in one intentional band. !important is needed because these
-     override Tailwind lg: utilities and the @supports #scene sizing above
-     (equal-or-higher specificity, earlier source order). */
+  
   @media (min-width: 1024px) and (orientation: portrait) {
     #heroInner { justify-content: space-between; }
     #heroContent {
@@ -345,8 +295,7 @@
       justify-content: flex-start !important;
     }
     #heroContent > .fade-left .mt-8 { justify-content: center !important; }  /* CTAs */
-    /* Scene: full viewport width when stacked (break out of padded grid),
-       natural 16/9 (frame == stage, zero crop — full townscape + sky) */
+    
     #sceneWrap { order: 1 !important; max-width: none !important; width: 100% !important; }
     #scene {
       aspect-ratio: 16 / 9 !important;
@@ -357,12 +306,7 @@
     }
   }
 
-  /* ---------- Mobile / stacked layout ----------
-     Below lg: eyebrow ("EXPERIENCE FUNDVIEW") stacks above the town scene,
-     then the scene, then the copy. Eyebrow is centered with breathing room
-     above (section → title) and below (title → scene).
-     Also drop min-h-screen / flex-1 stretch so copy doesn't leave a huge empty
-     band under the prompt — keep a clean bottom pad instead. */
+  
   .experience-eyebrow--stack { display: none; }
   @media (max-width: 1023.98px) {
     #hero,
@@ -421,24 +365,7 @@
     #heroInner { transition: none; }
   }
 
-  /* ---------- Demo overlay — cinematic lift / return system ----------
-     OPEN (video path — zero-jump handoff)
-       Zoom clip carries the camera. Near clip end, #zoomBridge locks the
-       true last frame OPAQUE. Live #demoLaptop assembles underneath already
-       at final rest pose with UI painted. Only then does the bridge HARD-CUT
-       away (no opacity crossfade). Soft dissolves always ghosted dual-scale
-       UI (photo bezel + larger flat HTML chassis) for ~hundreds of ms.
-     CLOSE ("the return", ~560ms)
-       The laptop is set back down TOWARD the photo laptop on the desk —
-       recede direction computed per-close in JS via --exit-x/y — while the
-       veil lifts and the hero racks back into focus.
-     DEPTH
-       Sold by compositor-only layers: a crossfaded shadow stack (box-shadow
-       painted once, only opacity animates), a grounding contact shadow, a
-       teal monitor bloom, and true DoF from receding the hero itself.
-     Every animated property is transform / opacity — no animated
-     box-shadow, no backdrop-filter — so the whole move stays on the
-     compositor at 60fps even while screen-recording. */
+  
   #demoOverlay {
     --spring: cubic-bezier(0.22, 1, 0.36, 1);        /* fallback spring */
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* expo-ish out    */
@@ -460,10 +387,7 @@
     }
   }
 
-  /* Depth-of-field recession: applied ONLY after the demo is up (never mid
-     zoom-clip). Blurring #hero during the video stalls Chrome's decoder and
-     freezes the dolly mid-frame. Once the overlay covers the hero, a light
-     scale + dim is enough — skip live blur (veil already separates depth). */
+  
   #hero {
     transform-origin: 50% 40%;
     transition:
@@ -475,8 +399,7 @@
     filter: brightness(0.72) saturate(0.88);
   }
 
-  /* Veil: plain gradient dim (no backdrop-filter — see above) with a faint
-     teal key light pooled behind the laptop. Click closes; cursor hints it. */
+  
   #demoOverlay .demo-backdrop {
     opacity: 0;
     cursor: zoom-out;
@@ -494,9 +417,7 @@
     transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  /* Laptop chassis: hidden pose -> final rest under opaque bridge -> reveal.
-     transform-origin sits low so the EXIT rotateX still reads as tipping
-     back onto the desk. Open path must NOT spring while the bridge fades. */
+  
   #demoLaptop {
     transform-origin: 50% 62%;
     opacity: 0;
@@ -509,8 +430,7 @@
     max-width: 100vw;
     box-sizing: border-box;
   }
-  /* Final rest pose under the opaque bridge — identical to .open so the
-     hard cut lands on a settled chassis (no mid-spring mismatch) */
+  
   #demoOverlay.bridging #demoLaptop,
   #demoOverlay.handoff-cover #demoLaptop,
   #demoOverlay.open #demoLaptop {
@@ -521,11 +441,7 @@
   #demoOverlay.handoff-cover #demoLaptop {
     transition: none;
   }
-  /* Landing momentum: the clip is a forward dolly, so the reveal continues
-     that motion — the chassis arrives a hair small/low and settles to rest
-     on the spring. Small enough to avoid any geometry-mismatch ghosting,
-     but the camera never reads as slamming to a dead stop. Only the video
-     path (ui-ready) gets this; the CSS-dolly fallback keeps its own spring. */
+  
   @keyframes demoLandIn {
     from { transform: scale(0.982) translate3d(0, 10px, 0); }
     to   { transform: none; }
@@ -533,9 +449,7 @@
   #demoOverlay.open.ui-ready:not(.handoff-cover):not(.closing) #demoLaptop {
     animation: demoLandIn 0.52s var(--ease-out) forwards;
   }
-  /* After open (past bridge/handoff), drop perspective/transform promotion
-     so iOS Safari can scroll overflow inside #screenHost — nested scrollers
-     inside transformed/perspectived fixed layers often go dead. */
+  
   #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) {
     perspective: none;
     transform: none;
@@ -545,10 +459,7 @@
     transform: none;
   }
 
-  /* Luminance continuity: the zoom clip ends on a DARK vignetted scene, but
-     the demo veil + blurred hero read brighter. A black shade sits at 42%
-     under the opaque cover and eases off after the cut, so the reveal
-     brightens INTO the demo instead of jumping exposure. Opacity-only. */
+  
   #demoOverlay .demo-backdrop::after {
     content: ""; position: absolute; inset: 0;
     background: #04070d; opacity: 0; pointer-events: none;
@@ -558,8 +469,7 @@
     opacity: 0.42;
     transition: none;
   }
-  /* The return: recede toward the photo laptop (direction set in JS),
-     tipping back down as if being set on the desk */
+  
   #demoOverlay.closing #demoLaptop {
     opacity: 0;
     transform:
@@ -570,7 +480,7 @@
       opacity 360ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  /* ---- Compositor-only shadow / light stack ---- */
+  
   /* Resting shadow is painted once on the chassis and never animated */
   .demo-screen {
     /* Cap at ≤96vw so screen + 1.035× base deck stay inside the viewport */
@@ -578,9 +488,7 @@
     width: var(--demo-screen-w);
     max-width: 96vw;
     min-width: 0; /* prevent flex/content min-size from expanding past max-width */
-    /* Explicit height (not aspect-ratio alone): #appShell used height:100%,
-       which does not resolve against aspect-ratio parents — the shell grew
-       with content and #screenHost never became a scroll box (Chrome + iOS). */
+    
     height: min(calc(var(--demo-screen-w) / 1.68), calc(100dvh - 96px));
     max-height: calc(100vh - 96px);
     max-height: calc(100dvh - 96px);
@@ -596,9 +504,7 @@
     max-width: 100vw;
     box-sizing: border-box;
   }
-  /* Large desktops: roomier vh cap + wider side nav
-     so labels like "CityCentral™ Citizen Portal" are not ellipsized.
-     Width stays ≤96vw (never >100vw) so #demoLaptop cannot spill horizontally. */
+  
   @media (min-width: 1300px) {
     .demo-screen {
       --demo-screen-w: min(96vw, 158.4vh);
@@ -618,8 +524,7 @@
       width: 15.5rem !important; /* ~248px; sm:w-44 (11rem) was too narrow */
     }
   }
-  /* Tablet / small desktop (640–1299): taller usable chrome + roomier rail
-     so the Book Demo CTA and nav labels fit without clipping into #screenHost. */
+  
   @media (min-width: 640px) and (max-width: 1299.98px) {
     #demoOverlay.open,
     #demoOverlay.bridging,
@@ -658,7 +563,7 @@
       width: 10.25rem !important; /* ~164px */
     }
   }
-  /* App shell fills the bezel via flex — never height:100% against aspect-ratio */
+  
   #appShell {
     flex: 1 1 0% !important;
     min-height: 0 !important;
@@ -668,9 +573,7 @@
     flex-direction: column !important;
     overflow: hidden !important;
   }
-  /* Lift shadow: the intense multi-layer shadow lives on its own layer and
-     only its OPACITY animates — transitioning box-shadow itself would
-     repaint every frame */
+  
   .demo-shadow-lift {
     position: absolute; inset: 0; z-index: -1;
     border-radius: inherit;
@@ -690,8 +593,7 @@
   #demoOverlay.handoff-cover .demo-shadow-lift { transition: none; }
   #demoOverlay.closing .demo-shadow-lift { opacity: 0; transition-duration: 400ms; }
 
-  /* Contact shadow: a pre-blurred ellipse under the base that widens and
-     deepens as the machine lifts — grounds the float without filters */
+  
   .demo-contact-shadow {
     position: absolute; left: 50%; bottom: -38px;
     width: 82%; height: 52px;
@@ -722,8 +624,7 @@
     transition-duration: 420ms;
   }
 
-  /* Monitor bloom: teal key light blooms as the UI powers on, settles, then
-     breathes almost imperceptibly — the scene stays alive on camera */
+  
   .demo-glow {
     position: absolute; inset: -8% -12% -14% -12%;
     z-index: -2; pointer-events: none;
@@ -744,8 +645,7 @@
   /* Base deck: static shadow, painted once */
   .demo-base { box-shadow: 0 26px 48px -12px rgba(0, 0, 0, 0.5); }
 
-  /* Power-on sheen: one soft light sweep across the glass as the UI wakes.
-     Transform-only, clipped to the screen radius. */
+  
   .demo-sheen {
     position: absolute; inset: 0; z-index: 40;
     border-radius: inherit; overflow: hidden; pointer-events: none;
@@ -783,10 +683,7 @@
     .demo-contact-shadow { bottom: -26px; height: 38px; }
   }
 
-  /* ≤999px: keep laptop under Exit/Book CTAs (top fixed) and grow
-     downward into spare viewport — phones + tablets (same fill behavior).
-     Width MUST use vw only (never 100%): #demoLaptop is align-items:center
-     and percentage width collapses into a phone-narrow strip. */
+  
   @media (max-width: 999.98px) {
     #demoOverlay.open,
     #demoOverlay.bridging,
@@ -818,17 +715,14 @@
     }
   }
 
-  /* ---- Inner UI choreography: the app wakes AFTER the chassis lands ----
-     header drops in -> sidebar items cascade -> content rises -> KPI cards
-     stack in -> charts replay their intro + numbers count up (JS) */
+  
   @keyframes demoFadeIn  { from { opacity: 0; } to { opacity: 1; } }
   @keyframes demoDropIn  { from { opacity: 0; transform: translate3d(0, -10px, 0); } to { opacity: 1; transform: none; } }
   @keyframes demoSlideIn { from { opacity: 0; transform: translate3d(-14px, 0, 0); } to { opacity: 1; transform: none; } }
   @keyframes demoRiseIn  { from { opacity: 0; transform: translate3d(0, 14px, 0); } to { opacity: 1; transform: none; } }
   @keyframes demoCardIn  { from { opacity: 0; transform: translate3d(0, 16px, 0) scale(0.975); } to { opacity: 1; transform: none; } }
 
-  /* Under the opaque bridge: UI is fully painted (no empty shell flash).
-     Entrance staggers only run when NOT covered / already settled. */
+  
   #demoOverlay.bridging #appShell > header,
   #demoOverlay.bridging #sideNav,
   #demoOverlay.bridging #sideNav .side-item,
@@ -892,8 +786,7 @@
     flex-shrink: 0;
     color: #17a9b6;
   }
-  /* Layout keyed to PANEL width (container queries), not viewport —
-     laptop #screenHost is narrower than the browser window. */
+  
   .fin-hero {
     display: flex;
     flex-direction: column;
@@ -1104,7 +997,7 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-  /* Wide panel: 4 feature cols + roomier horizontal cards (match desktop mockup sizing) */
+  
   @container fin (min-width: 720px) {
     .fin-hero {
       flex-direction: row;
@@ -1152,7 +1045,7 @@
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
   }
-  /* Fallback without container queries: conservative 2-col until very wide viewports */
+  
   @supports not (container-type: inline-size) {
     @media (min-width: 700px) and (max-width: 1099px) {
       .fin-features {
@@ -1212,13 +1105,12 @@
   #demoOverlay #exitDemo,
   #demoOverlay #bookDemoMobile {
     z-index: 40;
-    /* Keep off the site header until demo is open — pointer-events:auto on
-       children still hit-tests even when #demoOverlay is pointer-events:none. */
+    
     pointer-events: none;
     visibility: hidden;
   }
 
-  /* Exit Preview — mobile: top-right (swapped with Book Demo); desktop: top-right */
+  
   #exitDemo {
     position: absolute;
     left: auto;
@@ -1564,8 +1456,7 @@
     }
   }
 
-  /* Reduced motion: overlay states resolve instantly — nothing sweeps,
-     breathes, springs, or counts (JS honours the same media query) */
+  
   @media (prefers-reduced-motion: reduce) {
     #demoOverlay, #demoOverlay * {
       transition-duration: 0.01ms !important;
@@ -1575,7 +1466,7 @@
     #hero.demo-recede { transform: none; filter: none; }
   }
 
-  /* ---------- In-app screens ---------- */
+  
   .app-screen { display:none; opacity:0; transition: opacity .18s ease; }
   .app-screen.active { display:block; }
   .app-screen.visible { opacity:1; }
@@ -1646,7 +1537,7 @@
     }
   }
 
-  /* Slim scrollbars inside the laptop — always show gutter (not overlay-only) */
+  
   .slim-scroll {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
@@ -1657,7 +1548,7 @@
   .slim-scroll::-webkit-scrollbar { width:10px; height:10px; -webkit-appearance: none; display: block; }
   .slim-scroll::-webkit-scrollbar-track { background:#e6ebf1; }
   .slim-scroll::-webkit-scrollbar-thumb { background:#c2ccd6; border-radius:5px; border:2px solid #e6ebf1; }
-  /* Main content: teal horizontal bar, gray vertical — forced visible gutters */
+  
   #screenHost,
   #screenScroll {
     scrollbar-width: thin;
@@ -1685,7 +1576,7 @@
   #screenScroll::-webkit-scrollbar-thumb:vertical {
     background:#c2ccd6; border-radius:4px; border:2px solid #e6ebf1;
   }
-  /* Desktop: #screenScroll +20% wider, default grey thumbs (match .slim-scroll) */
+  
   @media (min-width: 640px) {
     #screenScroll {
       scrollbar-width: auto;
@@ -1717,12 +1608,7 @@
     min-width: 100%;
   }
 
-  /* Demo category scroll (Chrome + iOS Safari):
-     - Mid row stays a normal flex row so #sideNav is never covered
-     - #screenHost is a relative flex:1 clip box (overflow:hidden)
-     - #screenScroll is the absolute-fill overflow:auto scroller
-       (WebKit needs a positioned overflow layer with a bounded box;
-        putting absolute on #screenHost itself covered the sidebar) */
+  
   #appShell > .flex.min-h-0 {
     flex: 1 1 0% !important;
     min-height: 0 !important;
@@ -1752,7 +1638,7 @@
     bottom: 0 !important;
     width: auto !important;
     height: auto !important;
-    /* Vertical: scroll keeps the gutter; horizontal: auto — only when content overflows */
+    
     overflow-x: auto !important;
     overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
@@ -1761,8 +1647,7 @@
     background: #eef2f6;
     z-index: 1;
   }
-  /* Once demo is settled, hard-kill transforms/animations on the chassis
-     so iOS does not keep a compositing layer that disables nested scroll. */
+  
   #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop,
   #demoOverlay.open.ui-ready:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop {
     animation: none !important;
@@ -1791,9 +1676,7 @@
 
   .fv-card { background:#fff; border:1px solid #e3e8ee; border-radius:6px; box-shadow:0 1px 2px rgba(13,34,64,.05); }
 
-  /* ---------- Bottom tab workspace bar ----------
-     Signature FUNDVIEW UI: every screen/record you open docks as a closable
-     tab along the bottom of the app, with a "Close All Tabs" reset. */
+  
   .tab-item {
     display:flex; align-items:center; gap:6px; padding:0 9px;
     max-width:150px; border-right:1px solid #d3dae2; background:#dfe5ec;
@@ -1826,14 +1709,12 @@
   tr.cr-batch.cr-open { background:#eef5fb; }
   .cr-detail > td { background:#f7fafd; padding:0; }
 
-  /* ---------- Layout refinements (requested) ---------- */
+  
   /* Desktop: section height follows its content — no forced full-viewport */
   @media (min-width: 1024px) {
     #hero, #heroInner { min-height: 0 !important; }
   }
-  /* Tablet & mobile: zoom the scene stage so the LAPTOP becomes the large,
-     centered subject of the video loop. Stage is a cover box scaled up and
-     positioned (clamped) to keep the laptop centered without exposing gaps. */
+  
   @media (max-width: 1023.98px) {
     #sceneWrap {
       max-width: none !important;
@@ -1858,8 +1739,7 @@
     }
   }
 
-  /* Tablet only (not phones): slightly shorter frame, but stage must still
-     COVER the full frame width — never zoom out / letterbox (navy gutters). */
+  
   @media (min-width: 640px) and (max-width: 1023.98px) {
     #scene {
       width: 100vw !important;
@@ -1877,9 +1757,7 @@
     }
   }
 
-  /* Phones: town scene frame taller (+15% then +10%). Frame-pinned note/arrow
-     percentages were tuned for the old 53.6vw frame — retune so they sit on
-     the laptop again after the taller cover-crop. */
+  
   @media (max-width: 639.98px) {
     #scene { height: min(67.8vw, 75.9vh) !important; }
     div.scene-note-m {
@@ -1893,7 +1771,7 @@
     }
   }
 
-  /* Side navy edge-fades into the town scene — narrower on mobile so more sky shows */
+  
   .scene-blend-side--left { width: 4.5rem; }
   .scene-blend-side--right { width: 2.5rem; }
   @media (max-width: 639.98px) {
@@ -1901,10 +1779,10 @@
     .scene-blend-side--right { width: 1.25rem; }
   }
 
-  /* KPI cards: stack on phones so large currency values never overflow their card */
+  
   .kpi-grid { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
   @media (min-width: 640px) { .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  /* Mobile-only note override: hide the in-scene desktop note, show frame-pinned copy */
+  
   .scene-note-m { display: none; }
   @media (max-width: 640.98px) {
     #handNote { display: none !important; }
@@ -1913,8 +1791,7 @@
     #sceneZoom { --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.08); --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.08); }
   }
 
-
-    /* ——— Every FUNDVIEW Solution Delivers ——— */
+    
   </style>
 </head>
 <body>
@@ -3011,7 +2888,7 @@
 (function () {
   'use strict';
 
-  /* 1. Sidebar nav */
+  
   const MODULES = [
     { id:'financial', label:"Financial Management", icon:'<path d="M3 21h18"/><path d="M5 21V9l7-4 7 4v12"/><path d="M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01"/>' },
     { id:'workforce', label:"Workforce Management", icon:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><circle cx="17" cy="10" r="2.5"/><path d="M15 15.5a5 5 0 016 4.5"/>' },
@@ -3034,9 +2911,8 @@
     sideNavItems.appendChild(b);
   });
 
-  /* 2. Screen switching */
-  /* Wrap category screens in #screenScroll — THAT element is the scroller.
-     #screenHost is only the relative clip box beside #sideNav. */
+  
+  
   (function ensureScreenScroll() {
     const shell = document.getElementById('screenHost');
     if (!shell || document.getElementById('screenScroll')) return;
@@ -3143,7 +3019,14 @@
         next.classList.add('visible');
         // Chart construction blocks the main thread; during the hero dolly
         // the caller defers it until the camera move has finished.
-        if (!deferCharts) { const wasBuilt = built.has(id); initCharts(id); if (wasBuilt) replayCharts(id); if (!reduced) runCountUps(); }
+        if (!deferCharts) {
+          ensureChartJs().then(function () {
+            const wasBuilt = built.has(id);
+            initCharts(id);
+            if (wasBuilt) replayCharts(id);
+            if (!reduced) runCountUps();
+          });
+        }
       }));
     };
     if (instant || !prev || !prev.classList.contains('active')) { swap(); return; }
@@ -3159,10 +3042,35 @@
 
   renderTabs();
 
-  /* 3. Table data */
-  Chart.defaults.font.family = "'Inter', sans-serif";
-  Chart.defaults.font.size = 9.5;
-  Chart.defaults.color = '#475569';
+  let chartJsReady = null;
+  let chartDefaultsApplied = false;
+  function ensureChartJs() {
+    if (typeof Chart !== 'undefined') {
+      if (!chartDefaultsApplied) {
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.size = 9.5;
+        Chart.defaults.color = '#475569';
+        chartDefaultsApplied = true;
+      }
+      return Promise.resolve();
+    }
+    if (chartJsReady) return chartJsReady;
+    chartJsReady = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js';
+      s.setAttribute('data-experience-fundview', '');
+      s.onload = function () {
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.size = 9.5;
+        Chart.defaults.color = '#475569';
+        chartDefaultsApplied = true;
+        resolve();
+      };
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+    return chartJsReady;
+  }
   const money = v => '$' + v.toLocaleString();
   const leg = (pos, size) => ({ position: pos, labels: { boxWidth: 8, boxHeight: 8, font: { size: size || 8 } } });
   const linkT = t => '<span class="app-link">' + t + '</span>';
@@ -3204,6 +3112,7 @@
       options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:leg('right') } } });
   }
   function initCharts(id) {
+    if (typeof Chart === 'undefined') return;
     if (built.has(id)) return;
     if (id === 'financial') financeCharts('chFin');
     if (id === 'platform')  financeCharts('chPlat');
@@ -3242,9 +3151,7 @@
   /* Flip to false to restore the CSS transform dolly instead of the clip */
   const USE_ZOOM_VIDEO = true;
 
-  /* Video-zoom timeline (ms)
-     OPEN: FUNDVIEW-Zoom-In.mp4 then matched-frame handoff + SaaS lift
-     EXIT: FUNDVIEW-Zoom-Out.mp4 (forward play), with lift fallback */
+  
   const CROSS_IN_MS    = 180;
   const CLIP_MS        = 1000;
   const OPEN_MS        = 520;
@@ -3252,7 +3159,7 @@
   const EASE_IO        = 'cubic-bezier(0.23, 1, 0.32, 1)';
   /* CSS-dolly fallback timing */
   const ZOOM_MS = 750, BLOOM_AT = 380, CSS_REVEAL_AT = 450, UNZOOM_MS = 700;
-  /* Rail Book Demo CTA: pop in 2s after the demo lands (own timer, not zoomTimers) */
+  
   const BOOK_CTA_DELAY_MS = 2000;
   let bookCtaTimer = null;
   let demoOpen = false, animating = false;
@@ -3278,13 +3185,7 @@
     return id;
   }
 
-  /* Page scroll lock while the demo is open.
-     Do NOT use position:fixed on body (Exit jump on iPhone).
-     Do NOT blanket-preventDefault every touchmove (kills nested pans).
-     Do NOT rAF-pin window.scrollY while a finger is inside #screenHost —
-     continuous scrollTo() cancels iOS Safari's nested overflow gesture.
-     Strategy: overflow:hidden + conditional touchmove block outside demo
-     scrollers + light rAF pin only when NOT touching a scroller. */
+  
   let scrollLocked = false;
   let freezeRaf = 0;
   let touchingDemoScroller = false;
@@ -3431,9 +3332,7 @@
     if (!demoOpen && !animating) sceneEl.classList.remove('hover-zoom');
   });
 
-  /* Scaling a live <video> layer forces a re-rasterization on every frame of
-     the CSS dolly (measured ~4 fps). Freezing the current frame onto a canvas
-     and hiding the video for the duration of that move restores 60 fps. */
+  
   function freezeScene() {
     if (!sceneVid.videoWidth) { sceneVid.pause(); return; }
     sceneSnap.width  = sceneVid.videoWidth;
@@ -3471,8 +3370,7 @@
     renderTabs();
   }
 
-  /* After chassis lands: keep #sideNav in normal flex flow; make
-     #screenScroll the absolute-fill overflow scroller inside #screenHost. */
+  
   function isPhoneDemo() {
     try { return window.matchMedia('(max-width: 640px)').matches; }
     catch (_) { return false; }
@@ -3498,7 +3396,7 @@
       const vh = (vv && vv.height) ? vv.height : window.innerHeight;
       if (isPhoneDemo()) {
         /* Match CSS fill-bottom: keep top CTA clearance, grow into lower gap */
-        const topChrome = Math.round(4.75 * 16); /* 4.75rem */
+        const topChrome = Math.round(4.75 * 16); 
         const bottomPad = 8;
         const baseDeck = 22;
         const h = Math.round(Math.max(280, vh - topChrome - bottomPad - baseDeck));
@@ -3578,9 +3476,7 @@
     bindDemoTouchScroll();
   }
 
-  /* iPhone Safari often refuses nested overflow pans inside a fixed overlay.
-     Drive #screenScroll from touch deltas on phones (both axes). Nested
-     table/tab scrollers keep native pan — we don't steal those gestures. */
+  
   let touchScrollBound = false;
   let tsActive = false;
   let tsStartX = 0;
@@ -3752,8 +3648,7 @@
     if (demoOpen && !animating) armDemoScroll();
   });
 
-  /* Replay chart intro animations on each open so the dashboard reads as
-     freshly computed every time the laptop lifts */
+  
   function replayCharts(id) {
     document.querySelectorAll('.app-screen[data-screen="' + id + '"] canvas').forEach(function (c) {
       const ch = Chart.getChart(c);
@@ -3761,8 +3656,7 @@
     });
   }
 
-  /* KPI count-up: the headline numbers roll to their value with an
-     expo-out tail — cancelled (and snapped to final) on close */
+  
   let countRafs = [];
   function fmtKpi(el, v) {
     const dec = +(el.dataset.dec || 0);
@@ -3790,8 +3684,7 @@
     });
   }
 
-  /* Draw the current zoom-clip frame (or a preloaded end still) onto #zoomBridge
-     at device-pixel resolution so the dissolve stays sharp. */
+  
   function paintBridgeFromVideo() {
     const src = zoomClip;
     if (!src.videoWidth) return false;
@@ -3861,7 +3754,7 @@
     if (bookDemoCta) bookDemoCta.classList.remove('cta-in');
   }
 
-  /* Preload the known end still so the handoff never paints a mid-dolly frame */
+  
   const endStill = new Image();
   endStill.decoding = 'async';
   endStill.src = 'https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/zoom-in-end-frame.png';
@@ -4067,15 +3960,15 @@
         overlay.classList.add('open', 'ui-ready');
 
         const fresh = !built.has('financial');
-        try {
+        ensureChartJs().then(function () {
           initCharts('financial');
           if (!reduced) {
             if (!fresh) replayCharts('financial');
             stopCountUps();
           }
-        } catch (err) {
+        }).catch(function (err) {
           console.warn('demo charts init', err);
-        }
+        });
 
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
@@ -4295,11 +4188,13 @@
         animating = false;
         armDemoScroll();
         const fresh = !built.has('financial');
-        initCharts('financial');
-        if (!reduced) {
-          if (!fresh) replayCharts('financial');
-          runCountUps();
-        }
+        ensureChartJs().then(function () {
+          initCharts('financial');
+          if (!reduced) {
+            if (!fresh) replayCharts('financial');
+            runCountUps();
+          }
+        });
         heroInner.classList.remove('scene-change');
         sceneChange.classList.remove('flash');
         hero.classList.add('demo-recede');
@@ -4341,6 +4236,7 @@
   }
 
   function openDemo() {
+    ensureChartJs();
     if (USE_ZOOM_VIDEO && !reduced && zoomClip) openDemoVideo();
     else openDemoCssDolly();
   }
@@ -4364,11 +4260,7 @@
     warmZoomAssets();
   }
 
-  // initial screen ready; pre-build its charts during idle time so the first
-  // laptop click doesn't pay the Chart.js construction cost mid-animation
   document.querySelector('.app-screen[data-screen="financial"]').classList.add('active', 'visible');
-  if (window.requestIdleCallback) requestIdleCallback(() => initCharts('financial'), { timeout: 1500 });
-  else setTimeout(() => initCharts('financial'), 400);
 })();
 
   </script>
