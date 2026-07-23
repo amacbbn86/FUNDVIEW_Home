@@ -975,11 +975,42 @@
     width: 100%;
     max-width: 100%;
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.75rem;
+    gap: 0.875rem;
   }
   .fin-columns > * {
     min-width: 0;
     max-width: 100%;
+    padding: 1.15rem 1.2rem 1.25rem;
+  }
+  .fin-columns .fin-col-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #17a9b6;
+  }
+  .fin-columns ul {
+    margin-top: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .fin-columns li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: #334155;
+  }
+  .fin-columns li > span {
+    min-width: 0;
+    flex: 1;
+  }
+  .fin-columns .fin-check {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
   }
   /* Wide panel: 4 feature cols + roomier horizontal cards (match desktop mockup sizing) */
   @container fin (min-width: 720px) {
@@ -2076,30 +2107,30 @@
 
                 <!-- Outcomes | Why choose -->
                 <div class="fin-columns mt-5">
-                  <div class="rounded-xl border border-slate-200 bg-white px-4 py-3.5 sm:px-5">
-                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
-                    <ul class="mt-3 space-y-2 text-[11.5px] leading-snug text-slate-700">
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce month-end close by up to 70%</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve financial visibility with a Real-Time General Ledger</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate data entry across departments</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplify budgeting, purchasing, and financial reporting</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce bank reconciliation time by up to 50%</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Maintain 100% GASB &amp; GAAP compliance</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve audit readiness and financial transparency</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Give leadership greater confidence in every financial decision</span></li>
+                  <div class="rounded-xl border border-slate-200 bg-white">
+                    <div class="fin-col-title">Customer Outcomes</div>
+                    <ul>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce month-end close by up to 70%</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve financial visibility with a Real-Time General Ledger</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate data entry across departments</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplify budgeting, purchasing, and financial reporting</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce bank reconciliation time by up to 50%</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Maintain 100% GASB &amp; GAAP compliance</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve audit readiness and financial transparency</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Give leadership greater confidence in every financial decision</span></li>
                     </ul>
                   </div>
-                  <div class="rounded-xl border border-slate-200 bg-white px-4 py-3.5 sm:px-5">
-                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Why Finance Directors Choose FUNDVIEW</div>
-                    <ul class="mt-3 space-y-2 text-[11.5px] leading-snug text-slate-700">
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected financial platform</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time financial visibility</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Purpose-built for local government accounting</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built-in compliance and audit readiness</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Faster month-end close</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Connected purchasing and budgeting</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduced manual reconciliation</span></li>
-                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand municipal finance</span></li>
+                  <div class="rounded-xl border border-slate-200 bg-white">
+                    <div class="fin-col-title">Why Finance Directors Choose FUNDVIEW</div>
+                    <ul>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected financial platform</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time financial visibility</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Purpose-built for local government accounting</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built-in compliance and audit readiness</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Faster month-end close</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Connected purchasing and budgeting</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduced manual reconciliation</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand municipal finance</span></li>
                     </ul>
                   </div>
                 </div>
