@@ -2801,49 +2801,127 @@
             </section>
 
             <section class="app-screen" data-screen="platform">
-              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
-                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+              <div class="fin-panel mx-auto px-3 py-4 sm:px-5 sm:py-5">
 
-                  <div class="kpi-grid">
-                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Consolidated Cash Balance</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="3620179.95" data-prefix="$" data-dec="2">$3,620,179.95</div></div>
-                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Outstanding Payables</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="154.50" data-prefix="$" data-dec="2">$154.50</div></div>
-                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Accounts Overbudget</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="78">78</div></div>
+                <!-- Top: title + copy | 100% stat -->
+                <div class="fin-hero">
+                  <div class="fin-copy min-w-0 flex-1">
+                    <div class="fin-copy-heading">
+                      <svg class="fin-feature-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <ellipse cx="12" cy="8" rx="4.5" ry="2"/>
+                        <path d="M7.5 8v3c0 1.1 2 2 4.5 2s4.5-.9 4.5-2V8"/>
+                        <path d="M7.5 11v3c0 1.1 2 2 4.5 2s4.5-.9 4.5-2v-3"/>
+                        <path d="M12 16v1.5"/>
+                        <path d="M4.5 20.5V17l3-2"/><path d="M19.5 20.5V17l-3-2"/>
+                        <path d="M8.5 20.5V18l3.5-1.5L15.5 18v2.5"/>
+                        <path d="M3 20.5h18"/>
+                      </svg>
+                      <h2>The FUNDVIEW Platform</h2>
+                    </div>
+                    <p>The power of FUNDVIEW goes beyond individual departments. Every module works together on one connected platform, giving your organization real-time visibility, shared data, automated workflows, and the confidence that comes from having one reliable source of information.</p>
                   </div>
-                  <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Budget vs Actual</div><div class="h-36"><canvas id="chPlatBva"></canvas></div></div>
-                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Revenue by Category</div><div class="h-36"><canvas id="chPlatPie"></canvas></div></div>
-                  </div>
-                </div>
-                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">The FUNDVIEW Platform</h2>
-                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">The power of FUNDVIEW goes beyond individual departments. Every module works together on one connected platform, giving your organization real-time visibility, shared data, automated workflows, and the confidence that comes from having one reliable source of information.</p>
-
-                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
-                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>One Connected Platform</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time General Ledger</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time Visibility</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Cloud-Based ERP</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Dashboards &amp; Reporting</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Automated Text &amp; Email Notifications</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Document Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Approval Workflows</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Security &amp; User Permissions</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>GASB &amp; GAAP Compliance</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Audit Trail</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Mobile &amp; Remote Access</span></li></ul>
-
-                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
-                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
-                    <div class="text-[26px] font-black leading-none text-fvteal">100%</div>
-                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">GASB &amp; GAAP compliant</div>
-                  </div>
-                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
-                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Every department works from the same real-time data. FUNDVIEW replaced six disconnected systems for us.&rdquo;</p>
-                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; City Administrator</p>
+                  <div class="fin-stat">
+                    <div class="fin-stat-value">100%</div>
+                    <div class="mt-2 text-[12px] font-semibold leading-snug text-white">GASB &amp; GAAP compliant</div>
                   </div>
                 </div>
 
-                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
-                  <div>
-                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
-                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One source of truth across every department</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time visibility into financial and operational activity</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate data entry and disconnected systems</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve collaboration across departments</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automate notifications and routine workflows</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Increase security and accountability</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Access information securely from anywhere</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Support better decisions with real-time reporting</span></li></ul>
-                  </div>
-                  <div>
-                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Why Organizations Choose the FUNDVIEW Platform</div>
-                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected ERP platform</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time visibility across every department</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built specifically for local government</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Cloud-based and secure</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automated workflows and notifications</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Connected financial and operational data</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Scalable as your community grows</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand local government</span></li></ul>
-                  </div>
-                </div>
-
+                <!-- Feature Highlights -->
                 <div class="mt-6">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore The FUNDVIEW Platform <span>&rarr;</span></a>
+                  <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                  <ul class="fin-features">
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="4.5" r="1.6"/><circle cx="18.5" cy="8.5" r="1.6"/><circle cx="18.5" cy="15.5" r="1.6"/><circle cx="12" cy="19.5" r="1.6"/><circle cx="5.5" cy="15.5" r="1.6"/><circle cx="5.5" cy="8.5" r="1.6"/><path d="M12 9.8V6.1M14 10.8l3.2-1.6M14.1 13.4l3.1 1.5M12 14.2v3.7M9.9 13.4l-3.1 1.5M10 10.8L6.8 9.2"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">One Connected Platform</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h7a2 2 0 012 2v12a2 2 0 00-2-2H4V5z"/><path d="M20 5h-7a2 2 0 00-2 2v12a2 2 0 012-2h7V5z"/><circle cx="8.5" cy="12" r="2"/><path d="M8.5 10.8v2.4M7.6 12h1.8"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Real-Time General Ledger</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/><circle cx="12" cy="12" r="3"/><path d="M12 7.5c2.8 0 5.2 2.1 5.8 4.5-.6 2.4-3 4.5-5.8 4.5S6.8 14.4 6.2 12C6.8 9.6 9.2 7.5 12 7.5z"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Real-Time Visibility</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 11.5a5 5 0 019.2-2.7A3.8 3.8 0 0118.5 16H7.2a3.2 3.2 0 01-.7-6.3"/><path d="M10 14.5V12l2-1.5 2 1.5v2.5"/><path d="M11.2 14.5v-1.2h1.6v1.2"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Cloud-Based ERP</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M8 16V11"/><path d="M12 16V8"/><path d="M16 16v-4"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Dashboards &amp; Reporting</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5h12.5a1.5 1.5 0 011.5 1.5v7a1.5 1.5 0 01-1.5 1.5H3.5a1.5 1.5 0 01-1.5-1.5v-7a1.5 1.5 0 011.5-1.5z"/><path d="M3 8.5l7 4.5 7-4.5"/><path d="M17.5 6.2a2.3 2.3 0 114.2 1.3"/><path d="M19.6 4.2v2.2h2.1"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Automated Text &amp; Email Notifications</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7.5V19a1.5 1.5 0 001.5 1.5h13A1.5 1.5 0 0020 19V8.5a1.5 1.5 0 00-1.5-1.5h-6.2L10 4.5H5.5A1.5 1.5 0 004 6v1.5z"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Document Management</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><rect x="15.5" y="15" width="5" height="5" rx="1"/><path d="M8.5 6.5h3.5v5M14.5 12h3.5v5"/><path d="M17 17.2l1.1 1.1 1.9-2.1"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Approval Workflows</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5.2c0 4.4-2.9 7.6-7 9.3-4.1-1.7-7-4.9-7-9.3V6l7-3z"/><circle cx="12" cy="11" r="2.2"/><path d="M9 16c.8-1.5 2-2.2 3-2.2s2.2.7 3 2.2"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Security &amp; User Permissions</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M14 3v4h4"/><path d="M9 11h6M9 14h6M9 17h4"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">GASB &amp; GAAP Compliance</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h7l3 3v11a1 1 0 01-1 1H6a1 1 0 01-1-1V5a1 1 0 011-1z"/><path d="M13 4v3h3"/><circle cx="16.5" cy="16.5" r="4"/><path d="M19.3 19.3L21.5 21.5"/><path d="M14.8 16.7l1.2 1.2 2-2.2"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Audit Trail</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="8" height="19" rx="2"/><path d="M10 5h2M10 18.5h2"/><path d="M17.5 9.5c1 .8 1.6 2 1.6 3.3s-.6 2.5-1.6 3.3M20 8c1.4 1.2 2.2 2.9 2.2 4.8S21.4 15.8 20 17"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Mobile &amp; Remote Access</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Quote / testimonial -->
+                <blockquote class="fin-quote mt-5">
+                  <svg class="fin-feature-icon mt-0.5 shrink-0" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
+                  <div class="min-w-0">
+                    <p class="text-[12.5px] italic leading-relaxed text-[#0c2440]">&ldquo;Every department works from the same real-time data. FUNDVIEW replaced six disconnected systems for us.&rdquo;</p>
+                    <footer class="mt-1.5 text-[11px] font-bold text-[#17a9b6]">&mdash; City Administrator</footer>
+                  </div>
+                </blockquote>
+
+                <!-- Outcomes | Why choose -->
+                <div class="fin-columns mt-5">
+                  <div class="rounded-xl border border-slate-200 bg-white">
+                    <div class="fin-col-title">Customer Outcomes</div>
+                    <ul>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One source of truth across every department</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time visibility into financial and operational activity</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate data entry and disconnected systems</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve collaboration across departments</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automate notifications and routine workflows</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Increase security and accountability</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Access information securely from anywhere</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Support better decisions with real-time reporting</span></li>
+                    </ul>
+                  </div>
+                  <div class="rounded-xl border border-slate-200 bg-white">
+                    <div class="fin-col-title">Why Organizations Choose the FUNDVIEW Platform</div>
+                    <ul>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected ERP platform</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time visibility across every department</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built specifically for local government</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Cloud-based and secure</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automated workflows and notifications</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Connected financial and operational data</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Scalable as your community grows</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand local government</span></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="mt-5">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore The FUNDVIEW Platform <span aria-hidden="true">&rarr;</span></a>
                 </div>
               </div>
             </section>
