@@ -903,6 +903,25 @@
     background: #0c2440;
     padding: 1.25rem 1.25rem;
   }
+  .fin-panel .fin-stat-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: #1fc0cd;
+  }
+  .fin-panel .fin-quote {
+    display: flex;
+    gap: 0.75rem;
+    border-radius: 0.75rem;
+    background: #e8f6f7;
+    padding: 0.875rem 1rem;
+  }
+  @media (min-width: 640px) {
+    .fin-panel .fin-quote {
+      padding: 1rem 1.25rem;
+    }
+  }
   .fin-panel .fin-features {
     display: grid;
     grid-template-columns: 1fr;
@@ -1902,7 +1921,7 @@
                     <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information.</p>
                   </div>
                   <div class="fin-stat">
-                    <div class="text-[40px] font-black leading-none tracking-tight text-fvteal">70%</div>
+                    <div class="fin-stat-value">70%</div>
                     <div class="mt-2 text-[12px] font-semibold leading-snug text-white">Faster month-end close</div>
                   </div>
                 </div>
@@ -1947,7 +1966,7 @@
                 </div>
 
                 <!-- Quote / testimonial -->
-                <blockquote class="mt-5 flex gap-3 rounded-xl bg-[#e8f6f7] px-4 py-3.5 sm:px-5 sm:py-4">
+                <blockquote class="fin-quote mt-5">
                   <svg class="fin-feature-icon mt-0.5 shrink-0" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
                   <div class="min-w-0">
                     <p class="text-[12.5px] italic leading-relaxed text-[#0c2440]">&ldquo;Month-end used to take us weeks. With FUNDVIEW, our books are closed and our council reports are ready in days.&rdquo;</p>
