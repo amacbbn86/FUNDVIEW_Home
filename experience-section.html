@@ -1093,11 +1093,22 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
+  /* 10-item grids: 5 columns on wide panels (2 clean rows) */
+  @container fin (min-width: 820px) {
+    .fin-features.fin-features-10 {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
   /* Fallback without container queries: conservative 2-col until very wide viewports */
   @supports not (container-type: inline-size) {
     @media (min-width: 700px) and (max-width: 1099px) {
       .fin-features {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    @media (min-width: 1200px) {
+      .fin-features.fin-features-10 {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
       }
     }
     @media (min-width: 1100px) {
@@ -2425,46 +2436,118 @@
             </section>
 
             <section class="app-screen" data-screen="community">
-              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
-                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+              <div class="fin-panel mx-auto px-3 py-4 sm:px-5 sm:py-5">
 
-                  <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Service Orders by Team Member</div><div class="h-28"><canvas id="chComTeam"></canvas></div></div>
-                  <div class="mt-2 grid grid-cols-2 gap-2">
-                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Service Orders by Status</div><div class="h-32"><canvas id="chComStatus"></canvas></div></div>
-                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Service Order by Type</div><div class="h-32"><canvas id="chComType"></canvas></div></div>
+                <!-- Top: title + copy | One platform stat -->
+                <div class="fin-hero">
+                  <div class="fin-copy min-w-0 flex-1">
+                    <div class="fin-copy-heading">
+                      <svg class="fin-feature-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M3.5 20.5V11l4.5-3.5 4 3V8.5l4.5-3.5 4 3V20.5"/>
+                        <path d="M3.5 20.5h17"/>
+                        <path d="M9.5 20.5v-4h5v4"/>
+                        <path d="M7.8 6.2l1.4-2.4h2.2l.9 1.5"/>
+                        <path d="M8.8 5.2h2.8"/>
+                      </svg>
+                      <h2>Community Development</h2>
+                    </div>
+                    <p>Support responsible growth, protect your community, and streamline development with one connected solution for permitting, inspections, and code enforcement.</p>
+                    <p>FUNDVIEW helps local governments simplify processes, improve communication, and keep projects moving.</p>
                   </div>
-                </div>
-                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">Community Development</h2>
-                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">Support responsible growth, protect your community, and streamline development with one connected solution for permitting, inspections, and code enforcement.</p>
-                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW helps local governments simplify processes, improve communication, and keep projects moving.</p>
-
-                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
-                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Permitting</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Code Enforcement</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Permit Applications</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Plan Review</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Inspections</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Violation &amp; Case Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Image &amp; Document Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Contractor &amp; Property Records</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Citizen Communication</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Real-Time Financial Integration</span></li></ul>
-
-                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
-                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
-                    <div class="text-[26px] font-black leading-none text-fvteal">One</div>
-                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">Platform for permits, inspections &amp; code enforcement</div>
-                  </div>
-                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
-                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Contractors get answers faster, inspectors stay informed, and every permit fee posts to finance automatically.&rdquo;</p>
-                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; Community Development Director</p>
+                  <div class="fin-stat">
+                    <div class="fin-stat-value">One</div>
+                    <div class="mt-2 text-[12px] font-semibold leading-snug text-white">Platform for permits, inspections &amp; code enforcement</div>
                   </div>
                 </div>
 
-                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
-                  <div>
-                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
-                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Streamline permitting and inspection workflows</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve communication between departments</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Track violations and enforcement activities with confidence</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce manual paperwork and duplicate entry</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve visibility into active projects and cases</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Provide faster service to contractors and citizens</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automatically update financial records</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Support responsible community growth</span></li></ul>
-                  </div>
-                  <div>
-                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Why Community Development Teams Choose FUNDVIEW</div>
-                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected platform for permits and code enforcement</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplified permit review and approval workflows</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Better visibility into inspections and active cases</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improved communication with contractors and citizens</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Integrated financial tracking for permit fees</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduced paperwork and manual processes</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built specifically for local government</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand municipal operations</span></li></ul>
-                  </div>
-                </div>
-
+                <!-- Feature Highlights -->
                 <div class="mt-6">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Community Development <span>&rarr;</span></a>
+                  <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                  <ul class="fin-features fin-features-10">
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M14 3v4h4"/><circle cx="16.5" cy="16.5" r="3.2"/><path d="M15.2 16.5l1 1 1.8-2"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Permitting</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5.2c0 4.4-2.9 7.6-7 9.3-4.1-1.7-7-4.9-7-9.3V6l7-3z"/><path d="M12 9.2l1.1 2.2 2.4.3-1.8 1.7.5 2.4L12 14.7l-2.2 1.1.5-2.4-1.8-1.7 2.4-.3L12 9.2z"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Code Enforcement</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h7l3 3v13a1 1 0 01-1 1H8a1 1 0 01-1-1V5a1 1 0 011-1z"/><path d="M15 4v3h3"/><path d="M10 11h4M10 14h3"/><path d="M15.5 13.5l2.2 2.2 3-3.5"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Permit Applications</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/><path d="M9 18.5V11l3-2.5 3 2.5v7.5"/><path d="M11 18.5v-3h2v3"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Plan Review</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l4.5 4.5"/><path d="M8.2 10.8l1.5 1.5 3-3.2"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Inspections</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4.5L20 19H4L12 4.5z"/><path d="M12 10v4M12 16.5h.01"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Violation &amp; Case Management</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7.5V19a1.5 1.5 0 001.5 1.5h13A1.5 1.5 0 0020 19V8.5a1.5 1.5 0 00-1.5-1.5h-6.2L10 4.5H5.5A1.5 1.5 0 004 6v1.5z"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Image &amp; Document Management</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="9.5" cy="11" r="2.2"/><path d="M6.2 16.2c.7-1.5 1.9-2.3 3.3-2.3s2.6.8 3.3 2.3"/><path d="M14.5 10.5h3.2M14.5 13.5H16"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Contractor &amp; Property Records</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5.5h10.5a2 2 0 012 2v6a2 2 0 01-2 2H9.5L5.5 19v-3.5H5a2 2 0 01-2-2v-6a2 2 0 012-2z"/><path d="M8 9.5h7M8 12.5h5"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Citizen Communication</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M8 16V11"/><path d="M12 16V8"/><path d="M16 16v-4"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Real-Time Financial Integration</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Quote / testimonial -->
+                <blockquote class="fin-quote mt-5">
+                  <svg class="fin-feature-icon mt-0.5 shrink-0" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
+                  <div class="min-w-0">
+                    <p class="text-[12.5px] italic leading-relaxed text-[#0c2440]">&ldquo;Contractors get answers faster, inspectors stay informed, and every permit fee posts to finance automatically.&rdquo;</p>
+                    <footer class="mt-1.5 text-[11px] font-bold text-[#17a9b6]">&mdash; Community Development Director</footer>
+                  </div>
+                </blockquote>
+
+                <!-- Outcomes | Why choose -->
+                <div class="fin-columns mt-5">
+                  <div class="rounded-xl border border-slate-200 bg-white">
+                    <div class="fin-col-title">Customer Outcomes</div>
+                    <ul>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Streamline permitting and inspection workflows</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve communication between departments</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Track violations and enforcement activities with confidence</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce manual paperwork and duplicate entry</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve visibility into active projects and cases</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Provide faster service to contractors and citizens</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Automatically update financial records</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Support responsible community growth</span></li>
+                    </ul>
+                  </div>
+                  <div class="rounded-xl border border-slate-200 bg-white">
+                    <div class="fin-col-title">Why Community Development Teams Choose FUNDVIEW</div>
+                    <ul>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected platform for permits and code enforcement</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplified permit review and approval workflows</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Better visibility into inspections and active cases</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improved communication with contractors and citizens</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Integrated financial tracking for permit fees</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduced paperwork and manual processes</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built specifically for local government</span></li>
+                      <li><svg class="fin-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand municipal operations</span></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="mt-5">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Community Development <span aria-hidden="true">&rarr;</span></a>
                 </div>
               </div>
             </section>
