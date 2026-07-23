@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--
   Experience FUNDVIEW — standalone working copy for editing.
   Source of truth while iterating: this file.
@@ -863,17 +863,79 @@
   #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) #screenHost {
     animation: demoRiseIn 0.55s var(--ease-out) 0.16s both;
   }
-  /* Dashboard cards stack in: KPI trio first, then the chart quartet */
+  /* Financial panel: feature highlight cards cascade in */
   #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] .fv-card {
     animation: demoCardIn 0.6s var(--ease-out) both;
   }
-  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:first-child .fv-card:nth-child(1) { animation-delay: 0.2s; }
-  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:first-child .fv-card:nth-child(2) { animation-delay: 0.26s; }
-  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:first-child .fv-card:nth-child(3) { animation-delay: 0.32s; }
-  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:last-child  .fv-card:nth-child(1) { animation-delay: 0.34s; }
-  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:last-child  .fv-card:nth-child(2) { animation-delay: 0.4s; }
-  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:last-child  .fv-card:nth-child(3) { animation-delay: 0.46s; }
-  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] > div:last-child  .fv-card:nth-child(4) { animation-delay: 0.52s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] .fin-features .fv-card:nth-child(1) { animation-delay: 0.2s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] .fin-features .fv-card:nth-child(2) { animation-delay: 0.24s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] .fin-features .fv-card:nth-child(3) { animation-delay: 0.28s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] .fin-features .fv-card:nth-child(4) { animation-delay: 0.32s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] .fin-features .fv-card:nth-child(5) { animation-delay: 0.36s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] .fin-features .fv-card:nth-child(6) { animation-delay: 0.4s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] .fin-features .fv-card:nth-child(7) { animation-delay: 0.44s; }
+  #demoOverlay.open:not(.closing):not(.handoff-cover):not(.ui-ready) [data-screen="financial"] .fin-features .fv-card:nth-child(8) { animation-delay: 0.48s; }
+
+  /* Financial Management panel — mockup layout helpers */
+  .fin-panel .fin-check {
+    flex-shrink: 0;
+    color: #17a9b6;
+  }
+  .fin-panel .fin-feature-icon {
+    flex-shrink: 0;
+    color: #17a9b6;
+  }
+  /* Responsive layout (scoped — compiled Tailwind lacks several md: flex utilities) */
+  .fin-panel .fin-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .fin-panel .fin-stat {
+    display: flex;
+    width: 100%;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 0.75rem;
+    background: #0c2440;
+    padding: 1.25rem 1.25rem;
+  }
+  .fin-panel .fin-features {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+  }
+  .fin-panel .fin-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  @media (min-width: 640px) {
+    .fin-panel .fin-features {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 768px) {
+    .fin-panel .fin-hero {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+    .fin-panel .fin-stat {
+      width: 168px;
+      align-self: stretch;
+    }
+    .fin-panel .fin-features {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .fin-panel .fin-columns {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+  }
   /* On exit the screen "powers down" a beat before the chassis fades */
   #demoOverlay.closing #appShell {
     opacity: 0;
@@ -1823,50 +1885,108 @@
             <!-- Category screens -->
 
             <section class="app-screen" data-screen="financial">
-              <div class="mx-auto max-w-[880px] px-3 py-4 sm:px-5">
-                <div class="rounded-xl border border-slate-200 bg-[#f4f7fb] p-2.5 shadow-[0_6px_22px_rgba(13,34,64,.10)]">
+              <div class="fin-panel mx-auto max-w-[880px] px-3 py-4 sm:px-5 sm:py-5">
 
-                  <div class="kpi-grid">
-                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Consolidated Cash Balance</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="3620179.95" data-prefix="$" data-dec="2">$3,620,179.95</div></div>
-                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Outstanding Payables</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="154.50" data-prefix="$" data-dec="2">$154.50</div></div>
-                    <div class="fv-card p-2.5"><div class="text-[9px] font-medium text-slate-500">Accounts Overbudget</div><div class="kpi-num mt-0.5 text-[14px] font-bold tracking-tight text-slate-900" data-count="78">78</div></div>
+                <!-- Top: title + copy | 70% stat -->
+                <div class="fin-hero">
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2.5">
+                      <svg class="fin-feature-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 19V9"/><path d="M9 19V5"/><path d="M14 19v-7"/><path d="M19 19V8"/>
+                        <circle cx="7.5" cy="17.5" r="2.4"/>
+                        <path d="M7.5 16.4v2.2M6.7 17.5h1.6"/>
+                      </svg>
+                      <h2 class="text-[20px] font-extrabold tracking-tight text-[#0c2440] sm:text-[22px]">Financial Management</h2>
+                    </div>
+                    <p class="mt-3 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW Financial Management connects every aspect of your organization's financial operations into one fully integrated platform.</p>
+                    <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information.</p>
                   </div>
-                  <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Budget vs Actual</div><div class="h-36"><canvas id="chFinBva"></canvas></div></div>
-                    <div class="fv-card p-2.5"><div class="mb-1 text-center text-[10px] font-semibold text-slate-700">Revenue by Category</div><div class="h-36"><canvas id="chFinPie"></canvas></div></div>
-                  </div>
-                </div>
-                <h2 class="mt-5 text-[20px] font-extrabold tracking-tight text-[#0c2440]">Financial Management</h2>
-                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW Financial Management connects every aspect of your organization's financial operations into one fully integrated platform.</p>
-                <p class="mt-2 text-[12.5px] leading-relaxed text-slate-600">FUNDVIEW helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information.</p>
-
-                <div class="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
-                <ul class="mt-2.5 grid grid-cols-1 gap-x-8 gap-y-1.5 text-[11.5px] font-medium text-slate-700 sm:grid-cols-2"><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>General Ledger</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Budget Manager</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Bank Reconciliation</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Accounts Payable</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Purchasing</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Asset Management</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Cash Receipting</span></li><li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full" style="background:#17a9b6"></span><span>Financial Reporting</span></li></ul>
-
-                <div class="mt-5 grid gap-3 sm:grid-cols-[minmax(0,190px)_1fr]">
-                  <div class="flex flex-col justify-center rounded-xl bg-[#0c2440] px-4 py-3.5">
-                    <div class="text-[26px] font-black leading-none text-fvteal">70%</div>
-                    <div class="mt-1.5 text-[11px] font-semibold leading-snug text-slate-200">Faster month-end close</div>
-                  </div>
-                  <div class="flex flex-col justify-center rounded-xl border border-slate-200 bg-white px-4 py-3.5">
-                    <p class="text-[12px] italic leading-relaxed text-slate-600">&ldquo;Month-end used to take us weeks. With FUNDVIEW, our books are closed and our council reports are ready in days.&rdquo;</p>
-                    <p class="mt-1.5 text-[10.5px] font-bold text-[#17a9b6]">&mdash; Finance Director, Texas Municipality</p>
+                  <div class="fin-stat">
+                    <div class="text-[40px] font-black leading-none tracking-tight text-fvteal">70%</div>
+                    <div class="mt-2 text-[12px] font-semibold leading-snug text-white">Faster month-end close</div>
                   </div>
                 </div>
 
-                <div class="mt-6 grid gap-x-8 gap-y-5 border-t border-slate-200 pt-5 md:grid-cols-2">
-                  <div>
-                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
-                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce month-end close by up to 70%</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve financial visibility with a Real-Time General Ledger</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate data entry across departments</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplify budgeting, purchasing, and financial reporting</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce bank reconciliation time by up to 50%</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Maintain 100% GASB &amp; GAAP compliance</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve audit readiness and financial transparency</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Give leadership greater confidence in every financial decision</span></li></ul>
-                  </div>
-                  <div>
-                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Why Finance Directors Choose FUNDVIEW</div>
-                    <ul class="mt-2.5 space-y-1.5 text-[11.5px] text-slate-700"><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected financial platform</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time financial visibility</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Purpose-built for local government accounting</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built-in compliance and audit readiness</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Faster month-end close</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Connected purchasing and budgeting</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduced manual reconciliation</span></li><li class="flex items-start gap-2"><svg class="mt-[1px] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17a9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand municipal finance</span></li></ul>
-                  </div>
-                </div>
-
+                <!-- Feature Highlights -->
                 <div class="mt-6">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-navy-950 shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Financial Management <span>&rarr;</span></a>
+                  <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
+                  <ul class="fin-features mt-3">
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h7a2 2 0 012 2v12a2 2 0 00-2-2H4V5z"/><path d="M20 5h-7a2 2 0 00-2 2v12a2 2 0 012-2h7V5z"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">General Ledger</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 109 9h-9V3z"/><path d="M12 3a9 9 0 019 9"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Budget Manager</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6"/><path d="M5 10v8"/><path d="M9.5 10v8"/><path d="M14.5 10v8"/><path d="M19 10v8"/><path d="M3 18h18"/><path d="M2 21h20"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Bank Reconciliation</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M14 3v4h4"/><circle cx="12" cy="14" r="2.4"/><path d="M12 12.7v2.6M11.1 14h1.8"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Accounts Payable</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.4 11.2a1.5 1.5 0 001.5 1.2H18a1.5 1.5 0 001.45-1.1L21 8H7"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Purchasing</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V9l4-2v13"/><path d="M8 20V7l6-3v16"/><path d="M14 20v-9l6 3v6"/><path d="M3 20h18"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Asset Management</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h7l3 3v13a1 1 0 01-1 1H8a1 1 0 01-1-1V5a1 1 0 011-1z"/><path d="M15 4v3h3"/><path d="M10 11h6M10 14h6M10 17h3"/><circle cx="17.5" cy="17.5" r="2.3"/><path d="M17.5 16.5v2M16.7 17.5h1.6"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Cash Receipting</span>
+                    </li>
+                    <li class="fv-card flex items-center gap-2.5 px-3 py-2.5">
+                      <svg class="fin-feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M8 16V11"/><path d="M12 16V8"/><path d="M16 16v-4"/></svg>
+                      <span class="text-[12px] font-semibold text-[#0c2440]">Financial Reporting</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Quote / testimonial -->
+                <blockquote class="mt-5 flex gap-3 rounded-xl bg-[#e8f6f7] px-4 py-3.5 sm:px-5 sm:py-4">
+                  <svg class="fin-feature-icon mt-0.5 shrink-0" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
+                  <div class="min-w-0">
+                    <p class="text-[12.5px] italic leading-relaxed text-[#0c2440]">&ldquo;Month-end used to take us weeks. With FUNDVIEW, our books are closed and our council reports are ready in days.&rdquo;</p>
+                    <footer class="mt-1.5 text-[11px] font-bold text-[#17a9b6]">&mdash; Finance Director, Texas Municipality</footer>
+                  </div>
+                </blockquote>
+
+                <!-- Outcomes | Why choose -->
+                <div class="fin-columns mt-5">
+                  <div class="rounded-xl border border-slate-200 bg-white px-4 py-3.5 sm:px-5">
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Customer Outcomes</div>
+                    <ul class="mt-3 space-y-2 text-[11.5px] leading-snug text-slate-700">
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce month-end close by up to 70%</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve financial visibility with a Real-Time General Ledger</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Eliminate duplicate data entry across departments</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Simplify budgeting, purchasing, and financial reporting</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduce bank reconciliation time by up to 50%</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Maintain 100% GASB &amp; GAAP compliance</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Improve audit readiness and financial transparency</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Give leadership greater confidence in every financial decision</span></li>
+                    </ul>
+                  </div>
+                  <div class="rounded-xl border border-slate-200 bg-white px-4 py-3.5 sm:px-5">
+                    <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Why Finance Directors Choose FUNDVIEW</div>
+                    <ul class="mt-3 space-y-2 text-[11.5px] leading-snug text-slate-700">
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>One connected financial platform</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Real-time financial visibility</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Purpose-built for local government accounting</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Built-in compliance and audit readiness</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Faster month-end close</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Connected purchasing and budgeting</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>Reduced manual reconciliation</span></li>
+                      <li class="flex items-start gap-2"><svg class="fin-check mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg><span>U.S.-based support from experts who understand municipal finance</span></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="mt-5">
+                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Financial Management <span aria-hidden="true">&rarr;</span></a>
                 </div>
               </div>
             </section>
