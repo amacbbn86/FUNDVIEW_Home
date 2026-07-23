@@ -981,21 +981,8 @@
     min-width: 0;
     max-width: 100%;
   }
-  /* Mid panel width: 2 cols, icon+title in a row */
-  @container fin (min-width: 420px) {
-    .fin-features .fv-card {
-      flex-direction: row;
-      align-items: center;
-      gap: 0.625rem;
-      padding: 0.625rem 0.75rem;
-      text-align: left;
-    }
-    .fin-features .fin-feature-icon {
-      width: 20px;
-      height: 20px;
-    }
-  }
-  /* Wide panel only: 4 feature cols + side-by-side hero/outcomes */
+  /* Mid/tablet panel: keep stacked larger icons in the 2-col grid */
+  /* Wide panel only: 4 feature cols + side-by-side hero/outcomes + compact row cards */
   @container fin (min-width: 720px) {
     .fin-hero {
       flex-direction: row;
@@ -1009,6 +996,17 @@
     }
     .fin-features {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .fin-features .fv-card {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.625rem;
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+    }
+    .fin-features .fin-feature-icon {
+      width: 20px;
+      height: 20px;
     }
     .fin-columns {
       grid-template-columns: repeat(2, minmax(0, 1fr));
