@@ -6083,6 +6083,7 @@ img, video { max-width: 100%; height: auto; }
           <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
         </button>
         <div class="testimonials__track" id="testimonials-track">
+          <!-- SEO: five unique testimonials only. Infinite-loop clones are injected by JS (aria-hidden / inert / data-nosnippet). -->
           <article class="testimonial-card">
             <div class="testimonial-card__quote" aria-hidden="true">&ldquo;</div>
             <p class="testimonial-card__text testimonial-card__text--short">&ldquo;FUNDVIEW has simplified our workflow to the point where we can dedicate more time to the customer. It has truly cut down our workload.&rdquo;</p>
@@ -6946,11 +6947,15 @@ img, video { max-width: 100%; height: auto; }
           var prependClone = card.cloneNode(true);
           prependClone.classList.add('testimonial-card--clone');
           prependClone.setAttribute('aria-hidden', 'true');
+          prependClone.setAttribute('inert', '');
+          prependClone.setAttribute('data-nosnippet', '');
           prependFrag.appendChild(prependClone);
 
           var appendClone = card.cloneNode(true);
           appendClone.classList.add('testimonial-card--clone');
           appendClone.setAttribute('aria-hidden', 'true');
+          appendClone.setAttribute('inert', '');
+          appendClone.setAttribute('data-nosnippet', '');
           appendFrag.appendChild(appendClone);
         });
 
