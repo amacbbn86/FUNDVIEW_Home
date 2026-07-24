@@ -455,7 +455,7 @@
   }
 
   /* Client logo ticker — full-width bar under the Experience hero.
-     Fade matches .scene-blend-top: short band + simple 2-stop linear blend. */
+     Soft clear→navy fade over glass + town (longer/eased vs short linear band). */
   #experience_fundview > .hero__ticker {
     position: relative;
     left: auto;
@@ -463,8 +463,8 @@
     bottom: auto;
     z-index: 4;
     width: 100%;
-    margin-top: -4rem; /* = scene-blend-top h-16 */
-    padding: 4rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
+    margin-top: -7rem;
+    padding: 7rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
     background: transparent; /* must stay clear or the fade is invisible */
     display: flex;
     flex-direction: column;
@@ -474,9 +474,7 @@
     pointer-events: auto;
   }
 
-  /* Same blend recipe as .scene-blend-top, flipped for the bottom edge:
-     town top = linear-gradient(to bottom, #081426, transparent) over h-16
-     ticker   = linear-gradient(to bottom, transparent, #081426) over 4rem, then solid */
+  /* Ease into navy: stay mostly clear early, then ramp — avoids a dirty seam on the glass */
   #experience_fundview > .hero__ticker::before {
     content: "";
     position: absolute;
@@ -486,8 +484,12 @@
     bottom: 0;
     background: linear-gradient(
       to bottom,
-      rgba(8, 20, 38, 0) 0,
-      #081426 4rem,
+      rgba(8, 20, 38, 0) 0%,
+      rgba(8, 20, 38, 0.04) 18%,
+      rgba(8, 20, 38, 0.14) 36%,
+      rgba(8, 20, 38, 0.36) 55%,
+      rgba(8, 20, 38, 0.68) 74%,
+      rgba(8, 20, 38, 0.92) 90%,
       #081426 100%
     );
     pointer-events: none;
