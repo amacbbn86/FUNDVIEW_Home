@@ -492,6 +492,10 @@
     text-align: center;
   }
 
+  #experience_fundview .hero__ticker-copy {
+    width: 100%;
+  }
+
   #experience_fundview .hero__ticker-viewport {
     width: 100%;
     max-width: 100%;
@@ -505,29 +509,40 @@
   }
 
   @media (min-width: 1024px) {
+    /* Match #heroContent columns so ticker title lines up with glass copy */
     #experience_fundview > .hero__ticker {
-      flex-direction: row;
-      align-items: flex-end;
-      justify-content: flex-start;
-      gap: clamp(1.5rem, 3vw, 2.75rem);
-      padding-left: clamp(2rem, 3.5vw, 3.25rem);
-      padding-right: clamp(1.5rem, 3vw, 2.5rem);
+      display: grid;
+      grid-template-columns: minmax(380px, 40%) minmax(0, 1fr);
+      align-items: end;
+      gap: 0;
+      padding-left: 0;
+      padding-right: 0;
       padding-bottom: 1.25rem;
     }
 
+    #experience_fundview .hero__ticker-copy {
+      /* Same horizontal padding as .hero-copy-col */
+      padding: 0 clamp(3.5rem, 5.5vw, 5.5rem) 0 clamp(2rem, 3.5vw, 3.25rem);
+      display: flex;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
     #experience_fundview .hero__ticker-title {
-      width: min(15rem, 22%);
+      width: 100%;
+      max-width: min(36rem, 92%); /* same box as .hero-copy-content */
+      margin: 0;
       text-align: left;
       font-size: clamp(0.78rem, 0.95vw, 0.875rem);
       letter-spacing: 0.14em;
       line-height: 1.4;
-      padding-bottom: 0.35rem; /* optically align with logo row */
+      padding-bottom: 0.35rem;
     }
 
     #experience_fundview .hero__ticker-viewport {
-      flex: 1;
       min-width: 0;
       width: auto;
+      padding-right: clamp(1.5rem, 3vw, 2.5rem);
       /* Nudge logo slider slightly below the two-line title */
       transform: translateY(0.45rem);
     }
@@ -3393,7 +3408,9 @@
 
 
       <div class="hero__ticker" aria-label="Trusted by 180+ local governments">
-        <p class="hero__ticker-title">180+ Cities Trust<br>Fundview ERP Software</p>
+        <div class="hero__ticker-copy">
+          <p class="hero__ticker-title">180+ Cities Trust<br>Fundview ERP Software</p>
+        </div>
         <div class="hero__ticker-viewport">
           <div class="hero__ticker-track">
             <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Reno_white.png" alt="Reno, TX" loading="lazy">
