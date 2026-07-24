@@ -463,8 +463,8 @@
     bottom: auto;
     z-index: 4;
     width: 100%;
-    margin-top: -8rem; /* pull clear→solid fade up over heroInner */
-    padding: 8rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
+    margin-top: -7.5rem; /* pull clear→solid fade up over heroInner */
+    padding: 7.5rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
     background: transparent; /* must stay clear or the fade is invisible */
     display: flex;
     flex-direction: column;
@@ -543,7 +543,8 @@
       gap: 0;
       padding-left: 0;
       padding-right: 0;
-      padding-bottom: 1.25rem;
+      /* Taller content band: air above title/logos + a bit more below */
+      padding-bottom: 1.55rem;
     }
 
     #experience_fundview .hero__ticker-copy {
@@ -551,7 +552,7 @@
       grid-row: 1;
       z-index: 2;
       /* Same horizontal padding as .hero-copy-col — keeps title left edge aligned */
-      padding: 0 clamp(3.5rem, 5.5vw, 5.5rem) 0 clamp(2rem, 3.5vw, 3.25rem);
+      padding: 0.85rem clamp(3.5rem, 5.5vw, 5.5rem) 0 clamp(2rem, 3.5vw, 3.25rem);
       display: flex;
       justify-content: center;
       box-sizing: border-box;
@@ -589,6 +590,7 @@
       z-index: 1;
       min-width: 0;
       width: auto;
+      padding-top: 0.85rem; /* space above logo row — matches title */
       padding-left: 0;
       padding-right: clamp(1.5rem, 3vw, 2.5rem);
       transform: translateY(0.45rem);
