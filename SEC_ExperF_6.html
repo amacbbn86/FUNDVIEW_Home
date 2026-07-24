@@ -2314,7 +2314,7 @@
               <span>Click the laptop, then choose a department to explore FUNDVIEW</span>
             </p>
             <div class="hero-copy-foot">
-              <a class="hero-copy-cta" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1">
+              <a class="hero-copy-cta" href="#experience_fundview" id="exploreDemoCta" role="button" aria-label="Open the interactive FUNDVIEW preview">
                 Explore FUNDVIEW
                 <span class="hero-copy-cta__arrow" aria-hidden="true">→</span>
               </a>
@@ -4534,6 +4534,13 @@
   }
 
   hotspot.addEventListener('click', openDemo);
+  const exploreDemoCta = document.getElementById('exploreDemoCta');
+  if (exploreDemoCta) {
+    exploreDemoCta.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDemo();
+    });
+  }
   exitBtn.addEventListener('click', closeDemo);
   // Clicking the veil closes too (cursor: zoom-out signals it)
   overlay.querySelector('.demo-backdrop').addEventListener('click', closeDemo);
