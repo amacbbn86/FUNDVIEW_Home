@@ -267,6 +267,11 @@
       z-index: 1;
     }
 
+    /* Shift town view up 10% of the scene frame — note/arrow live on #sceneZoom */
+    #experience_fundview #sceneZoom {
+      top: calc(max(0px, calc(100cqw * 9 / 16) - 100cqh) * -0.7 - 10%);
+    }
+
     /* Fill the wrap width — the old max-width 16:9 box left navy on both sides */
     #experience_fundview #scene {
       width: 100% !important;
