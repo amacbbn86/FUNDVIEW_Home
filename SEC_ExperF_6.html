@@ -142,6 +142,13 @@
 
   /* Desktop: glass IS the left column — full height, flush left, no navy gutters */
   @media (min-width: 1024px) {
+    /* +50px taller hero stage (min-h-screen baseline + 50) */
+    #experience_fundview #hero,
+    #experience_fundview #heroInner {
+      min-height: calc(100vh + 50px);
+      min-height: calc(100dvh + 50px);
+    }
+
     #experience_fundview #heroContent {
       align-items: stretch !important;
       gap: 0 !important;
@@ -168,7 +175,7 @@
 
     #experience_fundview .hero-copy-content {
       position: relative;
-      top: -10%; /* shift copy up within the glass column; width/margin/alignment unchanged */
+      top: 0; /* stay vertically centered in the glass column (parent justify-content: center) */
       transform: none;
       max-width: min(36rem, 92%);
       margin-inline: auto; /* keep block position — do not change */
@@ -176,7 +183,7 @@
       /* Left-align children inside the existing box; does not move the box */
       align-items: flex-start;
       text-align: left;
-      /* Vertical rhythm only — more air now that copy sits higher */
+      /* Vertical rhythm only */
       gap: 2.25rem;
     }
 
@@ -862,10 +869,16 @@
         max-width: calc(min(max(calc(100vh - 240px), 340px), 700px) * 16 / 9);
       }
 
-      /* Experience: keep the same height math, but allow full wrap width (no side navy) */
+      /* Experience: +50px taller stage, full wrap width (no side navy) */
       #experience_fundview #scene {
         max-width: none;
         width: 100%;
+        height: calc(min(max(calc(100vh - 240px), 340px), 700px, calc(100cqw / 1.2)) + 50px);
+      }
+
+      /* Taller frame: ease upward bias so more of the town top stays in view */
+      #experience_fundview #sceneZoom {
+        top: calc(max(0px, calc(100cqw * 9 / 16) - 100cqh) * -0.85);
       }
     }
     #sceneZoom {
