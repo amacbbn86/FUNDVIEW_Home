@@ -496,6 +496,10 @@
     width: 100%;
   }
 
+  #experience_fundview .hero__ticker-align {
+    width: 100%;
+  }
+
   #experience_fundview .hero__ticker-viewport {
     width: 100%;
     max-width: 100%;
@@ -532,21 +536,28 @@
       pointer-events: none;
     }
 
-    #experience_fundview .hero__ticker-title {
+    /* Same content box as .hero-copy-content; title itself shrinks to text */
+    #experience_fundview .hero__ticker-align {
       width: 100%;
-      max-width: min(36rem, 92%); /* same box as .hero-copy-content — keeps left edge aligned */
+      max-width: min(36rem, 92%);
+    }
+
+    #experience_fundview .hero__ticker-title {
+      display: block;
+      width: fit-content; /* no empty width past the words */
+      max-width: 100%;
       margin: 0;
       text-align: left;
       font-size: clamp(0.78rem, 0.95vw, 0.875rem);
       letter-spacing: 0.14em;
       line-height: 1.4;
-      padding: 0.2rem 0 0.35rem;
-      /* Scrim through most of the title; logos only enter the last ~5% */
+      padding: 0.2rem 1.25rem 0.35rem 0;
+      /* Scrim only over the actual title words */
       background: linear-gradient(
         90deg,
         rgba(8, 20, 38, 0.98) 0%,
-        rgba(8, 20, 38, 0.95) 70%,
-        rgba(8, 20, 38, 0) 95%
+        rgba(8, 20, 38, 0.9) 55%,
+        rgba(8, 20, 38, 0) 100%
       );
     }
 
@@ -559,20 +570,20 @@
       padding-left: 0;
       padding-right: clamp(1.5rem, 3vw, 2.5rem);
       transform: translateY(0.45rem);
-      /* Left fade ends ~5% into the title from the right (near the end of the copy) */
+      /* Fade through SOFTWARE (~last ~4.5rem of the fit-content title) */
       -webkit-mask-image: linear-gradient(
         90deg,
         transparent 0,
-        transparent clamp(15.25rem, 19vw, 17.25rem),
-        #000 clamp(17.25rem, 21.5vw, 19.5rem),
+        transparent clamp(12.25rem, 15vw, 14rem),
+        #000 clamp(15.25rem, 18.5vw, 17.25rem),
         #000 95%,
         transparent
       );
       mask-image: linear-gradient(
         90deg,
         transparent 0,
-        transparent clamp(15.25rem, 19vw, 17.25rem),
-        #000 clamp(17.25rem, 21.5vw, 19.5rem),
+        transparent clamp(12.25rem, 15vw, 14rem),
+        #000 clamp(15.25rem, 18.5vw, 17.25rem),
         #000 95%,
         transparent
       );
@@ -3440,7 +3451,9 @@
 
       <div class="hero__ticker" aria-label="Trusted by 180+ local governments">
         <div class="hero__ticker-copy">
-          <p class="hero__ticker-title">180+ Cities Trust<br>Fundview ERP Software</p>
+          <div class="hero__ticker-align">
+            <p class="hero__ticker-title">180+ Cities Trust<br>Fundview ERP Software</p>
+          </div>
         </div>
         <div class="hero__ticker-viewport">
           <div class="hero__ticker-track">
