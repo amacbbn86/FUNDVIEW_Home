@@ -1450,8 +1450,10 @@
     display: flex;
     align-items: stretch;
     flex-shrink: 0;
-    width: min(100%, 480px);
-    max-width: 480px;
+    /* Default (stacked hero): full row width. Desktop override matches 2 feature cards. */
+    --fv-stat-duo-w: calc(50% - 0.375rem); /* 2 of 4 .fin-features cols + 1 gap (0.75rem) */
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
     height: auto;
     aspect-ratio: 2 / 1; /* lock container proportion — height follows width */
@@ -1750,9 +1752,9 @@
       gap: 1.5rem;
     }
     .fv-stat-duo {
-      width: 480px;
-      max-width: 480px;
-      flex: 0 0 480px;
+      width: var(--fv-stat-duo-w);
+      max-width: none;
+      flex: 0 0 var(--fv-stat-duo-w);
       align-self: flex-start;
       height: auto;
       aspect-ratio: 2 / 1;
@@ -1812,9 +1814,9 @@
         gap: 1.5rem;
       }
       .fv-stat-duo {
-        width: 480px;
-        max-width: 480px;
-        flex: 0 0 480px;
+        width: var(--fv-stat-duo-w);
+        max-width: none;
+        flex: 0 0 var(--fv-stat-duo-w);
         align-self: flex-start;
         height: auto;
         aspect-ratio: 2 / 1;
