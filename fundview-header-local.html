@@ -152,9 +152,10 @@
       color: var(--fv-teal-bright);
     }
 
-    /* Nav icons: 1:1; stacked size bumps → 1.44em × 1.15 */
+    /* Nav icons: 1:1; stacked size bumps → 1.44em × 1.15.
+       Hidden in desktop (non-hamburger) nav; shown only in mobile menu. */
     .site-nav__icon {
-      display: block;
+      display: none;
       width: 1.66em;
       height: 1.66em;
       flex-shrink: 0;
@@ -401,6 +402,7 @@
       }
 
       .site-nav__icon {
+        display: block;
         width: 1.66em;
         height: 1.66em;
       }
