@@ -260,14 +260,29 @@
       align-self: stretch;
       display: flex;
       align-items: center;
-      /* +15% from prior 115% → 132%; expand left under glass. Note/arrow stay on #sceneZoom. */
-      width: 132%;
+      /* Stretch under glass + to the right cell edge so navy gutters disappear.
+         Note/arrow stay %/viewBox-anchored on #sceneZoom (video cover layer). */
+      width: 155%;
       max-width: none;
-      margin-left: calc(-32% - 4.5rem);
+      margin-left: calc(-55% - 0.5rem);
       padding-right: 0;
       min-width: 0;
-      /* Stay under glass (z-index:2) so the diagonal still reads cleanly */
       z-index: 1;
+    }
+
+    /* Fill the wrap width — the old max-width 16:9 box left navy on both sides */
+    #experience_fundview #scene {
+      width: 100% !important;
+      max-width: none !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    /* Side navy vignettes were reading as gutters once the frame is full-bleed */
+    #experience_fundview .scene-blend-side--left,
+    #experience_fundview .scene-blend-side--right {
+      width: 0 !important;
+      opacity: 0;
     }
   }
 
@@ -708,6 +723,12 @@
         aspect-ratio: auto;
         height: min(max(calc(100vh - 240px), 340px), 700px, calc(100cqw / 1.2));
         max-width: calc(min(max(calc(100vh - 240px), 340px), 700px) * 16 / 9);
+      }
+
+      /* Experience: keep the same height math, but allow full wrap width (no side navy) */
+      #experience_fundview #scene {
+        max-width: none;
+        width: 100%;
       }
     }
     #sceneZoom {
