@@ -1969,6 +1969,48 @@
   .app-screen.active { display:block; }
   .app-screen.visible { opacity:1; }
 
+  /* Floating page CTAs — pinned to bottom-right of #screenHost (outside scroll) */
+  #screenHost > .demo-page-cta {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 40;
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: calc(100% - 2rem);
+    padding: 0.7rem 1.15rem;
+    border-radius: 0.55rem;
+    background: #1fc0cd;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow:
+      0 10px 28px rgba(15, 23, 42, 0.18),
+      0 3px 8px rgba(15, 23, 42, 0.12);
+    transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  #screenHost > .demo-page-cta.is-active {
+    display: inline-flex;
+  }
+  #screenHost > .demo-page-cta:hover {
+    background: #17a9b6;
+    transform: translate3d(0, -1px, 0);
+    box-shadow:
+      0 14px 32px rgba(15, 23, 42, 0.22),
+      0 4px 10px rgba(15, 23, 42, 0.14);
+  }
+  #screenHost > .demo-page-cta:active {
+    transform: translate3d(0, 0, 0) scale(0.98);
+  }
+  /* Room at bottom of scrolling panels so content isn't hidden under the float */
+  .app-screen > .fin-panel {
+    padding-bottom: 4.25rem;
+  }
+
   .side-item { transition: background-color .15s ease, color .15s ease; }
   .side-item.active { background:#1fc0cd; color:#04222b; font-weight:600; }
   .side-item.active svg { color:#04222b; }
@@ -2567,9 +2609,7 @@
                   </div>
                 </blockquote>
 
-                <div class="mt-5">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Financial Management <span aria-hidden="true">&rarr;</span></a>
-                </div>
+                <a class="demo-page-cta" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener">Explore Financial Management <span aria-hidden="true">&rarr;</span></a>
               </div>
             </section>
 
@@ -2651,9 +2691,7 @@
                   </div>
                 </blockquote>
 
-                <div class="mt-5">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Workforce Management <span aria-hidden="true">&rarr;</span></a>
-                </div>
+                <a class="demo-page-cta" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener">Explore Workforce Management <span aria-hidden="true">&rarr;</span></a>
               </div>
             </section>
 
@@ -2749,9 +2787,7 @@
                   </div>
                 </blockquote>
 
-                <div class="mt-5">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Utility &amp; Field Services <span aria-hidden="true">&rarr;</span></a>
-                </div>
+                <a class="demo-page-cta" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener">Explore Utility &amp; Field Services <span aria-hidden="true">&rarr;</span></a>
               </div>
             </section>
 
@@ -2847,9 +2883,7 @@
                   </div>
                 </blockquote>
 
-                <div class="mt-5">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Community Development <span aria-hidden="true">&rarr;</span></a>
-                </div>
+                <a class="demo-page-cta" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener">Explore Community Development <span aria-hidden="true">&rarr;</span></a>
               </div>
             </section>
 
@@ -2938,9 +2972,7 @@
                   </div>
                 </blockquote>
 
-                <div class="mt-5">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore Municipal Court <span aria-hidden="true">&rarr;</span></a>
-                </div>
+                <a class="demo-page-cta" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener">Explore Municipal Court <span aria-hidden="true">&rarr;</span></a>
               </div>
             </section>
 
@@ -3023,9 +3055,7 @@
                   </div>
                 </blockquote>
 
-                <div class="mt-5">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore CityCentral&trade; Citizen Portal <span aria-hidden="true">&rarr;</span></a>
-                </div>
+                <a class="demo-page-cta" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener">Explore CityCentral&trade; Citizen Portal <span aria-hidden="true">&rarr;</span></a>
               </div>
             </section>
 
@@ -3137,9 +3167,7 @@
                   </div>
                 </blockquote>
 
-                <div class="mt-5">
-                  <a href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-fvteal px-5 py-2.5 text-[12px] font-bold text-white shadow-[0_6px_20px_rgba(31,192,205,.35)] transition hover:bg-fvteal-dark">Explore The FUNDVIEW Platform <span aria-hidden="true">&rarr;</span></a>
-                </div>
+                <a class="demo-page-cta" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener">Explore The FUNDVIEW Platform <span aria-hidden="true">&rarr;</span></a>
               </div>
             </section>
 
@@ -3242,7 +3270,18 @@
     wrap.id = 'screenScroll';
     while (shell.firstChild) wrap.appendChild(shell.firstChild);
     shell.appendChild(wrap);
+    /* Promote page CTAs out of the scroller so they float over the page view */
+    wrap.querySelectorAll('.demo-page-cta').forEach(function (cta) {
+      var screen = cta.closest('.app-screen');
+      if (screen) cta.setAttribute('data-for-screen', screen.getAttribute('data-screen') || '');
+      shell.appendChild(cta);
+    });
   })();
+  function syncFloatingPageCta(screenId) {
+    document.querySelectorAll('#screenHost > .demo-page-cta').forEach(function (cta) {
+      cta.classList.toggle('is-active', cta.getAttribute('data-for-screen') === screenId);
+    });
+  }
   const screens = document.querySelectorAll('.app-screen');
   const host = document.getElementById('screenHost');
   function scrollPane() {
@@ -3326,6 +3365,7 @@
     const next = document.querySelector(`.app-screen[data-screen="${id}"]`);
     if (!next) return;
     current = id;
+    syncFloatingPageCta(id);
     var _cat = document.getElementById('activeCatText');
     if (_cat) _cat.textContent = SCREEN_LABELS[id] || id;
     var _icon = document.getElementById('activeCatIcon');
@@ -3676,6 +3716,7 @@
     dash.style.transition = '';
     scrollPane().scrollTop = 0;
     current = 'financial';
+    syncFloatingPageCta('financial');
     renderTabs();
   }
 
@@ -4556,6 +4597,7 @@
   }
 
   document.querySelector('.app-screen[data-screen="financial"]').classList.add('active', 'visible');
+  syncFloatingPageCta('financial');
 })();
 
   </script>
