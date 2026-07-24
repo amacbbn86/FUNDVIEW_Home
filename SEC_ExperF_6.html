@@ -455,7 +455,7 @@
   }
 
   /* Client logo ticker — full-width bar under the Experience hero.
-     Transparent shell + full-bleed ::before fade (clear → solid navy). */
+     Fade matches .scene-blend-top: short band + simple 2-stop linear blend. */
   #experience_fundview > .hero__ticker {
     position: relative;
     left: auto;
@@ -463,8 +463,8 @@
     bottom: auto;
     z-index: 4;
     width: 100%;
-    margin-top: -7.5rem; /* pull clear→solid fade up over heroInner */
-    padding: 7.5rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
+    margin-top: -4rem; /* = scene-blend-top h-16 */
+    padding: 4rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
     background: transparent; /* must stay clear or the fade is invisible */
     display: flex;
     flex-direction: column;
@@ -474,7 +474,9 @@
     pointer-events: auto;
   }
 
-  /* Full-width smooth fade: clear at top → solid navy behind logos */
+  /* Same blend recipe as .scene-blend-top, flipped for the bottom edge:
+     town top = linear-gradient(to bottom, #081426, transparent) over h-16
+     ticker   = linear-gradient(to bottom, transparent, #081426) over 4rem, then solid */
   #experience_fundview > .hero__ticker::before {
     content: "";
     position: absolute;
@@ -482,7 +484,12 @@
     right: 0;
     top: 0;
     bottom: 0;
-    background: linear-gradient(180deg, rgb(8 20 38 / 0%) 10%, rgb(8 20 38 / 0%) 29%, rgb(8 20 38) 50%, rgb(8 20 38) 76%, rgb(8 20 38) 82%, #081426 92%, #081426 100%);
+    background: linear-gradient(
+      to bottom,
+      rgba(8, 20, 38, 0) 0,
+      #081426 4rem,
+      #081426 100%
+    );
     pointer-events: none;
     z-index: 0;
   }
