@@ -464,7 +464,7 @@
     z-index: 4;
     width: 100%;
     margin-top: -6rem; /* pull fade up over heroInner / scene bottom (h-24) */
-    padding: 6rem 0 1.1rem; /* fade zone above logos; logos stay in solid navy */
+    padding: 6rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
     background: linear-gradient(
       180deg,
       rgba(8, 20, 38, 0) 0%,
@@ -473,13 +473,27 @@
       #081426 100%
     );
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    gap: 0.75rem;
     pointer-events: auto;
   }
 
+  #experience_fundview .hero__ticker-title {
+    margin: 0;
+    flex-shrink: 0;
+    color: #1fc0cd;
+    font-size: clamp(0.72rem, 1.05vw, 0.8125rem);
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
   #experience_fundview .hero__ticker-viewport {
-    width: 70%;
+    width: 100%;
     max-width: 100%;
     overflow: hidden;
     cursor: grab;
@@ -488,6 +502,35 @@
     user-select: none;
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  }
+
+  @media (min-width: 1024px) {
+    #experience_fundview > .hero__ticker {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: flex-start;
+      gap: clamp(1.5rem, 3vw, 2.75rem);
+      padding-left: clamp(2rem, 3.5vw, 3.25rem);
+      padding-right: clamp(1.5rem, 3vw, 2.5rem);
+      padding-bottom: 1.25rem;
+    }
+
+    #experience_fundview .hero__ticker-title {
+      width: min(15rem, 22%);
+      text-align: left;
+      font-size: clamp(0.78rem, 0.95vw, 0.875rem);
+      letter-spacing: 0.14em;
+      line-height: 1.4;
+      padding-bottom: 0.35rem; /* optically align with logo row */
+    }
+
+    #experience_fundview .hero__ticker-viewport {
+      flex: 1;
+      min-width: 0;
+      width: auto;
+      /* Nudge logo slider slightly below the two-line title */
+      transform: translateY(0.45rem);
+    }
   }
 
   #experience_fundview .hero__ticker-viewport.is-dragging {
@@ -3350,6 +3393,7 @@
 
 
       <div class="hero__ticker" aria-label="Trusted by 180+ local governments">
+        <p class="hero__ticker-title">180+ Cities Trust<br>Fundview ERP Software</p>
         <div class="hero__ticker-viewport">
           <div class="hero__ticker-track">
             <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Reno_white.png" alt="Reno, TX" loading="lazy">
