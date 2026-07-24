@@ -1996,6 +1996,24 @@
   #screenHost > .demo-page-cta.is-active {
     display: inline-flex;
   }
+  #screenHost > .demo-page-cta.is-active.cta-enter {
+    animation: demoPageCtaIn 0.5s cubic-bezier(0.34, 1.25, 0.64, 1) both;
+  }
+  @keyframes demoPageCtaIn {
+    from {
+      opacity: 0;
+      transform: translate3d(14px, 16px, 0) scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #screenHost > .demo-page-cta.is-active.cta-enter {
+      animation: none;
+    }
+  }
   #screenHost > .demo-page-cta:hover {
     background: #17a9b6;
     transform: translate3d(0, -1px, 0);
@@ -3277,9 +3295,36 @@
       shell.appendChild(cta);
     });
   })();
-  function syncFloatingPageCta(screenId) {
+  function syncFloatingPageCta(screenId, opts) {
+    opts = opts || {};
+    var animate = opts.animate !== false;
+    var delay = opts.delay || 0;
+    var reduceMotion = false;
+    try { reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (_) {}
+
     document.querySelectorAll('#screenHost > .demo-page-cta').forEach(function (cta) {
-      cta.classList.toggle('is-active', cta.getAttribute('data-for-screen') === screenId);
+      var active = cta.getAttribute('data-for-screen') === screenId;
+      if (cta._ctaEnterTimer) {
+        clearTimeout(cta._ctaEnterTimer);
+        cta._ctaEnterTimer = null;
+      }
+      cta.classList.remove('cta-enter');
+      cta.classList.toggle('is-active', active);
+      if (!active || !animate || reduceMotion) return;
+
+      var run = function () {
+        cta._ctaEnterTimer = null;
+        if (!cta.classList.contains('is-active')) return;
+        void cta.offsetWidth; /* restart animation */
+        cta.classList.add('cta-enter');
+        var onEnd = function () {
+          cta.classList.remove('cta-enter');
+          cta.removeEventListener('animationend', onEnd);
+        };
+        cta.addEventListener('animationend', onEnd);
+      };
+      if (delay > 0) cta._ctaEnterTimer = setTimeout(run, delay);
+      else run();
     });
   }
   const screens = document.querySelectorAll('.app-screen');
@@ -3716,7 +3761,7 @@
     dash.style.transition = '';
     scrollPane().scrollTop = 0;
     current = 'financial';
-    syncFloatingPageCta('financial');
+    syncFloatingPageCta('financial', { delay: 380 });
     renderTabs();
   }
 
@@ -4597,7 +4642,7 @@
   }
 
   document.querySelector('.app-screen[data-screen="financial"]').classList.add('active', 'visible');
-  syncFloatingPageCta('financial');
+  syncFloatingPageCta('financial', { animate: false });
 })();
 
   </script>
