@@ -521,30 +521,47 @@
     }
 
     #experience_fundview .hero__ticker-copy {
-      /* Same horizontal padding as .hero-copy-col */
+      grid-column: 1;
+      grid-row: 1;
+      z-index: 2;
+      /* Same horizontal padding as .hero-copy-col — keeps title left edge aligned */
       padding: 0 clamp(3.5rem, 5.5vw, 5.5rem) 0 clamp(2rem, 3.5vw, 3.25rem);
       display: flex;
       justify-content: center;
       box-sizing: border-box;
+      pointer-events: none;
     }
 
     #experience_fundview .hero__ticker-title {
       width: 100%;
-      max-width: min(36rem, 92%); /* same box as .hero-copy-content */
+      max-width: min(36rem, 92%); /* same box as .hero-copy-content — keeps left edge aligned */
       margin: 0;
       text-align: left;
       font-size: clamp(0.78rem, 0.95vw, 0.875rem);
       letter-spacing: 0.14em;
       line-height: 1.4;
-      padding-bottom: 0.35rem;
+      padding: 0.2rem 0 0.35rem;
+      /* Soft scrim over the title words so logos can flow through the left zone */
+      background: linear-gradient(
+        90deg,
+        rgba(8, 20, 38, 0.98) 0%,
+        rgba(8, 20, 38, 0.9) 26%,
+        rgba(8, 20, 38, 0) 46%
+      );
     }
 
     #experience_fundview .hero__ticker-viewport {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      z-index: 1;
       min-width: 0;
       width: auto;
+      /* Start logos just after the two-line title so they flow into that left zone */
+      padding-left: clamp(10.5rem, 16vw, 13.5rem);
       padding-right: clamp(1.5rem, 3vw, 2.5rem);
-      /* Nudge logo slider slightly below the two-line title */
       transform: translateY(0.45rem);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 95%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 6%, #000 95%, transparent);
     }
   }
 
