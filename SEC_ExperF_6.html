@@ -541,12 +541,12 @@
       letter-spacing: 0.14em;
       line-height: 1.4;
       padding: 0.2rem 0 0.35rem;
-      /* Scrim only through the first ~5% of the title text */
+      /* Scrim through most of the title; logos only enter the last ~5% */
       background: linear-gradient(
         90deg,
         rgba(8, 20, 38, 0.98) 0%,
-        rgba(8, 20, 38, 0.88) 2%,
-        rgba(8, 20, 38, 0) 6%
+        rgba(8, 20, 38, 0.95) 70%,
+        rgba(8, 20, 38, 0) 95%
       );
     }
 
@@ -559,20 +559,20 @@
       padding-left: 0;
       padding-right: clamp(1.5rem, 3vw, 2.5rem);
       transform: translateY(0.45rem);
-      /* Left fade ends ~5% into the title text */
+      /* Left fade ends ~5% into the title from the right (near the end of the copy) */
       -webkit-mask-image: linear-gradient(
         90deg,
         transparent 0,
-        transparent clamp(4.75rem, 7vw, 5.75rem),
-        #000 clamp(6.5rem, 9.5vw, 7.75rem),
+        transparent clamp(15.25rem, 19vw, 17.25rem),
+        #000 clamp(17.25rem, 21.5vw, 19.5rem),
         #000 95%,
         transparent
       );
       mask-image: linear-gradient(
         90deg,
         transparent 0,
-        transparent clamp(4.75rem, 7vw, 5.75rem),
-        #000 clamp(6.5rem, 9.5vw, 7.75rem),
+        transparent clamp(15.25rem, 19vw, 17.25rem),
+        #000 clamp(17.25rem, 21.5vw, 19.5rem),
         #000 95%,
         transparent
       );
