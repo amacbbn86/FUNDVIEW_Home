@@ -1440,6 +1440,24 @@
       line-height: 1.75;
     }
   }
+  /*
+   * FV_STAT_MODULE naming (for Claude handoff / re-import)
+   * -------------------------------------------------------
+   * Common class on every module stat block:
+   *   .fv-stat-duo.fv-stat-module
+   *
+   * Unique per demo category page (id + class + data attrs):
+   *   #fv-stat-financial   .fv-stat-financial   data-fv-stat="financial"
+   *   #fv-stat-workforce   .fv-stat-workforce   data-fv-stat="workforce"
+   *   #fv-stat-utility     .fv-stat-utility     data-fv-stat="utility"
+   *   #fv-stat-community   .fv-stat-community   data-fv-stat="community"
+   *   #fv-stat-court       .fv-stat-court       data-fv-stat="court"
+   *   #fv-stat-citizen     .fv-stat-citizen     data-fv-stat="citizen"
+   *   #fv-stat-platform    .fv-stat-platform    data-fv-stat="platform"
+   *
+   * Scope animations/CSS to #fv-stat-<category> or .fv-stat-<category>
+   * without changing the shared .fv-stat-duo layout shell unless intended.
+   */
   /* Animated stat + teal video duo (ported from Stat *.dc.html) */
   @keyframes fvRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fvWipe { from { transform: scaleX(0); } to { transform: scaleX(1); } }
@@ -2746,7 +2764,8 @@
                     <p>FUNDVIEW Financial Management connects every aspect of your organization's financial operations into one fully integrated platform.</p>
                     <p>FUNDVIEW helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information.</p>
                   </div>
-                  <div class="fv-stat-duo" aria-label="70% — Faster month-end close">
+                  <!-- FV_STAT_MODULE: fv-stat-financial | category=financial | Financial Management -->
+                  <div id="fv-stat-financial" class="fv-stat-duo fv-stat-module fv-stat-financial" data-fv-stat="financial" data-fv-stat-id="fv-stat-financial" aria-label="70% — Faster month-end close">
                     <div class="fv-stat-duo__rail">
                       <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
                         <div class="fv-stat-card__bars" aria-hidden="true">
@@ -2847,7 +2866,8 @@
                     <p>Simplify payroll, human resources, and employee time management with one connected workforce solution designed specifically for local government.</p>
                     <p>FUNDVIEW helps you pay employees accurately, manage employee information with confidence, and eliminate manual processes that slow your team down.</p>
                   </div>
-                  <div class="fv-stat-duo" aria-label="30% — Average workload reclaimed">
+                  <!-- FV_STAT_MODULE: fv-stat-workforce | category=workforce | Workforce Management -->
+                  <div id="fv-stat-workforce" class="fv-stat-duo fv-stat-module fv-stat-workforce" data-fv-stat="workforce" data-fv-stat-id="fv-stat-workforce" aria-label="30% — Average workload reclaimed">
                     <div class="fv-stat-duo__rail">
                       <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
                         <div class="fv-stat-card__bars" aria-hidden="true">
@@ -2946,7 +2966,8 @@
                     <p>Manage utility billing, field operations, service requests, and customer payments from one connected platform.</p>
                     <p>FUNDVIEW helps local governments improve efficiency, deliver better customer service, and keep utility operations moving with real-time information.</p>
                   </div>
-                  <div class="fv-stat-duo" aria-label="24/7 — Online payments &amp; account access">
+                  <!-- FV_STAT_MODULE: fv-stat-utility | category=utility | Utility & Field Services -->
+                  <div id="fv-stat-utility" class="fv-stat-duo fv-stat-module fv-stat-utility" data-fv-stat="utility" data-fv-stat-id="fv-stat-utility" aria-label="24/7 — Online payments &amp; account access">
                     <div class="fv-stat-duo__rail">
                       <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
                         <div class="fv-stat-card__bars" aria-hidden="true">
@@ -3069,7 +3090,8 @@
                     <p>Support responsible growth, protect your community, and streamline development with one connected solution for permitting, inspections, and code enforcement.</p>
                     <p>FUNDVIEW helps local governments simplify processes, improve communication, and keep projects moving.</p>
                   </div>
-                  <div class="fv-stat-duo" aria-label="One — Platform for permits, inspections &amp; code enforcement">
+                  <!-- FV_STAT_MODULE: fv-stat-community | category=community | Community Development -->
+                  <div id="fv-stat-community" class="fv-stat-duo fv-stat-module fv-stat-community" data-fv-stat="community" data-fv-stat-id="fv-stat-community" aria-label="One — Platform for permits, inspections &amp; code enforcement">
                     <div class="fv-stat-duo__rail">
                       <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
                         <div class="fv-stat-card__bars" aria-hidden="true">
@@ -3185,7 +3207,8 @@
                     <p>FUNDVIEW Municipal Court simplifies every stage of court administration — from citation entry and case management to payments, reporting, and compliance.</p>
                     <p>Fully integrated with FUNDVIEW’s financial platform, court activity updates in real time, eliminating duplicate entry and giving staff greater visibility into daily operations.</p>
                   </div>
-                  <div class="fv-stat-duo" aria-label="Real-time — Court activity posted to finance">
+                  <!-- FV_STAT_MODULE: fv-stat-court | category=court | Municipal Court -->
+                  <div id="fv-stat-court" class="fv-stat-duo fv-stat-module fv-stat-court" data-fv-stat="court" data-fv-stat-id="fv-stat-court" aria-label="Real-time — Court activity posted to finance">
                     <div class="fv-stat-duo__rail">
                       <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
                         <div class="fv-stat-card__bars" aria-hidden="true">
@@ -3287,7 +3310,8 @@
                     </div>
                     <p>Give citizens secure, convenient online access to utility billing and municipal court services through one easy-to-use self-service portal.</p>
                   </div>
-                  <div class="fv-stat-duo" aria-label="24/7 — Self-service citizen access">
+                  <!-- FV_STAT_MODULE: fv-stat-citizen | category=citizen | CityCentral Citizen Portal -->
+                  <div id="fv-stat-citizen" class="fv-stat-duo fv-stat-module fv-stat-citizen" data-fv-stat="citizen" data-fv-stat-id="fv-stat-citizen" aria-label="24/7 — Self-service citizen access">
                     <div class="fv-stat-duo__rail">
                       <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
                         <div class="fv-stat-card__bars" aria-hidden="true">
@@ -3402,7 +3426,8 @@
                     </div>
                     <p>The power of FUNDVIEW goes beyond individual departments. Every module works together on one connected platform, giving your organization real-time visibility, shared data, automated workflows, and the confidence that comes from having one reliable source of information.</p>
                   </div>
-                  <div class="fv-stat-duo" aria-label="100% — GASB &amp; GAAP compliant">
+                  <!-- FV_STAT_MODULE: fv-stat-platform | category=platform | The FUNDVIEW Platform -->
+                  <div id="fv-stat-platform" class="fv-stat-duo fv-stat-module fv-stat-platform" data-fv-stat="platform" data-fv-stat-id="fv-stat-platform" aria-label="100% — GASB &amp; GAAP compliant">
                     <div class="fv-stat-duo__rail">
                       <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
                         <div class="fv-stat-card__bars" aria-hidden="true">
@@ -4429,9 +4454,10 @@
     el.textContent = (el.getAttribute('data-num-prefix') || '') + target + (el.getAttribute('data-num-suffix') || '');
   }
   function replayFvStatForScreen(screenId) {
-    var screen = document.querySelector('.app-screen[data-screen="' + screenId + '"]');
-    if (!screen) return;
-    var card = screen.querySelector('.fv-stat-card');
+    var root = document.getElementById('fv-stat-' + screenId) ||
+      document.querySelector('.fv-stat-module[data-fv-stat="' + screenId + '"]') ||
+      document.querySelector('.app-screen[data-screen="' + screenId + '"] .fv-stat-duo');
+    var card = root && root.querySelector('.fv-stat-card');
     if (card) playFvStatCard(card);
   }
   function bindFvStatCards() {
