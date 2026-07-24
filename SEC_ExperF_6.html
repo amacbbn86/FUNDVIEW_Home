@@ -174,10 +174,14 @@
       align-self: stretch;
       display: flex;
       align-items: center;
-      /* Tuck under the glass diagonal so no navy strip shows between columns */
-      margin-left: -4.5rem;
+      /* +15% wider, expanded toward the left under the glass diagonal */
+      width: 115%;
+      max-width: none;
+      margin-left: calc(-15% - 4.5rem);
       padding-right: 0;
       min-width: 0;
+      /* Stay under glass (z-index:2) so the diagonal still reads cleanly */
+      z-index: 1;
     }
   }
 
