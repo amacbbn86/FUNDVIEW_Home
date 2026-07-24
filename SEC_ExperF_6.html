@@ -454,8 +454,14 @@
     line-height: 1;
   }
 
-  /* Client logo ticker — full-width bar under the Experience hero.
-     Soft clear→navy fade over glass + town (longer/eased vs short linear band). */
+  /* Full-width bottom fade on #hero (mirrors .scene-blend-top, flipped).
+     Must live here — not on .hero__ticker — so it paints over glass + town. */
+  #experience_fundview .experience-bottom-blend {
+    height: 7rem;
+    background: linear-gradient(to top, #081426, rgba(8, 20, 38, 0));
+  }
+
+  /* Client logo ticker — solid navy bar; blend is handled by .experience-bottom-blend */
   #experience_fundview > .hero__ticker {
     position: relative;
     left: auto;
@@ -463,9 +469,9 @@
     bottom: auto;
     z-index: 4;
     width: 100%;
-    margin-top: -7rem;
-    padding: 7rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
-    background: transparent; /* must stay clear or the fade is invisible */
+    margin-top: 0;
+    padding: 1.25rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
+    background: #081426;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -474,26 +480,8 @@
     pointer-events: auto;
   }
 
-  /* Ease into navy: stay mostly clear early, then ramp — avoids a dirty seam on the glass */
   #experience_fundview > .hero__ticker::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(8, 20, 38, 0) 0%,
-      rgba(8, 20, 38, 0.04) 18%,
-      rgba(8, 20, 38, 0.14) 36%,
-      rgba(8, 20, 38, 0.36) 55%,
-      rgba(8, 20, 38, 0.68) 74%,
-      rgba(8, 20, 38, 0.92) 90%,
-      #081426 100%
-    );
-    pointer-events: none;
-    z-index: 0;
+    display: none;
   }
 
   #experience_fundview .hero__ticker-copy,
@@ -725,6 +713,10 @@
     }
 
     #experience_fundview > .hero__ticker::before {
+      display: none;
+    }
+
+    #experience_fundview .experience-bottom-blend {
       display: none;
     }
 
@@ -2526,9 +2518,11 @@
     </div>
 
   </div>
-</section>
 
-<!-- Soft bloom that bridges the CSS-dolly fallback into the live demo -->
+  <!-- Full-width fade into the logo ticker — same recipe as .scene-blend-top, flipped.
+       Lives on #hero so it actually paints over the glass + town (ticker ::before cannot). -->
+  <div class="experience-bottom-blend pointer-events-none absolute inset-x-0 bottom-0 z-[35]" aria-hidden="true"></div>
+</section>
 <div id="sceneChange" aria-hidden="true"></div>
 
 <!-- Pre-rendered 1s zoom-into-laptop clip — primary click animation -->
