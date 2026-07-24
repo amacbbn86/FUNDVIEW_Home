@@ -121,6 +121,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     width: 100%;
     max-width: none;
     min-width: 0;
@@ -136,8 +137,7 @@
     /* Soft diagonal edge that fits the ~38% Experience column */
     clip-path: polygon(0 0, calc(100% - 56px) 0, 100% 100%, 0 100%);
     z-index: 2;
-    text-align: left;
-    align-items: stretch;
+    text-align: center;
   }
 
   /* Desktop: glass IS the left column — full height, flush left, no navy gutters */
@@ -154,20 +154,98 @@
     #experience_fundview .hero-copy-col {
       align-self: stretch !important;
       justify-self: stretch;
+      align-items: center;
+      text-align: center;
       width: 100%;
       height: auto;
       min-height: 100%;
       margin: 0 !important;
       /* Stronger Amperity-style diagonal into the town scene */
       clip-path: polygon(0 0, calc(100% - 120px) 0, 100% 100%, 0 100%);
-      padding: clamp(2.5rem, 4vw, 3.5rem) clamp(4.5rem, 7vw, 7rem) clamp(2.5rem, 4vw, 3.5rem) clamp(2.25rem, 4.5vw, 4rem);
+      padding: clamp(2.5rem, 4vw, 3.5rem) clamp(3.5rem, 5.5vw, 5.5rem) clamp(2.5rem, 4vw, 3.5rem) clamp(2rem, 3.5vw, 3.25rem);
       box-shadow: 40px 0 90px -45px rgba(7, 31, 58, 0.5);
     }
 
     #experience_fundview .hero-copy-content {
-      /* Slight lift like home5, keep content optically centered in the full-height panel */
-      transform: translateY(-6%);
-      max-width: 34rem;
+      transform: none;
+      max-width: min(36rem, 92%);
+      margin-inline: auto;
+      align-items: center;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    #experience_fundview .hero__title {
+      font-size: clamp(2.05rem, 2.9vw, 2.85rem);
+      max-width: 14ch;
+      margin-inline: auto;
+      text-align: center;
+    }
+
+    #experience_fundview .hero__subtitle {
+      font-size: clamp(1rem, 1.15vw, 1.125rem);
+      max-width: 38ch;
+      margin-inline: auto;
+      text-align: center;
+      line-height: 1.65;
+    }
+
+    #experience_fundview .checklist {
+      justify-content: center;
+      margin-inline: auto;
+      column-gap: 1.35rem;
+      row-gap: 0.85rem;
+    }
+
+    #experience_fundview .checklist li {
+      font-size: 1rem;
+    }
+
+    #experience_fundview .checklist li svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    #experience_fundview .hero-copy-pair {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    #experience_fundview .hero-copy-pair .checklist,
+    #experience_fundview .hero-copy-pair .hero-copy-foot {
+      display: grid;
+    }
+
+    #experience_fundview .hero-copy-pair .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, max-content);
+    }
+
+    #experience_fundview .hero-copy-pair .hero-copy-foot {
+      display: flex;
+    }
+
+    #experience_fundview .hero-copy-pair .btn-dark,
+    #experience_fundview .hero-copy-pair .btn-outline {
+      margin-top: 0;
+    }
+
+    #experience_fundview .hero-copy-pair .checklist li:nth-child(even) {
+      transform: none;
+    }
+
+    #experience_fundview .hero-copy-foot {
+      justify-content: center;
+      gap: 0.95rem;
+    }
+
+    #experience_fundview .btn-dark,
+    #experience_fundview .btn-outline {
+      padding: 1rem 1.45rem;
+      font-size: 12px;
     }
 
     #experience_fundview #sceneWrap {
@@ -188,30 +266,37 @@
   #experience_fundview .hero-copy-content {
     display: flex;
     flex-direction: column;
-    gap: 1.15rem;
+    align-items: center;
+    gap: 1.35rem;
     min-width: 0;
     width: 100%;
+    max-width: 36rem;
+    margin-inline: auto;
     transform: none;
+    text-align: center;
     container-type: inline-size;
     container-name: hero-copy;
   }
 
   #experience_fundview .hero-copy-top {
     display: grid;
-    gap: 1rem;
+    gap: 1.15rem;
     position: relative;
     z-index: 1;
+    justify-items: center;
+    width: 100%;
   }
 
   #experience_fundview .hero__title {
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: clamp(1.55rem, 2.4vw, 2.35rem);
+    font-size: clamp(1.85rem, 2.7vw, 2.65rem);
     font-weight: 800;
-    line-height: 1.15;
-    max-width: 15ch;
-    margin: 0;
+    line-height: 1.12;
+    max-width: 14ch;
+    margin: 0 auto;
     color: #0a2e57;
     letter-spacing: -0.02em;
+    text-align: center;
   }
 
   #experience_fundview .hero__title .text-accent {
@@ -221,16 +306,19 @@
   #experience_fundview .hero__main {
     display: grid;
     gap: 1rem;
+    justify-items: center;
+    width: 100%;
   }
 
   #experience_fundview .hero__subtitle {
-    margin: 0;
-    max-width: 42ch;
+    margin: 0 auto;
+    max-width: 38ch;
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: clamp(0.98rem, 1.1vw, 1.08rem);
+    line-height: 1.65;
     color: rgba(10, 46, 87, 0.72);
     font-weight: 400;
+    text-align: center;
   }
 
   #experience_fundview .hero__subtitle strong {
@@ -240,65 +328,46 @@
 
   #experience_fundview .checklist {
     list-style: none;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(2, max-content);
-    column-gap: 0.85rem;
-    row-gap: 0.65rem;
-    justify-content: start;
+    column-gap: 1.25rem;
+    row-gap: 0.8rem;
+    justify-content: center;
   }
 
   #experience_fundview .checklist li {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
-    font-size: 0.875rem;
+    gap: 0.6rem;
+    font-size: 0.98rem;
     font-weight: 600;
     color: #0a2e57;
+    text-align: left;
   }
 
   #experience_fundview .checklist li svg {
     flex-shrink: 0;
+    width: 22px;
+    height: 22px;
   }
 
   #experience_fundview .hero-copy-pair {
     display: flex;
     flex-direction: column;
-    gap: 1.15rem;
+    align-items: center;
+    gap: 1.35rem;
     min-width: 0;
-  }
-
-  @media (min-width: 1024px) {
-    #experience_fundview .hero-copy-pair {
-      display: grid;
-      grid-template-columns: max-content max-content;
-      column-gap: 0.85rem;
-      row-gap: 0.65rem;
-      justify-content: start;
-      align-items: center;
-    }
-
-    #experience_fundview .hero-copy-pair .checklist,
-    #experience_fundview .hero-copy-pair .hero-copy-foot {
-      display: contents;
-    }
-
-    #experience_fundview .hero-copy-pair .btn-dark,
-    #experience_fundview .hero-copy-pair .btn-outline {
-      margin-top: 0.55rem;
-    }
-
-    #experience_fundview .hero-copy-pair .checklist li:nth-child(even) {
-      transform: translateX(5cqi);
-    }
+    width: 100%;
   }
 
   #experience_fundview .hero-copy-foot {
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.9rem;
     position: relative;
     z-index: 1;
   }
@@ -309,11 +378,11 @@
     justify-content: center;
     gap: 0.55rem;
     width: fit-content;
-    padding: 0.85rem 1.2rem;
+    padding: 0.95rem 1.4rem;
     border-radius: 999px;
     background: var(--accent);
     color: #fff;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -334,13 +403,13 @@
     justify-content: center;
     gap: 0.55rem;
     width: fit-content;
-    padding: 0.85rem 1.2rem;
+    padding: 0.95rem 1.4rem;
     border-radius: 999px;
     background: transparent;
     border: 2px solid var(--accent);
     color: var(--accent-deep);
     font-family: inherit;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
