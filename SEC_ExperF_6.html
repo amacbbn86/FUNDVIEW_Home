@@ -256,6 +256,7 @@
       width: 19rem;
       max-width: 100%;
       box-sizing: border-box;
+      margin-block: 0.85rem; /* checklist ↔ prompt ↔ CTA breathing room */
     }
 
     #experience_fundview #sceneWrap {
@@ -391,7 +392,9 @@
     align-items: center;
     gap: 0.625rem;
     max-width: 19rem;
-    margin: 0;
+    /* Extra air above/below — stacks with .hero-copy-pair gap */
+    margin-block: 0.75rem;
+    margin-inline: 0;
     text-align: left;
     font-size: 15px;
     font-weight: 700;
