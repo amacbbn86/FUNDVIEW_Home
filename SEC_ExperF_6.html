@@ -455,7 +455,7 @@
   }
 
   /* Client logo ticker — full-width bar under the Experience hero.
-     Top fade matches the town scene bottom blend and overlaps #heroInner. */
+     Full-width top fade overlays #heroInner (glass + town). */
   #experience_fundview > .hero__ticker {
     position: relative;
     left: auto;
@@ -463,8 +463,25 @@
     bottom: auto;
     z-index: 4;
     width: 100%;
-    margin-top: -6rem; /* pull fade up over heroInner / scene bottom (h-24) */
+    margin-top: -6rem; /* pull fade up over heroInner */
     padding: 6rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
+    background: #081426;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    pointer-events: auto;
+  }
+
+  /* Full-bleed top fade — independent of title/slider layout columns */
+  #experience_fundview > .hero__ticker::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 6rem;
     background: linear-gradient(
       180deg,
       rgba(8, 20, 38, 0) 0%,
@@ -472,12 +489,14 @@
       rgba(8, 20, 38, 0.92) 72%,
       #081426 100%
     );
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    pointer-events: auto;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #experience_fundview .hero__ticker-copy,
+  #experience_fundview .hero__ticker-viewport {
+    position: relative;
+    z-index: 1;
   }
 
   #experience_fundview .hero__ticker-title {
@@ -698,6 +717,10 @@
       background: var(--navy-deep);
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       padding: 0.85rem 1rem;
+    }
+
+    #experience_fundview > .hero__ticker::before {
+      display: none;
     }
 
     #experience_fundview .hero__ticker-viewport {
@@ -2485,7 +2508,6 @@
           <div class="scene-blend-side scene-blend-side--left pointer-events-none absolute inset-y-0 left-0 z-30" style="background:linear-gradient(to right,#081426,rgba(8,20,38,0));"></div>
           <div class="scene-blend-side scene-blend-side--right pointer-events-none absolute inset-y-0 right-0 z-30" style="background:linear-gradient(to left,#081426,rgba(8,20,38,0));"></div>
           <div class="scene-blend-top pointer-events-none absolute inset-x-0 top-0 z-30 h-16" style="background:linear-gradient(to bottom,#081426,rgba(8,20,38,0));"></div>
-          <div class="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-24" style="background:linear-gradient(to top,#081426,rgba(8,20,38,0));"></div>
           <!-- Mobile-only note: EXACT desktop text + EXACT desktop arrow, repositioned (frame-pinned) -->
           <div class="scene-note-m pointer-events-none absolute z-40" style="display:none; left:17%; top:auto; bottom:29%; width:52%;">
             <p class="font-script text-[clamp(18px,2vw,27px)] font-semibold leading-tight text-white" style="text-shadow:0 2px 14px rgba(0,0,0,.75), 0 0 30px rgba(43,212,224,.25);">Click Laptop to Explore FUNDVIEW</p>
