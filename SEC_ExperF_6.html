@@ -454,16 +454,24 @@
     line-height: 1;
   }
 
-  /* Client logo ticker — full-width bar under the Experience hero */
+  /* Client logo ticker — full-width bar under the Experience hero.
+     Top fade matches the town scene bottom blend and overlaps #heroInner. */
   #experience_fundview > .hero__ticker {
     position: relative;
     left: auto;
     right: auto;
     bottom: auto;
-    z-index: 1;
+    z-index: 4;
     width: 100%;
-    padding: 1.35rem 0 1.1rem;
-    background: linear-gradient(180deg, rgba(8, 20, 38, 0) 0%, rgba(8, 20, 38, 0.55) 42%, rgba(8, 20, 38, 0.92) 100%);
+    margin-top: -6rem; /* pull fade up over heroInner / scene bottom (h-24) */
+    padding: 6rem 0 1.1rem; /* fade zone above logos; logos stay in solid navy */
+    background: linear-gradient(
+      180deg,
+      rgba(8, 20, 38, 0) 0%,
+      rgba(8, 20, 38, 0.55) 42%,
+      rgba(8, 20, 38, 0.92) 72%,
+      #081426 100%
+    );
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -586,6 +594,7 @@
     }
 
     #experience_fundview > .hero__ticker {
+      margin-top: 0;
       background: var(--navy-deep);
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       padding: 0.85rem 1rem;
