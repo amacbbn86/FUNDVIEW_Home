@@ -30,6 +30,9 @@
       --fv-cta: #f2b632;
       --fv-cta-hover: #e0a628;
       --fv-cta-text: #0a2e57;
+      --accent: #2aa8a1;
+      --accent-deep: #1f8b85;
+      --navy-deep: #1a3b54;
     }
 
     *,
@@ -104,73 +107,398 @@
   .hero-fade { transition: opacity .9s cubic-bezier(0.4,0,0.2,1), transform .9s cubic-bezier(0.4,0,0.2,1); }
 
   
-  .experience-prompt {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-    max-width: 19rem;
-    margin-top: 1.5rem;
-    text-align: left;
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 1.375;
-    color: #1fc0cd;
+
+
+  /* ——— Glass copy panel + client logo ticker (from home5, adapted for Experience grid) ——— */
+  :root {
+    --accent: #2aa8a1;
+    --accent-deep: #1f8b85;
+    --navy-deep: #1a3b54;
   }
-  .experience-prompt svg {
+
+  #experience_fundview .hero-copy-col {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    padding: clamp(1.65rem, 2.8vw, 2.6rem) clamp(1.35rem, 2.6vw, 2.4rem) clamp(1.65rem, 2.8vw, 2.6rem) clamp(1.35rem, 2.4vw, 2.1rem);
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.94) 0%, rgba(230, 247, 245, 0.9) 55%, rgba(211, 240, 237, 0.88) 100%);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 0;
+    border: 0;
+    box-shadow: 28px 0 70px -40px rgba(7, 31, 58, 0.45);
+    /* Soft diagonal edge that fits the ~38% Experience column */
+    clip-path: polygon(0 0, calc(100% - 56px) 0, 100% 100%, 0 100%);
+    z-index: 2;
+    text-align: left;
+    align-items: stretch;
+  }
+
+  #experience_fundview .hero-copy-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    min-width: 0;
+    width: 100%;
+    transform: none;
+    container-type: inline-size;
+    container-name: hero-copy;
+  }
+
+  #experience_fundview .hero-copy-top {
+    display: grid;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  #experience_fundview .hero__title {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: clamp(1.55rem, 2.4vw, 2.35rem);
+    font-weight: 800;
+    line-height: 1.15;
+    max-width: 15ch;
+    margin: 0;
+    color: #0a2e57;
+    letter-spacing: -0.02em;
+  }
+
+  #experience_fundview .hero__title .text-accent {
+    color: #00b7b3;
+  }
+
+  #experience_fundview .hero__main {
+    display: grid;
+    gap: 1rem;
+  }
+
+  #experience_fundview .hero__subtitle {
+    margin: 0;
+    max-width: 42ch;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(10, 46, 87, 0.72);
+    font-weight: 400;
+  }
+
+  #experience_fundview .hero__subtitle strong {
+    color: #0a2e57;
+    font-weight: 700;
+  }
+
+  #experience_fundview .checklist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    column-gap: 0.85rem;
+    row-gap: 0.65rem;
+    justify-content: start;
+  }
+
+  #experience_fundview .checklist li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #0a2e57;
+  }
+
+  #experience_fundview .checklist li svg {
     flex-shrink: 0;
   }
+
+  #experience_fundview .hero-copy-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    min-width: 0;
+  }
+
   @media (min-width: 1024px) {
-    .experience-prompt {
-      max-width: 32rem;
+    #experience_fundview .hero-copy-pair {
+      display: grid;
+      grid-template-columns: max-content max-content;
+      column-gap: 0.85rem;
+      row-gap: 0.65rem;
+      justify-content: start;
+      align-items: center;
+    }
+
+    #experience_fundview .hero-copy-pair .checklist,
+    #experience_fundview .hero-copy-pair .hero-copy-foot {
+      display: contents;
+    }
+
+    #experience_fundview .hero-copy-pair .btn-dark,
+    #experience_fundview .hero-copy-pair .btn-outline {
+      margin-top: 0.55rem;
+    }
+
+    #experience_fundview .hero-copy-pair .checklist li:nth-child(even) {
+      transform: translateX(5cqi);
     }
   }
 
-  /* Experience hero CTA — gold pill under the prompt */
-  .experience-cta {
+  #experience_fundview .hero-copy-foot {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  #experience_fundview .btn-dark {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.55rem;
     width: fit-content;
-    max-width: 100%;
-    margin-top: 1.5rem;
-    padding: 0.95rem 1.75rem;
-    border-radius: 12px;
-    background: var(--fv-cta, #f2b632);
-    color: #0a0a0a;
-    font-size: 15px;
+    padding: 0.85rem 1.2rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
     font-weight: 700;
-    line-height: 1.2;
-    text-align: center;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     text-decoration: none;
-    box-shadow: 0 10px 28px rgba(242, 182, 50, 0.32);
-    transition:
-      transform 0.2s ease,
-      background-color 0.18s ease,
-      box-shadow 0.25s ease;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 12px 28px rgba(42, 168, 161, 0.3);
   }
-  .experience-cta:hover {
-    transform: translate3d(0, -1px, 0);
-    background: var(--fv-cta-hover, #e0a628);
-    box-shadow: 0 14px 34px rgba(242, 182, 50, 0.42);
+
+  #experience_fundview .btn-dark:hover {
+    transform: translateY(-2px);
+    background: var(--accent-deep);
+    box-shadow: 0 14px 32px rgba(42, 168, 161, 0.42);
   }
-  .experience-cta:active {
-    transform: translate3d(0, 0, 0) scale(0.98);
-  }
-  .experience-cta__arrow {
-    flex-shrink: 0;
-    font-size: 1.05em;
+
+  #experience_fundview .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    width: fit-content;
+    padding: 0.85rem 1.2rem;
+    border-radius: 999px;
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent-deep);
+    font-family: inherit;
+    font-size: 11px;
     font-weight: 700;
-    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
   }
-  @media (max-width: 419px) {
-    .experience-cta {
-      padding: 0.85rem 1.25rem;
-      font-size: 14px;
+
+  #experience_fundview .btn-outline:hover {
+    transform: translateY(-2px);
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 12px 28px rgba(42, 168, 161, 0.3);
+  }
+
+  /* Client logo ticker — full-width bar under the Experience hero */
+  #experience_fundview > .hero__ticker {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    z-index: 1;
+    width: 100%;
+    padding: 1.35rem 0 1.1rem;
+    background: linear-gradient(180deg, rgba(8, 20, 38, 0) 0%, rgba(8, 20, 38, 0.55) 42%, rgba(8, 20, 38, 0.92) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    pointer-events: auto;
+  }
+
+  #experience_fundview .hero__ticker-viewport {
+    width: 70%;
+    max-width: 100%;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  }
+
+  #experience_fundview .hero__ticker-viewport.is-dragging {
+    cursor: grabbing;
+  }
+
+  #experience_fundview .hero__ticker-track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    gap: clamp(2.25rem, 5vw, 4.5rem);
+    animation: hero-ticker-scroll 45s linear infinite;
+    will-change: transform;
+  }
+
+  #experience_fundview .hero__ticker-track.is-js-driven {
+    animation: none;
+  }
+
+  #experience_fundview .hero__ticker:hover .hero__ticker-track:not(.is-js-driven) {
+    animation-play-state: paused;
+  }
+
+  #experience_fundview .hero__ticker-track img {
+    height: 64px;
+    width: auto;
+    flex-shrink: 0;
+    object-fit: contain;
+    opacity: 0.88;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    transition: opacity 0.2s ease;
+  }
+
+  #experience_fundview .hero__ticker-track img:hover {
+    opacity: 1;
+  }
+
+  @keyframes hero-ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #experience_fundview .hero__ticker-track {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(1.5rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem);
     }
   }
 
-  
+  /* Stacked Experience layout (< lg / 1024): floating glass card + solid ticker */
+  @media (max-width: 1023.98px) {
+    #experience_fundview .hero-copy-col {
+      clip-path: none;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      box-shadow: 0 24px 60px rgba(7, 31, 58, 0.28);
+      padding: 1.75rem 1.35rem 2rem;
+      align-items: center;
+      text-align: center;
+    }
+
+    #experience_fundview .hero-copy-content,
+    #experience_fundview .hero-copy-top,
+    #experience_fundview .hero__main,
+    #experience_fundview .hero-copy-pair {
+      align-items: center;
+      justify-items: center;
+      width: 100%;
+    }
+
+    #experience_fundview .hero__title {
+      max-width: 18ch;
+      margin: 0 auto;
+      text-align: center;
+      font-size: clamp(1.85rem, 6.5vw, 2.45rem);
+    }
+
+    #experience_fundview .hero__subtitle {
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    #experience_fundview .checklist {
+      width: fit-content;
+      margin: 0 auto;
+      justify-content: center;
+      column-gap: clamp(2rem, 8vw, 2.75rem);
+      text-align: left;
+    }
+
+    #experience_fundview .hero-copy-foot {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    #experience_fundview .hero-copy-foot .btn-dark,
+    #experience_fundview .hero-copy-foot .btn-outline {
+      width: 100%;
+      justify-content: center;
+    }
+
+    #experience_fundview > .hero__ticker {
+      background: var(--navy-deep);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.85rem 1rem;
+    }
+
+    #experience_fundview .hero__ticker-viewport {
+      width: 100%;
+    }
+
+    #experience_fundview .hero__ticker-track img {
+      height: 52px;
+    }
+  }
+
+  @media (min-width: 601px) and (max-width: 1023.98px) {
+    #experience_fundview .hero-copy-col {
+      padding: 1.75rem 1.5rem 1.85rem;
+    }
+
+    #experience_fundview .hero__title {
+      font-size: clamp(1.9rem, 4.5vw, 2.35rem);
+      max-width: 22ch;
+    }
+
+    #experience_fundview .hero__subtitle {
+      max-width: 58ch;
+      font-size: 0.95rem;
+    }
+
+    #experience_fundview .checklist {
+      grid-template-columns: repeat(3, max-content);
+      column-gap: clamp(1.75rem, 4vw, 3rem);
+    }
+
+    #experience_fundview .hero-copy-foot {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #experience_fundview .hero-copy-foot .btn-dark,
+    #experience_fundview .hero-copy-foot .btn-outline {
+      width: auto;
+      min-width: 210px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    #experience_fundview .hero-copy-content,
+    #experience_fundview .hero-copy-top,
+    #experience_fundview .hero__main,
+    #experience_fundview .hero-copy-pair {
+      align-items: center;
+      justify-items: center;
+    }
+  }
+
   #zoomClip, #zoomOutClip {
     position: fixed; inset: 0; z-index: 40;
     width: 100%; height: 100%;
@@ -1797,32 +2125,30 @@
         <div class="text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal">Experience FUNDVIEW</div>
       </div>
 
-      <!-- Left column: copy + CTAs -->
-      <div class="hero-fade fade-left order-2 flex w-full max-w-xl flex-col items-center justify-center text-center mx-auto md:items-center md:justify-between md:self-stretch md:text-center lg:order-1 lg:mx-0 lg:items-start lg:justify-center lg:self-auto lg:text-left">
-        <!-- Eyebrow (desktop / lg+ only — stacked version is used below lg) -->
-        <div class="experience-eyebrow experience-eyebrow--rail mb-4 hidden text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal lg:block">Experience FUNDVIEW</div>
-
-        <!-- Headline -->
-        <h1 class="text-[clamp(30px,3.3vw,50px)] font-black leading-[1.07] tracking-tight text-white">
-          Run Your Entire Local Government From One Connected Platform
-        </h1>
-
-        <!-- Subheadline -->
-        <p class="mt-6 max-w-lg text-[16px] leading-relaxed text-slate-300">
-          Experience how FUNDVIEW connects finance, payroll, utility billing, municipal court, permitting, code enforcement, citizen services, and more in one fully integrated platform.
-        </p>
-
-        <!-- Prompt: compact icon + copy unit (centered on mobile via parent items-center) -->
-        <p class="experience-prompt">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-          <span>Click the laptop, then choose a department to explore FUNDVIEW</span>
-        </p>
-
-        <a class="experience-cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
-          See Why Cities Are Switching
-          <span class="experience-cta__arrow" aria-hidden="true">→</span>
-        </a>
-
+      <!-- Left column: glass copy panel (from home5 hero-copy) -->
+      <div class="hero-fade fade-left order-2 hero-copy-col w-full min-w-0 flex flex-col justify-center mx-auto lg:order-1 lg:mx-0 lg:self-stretch">
+        <div class="hero-copy-content">
+          <div class="hero-copy-top">
+            <h1 class="hero__title">The Platform That <span class="text-accent">Powers</span> Local Government</h1>
+            <div class="hero__main">
+              <p class="hero__subtitle">One connected ERP platform that gives local governments <strong>more time</strong>, <strong>better visibility</strong>, and the <strong>confidence</strong> to serve their communities.</p>
+            </div>
+          </div>
+          <div class="hero-copy-pair">
+            <ul class="checklist">
+              <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(0,183,179,0.22)"/><path d="M6 10l3 3 5-6" stroke="#00B7B3" stroke-width="2" fill="none"/></svg> Accuracy</li>
+              <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(0,183,179,0.22)"/><path d="M6 10l3 3 5-6" stroke="#00B7B3" stroke-width="2" fill="none"/></svg> Compliance</li>
+              <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(0,183,179,0.22)"/><path d="M6 10l3 3 5-6" stroke="#00B7B3" stroke-width="2" fill="none"/></svg> Clarity</li>
+              <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(0,183,179,0.22)"/><path d="M6 10l3 3 5-6" stroke="#00B7B3" stroke-width="2" fill="none"/></svg> Efficiency</li>
+              <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(0,183,179,0.22)"/><path d="M6 10l3 3 5-6" stroke="#00B7B3" stroke-width="2" fill="none"/></svg> Continuity</li>
+              <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(0,183,179,0.22)"/><path d="M6 10l3 3 5-6" stroke="#00B7B3" stroke-width="2" fill="none"/></svg> Confidence</li>
+            </ul>
+            <div class="hero-copy-foot">
+              <a class="btn-dark" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1">See FUNDVIEW <span aria-hidden="true">→</span></a>
+              <button type="button" class="btn-outline" id="hero-watch-overview">Watch Overview</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Right column: laptop scene (photo) + interactive hotspot + annotation.
@@ -2858,6 +3184,38 @@
     </div>
   </div>
 </div>
+
+
+      <div class="hero__ticker" aria-label="Trusted by 180+ local governments">
+        <div class="hero__ticker-viewport">
+          <div class="hero__ticker-track">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Reno_white.png" alt="Reno, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Anthony_white.png" alt="Anthony, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Iowa_Colony_white.png" alt="City of Iowa Colony, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Hickory_Creek_white.png" alt="Hickory Creek, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Jacksboro_white.png" alt="Jacksboro, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Keene_white.png" alt="Keene, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Quinlan_white.png" alt="Quinlan, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Mason_white.png" alt="Mason, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Winnsboro_white.png" alt="Winnsboro, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Big_Lake_white.png" alt="Big Lake, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Sweetwater_white.png" alt="Sweetwater, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Muenster_white.png" alt="Muenster, TX" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Reno_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Anthony_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Iowa_Colony_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Hickory_Creek_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Jacksboro_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Keene_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Quinlan_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Mason_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Winnsboro_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Big_Lake_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Sweetwater_white.png" alt="" aria-hidden="true" loading="lazy">
+            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Client%20Logos%20-%20White_Transparent/Muenster_white.png" alt="" aria-hidden="true" loading="lazy">
+          </div>
+        </div>
+      </div>
 
 <!-- Experience section end -->
   </section>
@@ -4229,6 +4587,158 @@
 
   document.querySelector('.app-screen[data-screen="financial"]').classList.add('active', 'visible');
 })();
+
+  </script>
+  <script>
+
+  /* Hero logo ticker — seamless auto-scroll + drag scrub */
+  (function heroTicker() {
+    var ticker = document.querySelector('#experience_fundview .hero__ticker') || document.querySelector('.hero__ticker');
+    if (!ticker) return;
+
+    var viewport = ticker.querySelector('.hero__ticker-viewport');
+    var track = ticker.querySelector('.hero__ticker-track');
+    if (!viewport || !track) return;
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduceMotion.matches) return;
+
+    var LOOP_SECONDS = 45;
+    var offset = 0;
+    var half = 0;
+    var lastTs = null;
+    var rafId = null;
+    var dragging = false;
+    var pointerId = null;
+    var startX = 0;
+    var startOffset = 0;
+    var hovered = false;
+
+    track.classList.add('is-js-driven');
+
+    function measure() {
+      half = track.scrollWidth / 2;
+    }
+
+    function wrap(value) {
+      if (!half) return value;
+      value = value % half;
+      if (value > 0) value -= half;
+      return value;
+    }
+
+    function apply() {
+      track.style.transform = 'translate3d(' + offset + 'px, 0, 0)';
+    }
+
+    function speedPxPerSec() {
+      return half > 0 ? half / LOOP_SECONDS : 40;
+    }
+
+    function tick(ts) {
+      if (!dragging && !hovered) {
+        if (lastTs != null) {
+          var dt = Math.min(0.05, (ts - lastTs) / 1000);
+          offset = wrap(offset - speedPxPerSec() * dt);
+          apply();
+        }
+        lastTs = ts;
+      } else {
+        lastTs = ts;
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function onPointerDown(e) {
+      if (e.button != null && e.button !== 0) return;
+      dragging = true;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startOffset = offset;
+      viewport.classList.add('is-dragging');
+      try {
+        viewport.setPointerCapture(e.pointerId);
+      } catch (err) {}
+    }
+
+    function onPointerMove(e) {
+      if (!dragging || e.pointerId !== pointerId) return;
+      var dx = e.clientX - startX;
+      offset = wrap(startOffset + dx);
+      apply();
+    }
+
+    function endDrag(e) {
+      if (!dragging) return;
+      if (e && pointerId != null && e.pointerId !== pointerId) return;
+      dragging = false;
+      pointerId = null;
+      viewport.classList.remove('is-dragging');
+      lastTs = null;
+    }
+
+    viewport.addEventListener('pointerdown', onPointerDown);
+    viewport.addEventListener('pointermove', onPointerMove);
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+    viewport.addEventListener('lostpointercapture', endDrag);
+
+    viewport.addEventListener('pointerenter', function () {
+      hovered = true;
+    });
+    viewport.addEventListener('pointerleave', function () {
+      hovered = false;
+      if (!dragging) lastTs = null;
+    });
+
+    window.addEventListener('resize', function () {
+      measure();
+      offset = wrap(offset);
+      apply();
+    });
+
+    requestAnimationFrame(function () {
+      measure();
+      apply();
+      rafId = requestAnimationFrame(tick);
+    });
+
+    var imgs = track.querySelectorAll('img');
+    var pending = imgs.length;
+    if (!pending) return;
+    imgs.forEach(function (img) {
+      if (img.complete) {
+        pending -= 1;
+        if (!pending) {
+          measure();
+          offset = wrap(offset);
+          apply();
+        }
+        return;
+      }
+      img.addEventListener(
+        'load',
+        function () {
+          pending -= 1;
+          if (!pending) {
+            measure();
+            offset = wrap(offset);
+            apply();
+          }
+        },
+        { once: true }
+      );
+    });
+  })();
+
+  /* Watch Overview — open overview video (standalone section has no full modal) */
+  (function () {
+    var btn = document.getElementById('hero-watch-overview');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      window.open('https://www.youtube.com/watch?v=vIm6cGQyQjE', '_blank', 'noopener');
+    });
+  })();
 
   </script>
 </body>
