@@ -259,15 +259,36 @@
     #experience_fundview #sceneWrap {
       align-self: stretch;
       display: flex;
-      align-items: center;
-      /* +15% wider, expanded toward the left under the glass diagonal */
-      width: 115%;
+      align-items: stretch;
+      /* Fill under the glass (kill left navy) and to the hero's right edge */
+      width: calc(100% + 22%);
       max-width: none;
-      margin-left: calc(-15% - 4.5rem);
+      margin-left: calc(-22% - 1rem);
+      margin-right: 0;
       padding-right: 0;
       min-width: 0;
+      min-height: min(78vh, 840px);
+      height: 100%;
       /* Stay under glass (z-index:2) so the diagonal still reads cleanly */
       z-index: 1;
+    }
+
+    /* Scene frame fills the wrap — no centered max-width box (that left navy gutters) */
+    #experience_fundview #scene {
+      width: 100% !important;
+      max-width: none !important;
+      height: 100% !important;
+      min-height: min(78vh, 840px);
+      margin: 0 !important;
+    }
+
+    /* Soften edge fades so the town view reads edge-to-edge under the glass / to the right */
+    #experience_fundview .scene-blend-side--left {
+      width: 2rem;
+    }
+    #experience_fundview .scene-blend-side--right {
+      width: 0;
+      opacity: 0;
     }
   }
 
@@ -708,6 +729,14 @@
         aspect-ratio: auto;
         height: min(max(calc(100vh - 240px), 340px), 700px, calc(100cqw / 1.2));
         max-width: calc(min(max(calc(100vh - 240px), 340px), 700px) * 16 / 9);
+      }
+
+      /* Experience: let the town view fill its wrap (arrow/note stay on #sceneZoom cover) */
+      #experience_fundview #scene {
+        height: 100%;
+        max-width: none;
+        width: 100%;
+        min-height: min(78vh, 840px);
       }
     }
     #sceneZoom {
