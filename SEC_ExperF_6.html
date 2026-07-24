@@ -740,6 +740,25 @@
       
       top:   calc(max(0px, calc(100cqw * 9 / 16) - 100cqh) * -0.7);
     }
+
+    /* Experience desktop: zoom the town loop out 20%.
+       Oversize the cover layer then scale(0.8) so the frame still fills
+       (no navy gaps). Note/arrow/hotspot live on #sceneZoom so they stay synced. */
+    @media (min-width: 1024px) {
+      #experience_fundview #sceneZoom {
+        --cover-w: max(100cqw, calc(100cqh * 16 / 9));
+        --cover-h: max(100cqh, calc(100cqw * 9 / 16));
+        width: calc(var(--cover-w) / 0.8);
+        height: calc(var(--cover-h) / 0.8);
+        right: calc(max(0px, calc(100cqh * 16 / 9) - 100cqw) * -0.15 / 0.8);
+        top: calc(max(0px, calc(100cqw * 9 / 16) - 100cqh) * -0.7 / 0.8);
+        transform: scale(0.8);
+        transform-origin: 75.75% 54%;
+      }
+      #experience_fundview #sceneZoom.hover-zoom {
+        transform: scale(0.84); /* 0.8 × prior 1.05 hover bump */
+      }
+    }
   }
 
   
