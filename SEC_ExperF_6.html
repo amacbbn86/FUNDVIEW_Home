@@ -169,30 +169,38 @@
     #experience_fundview .hero-copy-content {
       transform: none;
       max-width: min(36rem, 92%);
-      margin-inline: auto;
-      align-items: center;
-      text-align: center;
+      margin-inline: auto; /* keep block position — do not change */
+      width: 100%;
+      /* Left-align children inside the existing box; does not move the box */
+      align-items: flex-start;
+      text-align: left;
       gap: 1.5rem;
+    }
+
+    #experience_fundview .hero-copy-top,
+    #experience_fundview .hero__main {
+      justify-items: start;
+      width: 100%;
     }
 
     #experience_fundview .hero__title {
       font-size: clamp(2.05rem, 2.9vw, 2.85rem);
       max-width: 14ch;
-      margin-inline: auto;
-      text-align: center;
+      margin: 0;
+      text-align: left;
     }
 
     #experience_fundview .hero__subtitle {
       font-size: clamp(1rem, 1.15vw, 1.125rem);
       max-width: 38ch;
-      margin-inline: auto;
-      text-align: center;
+      margin: 0;
+      text-align: left;
       line-height: 1.65;
     }
 
     #experience_fundview .checklist {
-      justify-content: center;
-      margin-inline: auto;
+      justify-content: start;
+      margin: 0;
       column-gap: 1.35rem;
       row-gap: 0.85rem;
     }
@@ -209,7 +217,7 @@
     #experience_fundview .hero-copy-pair {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       gap: 1.5rem;
       width: 100%;
     }
@@ -238,7 +246,7 @@
     }
 
     #experience_fundview .hero-copy-foot {
-      justify-content: center;
+      justify-content: flex-start;
       gap: 0.95rem;
     }
 
@@ -266,14 +274,14 @@
   #experience_fundview .hero-copy-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start; /* left-align children; box itself stays put */
     gap: 1.35rem;
     min-width: 0;
     width: 100%;
     max-width: 36rem;
-    margin-inline: auto;
+    margin-inline: auto; /* keep block position */
     transform: none;
-    text-align: center;
+    text-align: left;
     container-type: inline-size;
     container-name: hero-copy;
   }
@@ -283,7 +291,7 @@
     gap: 1.15rem;
     position: relative;
     z-index: 1;
-    justify-items: center;
+    justify-items: start;
     width: 100%;
   }
 
@@ -293,10 +301,10 @@
     font-weight: 800;
     line-height: 1.12;
     max-width: 14ch;
-    margin: 0 auto;
+    margin: 0;
     color: #0a2e57;
     letter-spacing: -0.02em;
-    text-align: center;
+    text-align: left;
   }
 
   #experience_fundview .hero__title .text-accent {
@@ -306,19 +314,19 @@
   #experience_fundview .hero__main {
     display: grid;
     gap: 1rem;
-    justify-items: center;
+    justify-items: start;
     width: 100%;
   }
 
   #experience_fundview .hero__subtitle {
-    margin: 0 auto;
+    margin: 0;
     max-width: 38ch;
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: clamp(0.98rem, 1.1vw, 1.08rem);
     line-height: 1.65;
     color: rgba(10, 46, 87, 0.72);
     font-weight: 400;
-    text-align: center;
+    text-align: left;
   }
 
   #experience_fundview .hero__subtitle strong {
@@ -328,13 +336,13 @@
 
   #experience_fundview .checklist {
     list-style: none;
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(2, max-content);
     column-gap: 1.25rem;
     row-gap: 0.8rem;
-    justify-content: center;
+    justify-content: start;
   }
 
   #experience_fundview .checklist li {
@@ -356,7 +364,7 @@
   #experience_fundview .hero-copy-pair {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 1.35rem;
     min-width: 0;
     width: 100%;
@@ -365,7 +373,7 @@
   #experience_fundview .hero-copy-foot {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: 0.9rem;
     position: relative;
