@@ -2491,6 +2491,334 @@
     }
   }
 
+/* ─────────────────────────────────────────────────────────────
+   B. FV_STAT_MODULE v2 — entrance choreography + category glyph.
+      Activates only on module roots carrying data-fv-anim="v2",
+      so the shared shell above is untouched for anything that has
+      not opted in. Per-category deltas use the unique ids.
+      Everything animated lives inside .fv-stat-card.
+      One knob: --fv-s shifts a whole module's sequence.
+   ───────────────────────────────────────────────────────────── */
+[data-fv-anim="v2"] {
+  --fv-s: 0ms;
+  --fv-e: cubic-bezier(.16, 1, .3, 1);
+  --fv-teal: #00b7b3;
+  --fv-teal-deep: #00a39f;
+  --fv-teal-shade: #1f8b85;
+}
+
+[data-fv-anim="v2"] .fv-stat-card { transition: background-color 240ms ease; }
+[data-fv-anim="v2"] .fv-stat-card:hover { background: #eaeff3; }
+[data-fv-anim="v2"] .fv-stat-card:focus-visible { outline-color: var(--fv-teal); }
+
+/* 1 — top rule wipes right, teal at the leading tip */
+[data-fv-anim="v2"] .fv-stat-card__rule--top {
+  background: linear-gradient(90deg, #d5dee5 0%, #d5dee5 62%, rgba(0,183,179,.8) 100%);
+  animation: fv2Wipe 620ms var(--fv-e) calc(var(--fv-s) + 40ms) both;
+}
+@keyframes fv2Wipe { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* 2 — sparkline bars grow past target, then settle */
+[data-fv-anim="v2"] .fv-stat-card__bar {
+  background: var(--fv-teal); border-radius: 1px;
+  animation: fv2Bar 560ms cubic-bezier(.2, .85, .25, 1) both;
+}
+[data-fv-anim="v2"] .fv-stat-card__bar--a { animation-delay: calc(var(--fv-s) + 70ms); }
+[data-fv-anim="v2"] .fv-stat-card__bar--b { animation-delay: calc(var(--fv-s) + 140ms); }
+[data-fv-anim="v2"] .fv-stat-card__bar--c { animation-delay: calc(var(--fv-s) + 205ms); }
+@keyframes fv2Bar {
+  0%   { transform: scaleY(0); opacity: .3; }
+  62%  { transform: scaleY(1.16); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+/* 3 — accent rail unmasks top→bottom, a light rides the leading edge */
+[data-fv-anim="v2"] .fv-stat-card__accent {
+  position: relative; overflow: hidden; transform: none; background: var(--fv-teal);
+  animation: fv2Reveal 680ms var(--fv-e) calc(var(--fv-s) + 110ms) both;
+  transition: background-color 240ms ease;
+}
+[data-fv-anim="v2"] .fv-stat-card:hover .fv-stat-card__accent { background: var(--fv-teal-deep); }
+@keyframes fv2Reveal { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+[data-fv-anim="v2"] .fv-stat-card__accent-spark {
+  position: absolute; left: 0; right: 0; top: 0; height: 100%; display: block;
+  background: linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,0) 34%);
+  animation: fv2Spark 760ms var(--fv-e) calc(var(--fv-s) + 110ms) both;
+}
+@keyframes fv2Spark {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  18%  { opacity: 1; }
+  88%  { opacity: .9; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* 4a — numeric stats: rack focus + rise while the count-up runs */
+[data-fv-anim="v2"] .fv-stat-card__num {
+  transform-origin: 0% 85%;
+  animation: fv2Num 780ms var(--fv-e) calc(var(--fv-s) + 165ms) both;
+}
+@keyframes fv2Num {
+  0%   { opacity: 0; transform: translate3d(0, 16px, 0) scale(.94); filter: blur(8px); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: none; filter: blur(0); }
+}
+
+/* 4b — word stats (24/7, One, Real-Time) have nothing to count, so
+        they get a per-character cascade instead of a flat fade */
+#fv-stat-utility .fv-stat-card__num,
+#fv-stat-citizen .fv-stat-card__num,
+#fv-stat-platform .fv-stat-card__num {
+  animation: none; perspective: 460px;
+}
+#fv-stat-utility .fv-stat-card__num > i,
+#fv-stat-citizen .fv-stat-card__num > i,
+#fv-stat-platform .fv-stat-card__num > i {
+  display: inline-block; font-style: normal;
+  animation: fv2Char 640ms var(--fv-e) calc(var(--fv-s) + 170ms + var(--c, 0) * 52ms) both;
+}
+@keyframes fv2Char {
+  from { opacity: 0; transform: translate3d(0, .34em, 0) rotateX(-46deg); filter: blur(5px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+[data-fv-anim="v2"] .fv-stat-card__num > i:nth-child(1) { --c: 0; }
+[data-fv-anim="v2"] .fv-stat-card__num > i:nth-child(2) { --c: 1; }
+[data-fv-anim="v2"] .fv-stat-card__num > i:nth-child(3) { --c: 2; }
+[data-fv-anim="v2"] .fv-stat-card__num > i:nth-child(4) { --c: 3; }
+[data-fv-anim="v2"] .fv-stat-card__num > i:nth-child(5) { --c: 4; }
+[data-fv-anim="v2"] .fv-stat-card__num > i:nth-child(6) { --c: 5; }
+[data-fv-anim="v2"] .fv-stat-card__num > i:nth-child(7) { --c: 6; }
+[data-fv-anim="v2"] .fv-stat-card__num > i:nth-child(8) { --c: 7; }
+[data-fv-anim="v2"] .fv-stat-card__num > i:nth-child(9) { --c: 8; }
+
+/* 5 — label lands last */
+[data-fv-anim="v2"] .fv-stat-card__label {
+  animation: fv2Label 620ms var(--fv-e) calc(var(--fv-s) + 560ms) both;
+}
+@keyframes fv2Label {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); filter: blur(4px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+
+/* 6 — bottom rule is now a progress track that fills to the stat value */
+[data-fv-anim="v2"] .fv-stat-card__rule--bot {
+  position: relative; height: 2px; border-radius: 1px; background: #dbe3ea;
+  transform: none;
+  animation: fv2TrackIn 420ms var(--fv-e) calc(var(--fv-s) + 600ms) both;
+}
+@keyframes fv2TrackIn { from { opacity: 0; } to { opacity: 1; } }
+[data-fv-anim="v2"] .fv-stat-card__rule-fill {
+  position: absolute; inset: 0; display: block; border-radius: 1px;
+  background: linear-gradient(90deg, var(--fv-teal-shade), var(--fv-teal));
+  transform-origin: left; transform: scaleX(0);
+  animation: fv2Fill 940ms var(--fv-e) calc(var(--fv-s) + 700ms) both;
+}
+@keyframes fv2Fill { from { transform: scaleX(0); } to { transform: scaleX(var(--fill, 1)); } }
+#fv-stat-financial .fv-stat-card__rule-fill { --fill: .70; }
+#fv-stat-workforce .fv-stat-card__rule-fill { --fill: .30; }
+#fv-stat-community .fv-stat-card__rule-fill { --fill: .45; }
+#fv-stat-utility  .fv-stat-card__rule-fill,
+#fv-stat-court    .fv-stat-card__rule-fill,
+#fv-stat-citizen  .fv-stat-card__rule-fill,
+#fv-stat-platform .fv-stat-card__rule-fill { --fill: 1; }
+
+/* 7 — single gloss pass. The wrapper clips it, so the card keeps no
+       overflow of its own and long values still bleed as before. */
+[data-fv-anim="v2"] .fv-stat-card__sheen {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  overflow: hidden; display: block;
+}
+[data-fv-anim="v2"] .fv-stat-card__sheen-band {
+  position: absolute; inset: -20% -30%; display: block;
+  background: linear-gradient(100deg,
+    transparent 40%, rgba(0,183,179,.12) 47%, rgba(255,255,255,.92) 52%, transparent 63%);
+  animation: fv2Sheen 1150ms cubic-bezier(.5, .05, .3, 1) calc(var(--fv-s) + 330ms) both;
+}
+@keyframes fv2Sheen {
+  0%   { transform: translate3d(-120%, 0, 0) skewX(-14deg); opacity: 0; }
+  12%  { opacity: 1; }
+  82%  { opacity: 1; }
+  100% { transform: translate3d(120%, 0, 0) skewX(-14deg); opacity: 0; }
+}
+[data-sheen="off"] .fv-stat-card__sheen { display: none; }
+
+/* 8 — CATEGORY GLYPH: a small line illustration in the card's top-right
+       that draws itself in, then keeps one quiet loop running. */
+[data-fv-anim="v2"] .fv-stat-card__glyph {
+  position: absolute; z-index: 1; pointer-events: none;
+  top: clamp(10px, 3.6cqw, 14px);
+  right: clamp(10px, 3.2cqw, 14px);
+  width: clamp(22px, 5.6cqw, 30px);
+  height: clamp(22px, 5.6cqw, 30px);
+  color: var(--fv-teal);
+  animation: fv2GlyphIn 620ms var(--fv-e) calc(var(--fv-s) + 80ms) both;
+}
+@keyframes fv2GlyphIn {
+  from { opacity: 0; transform: translate3d(0, -6px, 0) scale(.88); }
+  to   { opacity: .95; transform: none; }
+}
+[data-fv-anim="v2"] .fv-stat-card__glyph svg { display: block; width: 100%; height: 100%; overflow: visible; }
+[data-fv-anim="v2"] .fv-stat-card__glyph [data-draw] {
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: fv2Draw 640ms var(--fv-e) calc(var(--fv-s) + 130ms + var(--d, 0ms)) both;
+}
+@keyframes fv2Draw { to { stroke-dashoffset: 0; } }
+[data-fv-anim="v2"] .fv-stat-card__glyph [data-pop] {
+  transform-box: fill-box; transform-origin: 50% 50%;
+  animation: fv2Pop 420ms var(--fv-e) calc(var(--fv-s) + 130ms + var(--d, 0ms)) both;
+}
+@keyframes fv2Pop { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: scale(1); } }
+/* draw order comes from source order — no inline custom properties needed */
+[data-fv-anim="v2"] .fv-stat-card__glyph svg > *:nth-child(1) { --d: 0ms; }
+[data-fv-anim="v2"] .fv-stat-card__glyph svg > *:nth-child(2) { --d: 90ms; }
+[data-fv-anim="v2"] .fv-stat-card__glyph svg > *:nth-child(3) { --d: 165ms; }
+[data-fv-anim="v2"] .fv-stat-card__glyph svg > *:nth-child(4) { --d: 235ms; }
+[data-fv-anim="v2"] .fv-stat-card__glyph svg > *:nth-child(5) { --d: 300ms; }
+[data-fv-anim="v2"] .fv-stat-card__glyph svg > *:nth-child(6) { --d: 360ms; }
+[data-fv-anim="v2"] .fv-stat-card__glyph [data-loop] {
+  transform-box: view-box; transform-origin: 16px 16px;
+}
+
+/* financial — month-end calendar, the close-out check blips */
+#fv-stat-financial .fv-glyph__check {
+  transform-box: fill-box; transform-origin: 50% 50%;
+  animation:
+    fv2Draw 640ms var(--fv-e) calc(var(--fv-s) + 430ms) both,
+    fv2Blip 3.6s ease-in-out calc(var(--fv-s) + 1.5s) infinite;
+}
+@keyframes fv2Blip { 0%, 22%, 100% { transform: scale(1); } 8% { transform: scale(1.16); } 15% { transform: scale(.97); } }
+
+/* workforce — reclaimed-time ring orbits the person */
+#fv-stat-workforce .fv-glyph__orbit {
+  animation: fv2Orbit 11s linear calc(var(--fv-s) + 900ms) infinite;
+}
+@keyframes fv2Orbit { to { transform: rotate(360deg); } }
+
+/* utility — always-on clock, hands run continuously */
+#fv-stat-utility .fv-glyph__hand--m {
+  animation:
+    fv2Draw 640ms var(--fv-e) calc(var(--fv-s) + 130ms + var(--d, 0ms)) both,
+    fv2Orbit 3.4s linear calc(var(--fv-s) + 950ms) infinite;
+}
+#fv-stat-utility .fv-glyph__hand--h {
+  animation:
+    fv2Draw 640ms var(--fv-e) calc(var(--fv-s) + 130ms + var(--d, 0ms)) both,
+    fv2Orbit 20.4s linear calc(var(--fv-s) + 950ms) infinite;
+}
+
+/* community — permit stamp presses down on the document */
+#fv-stat-community .fv-glyph__stamp {
+  transform-origin: 21px 21px;
+  animation: fv2Stamp 3.4s cubic-bezier(.3, .9, .3, 1) calc(var(--fv-s) + 1.3s) infinite;
+}
+@keyframes fv2Stamp {
+  0%, 100% { transform: translateY(0) scale(1); }
+  8%       { transform: translateY(-3px) scale(1.04); }
+  16%      { transform: translateY(.8px) scale(.97); }
+  26%      { transform: translateY(0) scale(1); }
+}
+
+/* court — the gavel strikes */
+#fv-stat-court .fv-glyph__gavel {
+  transform-origin: 13px 16px;
+  animation: fv2Strike 3.4s cubic-bezier(.3, .9, .3, 1) calc(var(--fv-s) + 1.3s) infinite;
+}
+@keyframes fv2Strike {
+  0%, 100% { transform: rotate(0deg); }
+  10%      { transform: rotate(-26deg); }
+  19%      { transform: rotate(6deg); }
+  27%      { transform: rotate(0deg); }
+}
+
+/* citizen — the portal keeps broadcasting */
+#fv-stat-citizen .fv-glyph__wave {
+  animation:
+    fv2Draw 640ms var(--fv-e) calc(var(--fv-s) + 130ms + var(--d, 0ms)) both,
+    fv2Wave 2.1s ease-in-out calc(var(--fv-s) + 1.1s + var(--d, 0ms)) infinite;
+}
+@keyframes fv2Wave { 0%, 100% { opacity: .25; } 40% { opacity: 1; } }
+
+/* platform — live data marches along the wires */
+#fv-stat-platform .fv-glyph__wire {
+  stroke-dasharray: 2.2 2.8;
+  animation:
+    fv2WireIn 500ms ease calc(var(--fv-s) + 480ms) both,
+    fv2March 1.15s linear calc(var(--fv-s) + 900ms) infinite;
+}
+@keyframes fv2WireIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fv2March { to { stroke-dashoffset: -5; } }
+
+/* 9 — video side: ambient only, so a real video drop-in is unaffected */
+[data-fv-anim="v2"] .fv-stat-duo__video {
+  background: var(--fv-teal);
+  box-shadow: inset 1px 0 0 rgba(10,46,87,.12);
+}
+[data-fv-anim="v2"] .fv-stat-duo__video-slot {
+  background:
+    radial-gradient(120% 95% at 20% 12%, rgba(255,255,255,.22), transparent 60%),
+    radial-gradient(90% 80% at 85% 95%, rgba(10,46,87,.30), transparent 65%),
+    linear-gradient(155deg, var(--fv-teal) 0%, var(--fv-teal-deep) 52%, var(--fv-teal-shade) 100%);
+  background-size: 150% 150%, 150% 150%, 100% 100%;
+  background-position: 0% 0%, 100% 100%, 0 0;
+  animation: fv2Drift 12s ease-in-out infinite alternate;
+}
+[data-video="off"] .fv-stat-duo__video-slot { background: var(--fv-teal); animation: none; }
+@keyframes fv2Drift {
+  from { background-position: 0% 0%, 100% 100%, 0 0; }
+  to   { background-position: 14% 8%, 86% 90%, 0 0; }
+}
+
+/* 10 — RESPONSIVE FIT
+   a) the glyph shares the sparkline's row, so the top rule clears it at
+      every width instead of running underneath it;
+   b) the shared shell's font-size floors (4.23rem / 3.78rem / 2.43rem …)
+      are larger than the rail at real panel widths, so the value spills
+      over the video panel. These re-floor the clamps — the cqw term is
+      unchanged where it already fitted, and "Real-Time" (9 characters)
+      gets a smaller coefficient so it fits the rail at any width. */
+[data-fv-anim="v2"] { --fv-glyph: clamp(22px, 5.6cqw, 30px); }
+[data-fv-anim="v2"] .fv-stat-card__bars { height: var(--fv-glyph); }
+[data-fv-anim="v2"] .fv-stat-card__glyph { width: var(--fv-glyph); height: var(--fv-glyph); }
+
+[data-fv-anim="v2"] .fv-stat-card__num           { font-size: clamp(1.5rem, 10.44cqw, 6.03rem); }
+[data-fv-anim="v2"] .fv-stat-card__num--247      { font-size: clamp(1.5rem, 9.36cqw, 5.49rem); }
+[data-fv-anim="v2"] .fv-stat-card__num--100      { font-size: clamp(1.4rem, 9cqw, 5.22rem); }
+[data-fv-anim="v2"] .fv-stat-card__num--word     { font-size: clamp(1.5rem, 10.44cqw, 6.03rem); }
+[data-fv-anim="v2"] .fv-stat-card__num--realtime { font-size: clamp(1rem, 5.2cqw, 3.1rem); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-fv-anim="v2"] .fv-stat-card__sheen,
+  [data-fv-anim="v2"] .fv-stat-card__accent-spark { display: none; }
+  [data-fv-anim="v2"] .fv-stat-card__accent,
+  [data-fv-anim="v2"] .fv-stat-card__num,
+  [data-fv-anim="v2"] .fv-stat-card__num > i,
+  [data-fv-anim="v2"] .fv-stat-card__label,
+  [data-fv-anim="v2"] .fv-stat-card__glyph,
+  [data-fv-anim="v2"] .fv-stat-card__glyph *,
+  [data-fv-anim="v2"] .fv-stat-card__rule-fill,
+  [data-fv-anim="v2"] .fv-stat-duo__video-slot {
+    animation: none !important; clip-path: none !important;
+    filter: none !important; opacity: 1 !important; transform: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  [data-fv-anim="v2"] .fv-stat-card__rule-fill { transform: scaleX(var(--fill, 1)) !important; }
+}
+
+  /* Live home6 word-stat remap (preserve existing copy; design placeholders differed) */
+  #fv-stat-community .fv-stat-card__num,
+  #fv-stat-court .fv-stat-card__num {
+    animation: none; perspective: 460px;
+  }
+  #fv-stat-community .fv-stat-card__num > i,
+  #fv-stat-court .fv-stat-card__num > i {
+    display: inline-block; font-style: normal;
+    animation: fv2Char 640ms var(--fv-e) calc(var(--fv-s) + 170ms + var(--c, 0) * 52ms) both;
+  }
+  #fv-stat-platform .fv-stat-card__num {
+    animation: fv2Num 780ms var(--fv-e) calc(var(--fv-s) + 165ms) both;
+    perspective: none;
+  }
+  #fv-stat-community .fv-stat-card__rule-fill { --fill: 1; }
+
   .fin-quote {
     display: flex;
     gap: 0.75rem;
@@ -5163,30 +5491,40 @@
                     <p>FUNDVIEW Financial Management connects every aspect of your organization's financial operations into one fully integrated platform.</p>
                     <p>FUNDVIEW helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information.</p>
                   </div>
-                  <!-- FV_STAT_MODULE: fv-stat-financial | category=financial | Financial Management -->
-                  <div id="fv-stat-financial" class="fv-stat-duo fv-stat-module fv-stat-financial" data-fv-stat="financial" data-fv-stat-id="fv-stat-financial" aria-label="70% — Faster month-end close">
-                    <div class="fv-stat-duo__rail">
-                      <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
-                        <div class="fv-stat-card__bars" aria-hidden="true">
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
-                        </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
-                        <div class="fv-stat-card__body">
-                          <div data-anim class="fv-stat-card__accent" aria-hidden="true"></div>
-                          <div class="fv-stat-card__copy">
-                            <div data-anim data-num class="fv-stat-card__num" data-num-target="70" data-num-suffix="%">70%</div>
-                            <div data-anim class="fv-stat-card__label">Faster month-end close</div>
+                  <!-- FV_STAT_MODULE: fv-stat-financial | category=financial | v2 -->
+                  <div id="fv-stat-financial" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-financial" data-fv-stat="financial" data-fv-stat-id="fv-stat-financial" aria-label="70% — Faster month-end close">
+                          <div class="fv-stat-duo__rail">
+                            <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
+                              <span data-anim class="fv-stat-card__glyph fv-glyph--financial" aria-hidden="true">
+                                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                  <rect data-anim data-draw pathLength="1" x="4.5" y="6.5" width="23" height="21" rx="3"></rect>
+                                  <path data-anim data-draw pathLength="1" d="M4.5 12.5h23"></path>
+                                  <path data-anim data-draw pathLength="1" d="M10.5 3.5v5"></path>
+                                  <path data-anim data-draw pathLength="1" d="M21.5 3.5v5"></path>
+                                  <path data-anim data-draw pathLength="1" class="fv-glyph__check" stroke-width="2.2" d="M10.6 19.6l3.9 3.9 7.3-7.9"></path>
+                                </svg>
+                              </span>
+                              <div class="fv-stat-card__bars" aria-hidden="true">
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
+                              <div class="fv-stat-card__body">
+                                <div data-anim class="fv-stat-card__accent" aria-hidden="true"><i data-anim class="fv-stat-card__accent-spark"></i></div>
+                                <div class="fv-stat-card__copy">
+                                  <div data-anim data-num class="fv-stat-card__num" data-num-target="70" data-num-suffix="%">70%</div>
+                                  <div data-anim class="fv-stat-card__label">Faster month-end close</div>
+                                </div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"><i data-anim class="fv-stat-card__rule-fill"></i></div>
+                              <div class="fv-stat-card__sheen" aria-hidden="true"><i data-anim class="fv-stat-card__sheen-band"></i></div>
+                            </div>
+                          </div>
+                          <div class="fv-stat-duo__video" aria-hidden="true">
+                            <div class="fv-stat-duo__video-slot"></div>
                           </div>
                         </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"></div>
-                      </div>
-                    </div>
-                    <div class="fv-stat-duo__video" aria-hidden="true">
-                      <div class="fv-stat-duo__video-slot"></div>
-                    </div>
-                  </div>
                 </div>
 
                 <!-- Feature Highlights -->
@@ -5265,30 +5603,41 @@
                     <p>Simplify payroll, human resources, and employee time management with one connected workforce solution designed specifically for local government.</p>
                     <p>FUNDVIEW helps you pay employees accurately, manage employee information with confidence, and eliminate manual processes that slow your team down.</p>
                   </div>
-                  <!-- FV_STAT_MODULE: fv-stat-workforce | category=workforce | Workforce Management -->
-                  <div id="fv-stat-workforce" class="fv-stat-duo fv-stat-module fv-stat-workforce" data-fv-stat="workforce" data-fv-stat-id="fv-stat-workforce" aria-label="30% — Average workload reclaimed">
-                    <div class="fv-stat-duo__rail">
-                      <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
-                        <div class="fv-stat-card__bars" aria-hidden="true">
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
-                        </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
-                        <div class="fv-stat-card__body">
-                          <div data-anim class="fv-stat-card__accent" aria-hidden="true"></div>
-                          <div class="fv-stat-card__copy">
-                            <div data-anim data-num class="fv-stat-card__num" data-num-target="30" data-num-suffix="%">30%</div>
-                            <div data-anim class="fv-stat-card__label">Average workload reclaimed</div>
+                  <!-- FV_STAT_MODULE: fv-stat-workforce | category=workforce | v2 -->
+                  <div id="fv-stat-workforce" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-workforce" data-fv-stat="workforce" data-fv-stat-id="fv-stat-workforce" aria-label="30% — Average workload reclaimed">
+                          <div class="fv-stat-duo__rail">
+                            <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
+                              <span data-anim class="fv-stat-card__glyph fv-glyph--workforce" aria-hidden="true">
+                                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                  <circle data-anim data-draw pathLength="1" cx="16" cy="13.4" r="3.5"></circle>
+                                  <path data-anim data-draw pathLength="1" d="M10.2 22.6a5.9 5.9 0 0 1 11.6 0"></path>
+                                  <g data-loop class="fv-glyph__orbit">
+                                    <path data-anim data-draw pathLength="1" d="M27.6 12.4A12 12 0 1 1 22.4 5.4"></path>
+                                    <path data-anim data-draw pathLength="1" d="M22.9 1.6l.1 4-3.9.5"></path>
+                                  </g>
+                                </svg>
+                              </span>
+                              <div class="fv-stat-card__bars" aria-hidden="true">
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
+                              <div class="fv-stat-card__body">
+                                <div data-anim class="fv-stat-card__accent" aria-hidden="true"><i data-anim class="fv-stat-card__accent-spark"></i></div>
+                                <div class="fv-stat-card__copy">
+                                  <div data-anim data-num class="fv-stat-card__num" data-num-target="30" data-num-suffix="%">30%</div>
+                                  <div data-anim class="fv-stat-card__label">Average workload reclaimed</div>
+                                </div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"><i data-anim class="fv-stat-card__rule-fill"></i></div>
+                              <div class="fv-stat-card__sheen" aria-hidden="true"><i data-anim class="fv-stat-card__sheen-band"></i></div>
+                            </div>
+                          </div>
+                          <div class="fv-stat-duo__video" aria-hidden="true">
+                            <div class="fv-stat-duo__video-slot"></div>
                           </div>
                         </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"></div>
-                      </div>
-                    </div>
-                    <div class="fv-stat-duo__video" aria-hidden="true">
-                      <div class="fv-stat-duo__video-slot"></div>
-                    </div>
-                  </div>
                 </div>
 
                 <!-- Feature Highlights -->
@@ -5365,30 +5714,40 @@
                     <p>Manage utility billing, field operations, service requests, and customer payments from one connected platform.</p>
                     <p>FUNDVIEW helps local governments improve efficiency, deliver better customer service, and keep utility operations moving with real-time information.</p>
                   </div>
-                  <!-- FV_STAT_MODULE: fv-stat-utility | category=utility | Utility & Field Services -->
-                  <div id="fv-stat-utility" class="fv-stat-duo fv-stat-module fv-stat-utility" data-fv-stat="utility" data-fv-stat-id="fv-stat-utility" aria-label="24/7 — Online payments &amp; account access">
-                    <div class="fv-stat-duo__rail">
-                      <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
-                        <div class="fv-stat-card__bars" aria-hidden="true">
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
-                        </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
-                        <div class="fv-stat-card__body">
-                          <div data-anim class="fv-stat-card__accent" aria-hidden="true"></div>
-                          <div class="fv-stat-card__copy">
-                            <div data-anim data-num class="fv-stat-card__num fv-stat-card__num--247">24/7</div>
-                            <div data-anim class="fv-stat-card__label">Online payments &amp; account access</div>
+                  <!-- FV_STAT_MODULE: fv-stat-utility | category=utility | v2 -->
+                  <div id="fv-stat-utility" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-utility" data-fv-stat="utility" data-fv-stat-id="fv-stat-utility" aria-label="24/7 — Online payments &amp; account access">
+                          <div class="fv-stat-duo__rail">
+                            <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
+                              <span data-anim class="fv-stat-card__glyph fv-glyph--utility" aria-hidden="true">
+                                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                  <circle data-anim data-draw pathLength="1" cx="16" cy="16" r="11.6"></circle>
+                                  <path data-anim data-draw pathLength="1" d="M16 6.6v1.9M25.4 16h-1.9M16 25.4v-1.9M6.6 16h1.9"></path>
+                                  <path data-anim data-draw pathLength="1" data-loop class="fv-glyph__hand fv-glyph__hand--h" d="M16 16v-5.2"></path>
+                                  <path data-anim data-draw pathLength="1" data-loop class="fv-glyph__hand fv-glyph__hand--m" d="M16 16l5.6 3.2"></path>
+                                  <circle data-anim data-pop cx="16" cy="16" r="1.35" fill="currentColor" stroke="none"></circle>
+                                </svg>
+                              </span>
+                              <div class="fv-stat-card__bars" aria-hidden="true">
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
+                              <div class="fv-stat-card__body">
+                                <div data-anim class="fv-stat-card__accent" aria-hidden="true"><i data-anim class="fv-stat-card__accent-spark"></i></div>
+                                <div class="fv-stat-card__copy">
+                                  <div data-num class="fv-stat-card__num fv-stat-card__num--247"><i data-anim>2</i><i data-anim>4</i><i data-anim>/</i><i data-anim>7</i></div>
+                                  <div data-anim class="fv-stat-card__label">Online payments &amp; account access</div>
+                                </div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"><i data-anim class="fv-stat-card__rule-fill"></i></div>
+                              <div class="fv-stat-card__sheen" aria-hidden="true"><i data-anim class="fv-stat-card__sheen-band"></i></div>
+                            </div>
+                          </div>
+                          <div class="fv-stat-duo__video" aria-hidden="true">
+                            <div class="fv-stat-duo__video-slot"></div>
                           </div>
                         </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"></div>
-                      </div>
-                    </div>
-                    <div class="fv-stat-duo__video" aria-hidden="true">
-                      <div class="fv-stat-duo__video-slot"></div>
-                    </div>
-                  </div>
                 </div>
 
                 <!-- Feature Highlights -->
@@ -5489,30 +5848,42 @@
                     <p>Support responsible growth, protect your community, and streamline development with one connected solution for permitting, inspections, and code enforcement.</p>
                     <p>FUNDVIEW helps local governments simplify processes, improve communication, and keep projects moving.</p>
                   </div>
-                  <!-- FV_STAT_MODULE: fv-stat-community | category=community | Community Development -->
-                  <div id="fv-stat-community" class="fv-stat-duo fv-stat-module fv-stat-community" data-fv-stat="community" data-fv-stat-id="fv-stat-community" aria-label="One — Platform for permits, inspections &amp; code enforcement">
-                    <div class="fv-stat-duo__rail">
-                      <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
-                        <div class="fv-stat-card__bars" aria-hidden="true">
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
-                        </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
-                        <div class="fv-stat-card__body">
-                          <div data-anim class="fv-stat-card__accent" aria-hidden="true"></div>
-                          <div class="fv-stat-card__copy">
-                            <div data-anim data-num class="fv-stat-card__num fv-stat-card__num--word">One</div>
-                            <div data-anim class="fv-stat-card__label">Platform for permits, inspections &amp; code enforcement</div>
+                  <!-- FV_STAT_MODULE: fv-stat-community | category=community | v2 -->
+                  <div id="fv-stat-community" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-community" data-fv-stat="community" data-fv-stat-id="fv-stat-community" aria-label="One — Platform for permits, inspections &amp; code enforcement">
+                          <div class="fv-stat-duo__rail">
+                            <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
+                              <span data-anim class="fv-stat-card__glyph fv-glyph--community" aria-hidden="true">
+                                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                  <path data-anim data-draw pathLength="1" d="M6.5 27V6.4a2 2 0 0 1 2-2h9.1l6.4 6.4V27a2 2 0 0 1-2 2h-13.5a2 2 0 0 1-2-2z"></path>
+                                  <path data-anim data-draw pathLength="1" d="M17.6 4.4v6.4H24"></path>
+                                  <path data-anim data-draw pathLength="1" d="M10.6 15.2h6.2M10.6 19h4.2"></path>
+                                  <g data-loop class="fv-glyph__stamp">
+                                    <circle data-anim data-draw pathLength="1" cx="21" cy="21" r="5.8" fill="#f0f3f5"></circle>
+                                    <path data-anim data-draw pathLength="1" stroke-width="2" d="M18.5 21.2l1.8 1.9 3.5-4"></path>
+                                  </g>
+                                </svg>
+                              </span>
+                              <div class="fv-stat-card__bars" aria-hidden="true">
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
+                              <div class="fv-stat-card__body">
+                                <div data-anim class="fv-stat-card__accent" aria-hidden="true"><i data-anim class="fv-stat-card__accent-spark"></i></div>
+                                <div class="fv-stat-card__copy">
+                                  <div data-num class="fv-stat-card__num fv-stat-card__num--word"><i data-anim>O</i><i data-anim>n</i><i data-anim>e</i></div>
+                                  <div data-anim class="fv-stat-card__label">Platform for permits, inspections &amp; code enforcement</div>
+                                </div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"><i data-anim class="fv-stat-card__rule-fill"></i></div>
+                              <div class="fv-stat-card__sheen" aria-hidden="true"><i data-anim class="fv-stat-card__sheen-band"></i></div>
+                            </div>
+                          </div>
+                          <div class="fv-stat-duo__video" aria-hidden="true">
+                            <div class="fv-stat-duo__video-slot"></div>
                           </div>
                         </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"></div>
-                      </div>
-                    </div>
-                    <div class="fv-stat-duo__video" aria-hidden="true">
-                      <div class="fv-stat-duo__video-slot"></div>
-                    </div>
-                  </div>
                 </div>
 
                 <!-- Feature Highlights -->
@@ -5606,30 +5977,41 @@
                     <p>FUNDVIEW Municipal Court simplifies every stage of court administration — from citation entry and case management to payments, reporting, and compliance.</p>
                     <p>Fully integrated with FUNDVIEW’s financial platform, court activity updates in real time, eliminating duplicate entry and giving staff greater visibility into daily operations.</p>
                   </div>
-                  <!-- FV_STAT_MODULE: fv-stat-court | category=court | Municipal Court -->
-                  <div id="fv-stat-court" class="fv-stat-duo fv-stat-module fv-stat-court" data-fv-stat="court" data-fv-stat-id="fv-stat-court" aria-label="Real-time — Court activity posted to finance">
-                    <div class="fv-stat-duo__rail">
-                      <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
-                        <div class="fv-stat-card__bars" aria-hidden="true">
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
-                        </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
-                        <div class="fv-stat-card__body">
-                          <div data-anim class="fv-stat-card__accent" aria-hidden="true"></div>
-                          <div class="fv-stat-card__copy">
-                            <div data-anim data-num class="fv-stat-card__num fv-stat-card__num--realtime">Real-time</div>
-                            <div data-anim class="fv-stat-card__label">Court activity posted to finance</div>
+                  <!-- FV_STAT_MODULE: fv-stat-court | category=court | v2 -->
+                  <div id="fv-stat-court" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-court" data-fv-stat="court" data-fv-stat-id="fv-stat-court" aria-label="Real-time — Court activity posted to finance">
+                          <div class="fv-stat-duo__rail">
+                            <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
+                              <span data-anim class="fv-stat-card__glyph fv-glyph--court" aria-hidden="true">
+                                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                  <path data-anim data-draw pathLength="1" d="M5.5 28.5h15"></path>
+                                  <rect data-anim data-draw pathLength="1" x="7" y="23.4" width="12" height="3.4" rx="1.5"></rect>
+                                  <g data-loop class="fv-glyph__gavel">
+                                    <path data-anim data-draw pathLength="1" d="M13 16l7.2-7.2"></path>
+                                    <rect data-anim data-draw pathLength="1" x="18.6" y="3.4" width="9.6" height="5.4" rx="1.8" transform="rotate(45 23.4 6.1)"></rect>
+                                  </g>
+                                </svg>
+                              </span>
+                              <div class="fv-stat-card__bars" aria-hidden="true">
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
+                              <div class="fv-stat-card__body">
+                                <div data-anim class="fv-stat-card__accent" aria-hidden="true"><i data-anim class="fv-stat-card__accent-spark"></i></div>
+                                <div class="fv-stat-card__copy">
+                                  <div data-num class="fv-stat-card__num fv-stat-card__num--realtime"><i data-anim>R</i><i data-anim>e</i><i data-anim>a</i><i data-anim>l</i><i data-anim>-</i><i data-anim>t</i><i data-anim>i</i><i data-anim>m</i><i data-anim>e</i></div>
+                                  <div data-anim class="fv-stat-card__label">Court activity posted to finance</div>
+                                </div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"><i data-anim class="fv-stat-card__rule-fill"></i></div>
+                              <div class="fv-stat-card__sheen" aria-hidden="true"><i data-anim class="fv-stat-card__sheen-band"></i></div>
+                            </div>
+                          </div>
+                          <div class="fv-stat-duo__video" aria-hidden="true">
+                            <div class="fv-stat-duo__video-slot"></div>
                           </div>
                         </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"></div>
-                      </div>
-                    </div>
-                    <div class="fv-stat-duo__video" aria-hidden="true">
-                      <div class="fv-stat-duo__video-slot"></div>
-                    </div>
-                  </div>
                 </div>
 
                 <!-- Feature Highlights -->
@@ -5709,30 +6091,41 @@
                     </div>
                     <p>Give citizens secure, convenient online access to utility billing and municipal court services through one easy-to-use self-service portal.</p>
                   </div>
-                  <!-- FV_STAT_MODULE: fv-stat-citizen | category=citizen | CityCentral Citizen Portal -->
-                  <div id="fv-stat-citizen" class="fv-stat-duo fv-stat-module fv-stat-citizen" data-fv-stat="citizen" data-fv-stat-id="fv-stat-citizen" aria-label="24/7 — Self-service citizen access">
-                    <div class="fv-stat-duo__rail">
-                      <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
-                        <div class="fv-stat-card__bars" aria-hidden="true">
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
-                        </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
-                        <div class="fv-stat-card__body">
-                          <div data-anim class="fv-stat-card__accent" aria-hidden="true"></div>
-                          <div class="fv-stat-card__copy">
-                            <div data-anim data-num class="fv-stat-card__num fv-stat-card__num--247">24/7</div>
-                            <div data-anim class="fv-stat-card__label">Self-service citizen access</div>
+                  <!-- FV_STAT_MODULE: fv-stat-citizen | category=citizen | v2 -->
+                  <div id="fv-stat-citizen" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-citizen" data-fv-stat="citizen" data-fv-stat-id="fv-stat-citizen" aria-label="24/7 — Self-service citizen access">
+                          <div class="fv-stat-duo__rail">
+                            <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
+                              <span data-anim class="fv-stat-card__glyph fv-glyph--citizen" aria-hidden="true">
+                                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                  <rect data-anim data-draw pathLength="1" x="4.5" y="4" width="13" height="24" rx="2.8"></rect>
+                                  <path data-anim data-draw pathLength="1" d="M9 7.2h4"></path>
+                                  <path data-anim data-draw pathLength="1" d="M8.4 24.6h5.2"></path>
+                                  <path data-anim data-draw pathLength="1" data-loop class="fv-glyph__wave" d="M21.2 13.4a4.4 4.4 0 0 1 0 5.2"></path>
+                                  <path data-anim data-draw pathLength="1" data-loop class="fv-glyph__wave" d="M24.6 10.6a8.8 8.8 0 0 1 0 10.8"></path>
+                                  <path data-anim data-draw pathLength="1" data-loop class="fv-glyph__wave" d="M28 7.8a13.2 13.2 0 0 1 0 16.4"></path>
+                                </svg>
+                              </span>
+                              <div class="fv-stat-card__bars" aria-hidden="true">
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
+                              <div class="fv-stat-card__body">
+                                <div data-anim class="fv-stat-card__accent" aria-hidden="true"><i data-anim class="fv-stat-card__accent-spark"></i></div>
+                                <div class="fv-stat-card__copy">
+                                  <div data-num class="fv-stat-card__num fv-stat-card__num--247"><i data-anim>2</i><i data-anim>4</i><i data-anim>/</i><i data-anim>7</i></div>
+                                  <div data-anim class="fv-stat-card__label">Self-service citizen access</div>
+                                </div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"><i data-anim class="fv-stat-card__rule-fill"></i></div>
+                              <div class="fv-stat-card__sheen" aria-hidden="true"><i data-anim class="fv-stat-card__sheen-band"></i></div>
+                            </div>
+                          </div>
+                          <div class="fv-stat-duo__video" aria-hidden="true">
+                            <div class="fv-stat-duo__video-slot"></div>
                           </div>
                         </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"></div>
-                      </div>
-                    </div>
-                    <div class="fv-stat-duo__video" aria-hidden="true">
-                      <div class="fv-stat-duo__video-slot"></div>
-                    </div>
-                  </div>
                 </div>
 
                 <!-- Feature Highlights -->
@@ -5825,30 +6218,41 @@
                     </div>
                     <p>The power of FUNDVIEW goes beyond individual departments. Every module works together on one connected platform, giving your organization real-time visibility, shared data, automated workflows, and the confidence that comes from having one reliable source of information.</p>
                   </div>
-                  <!-- FV_STAT_MODULE: fv-stat-platform | category=platform | The FUNDVIEW Platform -->
-                  <div id="fv-stat-platform" class="fv-stat-duo fv-stat-module fv-stat-platform" data-fv-stat="platform" data-fv-stat-id="fv-stat-platform" aria-label="100% — GASB &amp; GAAP compliant">
-                    <div class="fv-stat-duo__rail">
-                      <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
-                        <div class="fv-stat-card__bars" aria-hidden="true">
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
-                          <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
-                        </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
-                        <div class="fv-stat-card__body">
-                          <div data-anim class="fv-stat-card__accent" aria-hidden="true"></div>
-                          <div class="fv-stat-card__copy">
-                            <div data-anim data-num class="fv-stat-card__num fv-stat-card__num--100" data-num-target="100" data-num-suffix="%">100%</div>
-                            <div data-anim class="fv-stat-card__label">GASB &amp; GAAP compliant</div>
+                  <!-- FV_STAT_MODULE: fv-stat-platform | category=platform | v2 -->
+                  <div id="fv-stat-platform" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-platform" data-fv-stat="platform" data-fv-stat-id="fv-stat-platform" aria-label="100% — GASB &amp; GAAP compliant">
+                          <div class="fv-stat-duo__rail">
+                            <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
+                              <span data-anim class="fv-stat-card__glyph fv-glyph--platform" aria-hidden="true">
+                                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                  <circle data-anim data-draw pathLength="1" cx="16" cy="16" r="4.3"></circle>
+                                  <circle data-anim data-draw pathLength="1" cx="16" cy="4.6" r="2.7"></circle>
+                                  <circle data-anim data-draw pathLength="1" cx="27.4" cy="16" r="2.7"></circle>
+                                  <circle data-anim data-draw pathLength="1" cx="16" cy="27.4" r="2.7"></circle>
+                                  <circle data-anim data-draw pathLength="1" cx="4.6" cy="16" r="2.7"></circle>
+                                  <path data-anim class="fv-glyph__wire" d="M16 11.7V7.3M20.3 16h4.4M16 20.3v4.4M11.7 16H7.3"></path>
+                                </svg>
+                              </span>
+                              <div class="fv-stat-card__bars" aria-hidden="true">
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--a"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--b"></div>
+                                <div data-anim class="fv-stat-card__bar fv-stat-card__bar--c"></div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--top"></div>
+                              <div class="fv-stat-card__body">
+                                <div data-anim class="fv-stat-card__accent" aria-hidden="true"><i data-anim class="fv-stat-card__accent-spark"></i></div>
+                                <div class="fv-stat-card__copy">
+                                  <div data-anim data-num class="fv-stat-card__num fv-stat-card__num--100" data-num-target="100" data-num-suffix="%">100%</div>
+                                  <div data-anim class="fv-stat-card__label">GASB &amp; GAAP compliant</div>
+                                </div>
+                              </div>
+                              <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"><i data-anim class="fv-stat-card__rule-fill"></i></div>
+                              <div class="fv-stat-card__sheen" aria-hidden="true"><i data-anim class="fv-stat-card__sheen-band"></i></div>
+                            </div>
+                          </div>
+                          <div class="fv-stat-duo__video" aria-hidden="true">
+                            <div class="fv-stat-duo__video-slot"></div>
                           </div>
                         </div>
-                        <div data-anim class="fv-stat-card__rule fv-stat-card__rule--bot"></div>
-                      </div>
-                    </div>
-                    <div class="fv-stat-duo__video" aria-hidden="true">
-                      <div class="fv-stat-duo__video-slot"></div>
-                    </div>
-                  </div>
                 </div>
 
                 <!-- Feature Highlights -->
