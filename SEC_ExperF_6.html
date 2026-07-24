@@ -121,7 +121,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* center the content block as a whole */
+    align-items: center;
     width: 100%;
     max-width: none;
     min-width: 0;
@@ -137,7 +137,7 @@
     /* Soft diagonal edge that fits the ~38% Experience column */
     clip-path: polygon(0 0, calc(100% - 56px) 0, 100% 100%, 0 100%);
     z-index: 2;
-    text-align: left;
+    text-align: center;
   }
 
   /* Desktop: glass IS the left column — full height, flush left, no navy gutters */
@@ -154,8 +154,8 @@
     #experience_fundview .hero-copy-col {
       align-self: stretch !important;
       justify-self: stretch;
-      align-items: center; /* keep block centered in the glass */
-      text-align: left;
+      align-items: center;
+      text-align: center;
       width: 100%;
       height: auto;
       min-height: 100%;
@@ -168,32 +168,31 @@
 
     #experience_fundview .hero-copy-content {
       transform: none;
-      width: fit-content;
       max-width: min(36rem, 92%);
-      margin-inline: 0;
-      align-items: flex-start;
-      text-align: left;
+      margin-inline: auto;
+      align-items: center;
+      text-align: center;
       gap: 1.5rem;
     }
 
     #experience_fundview .hero__title {
       font-size: clamp(2.05rem, 2.9vw, 2.85rem);
       max-width: 14ch;
-      margin: 0;
-      text-align: left;
+      margin-inline: auto;
+      text-align: center;
     }
 
     #experience_fundview .hero__subtitle {
       font-size: clamp(1rem, 1.15vw, 1.125rem);
       max-width: 38ch;
-      margin: 0;
-      text-align: left;
+      margin-inline: auto;
+      text-align: center;
       line-height: 1.65;
     }
 
     #experience_fundview .checklist {
-      justify-content: start;
-      margin: 0;
+      justify-content: center;
+      margin-inline: auto;
       column-gap: 1.35rem;
       row-gap: 0.85rem;
     }
@@ -210,7 +209,7 @@
     #experience_fundview .hero-copy-pair {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       gap: 1.5rem;
       width: 100%;
     }
@@ -239,7 +238,7 @@
     }
 
     #experience_fundview .hero-copy-foot {
-      justify-content: flex-start;
+      justify-content: center;
       gap: 0.95rem;
     }
 
@@ -267,14 +266,14 @@
   #experience_fundview .hero-copy-content {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* left-align inner content */
+    align-items: center;
     gap: 1.35rem;
     min-width: 0;
-    width: fit-content;
+    width: 100%;
     max-width: 36rem;
-    margin-inline: 0; /* parent .hero-copy-col centers this block */
+    margin-inline: auto;
     transform: none;
-    text-align: left;
+    text-align: center;
     container-type: inline-size;
     container-name: hero-copy;
   }
@@ -284,7 +283,7 @@
     gap: 1.15rem;
     position: relative;
     z-index: 1;
-    justify-items: start;
+    justify-items: center;
     width: 100%;
   }
 
@@ -294,10 +293,10 @@
     font-weight: 800;
     line-height: 1.12;
     max-width: 14ch;
-    margin: 0;
+    margin: 0 auto;
     color: #0a2e57;
     letter-spacing: -0.02em;
-    text-align: left;
+    text-align: center;
   }
 
   #experience_fundview .hero__title .text-accent {
@@ -307,19 +306,19 @@
   #experience_fundview .hero__main {
     display: grid;
     gap: 1rem;
-    justify-items: start;
+    justify-items: center;
     width: 100%;
   }
 
   #experience_fundview .hero__subtitle {
-    margin: 0;
+    margin: 0 auto;
     max-width: 38ch;
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: clamp(0.98rem, 1.1vw, 1.08rem);
     line-height: 1.65;
     color: rgba(10, 46, 87, 0.72);
     font-weight: 400;
-    text-align: left;
+    text-align: center;
   }
 
   #experience_fundview .hero__subtitle strong {
@@ -329,13 +328,13 @@
 
   #experience_fundview .checklist {
     list-style: none;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(2, max-content);
     column-gap: 1.25rem;
     row-gap: 0.8rem;
-    justify-content: start;
+    justify-content: center;
   }
 
   #experience_fundview .checklist li {
@@ -357,7 +356,7 @@
   #experience_fundview .hero-copy-pair {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 1.35rem;
     min-width: 0;
     width: 100%;
@@ -366,7 +365,7 @@
   #experience_fundview .hero-copy-foot {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 0.9rem;
     position: relative;
@@ -513,41 +512,35 @@
       border: 1px solid rgba(255, 255, 255, 0.65);
       box-shadow: 0 24px 60px rgba(7, 31, 58, 0.28);
       padding: 1.75rem 1.35rem 2rem;
-      align-items: center; /* card content block centered as a whole */
-      text-align: left;
+      align-items: center;
+      text-align: center;
     }
 
-    #experience_fundview .hero-copy-content {
-      width: fit-content;
-      max-width: 100%;
-      align-items: flex-start;
-      text-align: left;
-    }
-
+    #experience_fundview .hero-copy-content,
     #experience_fundview .hero-copy-top,
     #experience_fundview .hero__main,
     #experience_fundview .hero-copy-pair {
-      align-items: flex-start;
-      justify-items: start;
+      align-items: center;
+      justify-items: center;
       width: 100%;
     }
 
     #experience_fundview .hero__title {
       max-width: 18ch;
-      margin: 0;
-      text-align: left;
+      margin: 0 auto;
+      text-align: center;
       font-size: clamp(1.85rem, 6.5vw, 2.45rem);
     }
 
     #experience_fundview .hero__subtitle {
-      margin: 0;
-      text-align: left;
+      margin: 0 auto;
+      text-align: center;
     }
 
     #experience_fundview .checklist {
       width: fit-content;
-      margin: 0;
-      justify-content: start;
+      margin: 0 auto;
+      justify-content: center;
       column-gap: clamp(2rem, 8vw, 2.75rem);
       text-align: left;
     }
@@ -555,7 +548,6 @@
     #experience_fundview .hero-copy-foot {
       flex-direction: column;
       align-items: stretch;
-      justify-content: flex-start;
       width: 100%;
     }
 
@@ -603,7 +595,7 @@
     #experience_fundview .hero-copy-foot {
       flex-direction: row;
       flex-wrap: wrap;
-      justify-content: flex-start;
+      justify-content: center;
     }
 
     #experience_fundview .hero-copy-foot .btn-dark,
@@ -618,8 +610,8 @@
     #experience_fundview .hero-copy-top,
     #experience_fundview .hero__main,
     #experience_fundview .hero-copy-pair {
-      align-items: flex-start;
-      justify-items: start;
+      align-items: center;
+      justify-items: center;
     }
   }
 
