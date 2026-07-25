@@ -2680,6 +2680,35 @@
 
   /* ≤800px: stack every stat module — statistic on top, placeholder below */
   @media (max-width: 800px) {
+    /* All 7 category pages: heading → fv-stat module → paragraphs under the module */
+    .fin-hero {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 1rem !important;
+    }
+
+    .fin-hero > .fin-copy {
+      display: contents; /* let heading + paragraphs reorder with the module */
+    }
+
+    .fin-hero .fin-copy-heading {
+      order: 0;
+    }
+
+    .fin-hero > .fv-stat-duo,
+    .fin-hero > .fv-stat-module {
+      order: 1;
+    }
+
+    .fin-hero .fin-copy > p {
+      order: 2;
+      margin-top: 0;
+    }
+
+    .fin-hero .fin-copy > p + p {
+      margin-top: 0;
+    }
+
     .fv-stat-duo,
     .fv-stat-duo.fv-stat-module {
       flex-direction: column;
