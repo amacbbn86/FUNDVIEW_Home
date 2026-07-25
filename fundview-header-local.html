@@ -21,6 +21,24 @@
       --fv-glass: rgba(255, 255, 255, 0.08);
       --fv-glass-border: rgba(255, 255, 255, 0.16);
       --fv-divider: rgba(255, 255, 255, 0.12);
+      /* Fallback left inset; overwritten at ≥1024 to match .hero-copy-content */
+      --fv-content-left: 2.5rem;
+      --fv-nav-gap: 0.55rem;
+    }
+
+    /* Sync header logo left edge with #experience_fundview .hero-copy-content
+       (same column + padding + max-width box used by .hero__ticker-align). */
+    @media (min-width: 1024px) {
+      :root {
+        --fv-hero-col: max(380px, 40vw);
+        --fv-hero-pad-l: clamp(2rem, 3.5vw, 3.25rem);
+        --fv-hero-pad-r: clamp(3.5rem, 5.5vw, 5.5rem);
+        --fv-hero-inner: calc(var(--fv-hero-col) - var(--fv-hero-pad-l) - var(--fv-hero-pad-r));
+        --fv-hero-content-w: min(36rem, calc(var(--fv-hero-inner) * 0.92));
+        --fv-content-left: calc(
+          var(--fv-hero-pad-l) + (var(--fv-hero-inner) - var(--fv-hero-content-w)) / 2
+        );
+      }
     }
 
     *,
@@ -102,8 +120,9 @@
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
-      column-gap: 2.5rem;
-      padding: 0.9rem 2.5rem;
+      column-gap: 1.75rem;
+      /* Logo left edge tracks .hero-copy-content; right pad keeps CTA breathing room */
+      padding: 0.9rem 2.5rem 0.9rem var(--fv-content-left);
     }
 
     .site-header__logo {
@@ -122,14 +141,17 @@
       filter: brightness(0) invert(1);
     }
 
+    /* Desktop (non-hamburger): pack links tightly and sit them toward the CTA/right */
     .site-nav {
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
-      justify-self: stretch;
-      width: 100%;
+      justify-content: flex-end;
+      justify-self: end;
+      width: auto;
+      max-width: 100%;
       flex-wrap: nowrap;
-      gap: 1rem;
+      gap: var(--fv-nav-gap);
+      margin-left: auto;
     }
 
     .site-nav a {
@@ -281,17 +303,18 @@
       transform: translateY(-8px) rotate(-45deg);
     }
 
-    /* Below 1660px: nav on its own full-width row (single row gets too tight below this,
-       including a buffer for scrollbar width and browser zoom rounding) */
-    @media (max-width: 1659px) {
+    /* Below 1660px: nav on its own row (single row gets too tight below this,
+       including a buffer for scrollbar width and browser zoom rounding).
+       Still non-hamburger above 991px — keep items clustered to the right. */
+    @media (max-width: 1659px) and (min-width: 992px) {
       .site-header__inner {
         grid-template-columns: 1fr auto;
         grid-template-areas:
           "logo actions"
           "nav nav";
-        row-gap: 0.75rem;
-        column-gap: 1.5rem;
-        padding: 0.9rem 2rem 1rem;
+        row-gap: 0.65rem;
+        column-gap: 1.25rem;
+        padding: 0.9rem 2rem 0.85rem var(--fv-content-left);
       }
 
       .site-header__logo {
@@ -304,11 +327,12 @@
 
       .site-nav {
         grid-area: nav;
-        width: 100%;
-        justify-self: stretch;
-        justify-content: space-between;
-        gap: 0.5rem;
-        padding: 0.55rem 0.35rem 0.15rem;
+        width: auto;
+        justify-self: end;
+        justify-content: flex-end;
+        gap: var(--fv-nav-gap);
+        margin-left: auto;
+        padding: 0.45rem 0 0.1rem;
         border-top: 1px solid var(--fv-divider);
       }
 
@@ -349,6 +373,8 @@
         left: 0;
         right: 0;
         width: 100%;
+        margin-left: 0;
+        justify-self: stretch;
         display: flex;
         flex-direction: column;
         align-items: stretch;
