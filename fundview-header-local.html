@@ -306,10 +306,9 @@
       transform: translateY(-8px) rotate(-45deg);
     }
 
-    /* Below 1660px: nav on its own row (single row gets too tight below this,
-       including a buffer for scrollbar width and browser zoom rounding).
-       Still non-hamburger above 991px — keep items clustered to the right. */
-    @media (max-width: 1659px) and (min-width: 992px) {
+    /* At/below 1000px: nav on its own row until the hamburger kicks in at 991px.
+       Keep items clustered to the right. */
+    @media (max-width: 1000px) and (min-width: 992px) {
       .site-header__inner {
         grid-template-columns: 1fr auto;
         grid-template-areas:
