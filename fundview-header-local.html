@@ -23,7 +23,9 @@
       --fv-divider: rgba(255, 255, 255, 0.12);
       /* Fallback left inset; overwritten at ≥1024 to match .hero-copy-content */
       --fv-content-left: 2.5rem;
-      --fv-nav-gap: 0.55rem;
+      /* Lattice-like nav rhythm: small flex gap + horizontal padding on each link */
+      --fv-nav-gap: 0.15rem;
+      --fv-nav-link-pad-x: 0.75em;
     }
 
     /* Sync header logo left edge with #experience_fundview .hero-copy-content
@@ -158,6 +160,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
+      padding: 0.4em var(--fv-nav-link-pad-x);
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 0.9rem;
       font-weight: 600;
