@@ -1343,14 +1343,25 @@
 
   /* Full-width bottom fade on #hero (mirrors .scene-blend-top, flipped).
      Must live here — not on .hero__ticker — so it paints over glass + town.
-     Opaque end matches --fv-band-* so the handoff into ticker/quicklinks/stats stays seamless. */
+     Uses the same fixed --fv-band-bg as the ticker, masked soft so the seam
+     matches the ticker top instead of a separate solid color ramp. */
   #experience_fundview .experience-bottom-blend {
-    height: 4.2rem; /* 7rem − 40% */
-    background: linear-gradient(
+    height: 5.25rem;
+    background: var(--fv-band-bg);
+    background-attachment: fixed;
+    -webkit-mask-image: linear-gradient(
       to top,
-      var(--fv-band-deep) 0%,
-      var(--fv-band-mid) 42%,
-      rgba(10, 46, 87, 0) 100%
+      #000 0%,
+      #000 18%,
+      rgba(0, 0, 0, 0.55) 48%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to top,
+      #000 0%,
+      #000 18%,
+      rgba(0, 0, 0, 0.55) 48%,
+      transparent 100%
     );
   }
 
