@@ -717,7 +717,11 @@
     /* ——— Quick links CTA bar (Highlands-style) — sits below the trusted-cities logos ——— */
     .quicklinks {
       width: 100%;
-      background: #0a2e57;
+      /* Shares continuous navy band with ticker + stats */
+      background:
+        radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.16), transparent 60%),
+        linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+      background-attachment: fixed;
       padding: clamp(0.85rem, 1.6vw, 1.25rem) clamp(1.25rem, 6vw, 6rem);
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
@@ -777,6 +781,7 @@
       background:
         radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.16), transparent 60%),
         linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+      background-attachment: fixed;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: #fff;
     }
@@ -1334,13 +1339,14 @@
   }
 
   /* Full-width bottom fade on #hero (mirrors .scene-blend-top, flipped).
-     Must live here — not on .hero__ticker — so it paints over glass + town. */
+     Must live here — not on .hero__ticker — so it paints over glass + town.
+     Fades into the connected ticker/quicklinks/stats navy band. */
   #experience_fundview .experience-bottom-blend {
     height: 4.2rem; /* 7rem − 40% */
-    background: linear-gradient(to top, #081426, rgba(8, 20, 38, 0));
+    background: linear-gradient(to top, #0a2e57, rgba(10, 46, 87, 0));
   }
 
-  /* Client logo ticker — solid navy bar; blend is handled by .experience-bottom-blend */
+  /* Client logo ticker — continuous navy band shared with .quicklinks + .stats */
   #experience_fundview > .hero__ticker {
     position: relative;
     left: auto;
@@ -1350,7 +1356,11 @@
     width: 100%;
     margin-top: 0;
     padding: 1.25rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
-    background: #081426;
+    background:
+      radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.16), transparent 60%),
+      linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+    background-attachment: fixed;
+    border-top: 0;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -1608,8 +1618,11 @@
 
     #experience_fundview > .hero__ticker {
       margin-top: 0;
-      background: var(--navy-deep);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background:
+        radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.16), transparent 60%),
+        linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+      background-attachment: fixed;
+      border-top: 0;
       padding: 0.85rem 1rem;
     }
 
