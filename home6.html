@@ -1464,6 +1464,15 @@
       letter-spacing: 0.14em; /* em vs this line's size so tracking scales with type */
     }
 
+    /* Reserve final "180+" width so the count-up doesn't shift "Cities Trust" */
+    #experience_fundview .hero__ticker-title-stat {
+      display: inline-block;
+      min-width: 4.35ch;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-weight: 900;
+    }
+
     #experience_fundview .hero__ticker-viewport {
       grid-column: 1 / -1;
       grid-row: 1;
@@ -6385,7 +6394,7 @@
       <div class="hero__ticker" aria-label="Trusted by 180+ local governments">
         <div class="hero__ticker-copy">
           <div class="hero__ticker-align">
-            <p class="hero__ticker-title"><span class="hero__ticker-title-line hero__ticker-title-line--lead">180+ Cities Trust</span><span class="hero__ticker-title-line">Fundview ERP Software</span></p>
+            <p class="hero__ticker-title"><span class="hero__ticker-title-line hero__ticker-title-line--lead"><span class="hero__ticker-title-stat" data-count="180" data-suffix="+">180+</span> Cities Trust</span><span class="hero__ticker-title-line">Fundview ERP Software</span></p>
           </div>
         </div>
         <div class="hero__ticker-viewport">
@@ -7310,6 +7319,53 @@
         observer.observe(statsSection);
       } else {
         animateStatCounters();
+      }
+    })();
+
+    /* Hero ticker: count "180+" up on page load */
+    (function tickerStatCountUp() {
+      var el = document.querySelector("#experience_fundview .hero__ticker-title-stat");
+      if (!el) return;
+
+      var target = parseInt(el.getAttribute("data-count"), 10) || 180;
+      var suffix = el.getAttribute("data-suffix") || "+";
+      var duration = 1680;
+      var reduceMotion =
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function render(value) {
+        el.textContent = value + suffix;
+      }
+
+      function animate() {
+        if (reduceMotion) {
+          render(target);
+          return;
+        }
+
+        render(0);
+        var startTime = null;
+
+        function step(timestamp) {
+          if (!startTime) startTime = timestamp;
+          var progress = Math.min((timestamp - startTime) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          render(Math.round(target * eased));
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            render(target);
+          }
+        }
+
+        requestAnimationFrame(step);
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", animate);
+      } else {
+        animate();
       }
     })();
 
