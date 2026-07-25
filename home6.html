@@ -1560,10 +1560,6 @@
     animation: none;
   }
 
-  #experience_fundview .hero__ticker:hover .hero__ticker-track:not(.is-js-driven) {
-    animation-play-state: paused;
-  }
-
   #experience_fundview .hero__ticker-track img {
     height: 64px;
     width: auto;
@@ -9355,7 +9351,6 @@
     var pointerId = null;
     var startX = 0;
     var startOffset = 0;
-    var hovered = false;
 
     track.classList.add('is-js-driven');
 
@@ -9379,7 +9374,7 @@
     }
 
     function tick(ts) {
-      if (!dragging && !hovered) {
+      if (!dragging) {
         if (lastTs != null) {
           var dt = Math.min(0.05, (ts - lastTs) / 1000);
           offset = wrap(offset - speedPxPerSec() * dt);
@@ -9425,14 +9420,6 @@
     viewport.addEventListener('pointerup', endDrag);
     viewport.addEventListener('pointercancel', endDrag);
     viewport.addEventListener('lostpointercapture', endDrag);
-
-    viewport.addEventListener('pointerenter', function () {
-      hovered = true;
-    });
-    viewport.addEventListener('pointerleave', function () {
-      hovered = false;
-      if (!dragging) lastTs = null;
-    });
 
     window.addEventListener('resize', function () {
       measure();
