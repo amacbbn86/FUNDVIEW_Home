@@ -51,6 +51,13 @@
       --navy-deep: #1a3b54;
       --serif: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+      /* Connected band: ticker → quicklinks → stats (keep blend in sync) */
+      --fv-band-mid: #0a2e57;
+      --fv-band-deep: #071f3a;
+      --fv-band-bg:
+        radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.16), transparent 60%),
+        linear-gradient(135deg, var(--fv-band-mid) 0%, var(--fv-band-deep) 100%);
     }
 
     *,
@@ -718,9 +725,7 @@
     .quicklinks {
       width: 100%;
       /* Shares continuous navy band with ticker + stats */
-      background:
-        radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.16), transparent 60%),
-        linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+      background: var(--fv-band-bg);
       background-attachment: fixed;
       padding: clamp(0.85rem, 1.6vw, 1.25rem) clamp(1.25rem, 6vw, 6rem);
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -778,9 +783,7 @@
     .stats {
       width: 100%;
       padding: clamp(3.5rem, 7vw, 5.5rem) 1.5rem;
-      background:
-        radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.16), transparent 60%),
-        linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+      background: var(--fv-band-bg);
       background-attachment: fixed;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: #fff;
@@ -1340,10 +1343,15 @@
 
   /* Full-width bottom fade on #hero (mirrors .scene-blend-top, flipped).
      Must live here — not on .hero__ticker — so it paints over glass + town.
-     Fades into the connected ticker/quicklinks/stats navy band. */
+     Opaque end matches --fv-band-* so the handoff into ticker/quicklinks/stats stays seamless. */
   #experience_fundview .experience-bottom-blend {
     height: 4.2rem; /* 7rem − 40% */
-    background: linear-gradient(to top, #0a2e57, rgba(10, 46, 87, 0));
+    background: linear-gradient(
+      to top,
+      var(--fv-band-deep) 0%,
+      var(--fv-band-mid) 42%,
+      rgba(10, 46, 87, 0) 100%
+    );
   }
 
   /* Client logo ticker — continuous navy band shared with .quicklinks + .stats */
@@ -1356,9 +1364,7 @@
     width: 100%;
     margin-top: 0;
     padding: 1.25rem clamp(1.25rem, 3vw, 2.5rem) 1.1rem;
-    background:
-      radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.16), transparent 60%),
-      linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+    background: var(--fv-band-bg);
     background-attachment: fixed;
     border-top: 0;
     display: flex;
@@ -1612,9 +1618,7 @@
 
     #experience_fundview > .hero__ticker {
       margin-top: 0;
-      background:
-        radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.16), transparent 60%),
-        linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+      background: var(--fv-band-bg);
       background-attachment: fixed;
       border-top: 0;
       padding: 0.85rem 1rem;
@@ -5438,8 +5442,8 @@
 
   </div>
 
-  <!-- Full-width fade into the logo ticker — same recipe as .scene-blend-top, flipped.
-       Lives on #hero so it actually paints over the glass + town (ticker ::before cannot). -->
+  <!-- Full-width fade into the logo ticker — syncs to --fv-band-* (same as ticker/quicklinks/stats).
+       Lives on #hero so it paints over the glass + town (ticker ::before cannot). -->
   <div class="experience-bottom-blend pointer-events-none absolute inset-x-0 bottom-0 z-[35]" aria-hidden="true"></div>
 </section>
 <div id="sceneChange" aria-hidden="true"></div>
