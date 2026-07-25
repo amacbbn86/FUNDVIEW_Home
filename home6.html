@@ -2678,7 +2678,7 @@
     background: #1cadd2;
   }
 
-  /* ≤800px: stack every stat module — placeholder on top, statistic below */
+  /* ≤800px: stack every stat module — statistic on top, placeholder below */
   @media (max-width: 800px) {
     .fv-stat-duo,
     .fv-stat-duo.fv-stat-module {
@@ -2690,22 +2690,77 @@
       height: auto !important;
     }
 
+    .fv-stat-duo__rail {
+      order: 0; /* statistic on top (DOM order) */
+      flex: 0 0 auto;
+      width: 100%;
+    }
+
     .fv-stat-duo__video {
-      order: -1; /* placeholder above statistic (DOM order is rail → video) */
+      order: 1; /* placeholder below */
       flex: 0 0 auto;
       width: 100%;
       min-height: 148px;
       aspect-ratio: 2 / 1;
     }
 
-    .fv-stat-duo__rail {
-      order: 1;
-      flex: 0 0 auto;
+    .fv-stat-card {
+      height: auto;
+      align-items: center;
+      text-align: center;
+      padding: 1.15rem 1.25rem 1.35rem;
+    }
+
+    .fv-stat-card__bars {
+      justify-content: center;
       width: 100%;
     }
 
-    .fv-stat-card {
-      height: auto;
+    .fv-stat-card__rule--top {
+      width: 100%;
+      align-self: stretch;
+    }
+
+    .fv-stat-card__body {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .fv-stat-card__accent {
+      display: none; /* drop side accent for clean centered stack */
+    }
+
+    .fv-stat-card__copy {
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      gap: 0.45rem;
+    }
+
+    .fv-stat-card__num {
+      text-align: center;
+    }
+
+    .fv-stat-card__label {
+      margin-top: 0;
+      margin-inline: auto;
+      max-width: 22ch;
+      text-align: center;
+    }
+
+    .fv-stat-card__rule--bot {
+      margin: 1rem auto 0;
+      width: min(12rem, 70%);
+      align-self: center;
+    }
+
+    [data-fv-anim="v2"] .fv-stat-card__glyph {
+      top: 0.85rem;
+      right: 0.85rem;
     }
 
     [data-fv-anim="v2"] .fv-stat-duo__video {
