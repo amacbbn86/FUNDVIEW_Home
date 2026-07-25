@@ -3960,11 +3960,12 @@
       --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.06);
       --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.06);
       inset: auto !important;
-      left: auto !important; bottom: auto !important;
+      left: auto !important;
+      bottom: auto !important;
       width: var(--sw) !important;
       height: var(--sh) !important;
-      right: clamp(calc(100cqw - var(--sw)), calc(50cqw - 0.32 * var(--sw)), 0px) !important;
-      top: clamp(calc(100cqh - var(--sh)), calc(50cqh - 0.60 * var(--sh)), 0px) !important;
+      right: clamp(calc(100cqw - var(--sw)), calc(50cqw - 0.1 * var(--sw)), 0px) !important;
+      top: clamp(calc(93cqh - var(--sh)), calc(50cqh - 1.2 * var(--sh)), 0px) !important;
     }
   }
 
@@ -3975,14 +3976,6 @@
       max-width: none !important;
       margin-left: calc(50% - 50vw) !important;
       height: min(56.1vh, 102vw) !important; /* min(66vh, 120vw) × 0.85 */
-    }
-    #sceneZoom {
-      /* Keep cover scale (≥ frame) — same fill strategy as mobile */
-      --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.06);
-      --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.06);
-      left: auto !important;
-      right: clamp(calc(100cqw - var(--sw)), calc(50cqw - 0.32 * var(--sw)), 0px) !important;
-      top: clamp(calc(100cqh - var(--sh)), calc(50cqh - 0.55 * var(--sh)), 0px) !important;
     }
   }
 
@@ -4017,7 +4010,10 @@
     #handNote { display: none !important; }
     #sceneZoom svg[viewBox="0 0 100 101"] { display: none !important; }
     .scene-note-m { display: block !important; }
-    #sceneZoom { --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.08); --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.08); }
+    #sceneZoom {
+      --sw: calc(max(100cqw, 100cqh * 16 / 9) * 1.04);
+      --sh: calc(max(100cqh, 100cqw * 9 / 16) * 1.08);
+    }
   }
 
         /* ——— Every FUNDVIEW Solution Delivers ——— */
