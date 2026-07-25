@@ -1191,6 +1191,13 @@
     }
   }
 
+  /* 1025–1400: % left-pull on #sceneWrap undershoots the fixed 120px glass
+     diagonal, leaving navy in the top-left cutaway — pin pull to the cut + buffer. */
+  @media (min-width: 1025px) and (max-width: 1400px) {
+    #experience_fundview #sceneWrap {
+      width: calc(100% + 148px);
+      margin-left: -148px;
+    }
   }
 
   #experience_fundview .hero-copy-content {
@@ -1233,6 +1240,13 @@
   @media (min-width: 1024px) and (max-width: 1499.98px) {
     #experience_fundview .hero__title {
       font-size: 2.5rem;
+    }
+  }
+
+  /* 1150–1350: tighter title */
+  @media (min-width: 1150px) and (max-width: 1350px) {
+    #experience_fundview .hero__title {
+      font-size: 2.0rem;
     }
   }
 
@@ -1318,6 +1332,14 @@
     #experience_fundview .checklist__icon {
       width: 20px;
       height: 20px;
+    }
+  }
+
+  /* 1150–1350: tighter checklist labels */
+  @media (min-width: 1150px) and (max-width: 1350px) {
+    #experience_fundview .checklist li {
+      font-size: 0.8rem;
+      gap: 0.45rem;
     }
   }
 
