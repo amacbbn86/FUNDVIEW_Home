@@ -796,25 +796,6 @@
       text-align: center;
     }
 
-    /* Soft ambient teal glow behind the metrics row */
-    .stats__inner::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 42%;
-      z-index: 0;
-      width: min(92%, 1100px);
-      height: min(70%, 280px);
-      transform: translate(-50%, -50%);
-      background: radial-gradient(
-        ellipse 70% 60% at 50% 50%,
-        rgba(0, 200, 216, 0.2) 0%,
-        rgba(0, 183, 179, 0.1) 42%,
-        transparent 72%
-      );
-      pointer-events: none;
-    }
-
     .stats__title {
       position: relative;
       z-index: 1;
