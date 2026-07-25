@@ -1343,11 +1343,10 @@
     }
   }
 
-  /* 1024–1250: keep .hero-copy-content inside the glass diagonal cutaway.
-     Desktop clip-path removes ~120px at the top-right; unscoped padding +
-     3-col max-content checklist otherwise spill into the town scene.
-     Must follow base/#experience_fundview desktop rules (cascade). */
-  @media (min-width: 1024px) and (max-width: 1250px) {
+  /* 1024–1300: keep title + subtitle inside the glass diagonal cutaway.
+     Desktop clip-path removes ~120px at the top-right; must follow base
+     #experience_fundview desktop rules so these win the cascade. */
+  @media (min-width: 1024px) and (max-width: 1300px) {
     #experience_fundview .hero-copy-col {
       /* Reserve the clip-path cut on the right; left pad stays aligned with header */
       padding-right: clamp(5.75rem, 9.5vw, 7.5rem);
@@ -1358,7 +1357,19 @@
     }
 
     #experience_fundview .hero__title {
+      font-size: 2.0rem;
       max-width: 11ch;
+    }
+
+    #experience_fundview .hero__subtitle {
+      margin: 0;
+      max-width: 28ch;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: clamp(0.98rem, 1.1vw, 1.08rem);
+      line-height: 1.65;
+      color: rgba(10, 46, 87, 0.72);
+      font-weight: 400;
+      text-align: left;
     }
 
     #experience_fundview .checklist,
@@ -1392,20 +1403,6 @@
     #experience_fundview .hero-copy-cta {
       padding: 0.85rem 2.5rem;
       font-size: 14px;
-    }
-  }
-
-  /* 1024–1250: narrower subtitle so it stays on the glass (must follow base) */
-  @media (min-width: 1024px) and (max-width: 1250px) {
-    #experience_fundview .hero__subtitle {
-      margin: 0;
-      max-width: 28ch;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: clamp(0.98rem, 1.1vw, 1.08rem);
-      line-height: 1.65;
-      color: rgba(10, 46, 87, 0.72);
-      font-weight: 400;
-      text-align: left;
     }
   }
 
