@@ -143,6 +143,13 @@
       filter: brightness(0) invert(1);
     }
 
+    /* ≤1150px: logo −20% until a narrower breakpoint overrides (e.g. ≤991px → 36px) */
+    @media (max-width: 1150px) {
+      .site-header__logo img {
+        height: 33.6px; /* 42px × 0.8 */
+      }
+    }
+
     /* Desktop (non-hamburger): pack links tightly and sit them toward the CTA/right */
     .site-nav {
       display: flex;
