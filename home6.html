@@ -1381,6 +1381,10 @@
     text-align: center;
   }
 
+  #experience_fundview .hero__ticker-title-line {
+    display: block;
+  }
+
   #experience_fundview .hero__ticker-copy {
     width: 100%;
   }
@@ -1433,12 +1437,14 @@
     }
 
     #experience_fundview .hero__ticker-title {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* keep both lines left-aligned in place */
       width: fit-content; /* no empty width past the words */
       max-width: 100%;
       margin: 0;
       text-align: left;
-      font-size: clamp(0.936rem, 1.14vw, 1.05rem); /* +20% */
+      font-size: clamp(0.936rem, 1.14vw, 1.05rem); /* +20% — second line */
       letter-spacing: 0.14em;
       line-height: 1.4;
       padding: 0.2rem 1.25rem 0.35rem 0;
@@ -1449,6 +1455,12 @@
         rgba(8, 20, 38, 0.9) 55%,
         rgba(8, 20, 38, 0) 100%
       );
+    }
+
+    /* Scale line 1 (~17 chars) up to match line 2 width (~21 chars) */
+    #experience_fundview .hero__ticker-title-line--lead {
+      font-size: 1.235em;
+      letter-spacing: 0.14em; /* em vs this line's size so tracking scales with type */
     }
 
     #experience_fundview .hero__ticker-viewport {
@@ -6350,7 +6362,7 @@
       <div class="hero__ticker" aria-label="Trusted by 180+ local governments">
         <div class="hero__ticker-copy">
           <div class="hero__ticker-align">
-            <p class="hero__ticker-title">180+ Cities Trust<br>Fundview ERP Software</p>
+            <p class="hero__ticker-title"><span class="hero__ticker-title-line hero__ticker-title-line--lead">180+ Cities Trust</span><span class="hero__ticker-title-line">Fundview ERP Software</span></p>
           </div>
         </div>
         <div class="hero__ticker-viewport">
