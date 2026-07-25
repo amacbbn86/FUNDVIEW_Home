@@ -1191,13 +1191,6 @@
     }
   }
 
-  /* Desktop below 1500px: hold title at 2.5rem until stacked (<1024) font rules take over */
-  @media (min-width: 1024px) and (max-width: 1499.98px) {
-    #experience_fundview .hero__title {
-      font-size: 2.5rem;
-    }
-  }
-
   /* Desktop ≤1350px: smaller checklist bullets until stacked (<1024) size rules */
   @media (min-width: 1024px) and (max-width: 1350px) {
     #experience_fundview .checklist li {
@@ -1243,7 +1236,7 @@
 
   #experience_fundview .hero__title {
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: clamp(3rem, 2.7vw, 2.65rem);
+    /* font-size set by breakpoint rules below / stacked media — do not set here */
     font-weight: 800;
     line-height: 1.12;
     max-width: 14ch;
@@ -1251,6 +1244,13 @@
     color: #0a2e57;
     letter-spacing: -0.02em;
     text-align: left;
+  }
+
+  /* Desktop below 1500px: 2.5rem (must follow base .hero__title so it wins the cascade) */
+  @media (min-width: 1024px) and (max-width: 1499.98px) {
+    #experience_fundview .hero__title {
+      font-size: 2.5rem;
+    }
   }
 
   #experience_fundview .hero__title .text-accent {
