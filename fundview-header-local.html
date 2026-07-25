@@ -26,7 +26,6 @@
       /* Lattice-like nav rhythm: small flex gap + horizontal padding on each link */
       --fv-nav-gap: 0.15rem;
       --fv-nav-link-pad-x: 0.75em;
-      --fv-nav-font-size: 0.9rem;
     }
 
     /* Sync header logo left edge with #experience_fundview .hero-copy-content
@@ -170,7 +169,7 @@
       gap: 0.45rem;
       padding: 0.4em var(--fv-nav-link-pad-x);
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: var(--fv-nav-font-size);
+      font-size: 0.81rem; /* default; wide desktop bumps to 0.9rem below */
       font-weight: 600;
       line-height: 1.2;
       color: rgba(255, 255, 255, 0.92);
@@ -347,7 +346,7 @@
       }
 
       .site-nav a {
-        font-size: 0.875rem; /* overridden by 992–1200 −10% rule below when both match */
+        font-size: 0.81rem;
       }
 
       .site-header__menu-toggle {
@@ -355,16 +354,10 @@
       }
     }
 
-    /* 992–1200: desktop nav labels −10% (0.9rem → 0.81rem) until hamburger.
-       Sets the var so Computed/DevTools resolve to 0.81rem (base rule still
-       reads var(--fv-nav-font-size), not a hard-coded 0.9rem). */
-    @media (min-width: 992px) and (max-width: 1200px) {
-      :root {
-        --fv-nav-font-size: 0.81rem;
-      }
-
+    /* Wide desktop only: full-size nav labels */
+    @media (min-width: 1201px) {
       .site-nav a {
-        font-size: 0.81rem;
+        font-size: 0.9rem;
       }
     }
 
