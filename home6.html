@@ -1985,18 +1985,12 @@
       padding-bottom: 2rem !important;
       align-content: start;
       align-items: start;
-      gap: 0 !important; /* eyebrow padding owns the title↔scene gap */
+      gap: 0 !important;
     }
-    .experience-eyebrow--stack {
-      display: block;
-      order: 0;
-      width: 100%;
-      text-align: center;
-      padding-top: clamp(2.25rem, 6vw, 3.25rem);
-      padding-bottom: clamp(1.5rem, 4vw, 2.25rem);
-    }
+    /* Stacked "Experience FUNDVIEW" eyebrow removed — town scene is first */
+    .experience-eyebrow--stack { display: none !important; }
     .experience-eyebrow--rail { display: none !important; }
-    #sceneWrap { order: 1; }
+    #sceneWrap { order: 0; }
     #heroContent > .fade-left {
       order: 2;
       justify-content: flex-start !important;
@@ -2010,10 +2004,6 @@
   @media (max-width: 639.98px) {
     #heroContent {
       padding-bottom: 2.5rem !important;
-    }
-    .experience-eyebrow--stack {
-      padding-top: 2.5rem;
-      padding-bottom: 1.75rem;
     }
   }
 
@@ -5467,11 +5457,6 @@
 
     <!-- Main hero grid: stacked below lg, 2-col at lg+ -->
     <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-0 sm:px-10 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(380px,40%)_1fr] lg:grid-rows-none lg:items-stretch lg:gap-0 lg:px-0 lg:pb-0">
-
-      <!-- Tablet/mobile: eyebrow stacked above the town scene (centered). -->
-      <div class="experience-eyebrow experience-eyebrow--stack order-0 text-center lg:hidden">
-        <div class="text-[13px] font-extrabold uppercase tracking-[0.2em] text-fvteal">Experience FUNDVIEW</div>
-      </div>
 
       <!-- Left column: glass copy panel (from home5 hero-copy) -->
       <div class="hero-fade fade-left order-2 hero-copy-col w-full min-w-0 h-full flex flex-col justify-center mx-auto lg:order-1 lg:mx-0 lg:self-stretch lg:h-auto">
