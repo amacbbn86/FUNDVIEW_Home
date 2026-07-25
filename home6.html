@@ -1191,6 +1191,13 @@
     }
   }
 
+  /* Desktop below 1500px: hold title at 2.5rem until stacked (<1024) font rules take over */
+  @media (min-width: 1024px) and (max-width: 1499.98px) {
+    #experience_fundview .hero__title {
+      font-size: 2.5rem;
+    }
+  }
+
   #experience_fundview .hero-copy-content {
     display: flex;
     flex-direction: column;
