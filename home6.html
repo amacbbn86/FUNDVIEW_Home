@@ -5464,6 +5464,16 @@
         height: 15px !important;
       }
     }
+
+    /* Mirror header mid-desktop nav shrink (header styles inject async via fetch) */
+    @media (min-width: 992px) and (max-width: 1200px) {
+      :root {
+        --fv-nav-font-size: 0.81rem;
+      }
+      .site-nav a {
+        font-size: 0.81rem !important;
+      }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" data-experience-fundview=""></script>
 </head>
