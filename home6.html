@@ -1362,11 +1362,6 @@
       max-width: 11ch;
     }
 
-    #experience_fundview .hero__subtitle {
-      font-size: 0.9rem;
-      max-width: 30ch;
-    }
-
     #experience_fundview .checklist,
     #experience_fundview .hero-copy-pair .checklist {
       width: 100%;
@@ -1398,6 +1393,20 @@
     #experience_fundview .hero-copy-cta {
       padding: 0.85rem 2.5rem;
       font-size: 14px;
+    }
+  }
+
+  /* 1024–1300: narrower subtitle so it stays on the glass (must follow base) */
+  @media (min-width: 1024px) and (max-width: 1300px) {
+    #experience_fundview .hero__subtitle {
+      margin: 0;
+      max-width: 28ch;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: clamp(0.98rem, 1.1vw, 1.08rem);
+      line-height: 1.65;
+      color: rgba(10, 46, 87, 0.72);
+      font-weight: 400;
+      text-align: left;
     }
   }
 
