@@ -96,6 +96,11 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Matches home6 — locks scroll while the shared mobile nav is open */
+    body.nav-open {
+      overflow: hidden;
+    }
+
     img { display: block; max-width: 100%; }
 
     h1, h2, h3 { text-wrap: balance; }
@@ -1294,8 +1299,9 @@
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- Header: loaded dynamically from fundview-header-local.html (single source
-       of truth on the homepage). Degrades silently if the file is absent. -->
+  <!-- Header: loaded dynamically from fundview-header-local.html (same shared
+       source as home6.html — latest navy/glass nav, desktop text-only links,
+       mobile icons in hamburger). Degrades silently if the file is absent. -->
   <div id="header-mount"></div>
   <script>
     (async function loadSharedHeader() {
