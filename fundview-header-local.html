@@ -313,43 +313,6 @@
       transform: translateY(-8px) rotate(-45deg);
     }
 
-    /* At/below 1000px: nav on its own row until the hamburger kicks in at 991px.
-       Keep items clustered to the right. */
-    @media (max-width: 1000px) and (min-width: 992px) {
-      .site-header__inner {
-        grid-template-columns: 1fr auto;
-        grid-template-areas:
-          "logo actions"
-          "nav nav";
-        row-gap: 0.65rem;
-        column-gap: 1.25rem;
-        padding: 0.9rem 2rem 0.85rem var(--fv-content-left);
-      }
-
-      .site-header__logo {
-        grid-area: logo;
-      }
-
-      .site-header__actions {
-        grid-area: actions;
-      }
-
-      .site-nav {
-        grid-area: nav;
-        width: auto;
-        justify-self: end;
-        justify-content: flex-end;
-        gap: var(--fv-nav-gap);
-        margin-left: auto;
-        padding: 0.45rem 0 0.1rem;
-        border-top: 1px solid var(--fv-divider);
-      }
-
-      .site-header__menu-toggle {
-        grid-area: actions;
-      }
-    }
-
     /* Wide desktop only: full-size nav labels */
     @media (min-width: 1201px) {
       .site-nav a {
