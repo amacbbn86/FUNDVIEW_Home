@@ -686,6 +686,7 @@
           arcfree.style.opacity=0;sun.setAttribute('fill','#F2B632');
           rowEls.forEach(function(r,i){applyBefore(r,tasks[i]);});scroll.scrollTop=0;
           setWork(92);tweenSun(curPct,92,reduce?0:600);
+          unlockScroll();
         }
         function toAfter(){
           timers.forEach(clearTimeout);timers=[];setActive('after');lockScroll();
