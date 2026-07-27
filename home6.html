@@ -4076,12 +4076,19 @@
 
     .solution_delivers__title {
       margin: 0 auto clamp(2.25rem, 4.5vw, 3.25rem);
-      max-width: 22ch;
+      max-width: 16ch;
       font-size: clamp(1.75rem, 3vw, 2.5rem);
       font-weight: 800;
       line-height: 1.2;
       letter-spacing: -0.02em;
       color: #0a2e57;
+    }
+
+    @media (min-width: 900px) {
+      .solution_delivers__title {
+        max-width: none;
+        white-space: nowrap;
+      }
     }
 
     .solution_delivers__grid {
