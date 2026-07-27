@@ -632,8 +632,11 @@
             flex:0 0 auto;
             align-self:center;
             margin-inline:auto;
-            min-height:240px;
-            max-height:300px;
+            /* ~3 full rows + peek of 4th with fade */
+            min-height:0;
+            max-height:210px;
+            -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 62%,transparent 100%);
+            mask-image:linear-gradient(180deg,#000 0%,#000 62%,transparent 100%);
           }
           #fv-hero .fv-payoff{
             order:11;
@@ -658,7 +661,7 @@
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-toggle{flex-wrap:wrap;justify-content:center}
           #fv-hero .fv-scroll,
-          #fv-hero .fv-scroll.fv-scrollable{min-height:220px;max-height:260px}
+          #fv-hero .fv-scroll.fv-scrollable{max-height:198px}
           #fv-hero .fv-payoff.fv-show{padding-top:1rem}
         }
         @media(prefers-reduced-motion:reduce){#fv-hero *{transition:none !important}}
