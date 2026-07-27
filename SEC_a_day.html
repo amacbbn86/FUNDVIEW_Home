@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FUNDVIEW — A Day in the Life at City Hall (SEC_a_day)</title>
+<!--
+  SEC_a_day.html — standalone working copy of home6.html section
+  class="daily_improvements_fundview" / id="daily_improvements_fundview"
+
+  Edit HERE first to save tokens. When polish is done, merge the section
+  (styles + markup + script) back into home6.html in place of the existing
+  daily_improvements_fundview block (between solution_delivers and see_in_action).
+
+  Preview: http://localhost:5500/SEC_a_day.html
+  Source concept: fundview-hero-more-time (1).html
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; background: #eef2f7; }
+  body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  .daily_improvements_fundview {
+    width: 100%;
+    padding: clamp(3.5rem, 7vw, 5.5rem) 1.5rem;
+    background: #eef2f7;
+  }
+  @media (max-width: 720px) {
+    .daily_improvements_fundview { padding: 3rem 1.15rem; }
+  }
+</style>
+</head>
+<body>
+<section class="daily_improvements_fundview" id="daily_improvements_fundview" aria-labelledby="fv-a11y">
+    <p id="fv-a11y" class="fv-sr">A day in the life at City Hall, before and after FUNDVIEW. Toggle to After and the tasks scroll through a small window as the sun tracks to noon, each checking off — teal for what FUNDVIEW handles, gold for your decisions — reclaiming the afternoon.</p>
+
+    <div id="fv-hero">
+      <style>
+        #fv-hero{--fv-blue:#0A2E57;--fv-blue2:#1E4FA3;--fv-teal:#00B7B3;--fv-gold:#F2B632;--fv-slate:#4B5C6E;--fv-ink:#1a2531;--fv-amber:#c98a1a;--fv-green:#129d74;
+          font-family:'Sora',Inter,system-ui,'Segoe UI',Arial,sans-serif;color:var(--fv-ink);max-width:880px;margin:0 auto}
+        #fv-hero *{box-sizing:border-box}
+        .daily_improvements_fundview > .fv-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+        #fv-hero .fv-win{border-radius:20px;overflow:hidden;box-shadow:0 26px 60px rgba(10,46,87,.20);border:1px solid #e4eaf2;background:#fff}
+        #fv-hero .fv-bar{height:34px;background:#f3f6fb;display:flex;align-items:center;gap:7px;padding:0 14px;border-bottom:1px solid #e9eef5}
+        #fv-hero .fv-dot{width:9px;height:9px;border-radius:50%}
+        #fv-hero .fv-top{background:linear-gradient(120deg,#fff,#f0f4f8 60%,#e7f6f5);padding:16px 24px 6px}
+        #fv-hero .fv-ey{font-size:10.5px;letter-spacing:.16em;font-weight:700;color:var(--fv-blue2);margin-bottom:8px}
+        #fv-hero .fv-toggle{display:inline-flex;background:#e9eef5;border-radius:11px;padding:3px;gap:3px;margin-bottom:11px}
+        #fv-hero .fv-seg{border:none;background:transparent;font-family:inherit;font-weight:700;font-size:11.5px;color:var(--fv-slate);padding:7px 13px;border-radius:8px;cursor:pointer;transition:.2s}
+        #fv-hero .fv-seg.fv-active{background:#fff;color:var(--fv-blue);box-shadow:0 3px 10px rgba(10,46,87,.12)}
+        #fv-hero .fv-seg.fv-active[data-s="after"]{color:var(--fv-teal)}
+        #fv-hero .fv-h{font-size:22px;line-height:1.1;font-weight:800;color:var(--fv-blue);margin:0 0 6px;transition:.4s}
+        #fv-hero .fv-h span{color:var(--fv-teal)}
+        #fv-hero .fv-sub{font-size:12.5px;line-height:1.45;color:#33465a;margin:0;max-width:600px;transition:.4s}
+        #fv-hero .fv-mid{display:flex;align-items:center;gap:14px;padding:6px 24px 2px;flex-wrap:wrap}
+        #fv-hero .fv-arcwrap{position:relative;flex:none;width:230px}
+        #fv-hero .fv-arcwrap svg{display:block;width:100%;height:auto}
+        #fv-hero .fv-midright{flex:1;min-width:200px}
+        #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;padding:6px 11px;border-radius:20px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
+        #fv-hero .fv-syn .fv-d2{width:7px;height:7px;border-radius:50%;background:var(--fv-amber)}
+        #fv-hero .fv-syn.fv-ok{border-color:#bfe8d6;background:#e6f6ef;color:var(--fv-green)}
+        #fv-hero .fv-syn.fv-ok .fv-d2{background:var(--fv-green)}
+        #fv-hero .fv-arccap{font-size:11.5px;color:var(--fv-slate);margin:8px 0 0;transition:.4s}
+        #fv-hero .fv-arccap b{color:var(--fv-blue)}
+        #fv-hero .fv-legend{display:flex;gap:14px;font-size:10px;font-weight:600;color:var(--fv-slate);margin-top:8px;opacity:0;transition:.4s}
+        #fv-hero .fv-legend.fv-on{opacity:1}
+        #fv-hero .fv-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+        #fv-hero .fv-scroll{height:150px;overflow:hidden;position:relative;padding:2px 22px;
+          -webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent)}
+        #fv-hero .fv-row{display:flex;align-items:center;gap:10px;padding:6px 11px;border-radius:10px;margin:4px 0;background:#fff;border:1px solid #eef2f7;border-left-width:4px;transition:border-color .35s,opacity .35s,background .35s}
+        #fv-hero .fv-ck{width:16px;height:16px;border-radius:5px;border:2px solid #cdd8e5;flex:none;display:flex;align-items:center;justify-content:center;transition:.3s;background:#fff}
+        #fv-hero .fv-ck svg{width:9px;height:9px;opacity:0;transform:scale(.4);transition:.3s}
+        #fv-hero .fv-row.fv-done .fv-ck svg{opacity:1;transform:scale(1)}
+        #fv-hero .fv-row.fv-done.fv-auto .fv-ck{background:var(--fv-teal);border-color:var(--fv-teal)}
+        #fv-hero .fv-row.fv-done.fv-dec .fv-ck{background:var(--fv-gold);border-color:var(--fv-gold)}
+        #fv-hero .fv-row .fv-tm{font-size:11.5px;font-weight:700;color:var(--fv-blue);font-variant-numeric:tabular-nums;width:52px;flex:none;transition:.3s}
+        #fv-hero .fv-row .fv-lb{font-size:12px;flex:1;line-height:1.25;transition:.3s}
+        #fv-hero .fv-row .fv-dept{font-size:8px;font-weight:700;color:#9aa6b4;letter-spacing:.05em}
+        #fv-hero .fv-payoff{margin:2px 24px 0;padding:0 2px;max-height:0;overflow:hidden;opacity:0;transition:max-height .6s ease,opacity .6s ease}
+        #fv-hero .fv-payoff.fv-show{max-height:160px;opacity:1}
+        #fv-hero .fv-pline{font-size:12.5px;color:var(--fv-blue);font-weight:700;margin:6px 0 8px}
+        #fv-hero .fv-vals{display:flex;flex-wrap:wrap;gap:6px}
+        #fv-hero .fv-val{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--fv-blue);background:#eef8f7;border:1px solid #cdeceb;border-radius:20px;padding:5px 10px;opacity:0;transform:translateY(6px);transition:.35s}
+        #fv-hero .fv-val.fv-on{opacity:1;transform:none}
+        #fv-hero .fv-val i{width:12px;height:12px;border-radius:50%;background:var(--fv-teal);display:inline-flex;align-items:center;justify-content:center}
+        #fv-hero .fv-val i svg{width:7px;height:7px}
+        #fv-hero .fv-controls{padding:12px 24px 6px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+        #fv-hero .fv-btn{display:inline-block;text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:13px;padding:11px 20px;border-radius:10px;cursor:pointer;box-shadow:0 10px 24px rgba(0,183,179,.32);transition:transform .2s ease}
+        #fv-hero .fv-btn:hover{transform:translateY(-1px)}
+        #fv-hero .fv-note{font-size:10.5px;color:var(--fv-slate);text-align:center;padding:4px 0 12px}
+        @media(max-width:600px){#fv-hero .fv-h{font-size:19px}#fv-hero .fv-arcwrap{width:100%}#fv-hero .fv-row .fv-dept{display:none}}
+        @media(prefers-reduced-motion:reduce){#fv-hero *{transition:none !important}}
+      </style>
+
+      <div class="fv-win">
+        <div class="fv-bar" aria-hidden="true"><span class="fv-dot" style="background:#ff5f57"></span><span class="fv-dot" style="background:#febc2e"></span><span class="fv-dot" style="background:#28c840"></span></div>
+
+        <div class="fv-top">
+          <div class="fv-ey">A DAY IN THE LIFE AT CITY HALL</div>
+          <div class="fv-toggle" role="tablist" aria-label="Before or after FUNDVIEW">
+            <button type="button" class="fv-seg fv-active" data-s="before" role="tab" aria-selected="true">Before FUNDVIEW</button>
+            <button type="button" class="fv-seg" data-s="after" role="tab" aria-selected="false">After FUNDVIEW</button>
+          </div>
+          <h2 class="fv-h" data-fv="head">Your software shouldn't cost you<br><span>your whole afternoon.</span></h2>
+          <p class="fv-sub" data-fv="sub">On disconnected systems, the same work gets entered twice, exported, and reconciled by hand — and it eats the entire day.</p>
+        </div>
+
+        <div class="fv-mid">
+          <div class="fv-arcwrap">
+            <svg viewBox="0 0 240 130" role="img" aria-label="A daily sun arc from 8 AM to 5 PM with noon at the top">
+              <path data-fv="arcbg" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#e2e9f1" stroke-width="7" stroke-linecap="round"/>
+              <path data-fv="arcfree" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#00B7B3" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="0 50 50" style="opacity:0;transition:opacity .6s"/>
+              <path data-fv="arcwork" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#F2B632" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="8" style="transition:stroke-dashoffset .9s ease"/>
+              <line x1="120" y1="20" x2="120" y2="112" stroke="#9fb0c2" stroke-width="1.2" stroke-dasharray="3 4"/>
+              <circle data-fv="sun" cx="0" cy="0" r="9" fill="#F2B632" stroke="#fff" stroke-width="2"/>
+              <text x="16" y="128" font-size="9" text-anchor="middle" style="fill:#8390a2">8a</text>
+              <text x="120" y="14" font-size="9.5" text-anchor="middle" font-weight="700" fill="#0A2E57">NOON</text>
+              <text x="224" y="128" font-size="9" text-anchor="middle" style="fill:#8390a2">5p</text>
+            </svg>
+          </div>
+          <div class="fv-midright">
+            <div class="fv-syn" data-fv="syn"><span class="fv-d2"></span>Books out of sync until the day-end packet</div>
+            <div class="fv-arccap" data-fv="arccap">Work spills all the way into the evening.</div>
+            <div class="fv-legend" data-fv="legend"><span><i style="background:#00B7B3"></i>FUNDVIEW does it</span><span><i style="background:#F2B632"></i>You decide</span></div>
+          </div>
+        </div>
+
+        <div class="fv-scroll" data-fv="scroll"><div data-fv="list"></div></div>
+
+        <div class="fv-payoff" data-fv="payoff">
+          <div class="fv-pline">Real-time visibility means faster decisions — and more:</div>
+          <div class="fv-vals" data-fv="vals"></div>
+        </div>
+
+        <div class="fv-controls"><a class="fv-btn" data-fv="cta" href="#ready_to_see_fundview">See FUNDVIEW &rarr;</a></div>
+        <p class="fv-note">Illustrative concept — toggle Before / After to replay.</p>
+      </div>
+
+      <script>
+      (function(){
+        var FV_CONFIG = {
+          autoPlay: false,
+          ctaHref:  '#ready_to_see_fundview',
+          ctaLabel: 'See FUNDVIEW \u2192',
+          valWords: ['Accuracy','Compliance','Clarity','Efficiency','Continuity','Confidence'],
+          tasks: [
+            {bt:'8:03a', at:'8:03a', h:'dec', dept:'UTILITY',        before:'Re-key each overnight payment by hand',      after:'Payments post themselves as they\u2019re paid'},
+            {bt:'8:17a', at:'8:05a', h:'auto',dept:'',               before:'Export a report just to see the numbers',    after:'Your numbers are always live'},
+            {bt:'8:31a', at:'8:06a', h:'auto',dept:'',               before:'Reformat it in Excel to read it',            after:'Reports come out clean — no cleanup'},
+            {bt:'8:54a', at:'8:20a', h:'auto',dept:'UTILITY BILLING',before:'Run utility billing and wait',               after:'Bills calculate the moment readings upload'},
+            {bt:'9:06a', at:'8:35a', h:'auto',dept:'',               before:'Reconcile what the system already knew',      after:'Reconciles itself, live'},
+            {bt:'9:28a', at:'9:00a', h:'dec', dept:'FINANCE',        before:'Print, sign, then log the checks',           after:'You approve once — it signs and posts'},
+            {bt:'9:41a', at:'9:15a', h:'auto',dept:'METERS',         before:'Print work orders for the meter crew',       after:'Work orders hit the crew\u2019s phones'},
+            {bt:'10:14a',at:'9:25a', h:'auto',dept:'',               before:'Scan docs into a separate system',           after:'Attached right where it belongs'},
+            {bt:'10:38a',at:'9:45a', h:'auto',dept:'METERS',         before:'Re-key finished meter work into billing',    after:'The field updates billing for you'},
+            {bt:'11:02a',at:'10:05a',h:'auto',dept:'PAYROLL',        before:'Wait while payroll runs',                    after:'Runs in the background — no waiting'},
+            {bt:'11:26a',at:'10:20a',h:'dec', dept:'PAYROLL',        before:'Chase and key in timesheets',                after:'You approve once — it posts'},
+            {bt:'11:49a',at:'10:45a',h:'auto',dept:'PERMITS',        before:'Re-enter permit fees into financials',       after:'Fees post to the financials for you'},
+            {bt:'1:18p', at:'11:05a',h:'auto',dept:'',               before:'Run a day-end packet to sync the books',     after:'The books are already in sync'},
+            {bt:'2:10p', at:'11:25a',h:'dec', dept:'PERMITS',        before:'Update permit, inspection, fee separately',  after:'One approval updates all three'},
+            {bt:'2:35p', at:'11:40a',h:'auto',dept:'COURT',          before:'Reconcile court payments on their own',      after:'Court payments reconcile in real time'},
+            {bt:'3:47p', at:'11:52a',h:'auto',dept:'',               before:'Dig through another module for an answer',   after:'One system — the answer\u2019s right there'}
+          ],
+          copy: {
+            beforeHead:'Your software shouldn\u2019t cost you<br><span>your whole afternoon.</span>',
+            beforeSub:'On disconnected systems, the same work gets entered twice, exported, and reconciled by hand — and it eats the entire day.',
+            afterHead:'What could you do with <span>more time in your day?</span>',
+            afterSub:'FUNDVIEW does the busywork the moment it\u2019s entered — so the whole day\u2019s work is done by noon.',
+            beforeArc:'Work spills all the way into the evening.',
+            afterArc:'Done by <b>noon</b>. The afternoon is yours.',
+            beforeSyn:'Books out of sync until the day-end packet',
+            afterSyn:'Books in sync — updated in real time'
+          }
+        };
+
+        var root=document.getElementById('fv-hero');
+        if(!root) return;
+        var $=function(n){return root.querySelector('[data-fv="'+n+'"]');};
+        var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+        var CK='<svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        var tasks=FV_CONFIG.tasks, C=FV_CONFIG.copy;
+
+        var list=$('list'), scroll=$('scroll');
+        var rowEls=tasks.map(function(t){var r=document.createElement('div');r.className='fv-row '+(t.h==='dec'?'fv-dec':'fv-auto');
+          r.innerHTML='<span class="fv-ck">'+CK+'</span><span class="fv-tm"></span><span class="fv-lb"></span><span class="fv-dept">'+t.dept+'</span>';list.appendChild(r);return r;});
+        var vals=$('vals');
+        var valEls=FV_CONFIG.valWords.map(function(w){var s=document.createElement('span');s.className='fv-val';s.innerHTML='<i>'+CK+'</i>'+w;vals.appendChild(s);return s;});
+        var cta=$('cta'); cta.href=FV_CONFIG.ctaHref; cta.innerHTML=FV_CONFIG.ctaLabel;
+
+        var head=$('head'),sub=$('sub'),syn=$('syn'),arccap=$('arccap'),legend=$('legend'),payoff=$('payoff'),
+            arcwork=$('arcwork'),arcfree=$('arcfree'),arcbg=$('arcbg'),sun=$('sun');
+        var segs=[].slice.call(root.querySelectorAll('.fv-seg'));
+        var totalLen=arcbg.getTotalLength(),curPct=92,timers=[];
+
+        function ptAt(p){return arcbg.getPointAtLength(totalLen*p/100);}
+        function placeSun(p){var q=ptAt(p);sun.setAttribute('cx',q.x);sun.setAttribute('cy',q.y);}
+        function setWork(p){arcwork.style.strokeDashoffset=(100-p);}
+        function tweenSun(from,to,ms){if(reduce){placeSun(to);curPct=to;return;}var t0=performance.now();(function s(now){var k=Math.min(1,(now-t0)/ms);var e=1-Math.pow(1-k,3);var v=from+(to-from)*e;placeSun(v);curPct=v;if(k<1)requestAnimationFrame(s);})(performance.now());}
+        function scrollToRow(i){if(reduce)return;var r=rowEls[i];var target=Math.max(0,r.offsetTop-scroll.clientHeight*0.55+r.offsetHeight/2);
+          var from=scroll.scrollTop,t0=performance.now();(function s(now){var k=Math.min(1,(now-t0)/380);var e=1-Math.pow(1-k,3);scroll.scrollTop=from+(target-from)*e;if(k<1)requestAnimationFrame(s);})(performance.now());}
+        function setActive(st){segs.forEach(function(b){var on=b.getAttribute('data-s')===st;b.classList.toggle('fv-active',on);b.setAttribute('aria-selected',on?'true':'false');});}
+        function applyBefore(r,t){r.classList.remove('fv-done');r.querySelector('.fv-tm').textContent=t.bt;r.querySelector('.fv-lb').textContent=t.before;r.style.borderLeftColor=(t.h==='dec')?'#00B7B3':'#e6b866';}
+        function applyAfter(r,t){r.classList.add('fv-done');var tm=r.querySelector('.fv-tm');tm.style.opacity=0;setTimeout(function(){tm.textContent=t.at;tm.style.opacity=1;},reduce?0:160);r.querySelector('.fv-lb').textContent=t.after;r.style.borderLeftColor=(t.h==='dec')?'#F2B632':'#00B7B3';}
+
+        function toBefore(){
+          timers.forEach(clearTimeout);timers=[];setActive('before');
+          head.innerHTML=C.beforeHead;sub.textContent=C.beforeSub;arccap.innerHTML=C.beforeArc;
+          syn.classList.remove('fv-ok');syn.innerHTML='<span class="fv-d2"></span>'+C.beforeSyn;
+          legend.classList.remove('fv-on');payoff.classList.remove('fv-show');valEls.forEach(function(el){el.classList.remove('fv-on');});
+          arcfree.style.opacity=0;
+          rowEls.forEach(function(r,i){applyBefore(r,tasks[i]);});scroll.scrollTop=0;
+          setWork(92);tweenSun(curPct,92,reduce?0:600);
+        }
+        function toAfter(){
+          timers.forEach(clearTimeout);timers=[];setActive('after');
+          rowEls.forEach(function(r,i){applyBefore(r,tasks[i]);});scroll.scrollTop=0;
+          head.innerHTML=C.afterHead;sub.textContent=C.afterSub;arccap.innerHTML=C.afterArc;legend.classList.add('fv-on');
+          tweenSun(92,50,reduce?0:2900);
+          var n=rowEls.length;
+          rowEls.forEach(function(r,i){timers.push(setTimeout(function(){applyAfter(r,tasks[i]);scrollToRow(i);setWork(92-(42*(i+1)/n));},reduce?0:170*i));});
+          timers.push(setTimeout(function(){syn.classList.add('fv-ok');syn.innerHTML='<span class="fv-d2"></span>'+C.afterSyn;},reduce?0:1100));
+          timers.push(setTimeout(function(){setWork(50);arcfree.setAttribute('stroke-dasharray','0 50 50');arcfree.style.opacity=1;
+            payoff.classList.add('fv-show');valEls.forEach(function(el,i){setTimeout(function(){el.classList.add('fv-on');},reduce?0:130*i);});
+            if(!reduce)scroll.scrollTop=0;
+          },reduce?0:170*n+300));
+        }
+        segs.forEach(function(b){b.addEventListener('click',function(){b.getAttribute('data-s')==='after'?toAfter():toBefore();});});
+        toBefore();
+
+        if(FV_CONFIG.autoPlay && 'IntersectionObserver' in window){
+          var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){toAfter();io.disconnect();}});},{threshold:.5});
+          io.observe(root);
+        }
+      })();
+      </script>
+    </div>
+  </section>
+</body>
+</html>
