@@ -18,7 +18,7 @@ Alex uses two GitHub destinations for home6 / HubSpot homepage files.
 - Repo: https://github.com/amcintyre86/SITE_Home-Page
 - Local clone (when present): `C:\Users\amcintyre\Projects\SITE_Home-Page`
 - Upload **only** when Alex explicitly asks (e.g. “upload to SITE_Home-Page”, “send to amcintyre86”, “sync the other account”).
-- When asked, copy/update at least `home6.html` and `Home6.hubspot.html` (regenerate HubSpot export first if needed), commit, and push to that repo’s `main`.
+- When asked, copy/update at least `home6.html`, `Home6.hubspot.html`, `fundview-header-local.html`, and `fundview-footer-local.html` (regenerate HubSpot export first if needed), commit, and push to that repo’s `main`.
 - **Never** push to `amcintyre86/SITE_Home-Page` as part of routine homepage edits.
 
 ## Auth note
