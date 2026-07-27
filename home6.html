@@ -4183,7 +4183,7 @@
     .daily_improvements_fundview {
       width: 100%;
       padding: clamp(3.5rem, 7vw, 5.5rem) 1.5rem;
-      background: #eef2f7;
+      background: #f0f4f8;
     }
 
     @media (max-width: 720px) {
@@ -6890,112 +6890,251 @@
 
     <div id="fv-hero">
       <style>
+        /* Open layout — no card shell. Width matches home6 neighbors (1240px). */
         #fv-hero{--fv-blue:#0A2E57;--fv-blue2:#1E4FA3;--fv-teal:#00B7B3;--fv-gold:#F2B632;--fv-slate:#4B5C6E;--fv-ink:#1a2531;--fv-amber:#c98a1a;--fv-green:#129d74;
-          font-family:'Sora',Inter,system-ui,'Segoe UI',Arial,sans-serif;color:var(--fv-ink);max-width:880px;margin:0 auto}
+          font-family:'Sora',Inter,system-ui,'Segoe UI',Arial,sans-serif;color:var(--fv-ink);width:min(1240px,100%);margin:0 auto}
         #fv-hero *{box-sizing:border-box}
         .daily_improvements_fundview > .fv-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-        #fv-hero .fv-win{border-radius:20px;overflow:hidden;box-shadow:0 26px 60px rgba(10,46,87,.20);border:1px solid #e4eaf2;background:#fff}
-        #fv-hero .fv-bar{height:34px;background:#f3f6fb;display:flex;align-items:center;gap:7px;padding:0 14px;border-bottom:1px solid #e9eef5}
-        #fv-hero .fv-dot{width:9px;height:9px;border-radius:50%}
-        #fv-hero .fv-top{background:linear-gradient(120deg,#fff,#f0f4f8 60%,#e7f6f5);padding:16px 24px 6px}
-        #fv-hero .fv-ey{font-size:10.5px;letter-spacing:.16em;font-weight:700;color:var(--fv-blue2);margin-bottom:8px}
-        #fv-hero .fv-toggle{display:inline-flex;background:#e9eef5;border-radius:11px;padding:3px;gap:3px;margin-bottom:11px}
-        #fv-hero .fv-seg{border:none;background:transparent;font-family:inherit;font-weight:700;font-size:11.5px;color:var(--fv-slate);padding:7px 13px;border-radius:8px;cursor:pointer;transition:.2s}
-        #fv-hero .fv-seg.fv-active{background:#fff;color:var(--fv-blue);box-shadow:0 3px 10px rgba(10,46,87,.12)}
-        #fv-hero .fv-seg.fv-active[data-s="after"]{color:var(--fv-teal)}
-        #fv-hero .fv-h{font-size:22px;line-height:1.1;font-weight:800;color:var(--fv-blue);margin:0 0 6px;transition:.4s}
+        #fv-hero .fv-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.18fr);gap:clamp(2rem,4vw,3.5rem);align-items:start}
+        #fv-hero .fv-left,#fv-hero .fv-right{display:flex;flex-direction:column;min-width:0}
+        #fv-hero .fv-ey{font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--fv-blue);margin:0 0 14px;text-transform:uppercase}
+        #fv-hero .fv-right-head{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;margin:0 0 14px}
+        #fv-hero .fv-right-head .fv-ey{margin:0}
+        #fv-hero .fv-toggle{display:inline-flex;flex-wrap:wrap;gap:8px;margin:0;align-self:center;flex:none}
+        #fv-hero .fv-seg{display:inline-flex;align-items:center;gap:8px;border:1.5px solid #d5dde8;background:#fff;font-family:inherit;font-weight:700;font-size:12.5px;color:var(--fv-slate);padding:9px 15px;border-radius:999px;cursor:pointer;transition:.2s}
+        #fv-hero .fv-seg .fv-seg-ico{width:16px;height:16px;flex:none;display:inline-flex;align-items:center;justify-content:center}
+        #fv-hero .fv-seg .fv-seg-ico svg{width:16px;height:16px;display:block}
+        #fv-hero .fv-seg[data-s="before"] .fv-seg-ico{color:var(--fv-gold)}
+        #fv-hero .fv-seg[data-s="after"]{border-color:rgba(0,183,179,.45);color:var(--fv-teal)}
+        #fv-hero .fv-seg[data-s="after"] .fv-seg-ico{color:var(--fv-teal)}
+        #fv-hero .fv-seg.fv-active[data-s="before"]{background:var(--fv-blue);border-color:var(--fv-blue);color:#fff;box-shadow:0 8px 20px rgba(10,46,87,.22)}
+        #fv-hero .fv-seg.fv-active[data-s="before"] .fv-seg-ico{color:var(--fv-gold)}
+        #fv-hero .fv-seg.fv-active[data-s="after"]{background:var(--fv-teal);border-color:var(--fv-teal);color:#fff;box-shadow:0 8px 20px rgba(0,183,179,.28)}
+        #fv-hero .fv-seg.fv-active[data-s="after"] .fv-seg-ico{color:#fff}
+        #fv-hero .fv-h{font-size:clamp(1.6rem,2.2vw,2.05rem);line-height:1.18;font-weight:800;color:var(--fv-blue);margin:0 0 12px;transition:.4s;max-width:17ch}
         #fv-hero .fv-h span{color:var(--fv-teal)}
-        #fv-hero .fv-sub{font-size:12.5px;line-height:1.45;color:#33465a;margin:0;max-width:600px;transition:.4s}
-        #fv-hero .fv-mid{display:flex;align-items:center;gap:14px;padding:6px 24px 2px;flex-wrap:wrap}
-        #fv-hero .fv-arcwrap{position:relative;flex:none;width:230px}
-        #fv-hero .fv-arcwrap svg{display:block;width:100%;height:auto}
-        #fv-hero .fv-midright{flex:1;min-width:200px}
-        #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;padding:6px 11px;border-radius:20px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
-        #fv-hero .fv-syn .fv-d2{width:7px;height:7px;border-radius:50%;background:var(--fv-amber)}
-        #fv-hero .fv-syn.fv-ok{border-color:#bfe8d6;background:#e6f6ef;color:var(--fv-green)}
-        #fv-hero .fv-syn.fv-ok .fv-d2{background:var(--fv-green)}
-        #fv-hero .fv-arccap{font-size:11.5px;color:var(--fv-slate);margin:8px 0 0;transition:.4s}
+        #fv-hero .fv-sub{font-size:clamp(.92rem,1.15vw,1.02rem);line-height:1.55;color:#3d5166;margin:0 0 1.5rem;max-width:36ch;transition:.4s}
+        #fv-hero .fv-mid{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+        #fv-hero .fv-arcwrap{position:relative;width:min(100%,320px);--fv-arc-h:calc(320px * 158 / 240)}
+        #fv-hero .fv-arcwrap svg{display:block;width:100%;height:auto;overflow:visible}
+        #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
+        #fv-hero .fv-syn .fv-d2{width:8px;height:8px;border-radius:50%;background:var(--fv-amber);flex:none}
+        #fv-hero .fv-syn.fv-ok{border-color:rgba(0,183,179,.28);background:#e6f7f6;color:#0a7f7c}
+        #fv-hero .fv-syn.fv-ok .fv-d2{width:14px;height:14px;background:var(--fv-teal);position:relative}
+        #fv-hero .fv-syn.fv-ok .fv-d2::after{content:"";position:absolute;left:4px;top:2.5px;width:4px;height:7px;border:solid #fff;border-width:0 1.75px 1.75px 0;transform:rotate(45deg)}
+        #fv-hero .fv-arccap{font-size:14px;color:var(--fv-slate);margin:0;transition:.4s}
         #fv-hero .fv-arccap b{color:var(--fv-blue)}
-        #fv-hero .fv-legend{display:flex;gap:14px;font-size:10px;font-weight:600;color:var(--fv-slate);margin-top:8px;opacity:0;transition:.4s}
+        #fv-hero .fv-legend{display:flex;flex-wrap:wrap;gap:14px 18px;font-size:11.5px;font-weight:600;color:var(--fv-slate);margin-top:2px;opacity:0;transition:.4s}
         #fv-hero .fv-legend.fv-on{opacity:1}
-        #fv-hero .fv-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
-        #fv-hero .fv-scroll{height:150px;overflow:hidden;position:relative;padding:2px 22px;
-          -webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent)}
-        #fv-hero .fv-row{display:flex;align-items:center;gap:10px;padding:6px 11px;border-radius:10px;margin:4px 0;background:#fff;border:1px solid #eef2f7;border-left-width:4px;transition:border-color .35s,opacity .35s,background .35s}
-        #fv-hero .fv-ck{width:16px;height:16px;border-radius:5px;border:2px solid #cdd8e5;flex:none;display:flex;align-items:center;justify-content:center;transition:.3s;background:#fff}
+        #fv-hero .fv-legend i{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px}
+        #fv-hero .fv-legend i svg{width:8px;height:8px}
+        #fv-hero .fv-controls{padding:1.35rem 0 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+        #fv-hero .fv-btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:14px;padding:13px 18px 13px 22px;border-radius:12px;cursor:pointer;box-shadow:0 12px 28px rgba(0,183,179,.34);transition:transform .2s ease,box-shadow .2s ease}
+        #fv-hero .fv-btn:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(0,183,179,.4)}
+        #fv-hero .fv-btn-arrow{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.22);font-size:13px;line-height:1}
+        #fv-hero .fv-scroll{flex:1;min-height:320px;max-height:460px;overflow:hidden;position:relative;padding:2px 6px 8px 2px;
+          overscroll-behavior:contain;touch-action:pan-y;
+          -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 88%,transparent);mask-image:linear-gradient(180deg,#000 0%,#000 88%,transparent)}
+        #fv-hero .fv-scroll.fv-scrollable{overflow-y:auto;-webkit-overflow-scrolling:touch;cursor:grab;scrollbar-width:thin;scrollbar-color:rgba(10,46,87,.28) transparent;
+          -webkit-user-select:none;user-select:none;touch-action:pan-y}
+        #fv-hero .fv-scroll.fv-scrollable.fv-dragging{cursor:grabbing}
+        #fv-hero .fv-scroll.fv-scrollable *{-webkit-user-select:none;user-select:none}
+        #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar{width:6px}
+        #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar-thumb{background:rgba(10,46,87,.28);border-radius:999px}
+        #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar-track{background:transparent}
+        #fv-hero .fv-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;margin:0 0 9px;background:#fff;border:1px solid #e5ebf2;border-left-width:4px;box-shadow:0 4px 14px rgba(10,46,87,.05);transition:border-color .35s,opacity .35s,background .35s,box-shadow .35s}
+        #fv-hero .fv-ck{width:18px;height:18px;border-radius:50%;border:2px solid #cdd8e5;flex:none;display:flex;align-items:center;justify-content:center;transition:.3s;background:#fff}
         #fv-hero .fv-ck svg{width:9px;height:9px;opacity:0;transform:scale(.4);transition:.3s}
         #fv-hero .fv-row.fv-done .fv-ck svg{opacity:1;transform:scale(1)}
         #fv-hero .fv-row.fv-done.fv-auto .fv-ck{background:var(--fv-teal);border-color:var(--fv-teal)}
         #fv-hero .fv-row.fv-done.fv-dec .fv-ck{background:var(--fv-gold);border-color:var(--fv-gold)}
-        #fv-hero .fv-row .fv-tm{font-size:11.5px;font-weight:700;color:var(--fv-blue);font-variant-numeric:tabular-nums;width:52px;flex:none;transition:.3s}
-        #fv-hero .fv-row .fv-lb{font-size:12px;flex:1;line-height:1.25;transition:.3s}
-        #fv-hero .fv-row .fv-dept{font-size:8px;font-weight:700;color:#9aa6b4;letter-spacing:.05em}
-        #fv-hero .fv-payoff{margin:2px 24px 0;padding:0 2px;max-height:0;overflow:hidden;opacity:0;transition:max-height .6s ease,opacity .6s ease}
-        #fv-hero .fv-payoff.fv-show{max-height:160px;opacity:1}
-        #fv-hero .fv-pline{font-size:12.5px;color:var(--fv-blue);font-weight:700;margin:6px 0 8px}
-        #fv-hero .fv-vals{display:flex;flex-wrap:wrap;gap:6px}
-        #fv-hero .fv-val{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--fv-blue);background:#eef8f7;border:1px solid #cdeceb;border-radius:20px;padding:5px 10px;opacity:0;transform:translateY(6px);transition:.35s}
+        #fv-hero .fv-row .fv-tm{font-size:12.5px;font-weight:800;color:var(--fv-blue);font-variant-numeric:tabular-nums;flex:none;min-width:52px;text-align:center;padding:4px 8px;border-radius:8px;background:#f7efd8;transition:.3s}
+        #fv-hero .fv-row.fv-done .fv-tm{background:#e8f6f5}
+        #fv-hero .fv-row .fv-lb{font-size:13.5px;flex:1;min-width:0;line-height:1.35;color:#33465a;transition:.3s}
+        #fv-hero .fv-row .fv-dept{font-size:9.5px;font-weight:700;color:#9aa6b4;letter-spacing:.06em;text-transform:uppercase;flex:none}
+        #fv-hero .fv-payoff{margin:clamp(1.75rem,3vw,2.5rem) 0 0;padding:0;max-height:0;overflow:hidden;opacity:0;border-top:2px solid transparent;transition:max-height .6s ease,opacity .6s ease,padding .6s ease,border-color .6s ease}
+        #fv-hero .fv-payoff.fv-show{max-height:220px;opacity:1;padding:1.25rem 0 0;border-top-color:var(--fv-teal)}
+        #fv-hero .fv-pline{font-size:15px;color:var(--fv-blue);font-weight:700;margin:0 0 12px}
+        #fv-hero .fv-vals{display:flex;flex-wrap:wrap;gap:10px}
+        #fv-hero .fv-val{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--fv-blue);background:#fff;border:1px solid #dce7ef;border-radius:999px;padding:8px 14px;box-shadow:0 4px 14px rgba(10,46,87,.06);opacity:0;transform:translateY(6px);transition:.35s}
         #fv-hero .fv-val.fv-on{opacity:1;transform:none}
-        #fv-hero .fv-val i{width:12px;height:12px;border-radius:50%;background:var(--fv-teal);display:inline-flex;align-items:center;justify-content:center}
-        #fv-hero .fv-val i svg{width:7px;height:7px}
-        #fv-hero .fv-controls{padding:12px 24px 6px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-        #fv-hero .fv-btn{display:inline-block;text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:13px;padding:11px 20px;border-radius:10px;cursor:pointer;box-shadow:0 10px 24px rgba(0,183,179,.32);transition:transform .2s ease}
-        #fv-hero .fv-btn:hover{transform:translateY(-1px)}
-        #fv-hero .fv-note{font-size:10.5px;color:var(--fv-slate);text-align:center;padding:4px 0 12px}
-        @media(max-width:600px){#fv-hero .fv-h{font-size:19px}#fv-hero .fv-arcwrap{width:100%}#fv-hero .fv-row .fv-dept{display:none}}
+        #fv-hero .fv-val i{width:15px;height:15px;border-radius:50%;background:var(--fv-teal);display:inline-flex;align-items:center;justify-content:center;flex:none}
+        #fv-hero .fv-val i svg{width:8px;height:8px}
+        @media(max-width:960px){
+          /* Flatten so we can reorder: copy → toggle → arc → list → payoff → CTA */
+          #fv-hero{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+          }
+          #fv-hero .fv-grid,
+          #fv-hero .fv-left,
+          #fv-hero .fv-right,
+          #fv-hero .fv-right-head,
+          #fv-hero .fv-mid{display:contents}
+          #fv-hero .fv-left > .fv-ey{order:1;width:100%;text-align:center;margin:0 0 14px}
+          #fv-hero .fv-h{
+            order:2;
+            text-align:center;
+            margin-left:auto;
+            margin-right:auto;
+            max-width:22ch;
+            font-size:1.5rem;
+          }
+          #fv-hero .fv-sub{
+            order:3;
+            text-align:center;
+            margin-left:auto;
+            margin-right:auto;
+            margin-bottom:1.35rem;
+            max-width:42ch;
+          }
+          /* Before/After — centered above the arc */
+          #fv-hero .fv-toggle{
+            order:4;
+            justify-content:center;
+            margin:0 auto 1.35rem;
+            align-self:center;
+          }
+          /* Wide elliptical arc: same height as desktop, stretched wider */
+          #fv-hero .fv-arcwrap{
+            order:5;
+            width:min(94vw,640px);
+            max-width:100%;
+            height:var(--fv-arc-h);
+            margin:0 auto 12px;
+            overflow:visible;
+          }
+          #fv-hero .fv-arcwrap svg{
+            width:100%;
+            height:100%;
+            overflow:visible;
+          }
+          #fv-hero .fv-syn{order:6;margin:0 auto 8px}
+          #fv-hero .fv-arccap{order:7;text-align:center;margin:0 auto 4px}
+          #fv-hero .fv-legend{order:8;justify-content:center;margin:8px auto 0}
+          /* Workflow title + list share the same centered column */
+          #fv-hero .fv-right .fv-ey{
+            order:9;
+            width:84%;
+            max-width:84%;
+            margin:2rem auto 14px;
+            text-align:left;
+            align-self:center;
+          }
+          #fv-hero .fv-scroll,
+          #fv-hero .fv-scroll.fv-scrollable{
+            order:10;
+            width:84%;
+            max-width:84%;
+            flex:0 0 auto;
+            align-self:center;
+            margin-inline:auto;
+            /* ~3 full rows + peek of 4th with fade */
+            min-height:0;
+            max-height:210px;
+            -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 62%,transparent 100%);
+            mask-image:linear-gradient(180deg,#000 0%,#000 62%,transparent 100%);
+          }
+          #fv-hero .fv-payoff{
+            order:11;
+            width:84%;
+            max-width:84%;
+            align-self:center;
+            margin-inline:auto;
+          }
+          /* CTA last in the section */
+          #fv-hero .fv-controls{
+            order:12;
+            justify-content:center;
+            width:100%;
+            padding:2rem 0 0;
+            margin:0 auto;
+          }
+        }
+        @media(max-width:600px){
+          #fv-hero .fv-h{font-size:1.32rem}
+          #fv-hero .fv-arcwrap{width:min(96vw,100%)}
+          #fv-hero .fv-row .fv-dept{display:none}
+          #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
+          #fv-hero .fv-toggle{flex-wrap:wrap;justify-content:center}
+          #fv-hero .fv-scroll,
+          #fv-hero .fv-scroll.fv-scrollable{max-height:198px}
+          #fv-hero .fv-payoff.fv-show{padding-top:1rem}
+        }
         @media(prefers-reduced-motion:reduce){#fv-hero *{transition:none !important}}
       </style>
 
-      <div class="fv-win">
-        <div class="fv-bar" aria-hidden="true"><span class="fv-dot" style="background:#ff5f57"></span><span class="fv-dot" style="background:#febc2e"></span><span class="fv-dot" style="background:#28c840"></span></div>
-
-        <div class="fv-top">
+      <div class="fv-grid">
+        <div class="fv-left">
           <div class="fv-ey">A DAY IN THE LIFE AT CITY HALL</div>
-          <div class="fv-toggle" role="tablist" aria-label="Before or after FUNDVIEW">
-            <button type="button" class="fv-seg fv-active" data-s="before" role="tab" aria-selected="true">Before FUNDVIEW</button>
-            <button type="button" class="fv-seg" data-s="after" role="tab" aria-selected="false">After FUNDVIEW</button>
-          </div>
-          <h2 class="fv-h" data-fv="head">Your software shouldn't cost you<br><span>your whole afternoon.</span></h2>
+          <h2 class="fv-h" data-fv="head">Your software shouldn't <span>cost you your whole afternoon.</span></h2>
           <p class="fv-sub" data-fv="sub">On disconnected systems, the same work gets entered twice, exported, and reconciled by hand — and it eats the entire day.</p>
-        </div>
 
-        <div class="fv-mid">
-          <div class="fv-arcwrap">
-            <svg viewBox="0 0 240 130" role="img" aria-label="A daily sun arc from 8 AM to 5 PM with noon at the top">
-              <path data-fv="arcbg" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#e2e9f1" stroke-width="7" stroke-linecap="round"/>
-              <path data-fv="arcfree" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#00B7B3" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="0 50 50" style="opacity:0;transition:opacity .6s"/>
-              <path data-fv="arcwork" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#F2B632" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="8" style="transition:stroke-dashoffset .9s ease"/>
-              <line x1="120" y1="20" x2="120" y2="112" stroke="#9fb0c2" stroke-width="1.2" stroke-dasharray="3 4"/>
-              <circle data-fv="sun" cx="0" cy="0" r="9" fill="#F2B632" stroke="#fff" stroke-width="2"/>
-              <text x="16" y="128" font-size="9" text-anchor="middle" style="fill:#8390a2">8a</text>
-              <text x="120" y="14" font-size="9.5" text-anchor="middle" font-weight="700" fill="#0A2E57">NOON</text>
-              <text x="224" y="128" font-size="9" text-anchor="middle" style="fill:#8390a2">5p</text>
-            </svg>
-          </div>
-          <div class="fv-midright">
+          <div class="fv-mid">
+            <div class="fv-arcwrap">
+              <svg viewBox="0 0 240 158" role="img" aria-label="A daily sun arc from 8 AM to 5 PM with noon at the top">
+                <path data-fv="arcbg" d="M16,140 A104,104 0 0 1 224,140" fill="none" stroke="#e2e9f1" stroke-width="8" stroke-linecap="round"/>
+                <path data-fv="arcfree" d="M16,140 A104,104 0 0 1 224,140" fill="none" stroke="#00B7B3" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="0 50 50" style="opacity:0;transition:opacity .6s"/>
+                <path data-fv="arcwork" d="M16,140 A104,104 0 0 1 224,140" fill="none" stroke="#F2B632" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="8" style="transition:stroke-dashoffset .9s ease"/>
+                <g fill="#fff" stroke="#c5d0dc" stroke-width="1.2">
+                  <circle cx="16" cy="140" r="3.2"/>
+                  <circle cx="30" cy="88" r="3.2"/>
+                  <circle cx="68" cy="50" r="3.2"/>
+                  <circle cx="172" cy="50" r="3.2"/>
+                  <circle cx="210" cy="88" r="3.2"/>
+                  <circle cx="224" cy="140" r="3.2"/>
+                </g>
+                <line data-fv="noonline" x1="120" y1="140" x2="120" y2="130" stroke="#9fb0c2" stroke-width="1.2" stroke-dasharray="3 4"/>
+                <circle data-fv="sun" cx="0" cy="0" r="10" fill="#F2B632" stroke="#fff" stroke-width="2.5"/>
+                <g data-fv="noon-label">
+                  <rect x="94" y="2" width="52" height="18" rx="9" fill="#0A2E57"/>
+                  <text x="120" y="14.5" font-size="9" text-anchor="middle" font-weight="700" fill="#fff" font-family="Sora,Inter,sans-serif">NOON</text>
+                </g>
+                <text x="16" y="156" font-size="10" text-anchor="middle" style="fill:#8390a2" font-family="Sora,Inter,sans-serif">8a</text>
+                <text x="224" y="156" font-size="10" text-anchor="middle" style="fill:#8390a2" font-family="Sora,Inter,sans-serif">5p</text>
+              </svg>
+            </div>
             <div class="fv-syn" data-fv="syn"><span class="fv-d2"></span>Books out of sync until the day-end packet</div>
             <div class="fv-arccap" data-fv="arccap">Work spills all the way into the evening.</div>
-            <div class="fv-legend" data-fv="legend"><span><i style="background:#00B7B3"></i>FUNDVIEW does it</span><span><i style="background:#F2B632"></i>You decide</span></div>
+            <div class="fv-legend" data-fv="legend">
+              <span><i style="background:#00B7B3"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></i>FUNDVIEW does it</span>
+              <span><i style="background:#F2B632"></i>You decide</span>
+            </div>
           </div>
+
+          <div class="fv-controls"><a class="fv-btn" data-fv="cta" href="#ready_to_see_fundview">See FUNDVIEW <span class="fv-btn-arrow" aria-hidden="true">&rarr;</span></a></div>
         </div>
 
-        <div class="fv-scroll" data-fv="scroll"><div data-fv="list"></div></div>
-
-        <div class="fv-payoff" data-fv="payoff">
-          <div class="fv-pline">Real-time visibility means faster decisions — and more:</div>
-          <div class="fv-vals" data-fv="vals"></div>
+        <div class="fv-right">
+          <div class="fv-right-head">
+            <div class="fv-ey">Today&rsquo;s Workflow</div>
+            <div class="fv-toggle" role="tablist" aria-label="Before or after FUNDVIEW">
+              <button type="button" class="fv-seg fv-active" data-s="before" role="tab" aria-selected="true">
+                <span class="fv-seg-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.5V8l2.4 1.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                Before FUNDVIEW
+              </button>
+              <button type="button" class="fv-seg" data-s="after" role="tab" aria-selected="false">
+                <span class="fv-seg-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.6"/><path d="M5 8.1l2.1 2.1L11.2 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                After FUNDVIEW
+              </button>
+            </div>
+          </div>
+          <div class="fv-scroll" data-fv="scroll" tabindex="0" aria-label="Today's workflow list"><div data-fv="list"></div></div>
         </div>
-
-        <div class="fv-controls"><a class="fv-btn" data-fv="cta" href="#ready_to_see_fundview">See FUNDVIEW &rarr;</a></div>
-        <p class="fv-note">Illustrative concept — toggle Before / After to replay.</p>
       </div>
 
-      <script>
+      <div class="fv-payoff" data-fv="payoff">
+        <div class="fv-pline">Real-time visibility means faster decisions — and more:</div>
+        <div class="fv-vals" data-fv="vals"></div>
+      </div>
+
+<script>
       (function(){
         var FV_CONFIG = {
           autoPlay: false,
           ctaHref:  '#ready_to_see_fundview',
-          ctaLabel: 'See FUNDVIEW \u2192',
+          ctaLabel: 'See FUNDVIEW <span class="fv-btn-arrow" aria-hidden="true">\u2192</span>',
           valWords: ['Accuracy','Compliance','Clarity','Efficiency','Continuity','Confidence'],
           tasks: [
             {bt:'8:03a', at:'8:03a', h:'dec', dept:'UTILITY',        before:'Re-key each overnight payment by hand',      after:'Payments post themselves as they\u2019re paid'},
@@ -7016,7 +7155,7 @@
             {bt:'3:47p', at:'11:52a',h:'auto',dept:'',               before:'Dig through another module for an answer',   after:'One system — the answer\u2019s right there'}
           ],
           copy: {
-            beforeHead:'Your software shouldn\u2019t cost you<br><span>your whole afternoon.</span>',
+            beforeHead:'Your software shouldn\u2019t <span>cost you your whole afternoon.</span>',
             beforeSub:'On disconnected systems, the same work gets entered twice, exported, and reconciled by hand — and it eats the entire day.',
             afterHead:'What could you do with <span>more time in your day?</span>',
             afterSub:'FUNDVIEW does the busywork the moment it\u2019s entered — so the whole day\u2019s work is done by noon.',
@@ -7042,43 +7181,144 @@
         var cta=$('cta'); cta.href=FV_CONFIG.ctaHref; cta.innerHTML=FV_CONFIG.ctaLabel;
 
         var head=$('head'),sub=$('sub'),syn=$('syn'),arccap=$('arccap'),legend=$('legend'),payoff=$('payoff'),
-            arcwork=$('arcwork'),arcfree=$('arcfree'),arcbg=$('arcbg'),sun=$('sun');
+            arcwork=$('arcwork'),arcfree=$('arcfree'),arcbg=$('arcbg'),sun=$('sun'),noonline=$('noonline');
         var segs=[].slice.call(root.querySelectorAll('.fv-seg'));
-        var totalLen=arcbg.getTotalLength(),curPct=92,timers=[];
+        var totalLen=arcbg.getTotalLength(),curPct=92,timers=[],mode=null;
+        var NOON_LINE_BASE=140, SUN_R=10;
+
+        function lockScroll(){scroll.classList.remove('fv-scrollable');scroll.classList.remove('fv-dragging');}
+        function unlockScroll(){scroll.classList.add('fv-scrollable');}
+
+        /* Desktop click-drag to scroll (touch keeps native pan) */
+        (function enableDesktopDragScroll(){
+          var dragging=false,moved=false,startY=0,startTop=0,pid=null;
+          scroll.addEventListener('pointerdown',function(e){
+            if(!scroll.classList.contains('fv-scrollable')) return;
+            if(e.pointerType==='touch' || e.pointerType==='pen') return;
+            if(e.button!==0) return;
+            dragging=true;moved=false;pid=e.pointerId;
+            startY=e.clientY;startTop=scroll.scrollTop;
+            scroll.classList.add('fv-dragging');
+            try{scroll.setPointerCapture(e.pointerId);}catch(err){}
+          });
+          scroll.addEventListener('pointermove',function(e){
+            if(!dragging || e.pointerId!==pid) return;
+            var dy=e.clientY-startY;
+            if(Math.abs(dy)>2) moved=true;
+            scroll.scrollTop=startTop-dy;
+            if(moved) e.preventDefault();
+          });
+          function endDrag(e){
+            if(!dragging || (e && pid!=null && e.pointerId!==pid)) return;
+            dragging=false;pid=null;
+            scroll.classList.remove('fv-dragging');
+            if(moved){
+              var block=function(ev){ev.preventDefault();ev.stopPropagation();scroll.removeEventListener('click',block,true);};
+              scroll.addEventListener('click',block,true);
+            }
+            moved=false;
+          }
+          scroll.addEventListener('pointerup',endDrag);
+          scroll.addEventListener('pointercancel',endDrag);
+          scroll.addEventListener('lostpointercapture',endDrag);
+        })();
 
         function ptAt(p){return arcbg.getPointAtLength(totalLen*p/100);}
-        function placeSun(p){var q=ptAt(p);sun.setAttribute('cx',q.x);sun.setAttribute('cy',q.y);}
+        function placeSun(p){
+          var q=ptAt(p);
+          sun.setAttribute('cx',q.x);sun.setAttribute('cy',q.y);
+          /* Dashed stem from arc base up to the ball edge */
+          if(noonline){
+            var dx=q.x-120, dy=q.y-NOON_LINE_BASE;
+            var len=Math.sqrt(dx*dx+dy*dy)||1;
+            noonline.setAttribute('x1','120');
+            noonline.setAttribute('y1',String(NOON_LINE_BASE));
+            noonline.setAttribute('x2',String(q.x-dx/len*SUN_R));
+            noonline.setAttribute('y2',String(q.y-dy/len*SUN_R));
+          }
+        }
         function setWork(p){arcwork.style.strokeDashoffset=(100-p);}
         function tweenSun(from,to,ms){if(reduce){placeSun(to);curPct=to;return;}var t0=performance.now();(function s(now){var k=Math.min(1,(now-t0)/ms);var e=1-Math.pow(1-k,3);var v=from+(to-from)*e;placeSun(v);curPct=v;if(k<1)requestAnimationFrame(s);})(performance.now());}
         function scrollToRow(i){if(reduce)return;var r=rowEls[i];var target=Math.max(0,r.offsetTop-scroll.clientHeight*0.55+r.offsetHeight/2);
           var from=scroll.scrollTop,t0=performance.now();(function s(now){var k=Math.min(1,(now-t0)/380);var e=1-Math.pow(1-k,3);scroll.scrollTop=from+(target-from)*e;if(k<1)requestAnimationFrame(s);})(performance.now());}
         function setActive(st){segs.forEach(function(b){var on=b.getAttribute('data-s')===st;b.classList.toggle('fv-active',on);b.setAttribute('aria-selected',on?'true':'false');});}
-        function applyBefore(r,t){r.classList.remove('fv-done');r.querySelector('.fv-tm').textContent=t.bt;r.querySelector('.fv-lb').textContent=t.before;r.style.borderLeftColor=(t.h==='dec')?'#00B7B3':'#e6b866';}
+        function applyBefore(r,t,soft){
+          r.classList.remove('fv-done');
+          var tm=r.querySelector('.fv-tm'),lb=r.querySelector('.fv-lb');
+          if(soft && !reduce){
+            tm.style.opacity=0;lb.style.opacity=0;
+            setTimeout(function(){tm.textContent=t.bt;lb.textContent=t.before;tm.style.opacity=1;lb.style.opacity=1;},140);
+          }else{
+            tm.textContent=t.bt;lb.textContent=t.before;tm.style.opacity=1;lb.style.opacity=1;
+          }
+          r.style.borderLeftColor=(t.h==='dec')?'#00B7B3':'#e6b866';
+        }
         function applyAfter(r,t){r.classList.add('fv-done');var tm=r.querySelector('.fv-tm');tm.style.opacity=0;setTimeout(function(){tm.textContent=t.at;tm.style.opacity=1;},reduce?0:160);r.querySelector('.fv-lb').textContent=t.after;r.style.borderLeftColor=(t.h==='dec')?'#F2B632':'#00B7B3';}
 
-        function toBefore(){
-          timers.forEach(clearTimeout);timers=[];setActive('before');
-          head.innerHTML=C.beforeHead;sub.textContent=C.beforeSub;arccap.innerHTML=C.beforeArc;
+        function snapBefore(){
           syn.classList.remove('fv-ok');syn.innerHTML='<span class="fv-d2"></span>'+C.beforeSyn;
           legend.classList.remove('fv-on');payoff.classList.remove('fv-show');valEls.forEach(function(el){el.classList.remove('fv-on');});
-          arcfree.style.opacity=0;
+          arcfree.style.opacity=0;sun.setAttribute('fill','#F2B632');
           rowEls.forEach(function(r,i){applyBefore(r,tasks[i]);});scroll.scrollTop=0;
-          setWork(92);tweenSun(curPct,92,reduce?0:600);
+          setWork(92);placeSun(92);curPct=92;
+        }
+
+        function toBefore(){
+          timers.forEach(clearTimeout);timers=[];setActive('before');lockScroll();
+          head.innerHTML=C.beforeHead;sub.textContent=C.beforeSub;arccap.innerHTML=C.beforeArc;
+          var fromAfter=mode==='after';
+          mode='before';
+
+          /* Initial load / reduced motion: snap instantly */
+          if(!fromAfter || reduce){
+            snapBefore();
+            unlockScroll();
+            return;
+          }
+
+          /* Smooth reverse: After → Before */
+          payoff.classList.remove('fv-show');
+          valEls.forEach(function(el){el.classList.remove('fv-on');});
+          legend.classList.remove('fv-on');
+          syn.classList.remove('fv-ok');syn.innerHTML='<span class="fv-d2"></span>'+C.beforeSyn;
+          arcfree.style.opacity=0;sun.setAttribute('fill','#F2B632');
+
+          var n=rowEls.length;
+          var step=110;
+          for(var rev=0;rev<n;rev++){
+            (function(revI){
+              var i=n-1-revI;
+              timers.push(setTimeout(function(){
+                applyBefore(rowEls[i],tasks[i],true);
+                scrollToRow(i);
+                setWork(50+(42*(revI+1)/n));
+              },step*revI));
+            })(rev);
+          }
+          tweenSun(curPct,92,Math.max(1000,step*n+280));
+          timers.push(setTimeout(function(){
+            setWork(92);scroll.scrollTop=0;unlockScroll();
+          },step*n+400));
         }
         function toAfter(){
-          timers.forEach(clearTimeout);timers=[];setActive('after');
+          timers.forEach(clearTimeout);timers=[];setActive('after');lockScroll();mode='after';
           rowEls.forEach(function(r,i){applyBefore(r,tasks[i]);});scroll.scrollTop=0;
           head.innerHTML=C.afterHead;sub.textContent=C.afterSub;arccap.innerHTML=C.afterArc;legend.classList.add('fv-on');
-          tweenSun(92,50,reduce?0:2900);
+          tweenSun(curPct,50,reduce?0:2900);
           var n=rowEls.length;
           rowEls.forEach(function(r,i){timers.push(setTimeout(function(){applyAfter(r,tasks[i]);scrollToRow(i);setWork(92-(42*(i+1)/n));},reduce?0:170*i));});
           timers.push(setTimeout(function(){syn.classList.add('fv-ok');syn.innerHTML='<span class="fv-d2"></span>'+C.afterSyn;},reduce?0:1100));
-          timers.push(setTimeout(function(){setWork(50);arcfree.setAttribute('stroke-dasharray','0 50 50');arcfree.style.opacity=1;
+          timers.push(setTimeout(function(){setWork(50);arcfree.setAttribute('stroke-dasharray','0 50 50');arcfree.style.opacity=1;sun.setAttribute('fill','#00B7B3');
             payoff.classList.add('fv-show');valEls.forEach(function(el,i){setTimeout(function(){el.classList.add('fv-on');},reduce?0:130*i);});
             if(!reduce)scroll.scrollTop=0;
+            unlockScroll();
           },reduce?0:170*n+300));
         }
-        segs.forEach(function(b){b.addEventListener('click',function(){b.getAttribute('data-s')==='after'?toAfter():toBefore();});});
+        segs.forEach(function(b){b.addEventListener('click',function(){
+          var next=b.getAttribute('data-s');
+          if(next===mode) return;
+          next==='after'?toAfter():toBefore();
+        });});
         toBefore();
 
         if(FV_CONFIG.autoPlay && 'IntersectionObserver' in window){
