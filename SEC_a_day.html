@@ -524,8 +524,14 @@
         #fv-hero .fv-controls{padding:1.35rem 0 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
         #fv-hero .fv-btn{display:inline-block;text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:14px;padding:13px 24px;border-radius:10px;cursor:pointer;box-shadow:0 12px 28px rgba(0,183,179,.34);transition:transform .2s ease,box-shadow .2s ease}
         #fv-hero .fv-btn:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(0,183,179,.4)}
-        #fv-hero .fv-scroll{flex:1;min-height:320px;max-height:460px;overflow:hidden;position:relative;padding:2px 2px 8px;
+        #fv-hero .fv-scroll{flex:1;min-height:320px;max-height:460px;overflow:hidden;position:relative;padding:2px 6px 8px 2px;
+          overscroll-behavior:contain;touch-action:pan-y;
           -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 88%,transparent);mask-image:linear-gradient(180deg,#000 0%,#000 88%,transparent)}
+        #fv-hero .fv-scroll.fv-scrollable{overflow-y:auto;-webkit-overflow-scrolling:touch;cursor:grab;scrollbar-width:thin;scrollbar-color:rgba(10,46,87,.28) transparent}
+        #fv-hero .fv-scroll.fv-scrollable:active{cursor:grabbing}
+        #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar{width:6px}
+        #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar-thumb{background:rgba(10,46,87,.28);border-radius:999px}
+        #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar-track{background:transparent}
         #fv-hero .fv-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;margin:0 0 8px;background:#fff;border:1px solid #e5ebf2;border-left-width:4px;box-shadow:0 1px 2px rgba(10,46,87,.04);transition:border-color .35s,opacity .35s,background .35s,box-shadow .35s}
         #fv-hero .fv-ck{width:18px;height:18px;border-radius:50%;border:2px solid #cdd8e5;flex:none;display:flex;align-items:center;justify-content:center;transition:.3s;background:#fff}
         #fv-hero .fv-ck svg{width:9px;height:9px;opacity:0;transform:scale(.4);transition:.3s}
@@ -594,7 +600,7 @@
 
         <div class="fv-right">
           <div class="fv-ey fv-ey--right">Today&rsquo;s Workflow</div>
-          <div class="fv-scroll" data-fv="scroll"><div data-fv="list"></div></div>
+          <div class="fv-scroll" data-fv="scroll" tabindex="0" aria-label="Today's workflow list"><div data-fv="list"></div></div>
         </div>
       </div>
 
@@ -659,6 +665,9 @@
         var segs=[].slice.call(root.querySelectorAll('.fv-seg'));
         var totalLen=arcbg.getTotalLength(),curPct=92,timers=[];
 
+        function lockScroll(){scroll.classList.remove('fv-scrollable');}
+        function unlockScroll(){scroll.classList.add('fv-scrollable');}
+
         function ptAt(p){return arcbg.getPointAtLength(totalLen*p/100);}
         function placeSun(p){var q=ptAt(p);sun.setAttribute('cx',q.x);sun.setAttribute('cy',q.y);}
         function setWork(p){arcwork.style.strokeDashoffset=(100-p);}
@@ -670,7 +679,7 @@
         function applyAfter(r,t){r.classList.add('fv-done');var tm=r.querySelector('.fv-tm');tm.style.opacity=0;setTimeout(function(){tm.textContent=t.at;tm.style.opacity=1;},reduce?0:160);r.querySelector('.fv-lb').textContent=t.after;r.style.borderLeftColor=(t.h==='dec')?'#F2B632':'#00B7B3';}
 
         function toBefore(){
-          timers.forEach(clearTimeout);timers=[];setActive('before');
+          timers.forEach(clearTimeout);timers=[];setActive('before');lockScroll();
           head.innerHTML=C.beforeHead;sub.textContent=C.beforeSub;arccap.innerHTML=C.beforeArc;
           syn.classList.remove('fv-ok');syn.innerHTML='<span class="fv-d2"></span>'+C.beforeSyn;
           legend.classList.remove('fv-on');payoff.classList.remove('fv-show');valEls.forEach(function(el){el.classList.remove('fv-on');});
@@ -679,7 +688,7 @@
           setWork(92);tweenSun(curPct,92,reduce?0:600);
         }
         function toAfter(){
-          timers.forEach(clearTimeout);timers=[];setActive('after');
+          timers.forEach(clearTimeout);timers=[];setActive('after');lockScroll();
           rowEls.forEach(function(r,i){applyBefore(r,tasks[i]);});scroll.scrollTop=0;
           head.innerHTML=C.afterHead;sub.textContent=C.afterSub;arccap.innerHTML=C.afterArc;legend.classList.add('fv-on');
           tweenSun(92,50,reduce?0:2900);
@@ -689,6 +698,7 @@
           timers.push(setTimeout(function(){setWork(50);arcfree.setAttribute('stroke-dasharray','0 50 50');arcfree.style.opacity=1;sun.setAttribute('fill','#00B7B3');
             payoff.classList.add('fv-show');valEls.forEach(function(el,i){setTimeout(function(){el.classList.add('fv-on');},reduce?0:130*i);});
             if(!reduce)scroll.scrollTop=0;
+            unlockScroll();
           },reduce?0:170*n+300));
         }
         segs.forEach(function(b){b.addEventListener('click',function(){b.getAttribute('data-s')==='after'?toAfter():toBefore();});});
