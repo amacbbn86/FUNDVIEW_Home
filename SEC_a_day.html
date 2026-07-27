@@ -563,13 +563,13 @@
         #fv-hero .fv-val i{width:15px;height:15px;border-radius:50%;background:var(--fv-teal);display:inline-flex;align-items:center;justify-content:center;flex:none}
         #fv-hero .fv-val i svg{width:8px;height:8px}
         @media(max-width:960px){
-          /* Flatten column structure so we can reorder: copy → toggle → arc → CTA → list */
-          #fv-hero .fv-grid{
+          /* Flatten so we can reorder: copy → toggle → arc → list → payoff → CTA */
+          #fv-hero{
             display:flex;
             flex-direction:column;
             align-items:center;
-            gap:0;
           }
+          #fv-hero .fv-grid,
           #fv-hero .fv-left,
           #fv-hero .fv-right,
           #fv-hero .fv-right-head,
@@ -591,7 +591,7 @@
             margin-bottom:1.35rem;
             max-width:42ch;
           }
-          /* Before/After — centered above the arc (per mobile mock) */
+          /* Before/After — centered above the arc */
           #fv-hero .fv-toggle{
             order:4;
             justify-content:center;
@@ -615,10 +615,9 @@
           #fv-hero .fv-syn{order:6;margin:0 auto 8px}
           #fv-hero .fv-arccap{order:7;text-align:center;margin:0 auto 4px}
           #fv-hero .fv-legend{order:8;justify-content:center;margin:8px auto 0}
-          #fv-hero .fv-controls{order:9;justify-content:center;padding:1.25rem 0 0;margin:0 auto}
           /* Workflow title + list share the same centered column */
           #fv-hero .fv-right .fv-ey{
-            order:10;
+            order:9;
             width:84%;
             max-width:84%;
             margin:2rem auto 14px;
@@ -627,7 +626,7 @@
           }
           #fv-hero .fv-scroll,
           #fv-hero .fv-scroll.fv-scrollable{
-            order:11;
+            order:10;
             width:84%;
             max-width:84%;
             flex:0 0 auto;
@@ -635,6 +634,21 @@
             margin-inline:auto;
             min-height:240px;
             max-height:300px;
+          }
+          #fv-hero .fv-payoff{
+            order:11;
+            width:84%;
+            max-width:84%;
+            align-self:center;
+            margin-inline:auto;
+          }
+          /* CTA last in the section */
+          #fv-hero .fv-controls{
+            order:12;
+            justify-content:center;
+            width:100%;
+            padding:2rem 0 0;
+            margin:0 auto;
           }
         }
         @media(max-width:600px){
