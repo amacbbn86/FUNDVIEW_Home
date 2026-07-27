@@ -4192,7 +4192,7 @@
 
     .see_in_action__inner {
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
       align-items: center;
       gap: clamp(2.25rem, 5vw, 4.5rem);
       width: min(1240px, 100%);
@@ -4211,11 +4211,11 @@
 
     .see_in_action__title {
       margin: 0 0 clamp(1.5rem, 2.5vw, 2rem);
-      font-size: clamp(1.35rem, 2.2vw, 1.75rem);
-      font-weight: 700;
-      line-height: 1.25;
-      letter-spacing: -0.015em;
-      color: rgba(255, 255, 255, 0.96);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: #fff;
     }
 
     .see_in_action__list {
@@ -4369,7 +4369,6 @@
       }
 
       .see_in_action__player {
-        order: -1;
         width: 100%;
         max-width: 720px;
       }
@@ -4386,7 +4385,7 @@
 
       .see_in_action__title {
         margin: 0 0 1.35rem;
-        max-width: 22ch;
+        max-width: 18ch;
         text-wrap: balance;
       }
 
@@ -4429,7 +4428,6 @@
 
       .see_in_action__title {
         margin-bottom: 1.15rem;
-        font-size: clamp(1.25rem, 5vw, 1.5rem);
       }
 
       .see_in_action__list {
@@ -6875,6 +6873,16 @@
 
   <section class="see_in_action" id="see_in_action" aria-labelledby="see-in-action-heading">
     <div class="see_in_action__inner">
+      <div class="see_in_action__player" id="see-in-action-player">
+        <button type="button" class="see_in_action__poster" id="see-in-action-poster" aria-label="Play FUNDVIEW overview video">
+          <img class="see_in_action__thumb" src="https://img.youtube.com/vi/vIm6cGQyQjE/maxresdefault.jpg" alt="" loading="lazy">
+          <span class="see_in_action__play-overlay" aria-hidden="true">
+            <svg width="72" height="72" viewBox="0 0 72 72"><circle cx="36" cy="36" r="34" fill="rgba(255,255,255,0.2)" stroke="#fff" stroke-width="2"/><path d="M29 22l22 14-22 14V22z" fill="#fff"/></svg>
+          </span>
+        </button>
+        <div class="see_in_action__embed" id="see-in-action-embed" hidden></div>
+      </div>
+
       <div class="see_in_action__copy">
         <span class="see_in_action__eyebrow">See It In Action</span>
         <h2 class="see_in_action__title" id="see-in-action-heading">Want to See How It All Works Together?</h2>
@@ -6896,16 +6904,6 @@
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.75"/><path d="M10 8.5v7l6-3.5-6-3.5z" fill="currentColor"/></svg>
           Watch Overview Video
         </button>
-      </div>
-
-      <div class="see_in_action__player" id="see-in-action-player">
-        <button type="button" class="see_in_action__poster" id="see-in-action-poster" aria-label="Play FUNDVIEW overview video">
-          <img class="see_in_action__thumb" src="https://img.youtube.com/vi/vIm6cGQyQjE/maxresdefault.jpg" alt="" loading="lazy">
-          <span class="see_in_action__play-overlay" aria-hidden="true">
-            <svg width="72" height="72" viewBox="0 0 72 72"><circle cx="36" cy="36" r="34" fill="rgba(255,255,255,0.2)" stroke="#fff" stroke-width="2"/><path d="M29 22l22 14-22 14V22z" fill="#fff"/></svg>
-          </span>
-        </button>
-        <div class="see_in_action__embed" id="see-in-action-embed" hidden></div>
       </div>
     </div>
   </section>
