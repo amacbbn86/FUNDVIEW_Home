@@ -239,6 +239,15 @@ function inlineExperienceTailwind(html) {
   );
 }
 
+function stripHtmlComments(html) {
+  return html.replace(/<!--[\s\S]*?-->/g, "");
+}
+
+/** HubL treats `{#...#}` as comments; CSS like `{#fv-hero` must not trigger that. */
+function sanitizeHublCommentCollisions(html) {
+  return html.replace(/\{#([A-Za-z_\-.])/g, "{ #$1");
+}
+
 function buildHubspotPage(sourceHtml, target) {
   const headHubL = extractTemplate(sourceHtml, "head");
   const footerHubL = extractTemplate(sourceHtml, "footer");
@@ -246,6 +255,8 @@ function buildHubspotPage(sourceHtml, target) {
 
   html = inlineHeaderFooter(html);
   html = inlineExperienceTailwind(html);
+  html = stripHtmlComments(html);
+  html = sanitizeHublCommentCollisions(html);
 
   html = html.replace(/<title>[\s\S]*?<\/title>\s*/i, "");
 
@@ -261,7 +272,9 @@ function buildHubspotPage(sourceHtml, target) {
     html = html.replace(/<head([^>]*)>/i, `<head$1>\n  ${headHubL}`);
   }
 
-  html = html.replace(/<\/body>/i, `  ${footerHubL}\n</body>`);
+  // Ensure footer includes sit immediately before </body>
+  html = html.replace(/\s*\{\{\s*standard_footer_includes\s*\}\}\s*/gi, "\n");
+  html = html.replace(/<\/body>/i, `\n  ${footerHubL}\n</body>`);
 
   const banner = `<!--
   templateType: page
