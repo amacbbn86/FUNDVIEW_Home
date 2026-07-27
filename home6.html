@@ -1669,29 +1669,30 @@
     }
 
     #experience_fundview .hero__ticker-viewport {
-      /* Same-row only: keep logos in the right column so they never run
-         under the teal title (old full-span mask faded too early). */
-      grid-column: 2;
+      grid-column: 1 / -1;
       grid-row: 1;
       z-index: 1;
       min-width: 0;
       width: auto;
       padding-top: 0.55rem; /* space above logo row — matches title */
-      padding-left: 1.25rem; /* gap after title before logos appear */
+      padding-left: 0;
       padding-right: clamp(1.5rem, 3vw, 2.5rem);
       transform: translateY(0.45rem);
-      /* Soft edge fades only — title column already clears the copy */
+      /* Same-row: fade just past the fit-content title (+ small gap), not
+         the full 40% column — that left a huge empty navy band. */
       -webkit-mask-image: linear-gradient(
         90deg,
         transparent 0,
-        #000 2.75rem,
+        transparent clamp(21rem, 24vw, 25rem),
+        #000 clamp(24rem, 27vw, 28.5rem),
         #000 95%,
         transparent
       );
       mask-image: linear-gradient(
         90deg,
         transparent 0,
-        #000 2.75rem,
+        transparent clamp(21rem, 24vw, 25rem),
+        #000 clamp(24rem, 27vw, 28.5rem),
         #000 95%,
         transparent
       );
