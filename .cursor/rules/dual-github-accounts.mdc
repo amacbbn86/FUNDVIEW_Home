@@ -1,0 +1,26 @@
+---
+description: Dual GitHub accounts — amacbbn86 automatic, amcintyre86 on request only
+alwaysApply: true
+---
+
+# Dual GitHub accounts for homepage work
+
+Alex uses two GitHub destinations for home6 / HubSpot homepage files.
+
+## 1. Automatic — `amacbbn86` (default)
+
+- Repo: https://github.com/amacbbn86/FUNDVIEW_Home (`origin` in this workspace)
+- After meaningful homepage edits: **commit and push to `origin/main` automatically** (same standing authorization as the main push rule).
+- This is the day-to-day / end-of-day sync source of truth for office pulls.
+
+## 2. On request only — `amcintyre86`
+
+- Repo: https://github.com/amcintyre86/SITE_Home-Page
+- Local clone (when present): `C:\Users\amcintyre\Projects\SITE_Home-Page`
+- Upload **only** when Alex explicitly asks (e.g. “upload to SITE_Home-Page”, “send to amcintyre86”, “sync the other account”).
+- When asked, copy/update at least `home6.html` and `Home6.hubspot.html` (regenerate HubSpot export first if needed), commit, and push to that repo’s `main`.
+- **Never** push to `amcintyre86/SITE_Home-Page` as part of routine homepage edits.
+
+## Auth note
+
+Pushes to `SITE_Home-Page` require credentials for **amcintyre86**, not the `amacbbn86` token used for `FUNDVIEW_Home`. If push returns 403, stop and tell Alex authentication for `amcintyre86` is needed.
