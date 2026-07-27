@@ -21,6 +21,26 @@
       --fv-glass: rgba(255, 255, 255, 0.08);
       --fv-glass-border: rgba(255, 255, 255, 0.16);
       --fv-divider: rgba(255, 255, 255, 0.12);
+      /* Fallback left inset; overwritten at ≥1024 to match .hero-copy-content */
+      --fv-content-left: 2.5rem;
+      /* Lattice-like nav rhythm: small flex gap + horizontal padding on each link */
+      --fv-nav-gap: 0.15rem;
+      --fv-nav-link-pad-x: 0.75em;
+    }
+
+    /* Sync header logo left edge with #experience_fundview .hero-copy-content
+       (same column + padding + max-width box used by .hero__ticker-align). */
+    @media (min-width: 1024px) {
+      :root {
+        --fv-hero-col: max(380px, 40vw);
+        --fv-hero-pad-l: clamp(2rem, 3.5vw, 3.25rem);
+        --fv-hero-pad-r: clamp(3.5rem, 5.5vw, 5.5rem);
+        --fv-hero-inner: calc(var(--fv-hero-col) - var(--fv-hero-pad-l) - var(--fv-hero-pad-r));
+        --fv-hero-content-w: min(36rem, calc(var(--fv-hero-inner) * 0.92));
+        --fv-content-left: calc(
+          var(--fv-hero-pad-l) + (var(--fv-hero-inner) - var(--fv-hero-content-w)) / 2
+        );
+      }
     }
 
     *,
@@ -102,8 +122,9 @@
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
-      column-gap: 2.5rem;
-      padding: 0.9rem 2.5rem;
+      column-gap: 1.75rem;
+      /* Logo left edge tracks .hero-copy-content; right pad keeps CTA breathing room */
+      padding: 0.9rem 2.5rem 0.9rem var(--fv-content-left);
     }
 
     .site-header__logo {
@@ -122,22 +143,33 @@
       filter: brightness(0) invert(1);
     }
 
+    /* ≤1150px: logo −20% until a narrower breakpoint overrides (e.g. ≤991px → 36px) */
+    @media (max-width: 1150px) {
+      .site-header__logo img {
+        height: 33.6px; /* 42px × 0.8 */
+      }
+    }
+
+    /* Desktop (non-hamburger): pack links tightly and sit them toward the CTA/right */
     .site-nav {
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
-      justify-self: stretch;
-      width: 100%;
+      justify-content: flex-end;
+      justify-self: end;
+      width: auto;
+      max-width: 100%;
       flex-wrap: nowrap;
-      gap: 1rem;
+      gap: var(--fv-nav-gap);
+      margin-left: auto;
     }
 
     .site-nav a {
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
+      padding: 0.4em var(--fv-nav-link-pad-x);
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.81rem; /* default; wide desktop bumps to 0.9rem below */
       font-weight: 600;
       line-height: 1.2;
       color: rgba(255, 255, 255, 0.92);
@@ -152,9 +184,10 @@
       color: var(--fv-teal-bright);
     }
 
-    /* Nav icons: 1:1; stacked size bumps → 1.44em × 1.15 */
+    /* Nav icons: 1:1; stacked size bumps → 1.44em × 1.15.
+       Hidden in desktop (non-hamburger) nav; shown only in mobile menu. */
     .site-nav__icon {
-      display: block;
+      display: none;
       width: 1.66em;
       height: 1.66em;
       flex-shrink: 0;
@@ -280,43 +313,10 @@
       transform: translateY(-8px) rotate(-45deg);
     }
 
-    /* Below 1660px: nav on its own full-width row (single row gets too tight below this,
-       including a buffer for scrollbar width and browser zoom rounding) */
-    @media (max-width: 1659px) {
-      .site-header__inner {
-        grid-template-columns: 1fr auto;
-        grid-template-areas:
-          "logo actions"
-          "nav nav";
-        row-gap: 0.75rem;
-        column-gap: 1.5rem;
-        padding: 0.9rem 2rem 1rem;
-      }
-
-      .site-header__logo {
-        grid-area: logo;
-      }
-
-      .site-header__actions {
-        grid-area: actions;
-      }
-
-      .site-nav {
-        grid-area: nav;
-        width: 100%;
-        justify-self: stretch;
-        justify-content: space-between;
-        gap: 0.5rem;
-        padding: 0.55rem 0.35rem 0.15rem;
-        border-top: 1px solid var(--fv-divider);
-      }
-
+    /* Wide desktop only: full-size nav labels */
+    @media (min-width: 1201px) {
       .site-nav a {
-        font-size: 0.875rem;
-      }
-
-      .site-header__menu-toggle {
-        grid-area: actions;
+        font-size: 0.9rem;
       }
     }
 
@@ -348,6 +348,8 @@
         left: 0;
         right: 0;
         width: 100%;
+        margin-left: 0;
+        justify-self: stretch;
         display: flex;
         flex-direction: column;
         align-items: stretch;
@@ -401,6 +403,7 @@
       }
 
       .site-nav__icon {
+        display: block;
         width: 1.66em;
         height: 1.66em;
       }
