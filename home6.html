@@ -1165,22 +1165,32 @@
     #experience_fundview #sceneWrap {
       align-self: stretch;
       display: flex;
-      align-items: center;
+      /* Stretch (not center) so the town frame fills the column when the
+         glass copy is taller than the old vh-capped scene box. */
+      align-items: stretch;
       /* Note/arrow stay %/viewBox-anchored on #sceneZoom (video cover layer). */
       width: 114%;
       max-width: none;
       margin-left: calc(-13% - 0.5rem);
       padding-right: 0;
       min-width: 0;
+      min-height: 100%;
       z-index: 1;
     }
 
-    /* Fill the wrap width — the old max-width 16:9 box left navy on both sides */
+    /* Fill the wrap — width + height. The vh-capped 16:9 box left navy
+       gutters above/below when browser height shrinks. */
     #experience_fundview #scene {
       width: 100% !important;
       max-width: none !important;
       margin-left: 0 !important;
       margin-right: 0 !important;
+      height: 100% !important;
+      max-height: none !important;
+      aspect-ratio: auto !important;
+      align-self: stretch;
+      flex: 1 1 auto;
+      min-height: 100%;
     }
 
     /* Side navy vignettes were reading as gutters once the frame is full-bleed */
@@ -1659,29 +1669,29 @@
     }
 
     #experience_fundview .hero__ticker-viewport {
-      grid-column: 1 / -1;
+      /* Same-row only: keep logos in the right column so they never run
+         under the teal title (old full-span mask faded too early). */
+      grid-column: 2;
       grid-row: 1;
       z-index: 1;
       min-width: 0;
       width: auto;
       padding-top: 0.55rem; /* space above logo row — matches title */
-      padding-left: 0;
+      padding-left: 1.25rem; /* gap after title before logos appear */
       padding-right: clamp(1.5rem, 3vw, 2.5rem);
       transform: translateY(0.45rem);
-      /* Fade through SOFTWARE (~last ~4.5rem of the fit-content title); left cut +5% */
+      /* Soft edge fades only — title column already clears the copy */
       -webkit-mask-image: linear-gradient(
         90deg,
         transparent 0,
-        transparent calc(clamp(12.25rem, 15vw, 14rem) + 5%),
-        #000 calc(clamp(15.25rem, 18.5vw, 17.25rem) + 5%),
+        #000 2.75rem,
         #000 95%,
         transparent
       );
       mask-image: linear-gradient(
         90deg,
         transparent 0,
-        transparent calc(clamp(12.25rem, 15vw, 14rem) + 5%),
-        #000 calc(clamp(15.25rem, 18.5vw, 17.25rem) + 5%),
+        #000 2.75rem,
         #000 95%,
         transparent
       );
@@ -1941,14 +1951,17 @@
         max-width: calc(min(max(calc(100vh - 240px), 340px), 700px) * 16 / 9);
       }
 
-      /* Experience: +50px taller stage, full wrap width (no side navy) */
+      /* Experience: fill the stretched wrap (match glass column height).
+         Do not use the vh-capped stage — short viewports letterboxed navy. */
       #experience_fundview #scene {
         max-width: none;
         width: 100%;
-        height: calc(min(max(calc(100vh - 240px), 340px), 700px, calc(100cqw / 1.2)) + 50px);
+        height: 100%;
+        max-height: none;
+        aspect-ratio: auto;
       }
 
-      /* Taller frame: ease upward bias so more of the town top stays in view */
+      /* Column fill: keep a mild upward bias so the town top stays in view */
       #experience_fundview #sceneZoom {
         top: calc(max(0px, calc(100cqw * 9 / 16) - 100cqh) * -0.85);
       }
