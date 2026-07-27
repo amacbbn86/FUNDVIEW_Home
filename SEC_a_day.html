@@ -8,9 +8,10 @@
   SEC_a_day.html — standalone working copy of home6.html section
   class="daily_improvements_fundview" / id="daily_improvements_fundview"
 
-  Edit HERE first to save tokens. When polish is done, merge the section
-  (styles + markup + script) back into home6.html in place of the existing
-  daily_improvements_fundview block (between solution_delivers and see_in_action).
+  Edit the Daily Improvements block HERE first. Surrounding
+  solution_delivers + see_in_action are preview context only (from home6).
+  When polish is done, merge ONLY the daily_improvements_fundview section
+  back into home6.html (between solution_delivers and see_in_action).
 
   Preview: http://localhost:5500/SEC_a_day.html
   Source concept: fundview-hero-more-time (1).html
@@ -19,7 +20,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  html, body { margin: 0; background: #eef2f7; }
+  /* Match home6 global reset — without this, width:100% + padding overflows the viewport */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; background: #fff; }
   body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
   .daily_improvements_fundview {
     width: 100%;
@@ -29,9 +32,461 @@
   @media (max-width: 720px) {
     .daily_improvements_fundview { padding: 3rem 1.15rem; }
   }
+
+  /* ——— Preview context from home6 (do not merge these into daily_improvements) ——— */
+  /* ——— Every FUNDVIEW Solution Delivers ——— */
+  .solution_delivers {
+    width: 100%;
+    padding: clamp(3.5rem, 7vw, 5.5rem) 1.5rem;
+    background: #f0f4f8;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #0a2e57;
+  }
+
+  .solution_delivers__inner {
+    width: min(1240px, 100%);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .solution_delivers__title {
+    margin: 0 auto clamp(2.25rem, 4.5vw, 3.25rem);
+    max-width: 16ch;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0a2e57;
+  }
+
+  @media (min-width: 900px) {
+    .solution_delivers__title {
+      max-width: none;
+      white-space: nowrap;
+    }
+  }
+
+  .solution_delivers__grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(1rem, 1.8vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .solution_delivers__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.75rem 1.15rem 1.6rem;
+    border: 1px solid #d1dae3;
+    border-radius: 14px;
+    background: #fff;
+    text-align: center;
+    transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .solution_delivers__item:hover {
+    transform: translateY(-3px);
+    border-color: #00b7b3;
+    box-shadow: 0 14px 34px rgba(10, 46, 87, 0.12);
+  }
+
+  .solution_delivers__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: rgba(0, 183, 179, 0.12);
+    color: #00928f;
+  }
+
+  .solution_delivers__icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .solution_delivers__item-title {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #0a2e57;
+  }
+
+  .solution_delivers__item-copy {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: #4b5c6e;
+  }
+
+  @media (max-width: 1100px) {
+    .solution_delivers__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .solution_delivers__item:nth-child(4),
+    .solution_delivers__item:nth-child(5) {
+      grid-column: span 1;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .solution_delivers {
+      padding: 3rem 1.15rem;
+    }
+
+    .solution_delivers__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .solution_delivers__item {
+      max-width: 420px;
+      margin: 0 auto;
+      width: 100%;
+    }
+  }
+
+  /* ——— See It In Action — overview video band ——— */
+  .see_in_action {
+    width: 100%;
+    padding: clamp(3.5rem, 7vw, 5.5rem) 1.5rem;
+    background:
+      radial-gradient(ellipse 70% 90% at 85% 20%, rgba(0, 183, 179, 0.16), transparent 60%),
+      linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+    color: #fff;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  .see_in_action__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+    align-items: center;
+    gap: clamp(2.25rem, 5vw, 4.5rem);
+    width: min(1240px, 100%);
+    margin: 0 auto;
+  }
+
+  .see_in_action__eyebrow {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #00b7b3;
+  }
+
+  .see_in_action__title {
+    margin: 0 0 clamp(1.5rem, 2.5vw, 2rem);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  .see_in_action__list {
+    display: grid;
+    gap: 1rem;
+    margin: 0 0 clamp(1.75rem, 3vw, 2.25rem);
+    padding: 0;
+    list-style: none;
+  }
+
+  .see_in_action__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    font-size: clamp(1rem, 1.3vw, 1.125rem);
+    font-weight: 600;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .see_in_action__list li svg {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    margin-top: 0.1rem;
+    color: #00e5e0;
+  }
+
+  .see_in_action__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.95rem 1.75rem;
+    border: 0;
+    border-radius: 999px;
+    background: #00b7b3;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 14px 34px rgba(0, 183, 179, 0.3);
+  }
+
+  .see_in_action__cta:hover {
+    background: #00928f;
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(0, 183, 179, 0.4);
+  }
+
+  .see_in_action__cta svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* Inline video player — matches the video-cta player on the book-a-demo page */
+  .see_in_action__player {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: #071f3a;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+  }
+
+  .see_in_action__poster {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    background: #071f3a;
+  }
+
+  .see_in_action__poster[hidden] {
+    display: none !important;
+  }
+
+  .see_in_action__poster::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 46, 87, 0.15) 0%, rgba(10, 46, 87, 0.55) 100%);
+    transition: background 0.2s ease;
+  }
+
+  .see_in_action__poster:hover::after,
+  .see_in_action__poster:focus-visible::after {
+    background: linear-gradient(180deg, rgba(10, 46, 87, 0.05) 0%, rgba(10, 46, 87, 0.45) 100%);
+  }
+
+  .see_in_action__thumb {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .see_in_action__play-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .see_in_action__play-overlay svg {
+    width: 72px;
+    height: 72px;
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.35));
+    transition: transform 0.2s ease;
+  }
+
+  .see_in_action__poster:hover .see_in_action__play-overlay svg,
+  .see_in_action__poster:focus-visible .see_in_action__play-overlay svg {
+    transform: scale(1.08);
+  }
+
+  .see_in_action__embed {
+    position: absolute;
+    inset: 0;
+  }
+
+  .see_in_action__embed[hidden] {
+    display: none;
+  }
+
+  .see_in_action__embed iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  @media (max-width: 960px) {
+    .see_in_action__inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(1.75rem, 4vw, 2.5rem);
+      justify-items: center;
+    }
+
+    .see_in_action__player {
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .see_in_action__copy {
+      width: 100%;
+      max-width: 36rem;
+      margin: 0 auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .see_in_action__title {
+      margin: 0 0 1.35rem;
+      max-width: 18ch;
+      text-wrap: balance;
+    }
+
+    .see_in_action__list {
+      width: fit-content;
+      max-width: min(100%, 28rem);
+      margin: 0 auto 1.75rem;
+      gap: 0.85rem;
+      text-align: left;
+    }
+
+    .see_in_action__list li {
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+
+    .see_in_action__list li svg {
+      margin-top: 0.15rem;
+    }
+
+    .see_in_action__cta {
+      margin-top: 0.15rem;
+    }
+
+    .see_in_action__play-overlay svg {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .see_in_action {
+      padding: 3rem 1.15rem;
+    }
+
+    .see_in_action__inner {
+      gap: 1.5rem;
+    }
+
+    .see_in_action__title {
+      margin-bottom: 1.15rem;
+    }
+
+    .see_in_action__list {
+      margin-bottom: 1.5rem;
+      gap: 0.75rem;
+    }
+
+    .see_in_action__list li {
+      font-size: 0.975rem;
+      line-height: 1.45;
+    }
+
+    .see_in_action__cta {
+      width: 100%;
+      max-width: 22rem;
+      justify-content: center;
+    }
+  }
 </style>
 </head>
 <body>
+<!-- Preview context only — from home6 (above Daily Improvements) -->
+  <section class="solution_delivers" id="solution_delivers" aria-labelledby="solution-delivers-heading">
+    <div class="solution_delivers__inner">
+      <h2 class="solution_delivers__title" id="solution-delivers-heading">Every FUNDVIEW Solution Delivers</h2>
+
+      <ul class="solution_delivers__grid">
+        <li class="solution_delivers__item">
+          <span class="solution_delivers__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.75"/>
+              <path d="M3 12c1.8-4.2 5-6.75 9-6.75S19.2 7.8 21 12c-1.8 4.2-5 6.75-9 6.75S4.8 16.2 3 12z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <h3 class="solution_delivers__item-title">Clarity</h3>
+          <p class="solution_delivers__item-copy">Understand what&rsquo;s happening across your organization with real-time information.</p>
+        </li>
+
+        <li class="solution_delivers__item">
+          <span class="solution_delivers__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 7.5h14M7.5 12h9M10 16.5h4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+              <rect x="3.5" y="4" width="17" height="16" rx="2.5" stroke="currentColor" stroke-width="1.75"/>
+            </svg>
+          </span>
+          <h3 class="solution_delivers__item-title">Simplicity</h3>
+          <p class="solution_delivers__item-copy">Replace disconnected systems and manual processes with one intuitive platform.</p>
+        </li>
+
+        <li class="solution_delivers__item">
+          <span class="solution_delivers__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M13 3.5L5.5 13.5h5.25L10.5 20.5 18.5 10H13V3.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <h3 class="solution_delivers__item-title">Efficiency</h3>
+          <p class="solution_delivers__item-copy">Save time through automation, streamlined workflows, and integrated operations.</p>
+        </li>
+
+        <li class="solution_delivers__item">
+          <span class="solution_delivers__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="6.5" cy="7" r="2.25" stroke="currentColor" stroke-width="1.75"/>
+              <circle cx="17.5" cy="7" r="2.25" stroke="currentColor" stroke-width="1.75"/>
+              <circle cx="12" cy="17" r="2.25" stroke="currentColor" stroke-width="1.75"/>
+              <path d="M8.4 8.6l2.4 6.1M15.6 8.6l-2.4 6.1M8.75 7h6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <h3 class="solution_delivers__item-title">Connectivity</h3>
+          <p class="solution_delivers__item-copy">Bring every department together on one connected ERP platform.</p>
+        </li>
+
+        <li class="solution_delivers__item">
+          <span class="solution_delivers__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 18.5V5.5M4 18.5h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+              <path d="M7.5 14.5v4M11.5 10.5v8M15.5 12.5v6M19.5 7.5v11" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <h3 class="solution_delivers__item-title">Visibility</h3>
+          <p class="solution_delivers__item-copy">Gain real-time insight into financial and operational performance.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
 <section class="daily_improvements_fundview" id="daily_improvements_fundview" aria-labelledby="fv-a11y">
     <p id="fv-a11y" class="fv-sr">A day in the life at City Hall, before and after FUNDVIEW. Toggle to After and the tasks scroll through a small window as the sun tracks to noon, each checking off — teal for what FUNDVIEW handles, gold for your decisions — reclaiming the afternoon.</p>
 
@@ -249,5 +704,85 @@
       </script>
     </div>
   </section>
+
+<!-- Preview context only — from home6 (below Daily Improvements) -->
+  <section class="see_in_action" id="see_in_action" aria-labelledby="see-in-action-heading">
+    <div class="see_in_action__inner">
+      <div class="see_in_action__player" id="see-in-action-player">
+        <button type="button" class="see_in_action__poster" id="see-in-action-poster" aria-label="Play FUNDVIEW overview video">
+          <img class="see_in_action__thumb" src="https://img.youtube.com/vi/vIm6cGQyQjE/maxresdefault.jpg" alt="" loading="lazy">
+          <span class="see_in_action__play-overlay" aria-hidden="true">
+            <svg width="72" height="72" viewBox="0 0 72 72"><circle cx="36" cy="36" r="34" fill="rgba(255,255,255,0.2)" stroke="#fff" stroke-width="2"/><path d="M29 22l22 14-22 14V22z" fill="#fff"/></svg>
+          </span>
+        </button>
+        <div class="see_in_action__embed" id="see-in-action-embed" hidden></div>
+      </div>
+
+      <div class="see_in_action__copy">
+        <span class="see_in_action__eyebrow">See It In Action</span>
+        <h2 class="see_in_action__title" id="see-in-action-heading">Want to See How It All Works Together?</h2>
+        <ul class="see_in_action__list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.75"/><path d="M7.5 12.4l3 3 6-6.6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Why cities are replacing disconnected systems</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.75"/><path d="M7.5 12.4l3 3 6-6.6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>How FUNDVIEW connects every department</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.75"/><path d="M7.5 12.4l3 3 6-6.6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>What makes FUNDVIEW different</span>
+          </li>
+        </ul>
+        <button type="button" class="see_in_action__cta" id="see-in-action-cta">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.75"/><path d="M10 8.5v7l6-3.5-6-3.5z" fill="currentColor"/></svg>
+          Watch Overview Video
+        </button>
+      </div>
+    </div>
+  </section>
+
+<script>
+/* See In Action — inline overview video player (same behavior as book-a-demo video-cta) */
+  (function seeInActionVideo() {
+    var VIDEO_ID = "vIm6cGQyQjE";
+    var poster = document.getElementById("see-in-action-poster");
+    var embed = document.getElementById("see-in-action-embed");
+    var cta = document.getElementById("see-in-action-cta");
+    var player = document.getElementById("see-in-action-player");
+
+    function playVideo() {
+      if (!poster || !embed || embed.querySelector("iframe")) return;
+
+      var iframe = document.createElement("iframe");
+      iframe.src = "https://www.youtube.com/embed/" + VIDEO_ID + "?autoplay=1&rel=0&modestbranding=1&playsinline=1";
+      iframe.title = "FundView Overview Video";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+
+      poster.hidden = true;
+      embed.hidden = false;
+      embed.appendChild(iframe);
+    }
+
+    if (poster) {
+      poster.addEventListener("click", playVideo);
+    }
+
+    if (cta) {
+      cta.addEventListener("click", function () {
+        playVideo();
+        /* Keep the player in view when starting from the CTA (it sits above the copy on mobile) */
+        if (player) {
+          var rect = player.getBoundingClientRect();
+          if (rect.top < 0 || rect.bottom > window.innerHeight) {
+            player.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }
+      });
+    }
+  })();
+</script>
 </body>
 </html>
