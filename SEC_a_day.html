@@ -37,103 +37,118 @@
 
     <div id="fv-hero">
       <style>
+        /* Align inner width with neighboring home6 sections (solution_delivers / see_in_action / ready_to_see = 1240px) */
         #fv-hero{--fv-blue:#0A2E57;--fv-blue2:#1E4FA3;--fv-teal:#00B7B3;--fv-gold:#F2B632;--fv-slate:#4B5C6E;--fv-ink:#1a2531;--fv-amber:#c98a1a;--fv-green:#129d74;
-          font-family:'Sora',Inter,system-ui,'Segoe UI',Arial,sans-serif;color:var(--fv-ink);max-width:880px;margin:0 auto}
+          font-family:'Sora',Inter,system-ui,'Segoe UI',Arial,sans-serif;color:var(--fv-ink);width:min(1240px,100%);margin:0 auto}
         #fv-hero *{box-sizing:border-box}
         .daily_improvements_fundview > .fv-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-        #fv-hero .fv-win{border-radius:20px;overflow:hidden;box-shadow:0 26px 60px rgba(10,46,87,.20);border:1px solid #e4eaf2;background:#fff}
-        #fv-hero .fv-bar{height:34px;background:#f3f6fb;display:flex;align-items:center;gap:7px;padding:0 14px;border-bottom:1px solid #e9eef5}
-        #fv-hero .fv-dot{width:9px;height:9px;border-radius:50%}
-        #fv-hero .fv-top{background:linear-gradient(120deg,#fff,#f0f4f8 60%,#e7f6f5);padding:16px 24px 6px}
-        #fv-hero .fv-ey{font-size:10.5px;letter-spacing:.16em;font-weight:700;color:var(--fv-blue2);margin-bottom:8px}
-        #fv-hero .fv-toggle{display:inline-flex;background:#e9eef5;border-radius:11px;padding:3px;gap:3px;margin-bottom:11px}
-        #fv-hero .fv-seg{border:none;background:transparent;font-family:inherit;font-weight:700;font-size:11.5px;color:var(--fv-slate);padding:7px 13px;border-radius:8px;cursor:pointer;transition:.2s}
+        #fv-hero .fv-win{border-radius:22px;overflow:hidden;box-shadow:0 22px 56px rgba(10,46,87,.14);border:1px solid #e4eaf2;background:#fff}
+        #fv-hero .fv-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr);gap:clamp(1.5rem,3vw,2.75rem);align-items:stretch;padding:clamp(1.5rem,2.8vw,2.35rem) clamp(1.5rem,3vw,2.5rem) 1.25rem}
+        #fv-hero .fv-left{display:flex;flex-direction:column;min-width:0}
+        #fv-hero .fv-right{display:flex;flex-direction:column;min-width:0;min-height:0}
+        #fv-hero .fv-ey{font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--fv-blue2);margin-bottom:12px}
+        #fv-hero .fv-toggle{display:inline-flex;background:#e9eef5;border-radius:12px;padding:3px;gap:3px;margin-bottom:14px;align-self:flex-start}
+        #fv-hero .fv-seg{border:none;background:transparent;font-family:inherit;font-weight:700;font-size:12.5px;color:var(--fv-slate);padding:8px 14px;border-radius:9px;cursor:pointer;transition:.2s}
         #fv-hero .fv-seg.fv-active{background:#fff;color:var(--fv-blue);box-shadow:0 3px 10px rgba(10,46,87,.12)}
         #fv-hero .fv-seg.fv-active[data-s="after"]{color:var(--fv-teal)}
-        #fv-hero .fv-h{font-size:22px;line-height:1.1;font-weight:800;color:var(--fv-blue);margin:0 0 6px;transition:.4s}
+        #fv-hero .fv-h{font-size:clamp(1.55rem,2.1vw,2rem);line-height:1.15;font-weight:800;color:var(--fv-blue);margin:0 0 10px;transition:.4s;max-width:18ch}
         #fv-hero .fv-h span{color:var(--fv-teal)}
-        #fv-hero .fv-sub{font-size:12.5px;line-height:1.45;color:#33465a;margin:0;max-width:600px;transition:.4s}
-        #fv-hero .fv-mid{display:flex;align-items:center;gap:14px;padding:6px 24px 2px;flex-wrap:wrap}
-        #fv-hero .fv-arcwrap{position:relative;flex:none;width:230px}
+        #fv-hero .fv-sub{font-size:clamp(.9rem,1.15vw,1rem);line-height:1.5;color:#33465a;margin:0 0 1.35rem;max-width:38ch;transition:.4s}
+        #fv-hero .fv-mid{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:auto}
+        #fv-hero .fv-arcwrap{position:relative;width:min(100%,320px)}
         #fv-hero .fv-arcwrap svg{display:block;width:100%;height:auto}
-        #fv-hero .fv-midright{flex:1;min-width:200px}
-        #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;padding:6px 11px;border-radius:20px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
-        #fv-hero .fv-syn .fv-d2{width:7px;height:7px;border-radius:50%;background:var(--fv-amber)}
+        #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;padding:7px 13px;border-radius:999px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
+        #fv-hero .fv-syn .fv-d2{width:7px;height:7px;border-radius:50%;background:var(--fv-amber);flex:none}
         #fv-hero .fv-syn.fv-ok{border-color:#bfe8d6;background:#e6f6ef;color:var(--fv-green)}
         #fv-hero .fv-syn.fv-ok .fv-d2{background:var(--fv-green)}
-        #fv-hero .fv-arccap{font-size:11.5px;color:var(--fv-slate);margin:8px 0 0;transition:.4s}
+        #fv-hero .fv-arccap{font-size:13.5px;color:var(--fv-slate);margin:2px 0 0;transition:.4s}
         #fv-hero .fv-arccap b{color:var(--fv-blue)}
-        #fv-hero .fv-legend{display:flex;gap:14px;font-size:10px;font-weight:600;color:var(--fv-slate);margin-top:8px;opacity:0;transition:.4s}
+        #fv-hero .fv-legend{display:flex;gap:16px;font-size:11px;font-weight:600;color:var(--fv-slate);margin-top:6px;opacity:0;transition:.4s}
         #fv-hero .fv-legend.fv-on{opacity:1}
-        #fv-hero .fv-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
-        #fv-hero .fv-scroll{height:150px;overflow:hidden;position:relative;padding:2px 22px;
-          -webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent)}
-        #fv-hero .fv-row{display:flex;align-items:center;gap:10px;padding:6px 11px;border-radius:10px;margin:4px 0;background:#fff;border:1px solid #eef2f7;border-left-width:4px;transition:border-color .35s,opacity .35s,background .35s}
-        #fv-hero .fv-ck{width:16px;height:16px;border-radius:5px;border:2px solid #cdd8e5;flex:none;display:flex;align-items:center;justify-content:center;transition:.3s;background:#fff}
+        #fv-hero .fv-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+        #fv-hero .fv-controls{padding:1.15rem 0 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+        #fv-hero .fv-btn{display:inline-block;text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:14px;padding:12px 22px;border-radius:10px;cursor:pointer;box-shadow:0 10px 24px rgba(0,183,179,.32);transition:transform .2s ease}
+        #fv-hero .fv-btn:hover{transform:translateY(-1px)}
+        #fv-hero .fv-scroll{flex:1;min-height:280px;height:100%;max-height:420px;overflow:hidden;position:relative;padding:4px 2px;
+          -webkit-mask-image:linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent)}
+        #fv-hero .fv-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;margin:5px 0;background:#f8fafc;border:1px solid #e8eef5;border-left-width:4px;transition:border-color .35s,opacity .35s,background .35s}
+        #fv-hero .fv-ck{width:18px;height:18px;border-radius:50%;border:2px solid #cdd8e5;flex:none;display:flex;align-items:center;justify-content:center;transition:.3s;background:#fff}
         #fv-hero .fv-ck svg{width:9px;height:9px;opacity:0;transform:scale(.4);transition:.3s}
         #fv-hero .fv-row.fv-done .fv-ck svg{opacity:1;transform:scale(1)}
         #fv-hero .fv-row.fv-done.fv-auto .fv-ck{background:var(--fv-teal);border-color:var(--fv-teal)}
         #fv-hero .fv-row.fv-done.fv-dec .fv-ck{background:var(--fv-gold);border-color:var(--fv-gold)}
-        #fv-hero .fv-row .fv-tm{font-size:11.5px;font-weight:700;color:var(--fv-blue);font-variant-numeric:tabular-nums;width:52px;flex:none;transition:.3s}
-        #fv-hero .fv-row .fv-lb{font-size:12px;flex:1;line-height:1.25;transition:.3s}
-        #fv-hero .fv-row .fv-dept{font-size:8px;font-weight:700;color:#9aa6b4;letter-spacing:.05em}
-        #fv-hero .fv-payoff{margin:2px 24px 0;padding:0 2px;max-height:0;overflow:hidden;opacity:0;transition:max-height .6s ease,opacity .6s ease}
-        #fv-hero .fv-payoff.fv-show{max-height:160px;opacity:1}
-        #fv-hero .fv-pline{font-size:12.5px;color:var(--fv-blue);font-weight:700;margin:6px 0 8px}
-        #fv-hero .fv-vals{display:flex;flex-wrap:wrap;gap:6px}
-        #fv-hero .fv-val{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--fv-blue);background:#eef8f7;border:1px solid #cdeceb;border-radius:20px;padding:5px 10px;opacity:0;transform:translateY(6px);transition:.35s}
+        #fv-hero .fv-row .fv-tm{font-size:13.5px;font-weight:800;color:var(--fv-blue);font-variant-numeric:tabular-nums;width:58px;flex:none;transition:.3s}
+        #fv-hero .fv-row .fv-lb{font-size:13.5px;flex:1;line-height:1.3;color:var(--fv-ink);transition:.3s}
+        #fv-hero .fv-row .fv-dept{font-size:9.5px;font-weight:700;color:#9aa6b4;letter-spacing:.06em;text-transform:uppercase;flex:none}
+        #fv-hero .fv-payoff{margin:0;padding:0 clamp(1.5rem,3vw,2.5rem);max-height:0;overflow:hidden;opacity:0;background:transparent;transition:max-height .6s ease,opacity .6s ease,padding .6s ease,background .6s ease}
+        #fv-hero .fv-payoff.fv-show{max-height:200px;opacity:1;padding:1.1rem clamp(1.5rem,3vw,2.5rem) 1.25rem;background:#e8f4f4}
+        #fv-hero .fv-pline{font-size:14px;color:var(--fv-blue);font-weight:700;margin:0 0 10px}
+        #fv-hero .fv-vals{display:flex;flex-wrap:wrap;gap:8px}
+        #fv-hero .fv-val{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--fv-blue);background:#fff;border:1px solid #d5e8e7;border-radius:999px;padding:7px 12px;opacity:0;transform:translateY(6px);transition:.35s}
         #fv-hero .fv-val.fv-on{opacity:1;transform:none}
-        #fv-hero .fv-val i{width:12px;height:12px;border-radius:50%;background:var(--fv-teal);display:inline-flex;align-items:center;justify-content:center}
-        #fv-hero .fv-val i svg{width:7px;height:7px}
-        #fv-hero .fv-controls{padding:12px 24px 6px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-        #fv-hero .fv-btn{display:inline-block;text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:13px;padding:11px 20px;border-radius:10px;cursor:pointer;box-shadow:0 10px 24px rgba(0,183,179,.32);transition:transform .2s ease}
-        #fv-hero .fv-btn:hover{transform:translateY(-1px)}
-        #fv-hero .fv-note{font-size:10.5px;color:var(--fv-slate);text-align:center;padding:4px 0 12px}
-        @media(max-width:600px){#fv-hero .fv-h{font-size:19px}#fv-hero .fv-arcwrap{width:100%}#fv-hero .fv-row .fv-dept{display:none}}
+        #fv-hero .fv-val i{width:14px;height:14px;border-radius:50%;background:var(--fv-teal);display:inline-flex;align-items:center;justify-content:center}
+        #fv-hero .fv-val i svg{width:8px;height:8px}
+        #fv-hero .fv-note{font-size:11px;color:var(--fv-slate);text-align:center;padding:10px 16px 14px;margin:0}
+        @media(max-width:960px){
+          #fv-hero .fv-grid{grid-template-columns:1fr;gap:1.25rem;padding:1.35rem 1.25rem 1rem}
+          #fv-hero .fv-h{max-width:none;font-size:1.45rem}
+          #fv-hero .fv-sub{max-width:42ch}
+          #fv-hero .fv-mid{margin-top:0}
+          #fv-hero .fv-arcwrap{width:min(100%,280px)}
+          #fv-hero .fv-scroll{min-height:220px;max-height:280px;height:280px}
+        }
+        @media(max-width:600px){
+          #fv-hero .fv-h{font-size:1.3rem}
+          #fv-hero .fv-arcwrap{width:100%}
+          #fv-hero .fv-row .fv-dept{display:none}
+          #fv-hero .fv-seg{font-size:11.5px;padding:7px 10px}
+          #fv-hero .fv-scroll{height:240px;max-height:240px;min-height:240px}
+        }
         @media(prefers-reduced-motion:reduce){#fv-hero *{transition:none !important}}
       </style>
 
       <div class="fv-win">
-        <div class="fv-bar" aria-hidden="true"><span class="fv-dot" style="background:#ff5f57"></span><span class="fv-dot" style="background:#febc2e"></span><span class="fv-dot" style="background:#28c840"></span></div>
+        <div class="fv-grid">
+          <div class="fv-left">
+            <div class="fv-ey">A DAY IN THE LIFE AT CITY HALL</div>
+            <div class="fv-toggle" role="tablist" aria-label="Before or after FUNDVIEW">
+              <button type="button" class="fv-seg fv-active" data-s="before" role="tab" aria-selected="true">Before FUNDVIEW</button>
+              <button type="button" class="fv-seg" data-s="after" role="tab" aria-selected="false">After FUNDVIEW</button>
+            </div>
+            <h2 class="fv-h" data-fv="head">Your software shouldn't cost you<br><span>your whole afternoon.</span></h2>
+            <p class="fv-sub" data-fv="sub">On disconnected systems, the same work gets entered twice, exported, and reconciled by hand — and it eats the entire day.</p>
 
-        <div class="fv-top">
-          <div class="fv-ey">A DAY IN THE LIFE AT CITY HALL</div>
-          <div class="fv-toggle" role="tablist" aria-label="Before or after FUNDVIEW">
-            <button type="button" class="fv-seg fv-active" data-s="before" role="tab" aria-selected="true">Before FUNDVIEW</button>
-            <button type="button" class="fv-seg" data-s="after" role="tab" aria-selected="false">After FUNDVIEW</button>
+            <div class="fv-mid">
+              <div class="fv-arcwrap">
+                <svg viewBox="0 0 240 130" role="img" aria-label="A daily sun arc from 8 AM to 5 PM with noon at the top">
+                  <path data-fv="arcbg" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#e2e9f1" stroke-width="7" stroke-linecap="round"/>
+                  <path data-fv="arcfree" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#00B7B3" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="0 50 50" style="opacity:0;transition:opacity .6s"/>
+                  <path data-fv="arcwork" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#F2B632" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="8" style="transition:stroke-dashoffset .9s ease"/>
+                  <line x1="120" y1="20" x2="120" y2="112" stroke="#9fb0c2" stroke-width="1.2" stroke-dasharray="3 4"/>
+                  <circle data-fv="sun" cx="0" cy="0" r="9" fill="#F2B632" stroke="#fff" stroke-width="2"/>
+                  <text x="16" y="128" font-size="9" text-anchor="middle" style="fill:#8390a2">8a</text>
+                  <text x="120" y="14" font-size="9.5" text-anchor="middle" font-weight="700" fill="#0A2E57">NOON</text>
+                  <text x="224" y="128" font-size="9" text-anchor="middle" style="fill:#8390a2">5p</text>
+                </svg>
+              </div>
+              <div class="fv-syn" data-fv="syn"><span class="fv-d2"></span>Books out of sync until the day-end packet</div>
+              <div class="fv-arccap" data-fv="arccap">Work spills all the way into the evening.</div>
+              <div class="fv-legend" data-fv="legend"><span><i style="background:#00B7B3"></i>FUNDVIEW does it</span><span><i style="background:#F2B632"></i>You decide</span></div>
+            </div>
+
+            <div class="fv-controls"><a class="fv-btn" data-fv="cta" href="#ready_to_see_fundview">See FUNDVIEW &rarr;</a></div>
           </div>
-          <h2 class="fv-h" data-fv="head">Your software shouldn't cost you<br><span>your whole afternoon.</span></h2>
-          <p class="fv-sub" data-fv="sub">On disconnected systems, the same work gets entered twice, exported, and reconciled by hand — and it eats the entire day.</p>
+
+          <div class="fv-right">
+            <div class="fv-scroll" data-fv="scroll"><div data-fv="list"></div></div>
+          </div>
         </div>
-
-        <div class="fv-mid">
-          <div class="fv-arcwrap">
-            <svg viewBox="0 0 240 130" role="img" aria-label="A daily sun arc from 8 AM to 5 PM with noon at the top">
-              <path data-fv="arcbg" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#e2e9f1" stroke-width="7" stroke-linecap="round"/>
-              <path data-fv="arcfree" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#00B7B3" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="0 50 50" style="opacity:0;transition:opacity .6s"/>
-              <path data-fv="arcwork" d="M16,112 A104,104 0 0 1 224,112" fill="none" stroke="#F2B632" stroke-width="7" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="8" style="transition:stroke-dashoffset .9s ease"/>
-              <line x1="120" y1="20" x2="120" y2="112" stroke="#9fb0c2" stroke-width="1.2" stroke-dasharray="3 4"/>
-              <circle data-fv="sun" cx="0" cy="0" r="9" fill="#F2B632" stroke="#fff" stroke-width="2"/>
-              <text x="16" y="128" font-size="9" text-anchor="middle" style="fill:#8390a2">8a</text>
-              <text x="120" y="14" font-size="9.5" text-anchor="middle" font-weight="700" fill="#0A2E57">NOON</text>
-              <text x="224" y="128" font-size="9" text-anchor="middle" style="fill:#8390a2">5p</text>
-            </svg>
-          </div>
-          <div class="fv-midright">
-            <div class="fv-syn" data-fv="syn"><span class="fv-d2"></span>Books out of sync until the day-end packet</div>
-            <div class="fv-arccap" data-fv="arccap">Work spills all the way into the evening.</div>
-            <div class="fv-legend" data-fv="legend"><span><i style="background:#00B7B3"></i>FUNDVIEW does it</span><span><i style="background:#F2B632"></i>You decide</span></div>
-          </div>
-        </div>
-
-        <div class="fv-scroll" data-fv="scroll"><div data-fv="list"></div></div>
 
         <div class="fv-payoff" data-fv="payoff">
           <div class="fv-pline">Real-time visibility means faster decisions — and more:</div>
           <div class="fv-vals" data-fv="vals"></div>
         </div>
 
-        <div class="fv-controls"><a class="fv-btn" data-fv="cta" href="#ready_to_see_fundview">See FUNDVIEW &rarr;</a></div>
         <p class="fv-note">Illustrative concept — toggle Before / After to replay.</p>
       </div>
 
