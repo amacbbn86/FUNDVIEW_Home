@@ -586,27 +586,15 @@
           #fv-hero .fv-arccap{text-align:center}
           #fv-hero .fv-legend{justify-content:center}
           #fv-hero .fv-controls{justify-content:center}
-          /* Page scroll — no nested scroller trapping the wheel/touch */
           #fv-hero .fv-scroll,
           #fv-hero .fv-scroll.fv-scrollable{
-            width:100%;
-            max-width:100%;
+            width:90%;
+            max-width:90%;
             flex:0 0 auto;
-            align-self:stretch;
-            min-height:0;
-            max-height:none;
-            height:auto;
-            overflow:visible;
-            overflow-y:visible;
-            cursor:default;
-            touch-action:auto;
-            overscroll-behavior:auto;
-            -webkit-mask-image:none;
-            mask-image:none;
-            -webkit-user-select:auto;
-            user-select:auto;
+            align-self:flex-start;
+            min-height:240px;
+            max-height:300px;
           }
-          #fv-hero .fv-scroll.fv-scrollable *{-webkit-user-select:auto;user-select:auto}
           #fv-hero .fv-right-head{align-items:flex-start}
         }
         @media(max-width:600px){
@@ -615,6 +603,8 @@
           #fv-hero .fv-arcwrap svg{height:140px}
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
+          #fv-hero .fv-scroll,
+          #fv-hero .fv-scroll.fv-scrollable{min-height:220px;max-height:260px;width:90%;max-width:90%}
           #fv-hero .fv-payoff.fv-show{padding-top:1rem}
           #fv-hero .fv-right-head{flex-direction:column;align-items:stretch}
           #fv-hero .fv-toggle{width:100%}
@@ -741,41 +731,17 @@
         var head=$('head'),sub=$('sub'),syn=$('syn'),arccap=$('arccap'),legend=$('legend'),payoff=$('payoff'),
             arcwork=$('arcwork'),arcfree=$('arcfree'),arcbg=$('arcbg'),sun=$('sun'),noonline=$('noonline');
         var segs=[].slice.call(root.querySelectorAll('.fv-seg'));
-        var totalLen=arcbg.getTotalLength(),curPct=92,timers=[],mode=null,scrollLocked=true;
+        var totalLen=arcbg.getTotalLength(),curPct=92,timers=[],mode=null;
         var NOON_LINE_BASE=140, SUN_R=10;
-        var mqCompact=window.matchMedia('(max-width:960px)');
-        function isCompact(){return mqCompact.matches;}
 
-        function lockScroll(){
-          scrollLocked=true;
-          scroll.classList.remove('fv-scrollable');
-          scroll.classList.remove('fv-dragging');
-        }
-        function unlockScroll(){
-          scrollLocked=false;
-          /* ≤960px: keep list fully expanded so the page scrolls, not the panel */
-          if(isCompact()){
-            scroll.classList.remove('fv-scrollable');
-            return;
-          }
-          scroll.classList.add('fv-scrollable');
-        }
-        function syncCompactScroll(){
-          if(isCompact()){
-            scroll.classList.remove('fv-scrollable');
-            scroll.classList.remove('fv-dragging');
-          }else if(!scrollLocked){
-            scroll.classList.add('fv-scrollable');
-          }
-        }
-        if(mqCompact.addEventListener) mqCompact.addEventListener('change',syncCompactScroll);
-        else if(mqCompact.addListener) mqCompact.addListener(syncCompactScroll);
+        function lockScroll(){scroll.classList.remove('fv-scrollable');scroll.classList.remove('fv-dragging');}
+        function unlockScroll(){scroll.classList.add('fv-scrollable');}
 
-        /* Desktop click-drag to scroll (touch keeps native pan; disabled ≤960px) */
+        /* Desktop click-drag to scroll (touch keeps native pan) */
         (function enableDesktopDragScroll(){
           var dragging=false,moved=false,startY=0,startTop=0,pid=null;
           scroll.addEventListener('pointerdown',function(e){
-            if(isCompact() || !scroll.classList.contains('fv-scrollable')) return;
+            if(!scroll.classList.contains('fv-scrollable')) return;
             if(e.pointerType==='touch' || e.pointerType==='pen') return;
             if(e.button!==0) return;
             dragging=true;moved=false;pid=e.pointerId;
@@ -821,12 +787,8 @@
         }
         function setWork(p){arcwork.style.strokeDashoffset=(100-p);}
         function tweenSun(from,to,ms){if(reduce){placeSun(to);curPct=to;return;}var t0=performance.now();(function s(now){var k=Math.min(1,(now-t0)/ms);var e=1-Math.pow(1-k,3);var v=from+(to-from)*e;placeSun(v);curPct=v;if(k<1)requestAnimationFrame(s);})(performance.now());}
-        function scrollToRow(i){
-          /* Compact: list is fully visible — let the page scroll, don't pan a nested box */
-          if(reduce || isCompact()) return;
-          var r=rowEls[i];var target=Math.max(0,r.offsetTop-scroll.clientHeight*0.55+r.offsetHeight/2);
-          var from=scroll.scrollTop,t0=performance.now();(function s(now){var k=Math.min(1,(now-t0)/380);var e=1-Math.pow(1-k,3);scroll.scrollTop=from+(target-from)*e;if(k<1)requestAnimationFrame(s);})(performance.now());
-        }
+        function scrollToRow(i){if(reduce)return;var r=rowEls[i];var target=Math.max(0,r.offsetTop-scroll.clientHeight*0.55+r.offsetHeight/2);
+          var from=scroll.scrollTop,t0=performance.now();(function s(now){var k=Math.min(1,(now-t0)/380);var e=1-Math.pow(1-k,3);scroll.scrollTop=from+(target-from)*e;if(k<1)requestAnimationFrame(s);})(performance.now());}
         function setActive(st){segs.forEach(function(b){var on=b.getAttribute('data-s')===st;b.classList.toggle('fv-active',on);b.setAttribute('aria-selected',on?'true':'false');});}
         function applyBefore(r,t,soft){
           r.classList.remove('fv-done');
