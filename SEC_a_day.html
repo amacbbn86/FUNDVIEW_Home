@@ -517,7 +517,7 @@
         #fv-hero .fv-h span{color:var(--fv-teal)}
         #fv-hero .fv-sub{font-size:clamp(.92rem,1.15vw,1.02rem);line-height:1.55;color:#3d5166;margin:0 0 1.5rem;max-width:36ch;transition:.4s}
         #fv-hero .fv-mid{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
-        #fv-hero .fv-arcwrap{position:relative;width:min(100%,320px)}
+        #fv-hero .fv-arcwrap{position:relative;width:min(100%,320px);--fv-arc-h:calc(320px * 158 / 240)}
         #fv-hero .fv-arcwrap svg{display:block;width:100%;height:auto;overflow:visible}
         #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
         #fv-hero .fv-syn .fv-d2{width:8px;height:8px;border-radius:50%;background:var(--fv-amber);flex:none}
@@ -570,17 +570,17 @@
           #fv-hero .fv-h{max-width:22ch;font-size:1.5rem}
           #fv-hero .fv-sub{max-width:42ch}
           #fv-hero .fv-mid{align-items:center;width:100%}
-          /* Wide but short arc: CSS flattens the SVG box; path math stays intact */
+          /* Wider arc, same height as desktop (320px box) — path math unchanged */
           #fv-hero .fv-arcwrap{
             width:min(92vw,560px);
             max-width:100%;
             margin-inline:auto;
-            height:158px;
+            height:var(--fv-arc-h);
             overflow:visible;
           }
           #fv-hero .fv-arcwrap svg{
             width:100%;
-            height:158px;
+            height:100%;
             overflow:visible;
           }
           #fv-hero .fv-arccap{text-align:center}
@@ -599,8 +599,8 @@
         }
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
-          #fv-hero .fv-arcwrap{width:min(94vw,100%);height:140px}
-          #fv-hero .fv-arcwrap svg{height:140px}
+          #fv-hero .fv-arcwrap{width:min(94vw,100%)}
+          #fv-hero .fv-arcwrap svg{height:100%}
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-scroll,
