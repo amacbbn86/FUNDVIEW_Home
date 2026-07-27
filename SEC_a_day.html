@@ -609,7 +609,7 @@
                   <circle cx="210" cy="88" r="3.2"/>
                   <circle cx="224" cy="140" r="3.2"/>
                 </g>
-                <line x1="120" y1="26" x2="120" y2="140" stroke="#9fb0c2" stroke-width="1.2" stroke-dasharray="3 4"/>
+                <line data-fv="noonline" x1="120" y1="26" x2="120" y2="36" stroke="#9fb0c2" stroke-width="1.2" stroke-dasharray="3 4"/>
                 <circle data-fv="sun" cx="0" cy="0" r="10" fill="#F2B632" stroke="#fff" stroke-width="2.5"/>
                 <g data-fv="noon-label">
                   <rect x="94" y="2" width="52" height="18" rx="9" fill="#0A2E57"/>
@@ -693,9 +693,10 @@
         var cta=$('cta'); cta.href=FV_CONFIG.ctaHref; cta.innerHTML=FV_CONFIG.ctaLabel;
 
         var head=$('head'),sub=$('sub'),syn=$('syn'),arccap=$('arccap'),legend=$('legend'),payoff=$('payoff'),
-            arcwork=$('arcwork'),arcfree=$('arcfree'),arcbg=$('arcbg'),sun=$('sun');
+            arcwork=$('arcwork'),arcfree=$('arcfree'),arcbg=$('arcbg'),sun=$('sun'),noonline=$('noonline');
         var segs=[].slice.call(root.querySelectorAll('.fv-seg'));
         var totalLen=arcbg.getTotalLength(),curPct=92,timers=[],mode=null;
+        var NOON_LINE_TOP=26, SUN_R=10;
 
         function lockScroll(){scroll.classList.remove('fv-scrollable');scroll.classList.remove('fv-dragging');}
         function unlockScroll(){scroll.classList.add('fv-scrollable');}
@@ -735,7 +736,19 @@
         })();
 
         function ptAt(p){return arcbg.getPointAtLength(totalLen*p/100);}
-        function placeSun(p){var q=ptAt(p);sun.setAttribute('cx',q.x);sun.setAttribute('cy',q.y);}
+        function placeSun(p){
+          var q=ptAt(p);
+          sun.setAttribute('cx',q.x);sun.setAttribute('cy',q.y);
+          /* Dashed stem from under NOON to the ball edge */
+          if(noonline){
+            var dx=q.x-120, dy=q.y-NOON_LINE_TOP;
+            var len=Math.sqrt(dx*dx+dy*dy)||1;
+            noonline.setAttribute('x1','120');
+            noonline.setAttribute('y1',String(NOON_LINE_TOP));
+            noonline.setAttribute('x2',String(q.x-dx/len*SUN_R));
+            noonline.setAttribute('y2',String(q.y-dy/len*SUN_R));
+          }
+        }
         function setWork(p){arcwork.style.strokeDashoffset=(100-p);}
         function tweenSun(from,to,ms){if(reduce){placeSun(to);curPct=to;return;}var t0=performance.now();(function s(now){var k=Math.min(1,(now-t0)/ms);var e=1-Math.pow(1-k,3);var v=from+(to-from)*e;placeSun(v);curPct=v;if(k<1)requestAnimationFrame(s);})(performance.now());}
         function scrollToRow(i){if(reduce)return;var r=rowEls[i];var target=Math.max(0,r.offsetTop-scroll.clientHeight*0.55+r.offsetHeight/2);
