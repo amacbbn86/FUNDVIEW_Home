@@ -500,8 +500,9 @@
         #fv-hero .fv-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.18fr);gap:clamp(2rem,4vw,3.5rem);align-items:start}
         #fv-hero .fv-left,#fv-hero .fv-right{display:flex;flex-direction:column;min-width:0}
         #fv-hero .fv-ey{font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--fv-blue);margin:0 0 14px;text-transform:uppercase}
-        #fv-hero .fv-ey--right{margin-bottom:14px}
-        #fv-hero .fv-toggle{display:inline-flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;align-self:flex-start}
+        #fv-hero .fv-right-head{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;margin:0 0 14px}
+        #fv-hero .fv-right-head .fv-ey{margin:0}
+        #fv-hero .fv-toggle{display:inline-flex;flex-wrap:wrap;gap:8px;margin:0;align-self:center;flex:none}
         #fv-hero .fv-seg{display:inline-flex;align-items:center;gap:8px;border:1.5px solid #d5dde8;background:#fff;font-family:inherit;font-weight:700;font-size:12.5px;color:var(--fv-slate);padding:9px 15px;border-radius:999px;cursor:pointer;transition:.2s}
         #fv-hero .fv-seg .fv-seg-ico{width:16px;height:16px;flex:none;display:inline-flex;align-items:center;justify-content:center}
         #fv-hero .fv-seg .fv-seg-ico svg{width:16px;height:16px;display:block}
@@ -567,6 +568,7 @@
           #fv-hero .fv-sub{max-width:42ch}
           #fv-hero .fv-arcwrap{width:min(100%,280px)}
           #fv-hero .fv-scroll{min-height:240px;max-height:300px}
+          #fv-hero .fv-right-head{align-items:flex-start}
         }
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
@@ -575,6 +577,9 @@
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-scroll{min-height:220px;max-height:260px}
           #fv-hero .fv-payoff.fv-show{padding-top:1rem}
+          #fv-hero .fv-right-head{flex-direction:column;align-items:stretch}
+          #fv-hero .fv-toggle{width:100%}
+          #fv-hero .fv-seg{flex:1;justify-content:center}
         }
         @media(prefers-reduced-motion:reduce){#fv-hero *{transition:none !important}}
       </style>
@@ -582,16 +587,6 @@
       <div class="fv-grid">
         <div class="fv-left">
           <div class="fv-ey">A DAY IN THE LIFE AT CITY HALL</div>
-          <div class="fv-toggle" role="tablist" aria-label="Before or after FUNDVIEW">
-            <button type="button" class="fv-seg fv-active" data-s="before" role="tab" aria-selected="true">
-              <span class="fv-seg-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.5V8l2.4 1.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              Before FUNDVIEW
-            </button>
-            <button type="button" class="fv-seg" data-s="after" role="tab" aria-selected="false">
-              <span class="fv-seg-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.6"/><path d="M5 8.1l2.1 2.1L11.2 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              After FUNDVIEW
-            </button>
-          </div>
           <h2 class="fv-h" data-fv="head">Your software shouldn't <span>cost you your whole afternoon.</span></h2>
           <p class="fv-sub" data-fv="sub">On disconnected systems, the same work gets entered twice, exported, and reconciled by hand — and it eats the entire day.</p>
 
@@ -631,7 +626,19 @@
         </div>
 
         <div class="fv-right">
-          <div class="fv-ey fv-ey--right">Today&rsquo;s Workflow</div>
+          <div class="fv-right-head">
+            <div class="fv-ey">Today&rsquo;s Workflow</div>
+            <div class="fv-toggle" role="tablist" aria-label="Before or after FUNDVIEW">
+              <button type="button" class="fv-seg fv-active" data-s="before" role="tab" aria-selected="true">
+                <span class="fv-seg-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.5V8l2.4 1.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                Before FUNDVIEW
+              </button>
+              <button type="button" class="fv-seg" data-s="after" role="tab" aria-selected="false">
+                <span class="fv-seg-ico" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.6"/><path d="M5 8.1l2.1 2.1L11.2 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                After FUNDVIEW
+              </button>
+            </div>
+          </div>
           <div class="fv-scroll" data-fv="scroll" tabindex="0" aria-label="Today's workflow list"><div data-fv="list"></div></div>
         </div>
       </div>
