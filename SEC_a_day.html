@@ -564,18 +564,34 @@
         #fv-hero .fv-val i svg{width:8px;height:8px}
         @media(max-width:960px){
           #fv-hero .fv-grid{grid-template-columns:1fr;gap:1.75rem}
-          #fv-hero .fv-h{max-width:none;font-size:1.5rem}
+          #fv-hero .fv-left > .fv-ey,
+          #fv-hero .fv-h,
+          #fv-hero .fv-sub{text-align:center;margin-left:auto;margin-right:auto}
+          #fv-hero .fv-h{max-width:22ch;font-size:1.5rem}
           #fv-hero .fv-sub{max-width:42ch}
-          #fv-hero .fv-arcwrap{width:min(100%,280px)}
-          #fv-hero .fv-scroll{min-height:240px;max-height:300px}
+          #fv-hero .fv-mid{align-items:center;width:100%}
+          #fv-hero .fv-arcwrap{width:min(92vw,560px);max-width:100%;margin-inline:auto}
+          #fv-hero .fv-arccap{text-align:center}
+          #fv-hero .fv-legend{justify-content:center}
+          #fv-hero .fv-controls{justify-content:center}
+          #fv-hero .fv-scroll,
+          #fv-hero .fv-scroll.fv-scrollable{
+            width:90%;
+            max-width:90%;
+            flex:0 0 auto;
+            align-self:flex-start;
+            min-height:240px;
+            max-height:300px;
+          }
           #fv-hero .fv-right-head{align-items:flex-start}
         }
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
-          #fv-hero .fv-arcwrap{width:100%}
+          #fv-hero .fv-arcwrap{width:min(94vw,100%)}
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
-          #fv-hero .fv-scroll{min-height:220px;max-height:260px}
+          #fv-hero .fv-scroll,
+          #fv-hero .fv-scroll.fv-scrollable{min-height:220px;max-height:260px;width:90%;max-width:90%}
           #fv-hero .fv-payoff.fv-show{padding-top:1rem}
           #fv-hero .fv-right-head{flex-direction:column;align-items:stretch}
           #fv-hero .fv-toggle{width:100%}
