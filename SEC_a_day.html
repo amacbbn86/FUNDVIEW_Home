@@ -609,7 +609,7 @@
                   <circle cx="210" cy="88" r="3.2"/>
                   <circle cx="224" cy="140" r="3.2"/>
                 </g>
-                <line data-fv="noonline" x1="120" y1="26" x2="120" y2="36" stroke="#9fb0c2" stroke-width="1.2" stroke-dasharray="3 4"/>
+                <line data-fv="noonline" x1="120" y1="140" x2="120" y2="130" stroke="#9fb0c2" stroke-width="1.2" stroke-dasharray="3 4"/>
                 <circle data-fv="sun" cx="0" cy="0" r="10" fill="#F2B632" stroke="#fff" stroke-width="2.5"/>
                 <g data-fv="noon-label">
                   <rect x="94" y="2" width="52" height="18" rx="9" fill="#0A2E57"/>
@@ -696,7 +696,7 @@
             arcwork=$('arcwork'),arcfree=$('arcfree'),arcbg=$('arcbg'),sun=$('sun'),noonline=$('noonline');
         var segs=[].slice.call(root.querySelectorAll('.fv-seg'));
         var totalLen=arcbg.getTotalLength(),curPct=92,timers=[],mode=null;
-        var NOON_LINE_TOP=26, SUN_R=10;
+        var NOON_LINE_BASE=140, SUN_R=10;
 
         function lockScroll(){scroll.classList.remove('fv-scrollable');scroll.classList.remove('fv-dragging');}
         function unlockScroll(){scroll.classList.add('fv-scrollable');}
@@ -739,12 +739,12 @@
         function placeSun(p){
           var q=ptAt(p);
           sun.setAttribute('cx',q.x);sun.setAttribute('cy',q.y);
-          /* Dashed stem from under NOON to the ball edge */
+          /* Dashed stem from arc base up to the ball edge */
           if(noonline){
-            var dx=q.x-120, dy=q.y-NOON_LINE_TOP;
+            var dx=q.x-120, dy=q.y-NOON_LINE_BASE;
             var len=Math.sqrt(dx*dx+dy*dy)||1;
             noonline.setAttribute('x1','120');
-            noonline.setAttribute('y1',String(NOON_LINE_TOP));
+            noonline.setAttribute('y1',String(NOON_LINE_BASE));
             noonline.setAttribute('x2',String(q.x-dx/len*SUN_R));
             noonline.setAttribute('y2',String(q.y-dy/len*SUN_R));
           }
