@@ -588,14 +588,24 @@
           #fv-hero .fv-controls{justify-content:center}
           #fv-hero .fv-scroll,
           #fv-hero .fv-scroll.fv-scrollable{
-            width:90%;
-            max-width:90%;
+            width:84%;
+            max-width:84%;
             flex:0 0 auto;
-            align-self:flex-start;
+            align-self:center;
+            margin-inline:auto;
             min-height:240px;
             max-height:300px;
           }
-          #fv-hero .fv-right-head{align-items:flex-start}
+          /* Same column width as the list so toggle’s right edge lines up */
+          #fv-hero .fv-right-head{
+            width:84%;
+            max-width:84%;
+            align-self:center;
+            margin-inline:auto;
+            align-items:center;
+            justify-content:space-between;
+          }
+          #fv-hero .fv-toggle{align-self:center;margin-left:auto}
         }
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
@@ -604,11 +614,11 @@
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-scroll,
-          #fv-hero .fv-scroll.fv-scrollable{min-height:220px;max-height:260px;width:90%;max-width:90%}
+          #fv-hero .fv-scroll.fv-scrollable{min-height:220px;max-height:260px;width:84%;max-width:84%}
+          #fv-hero .fv-right-head{width:84%;max-width:84%;flex-direction:column;align-items:stretch}
+          #fv-hero .fv-toggle{width:auto;align-self:flex-end;margin-left:0}
+          #fv-hero .fv-seg{flex:none;justify-content:center}
           #fv-hero .fv-payoff.fv-show{padding-top:1rem}
-          #fv-hero .fv-right-head{flex-direction:column;align-items:stretch}
-          #fv-hero .fv-toggle{width:100%}
-          #fv-hero .fv-seg{flex:1;justify-content:center}
         }
         @media(prefers-reduced-motion:reduce){#fv-hero *{transition:none !important}}
       </style>
