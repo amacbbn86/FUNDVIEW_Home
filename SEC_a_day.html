@@ -598,12 +598,12 @@
             margin:0 auto 1.35rem;
             align-self:center;
           }
-          /* Flat elliptical arc — short height + preserveAspectRatio=none stretches the path */
+          /* Wide elliptical arc: same height as desktop, stretched wider */
           #fv-hero .fv-arcwrap{
             order:5;
             width:min(94vw,640px);
             max-width:100%;
-            height:96px;
+            height:var(--fv-arc-h);
             margin:0 auto 12px;
             overflow:visible;
           }
@@ -656,7 +656,7 @@
         }
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
-          #fv-hero .fv-arcwrap{width:min(96vw,100%);height:84px}
+          #fv-hero .fv-arcwrap{width:min(96vw,100%)}
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-toggle{flex-wrap:wrap;justify-content:center}
@@ -675,7 +675,7 @@
 
           <div class="fv-mid">
             <div class="fv-arcwrap">
-              <svg viewBox="0 0 240 158" preserveAspectRatio="none" role="img" aria-label="A daily sun arc from 8 AM to 5 PM with noon at the top">
+              <svg viewBox="0 0 240 158" role="img" aria-label="A daily sun arc from 8 AM to 5 PM with noon at the top">
                 <path data-fv="arcbg" d="M16,140 A104,104 0 0 1 224,140" fill="none" stroke="#e2e9f1" stroke-width="8" stroke-linecap="round"/>
                 <path data-fv="arcfree" d="M16,140 A104,104 0 0 1 224,140" fill="none" stroke="#00B7B3" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="0 50 50" style="opacity:0;transition:opacity .6s"/>
                 <path data-fv="arcwork" d="M16,140 A104,104 0 0 1 224,140" fill="none" stroke="#F2B632" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="8" style="transition:stroke-dashoffset .9s ease"/>
