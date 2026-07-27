@@ -536,8 +536,10 @@
         #fv-hero .fv-scroll{flex:1;min-height:320px;max-height:460px;overflow:hidden;position:relative;padding:2px 6px 8px 2px;
           overscroll-behavior:contain;touch-action:pan-y;
           -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 88%,transparent);mask-image:linear-gradient(180deg,#000 0%,#000 88%,transparent)}
-        #fv-hero .fv-scroll.fv-scrollable{overflow-y:auto;-webkit-overflow-scrolling:touch;cursor:grab;scrollbar-width:thin;scrollbar-color:rgba(10,46,87,.28) transparent}
-        #fv-hero .fv-scroll.fv-scrollable:active{cursor:grabbing}
+        #fv-hero .fv-scroll.fv-scrollable{overflow-y:auto;-webkit-overflow-scrolling:touch;cursor:grab;scrollbar-width:thin;scrollbar-color:rgba(10,46,87,.28) transparent;
+          -webkit-user-select:none;user-select:none;touch-action:pan-y}
+        #fv-hero .fv-scroll.fv-scrollable.fv-dragging{cursor:grabbing}
+        #fv-hero .fv-scroll.fv-scrollable *{-webkit-user-select:none;user-select:none}
         #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar{width:6px}
         #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar-thumb{background:rgba(10,46,87,.28);border-radius:999px}
         #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar-track{background:transparent}
@@ -695,8 +697,42 @@
         var segs=[].slice.call(root.querySelectorAll('.fv-seg'));
         var totalLen=arcbg.getTotalLength(),curPct=92,timers=[],mode=null;
 
-        function lockScroll(){scroll.classList.remove('fv-scrollable');}
+        function lockScroll(){scroll.classList.remove('fv-scrollable');scroll.classList.remove('fv-dragging');}
         function unlockScroll(){scroll.classList.add('fv-scrollable');}
+
+        /* Desktop click-drag to scroll (touch keeps native pan) */
+        (function enableDesktopDragScroll(){
+          var dragging=false,moved=false,startY=0,startTop=0,pid=null;
+          scroll.addEventListener('pointerdown',function(e){
+            if(!scroll.classList.contains('fv-scrollable')) return;
+            if(e.pointerType==='touch' || e.pointerType==='pen') return;
+            if(e.button!==0) return;
+            dragging=true;moved=false;pid=e.pointerId;
+            startY=e.clientY;startTop=scroll.scrollTop;
+            scroll.classList.add('fv-dragging');
+            try{scroll.setPointerCapture(e.pointerId);}catch(err){}
+          });
+          scroll.addEventListener('pointermove',function(e){
+            if(!dragging || e.pointerId!==pid) return;
+            var dy=e.clientY-startY;
+            if(Math.abs(dy)>2) moved=true;
+            scroll.scrollTop=startTop-dy;
+            if(moved) e.preventDefault();
+          });
+          function endDrag(e){
+            if(!dragging || (e && pid!=null && e.pointerId!==pid)) return;
+            dragging=false;pid=null;
+            scroll.classList.remove('fv-dragging');
+            if(moved){
+              var block=function(ev){ev.preventDefault();ev.stopPropagation();scroll.removeEventListener('click',block,true);};
+              scroll.addEventListener('click',block,true);
+            }
+            moved=false;
+          }
+          scroll.addEventListener('pointerup',endDrag);
+          scroll.addEventListener('pointercancel',endDrag);
+          scroll.addEventListener('lostpointercapture',endDrag);
+        })();
 
         function ptAt(p){return arcbg.getPointAtLength(totalLen*p/100);}
         function placeSun(p){var q=ptAt(p);sun.setAttribute('cx',q.x);sun.setAttribute('cy',q.y);}
