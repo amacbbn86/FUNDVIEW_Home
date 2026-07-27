@@ -1,0 +1,19 @@
+---
+description: Always land finished FundView work on GitHub main for office pulls
+alwaysApply: true
+---
+
+# GitHub main is the source of truth
+
+Alex works on FundView at home and at the office. **Finished work must end up on `main`**, not only on draft agent branches.
+
+## Required when finishing a task
+
+1. Commit and push the feature branch as usual.
+2. **Also update `origin/main`** with the finished deliverables (merge/cherry-pick/push), so `git pull` on `main` at the office gets everything.
+3. Do not leave the only copy of finished work on a draft PR branch.
+4. Prefer non-draft PRs when a PR is needed for review; still ensure `main` has the latest finished files before ending the session.
+
+## Scope
+
+Applies to all FundView repos under `amacbbn86`, especially `FUNDVIEW_Home` and `HOME_Animation-Section`.
