@@ -1748,7 +1748,16 @@
 
   /* Stacked Experience layout (< lg / 1024): floating glass card + solid ticker */
   @media (max-width: 1023.98px) {
+    /* Trap .scene-blend-side (z-30) inside #sceneWrap so the left vignette
+       cannot paint over the overlapping glass copy card. */
+    #experience_fundview #sceneWrap {
+      position: relative;
+      z-index: 1;
+    }
+
     #experience_fundview .hero-copy-col {
+      position: relative;
+      z-index: 2;
       clip-path: none;
       border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.65);
@@ -2027,9 +2036,15 @@
     /* Stacked "Experience FUNDVIEW" eyebrow removed — town scene is first */
     .experience-eyebrow--stack { display: none !important; }
     .experience-eyebrow--rail { display: none !important; }
-    #sceneWrap { order: 0; }
+    #sceneWrap {
+      order: 0;
+      position: relative;
+      z-index: 1; /* contain scene-blend-side z-30 under the glass card */
+    }
     #heroContent > .fade-left {
       order: 2;
+      position: relative;
+      z-index: 2;
       justify-content: flex-start !important;
       align-self: auto !important;
       padding-top: clamp(1.5rem, 4vw, 2.25rem);
