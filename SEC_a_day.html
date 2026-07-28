@@ -522,10 +522,129 @@
         #fv-hero .fv-arcwrap{position:relative;width:100%;--fv-arc-h:calc(100% * 158 / 240);aspect-ratio:240 / 158}
         #fv-hero .fv-arcwrap svg{display:block;width:100%;height:auto;overflow:visible}
         /* Inside the right bowl of the arc (desktop + shared base) */
-        #fv-hero .fv-saved{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--fv-teal);position:absolute;left:70%;top:62%;z-index:2;flex:0 0 auto;width:max-content;max-width:46%;min-width:0;margin:0;padding:0;opacity:0;transform:translate(-50%,-50%) scale(.96);pointer-events:none;visibility:hidden;transition:opacity .55s ease,transform .55s ease,visibility 0s linear .55s}
+        #fv-hero .fv-saved{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--fv-teal);position:absolute;left:76%;top:62%;z-index:2;flex:0 0 auto;width:max-content;max-width:44%;min-width:0;margin:0;padding:0;opacity:0;transform:translate(-50%,-50%) scale(.96);pointer-events:none;visibility:hidden;transition:opacity .55s ease,transform .55s ease,visibility 0s linear .55s}
         #fv-hero .fv-saved.fv-on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto;visibility:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s}
         #fv-hero .fv-saved-num{font-size:clamp(2.4rem,3.6vw,3.35rem);font-weight:800;line-height:0.92;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
-        #fv-hero .fv-saved-label{display:block;margin-top:0.28rem;font-size:clamp(0.62rem,0.85vw,0.78rem);font-weight:800;letter-spacing:0.07em;text-transform:uppercase;line-height:1.2;white-space:nowrap}
+        #fv-hero .fv-saved-label{display:block;margin-top:0.28rem;font-size:clamp(0.58rem,0.8vw,0.72rem);font-weight:800;letter-spacing:0.06em;text-transform:uppercase;line-height:1.15;white-space:normal;max-width:11ch}
+        #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
+        #fv-hero .fv-syn .fv-d2{width:8px;height:8px;border-radius:50%;background:var(--fv-amber);flex:none}
+        #fv-hero .fv-syn.fv-ok{border-color:rgba(0,183,179,.28);background:#e6f7f6;color:#0a7f7c}
+        #fv-hero .fv-syn.fv-ok .fv-d2{width:14px;height:14px;background:var(--fv-teal);position:relative}
+        #fv-hero .fv-syn.fv-ok .fv-d2::after{content:"";position:absolute;left:4px;top:2.5px;width:4px;height:7px;border:solid #fff;border-width:0 1.75px 1.75px 0;transform:rotate(45deg)}
+        #fv-hero .fv-arccap{font-size:14px;color:var(--fv-slate);margin:0;transition:.4s}
+        #fv-hero .fv-arccap b{color:var(--fv-blue)}
+        #fv-hero .fv-legend{display:flex;flex-wrap:wrap;gap:14px 18px;font-size:11.5px;font-weight:600;color:var(--fv-slate);margin-top:2px;opacity:0;transition:.4s}
+        #fv-hero .fv-legend.fv-on{opacity:1}
+        #fv-hero .fv-legend i{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px}
+        #fv-hero .fv-legend i svg{width:8px;height:8px}
+        #fv-hero .fv-controls{padding:1.35rem 0 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+        #fv-hero .fv-btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:14px;padding:13px 18px 13px 22px;border-radius:12px;cursor:pointer;box-shadow:0 12px 28px rgba(0,183,179,.34);transition:transform .2s ease,box-shadow .2s ease}
+        #fv-hero .fv-btn:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(0,183,179,.4)}
+        #fv-hero .fv-btn-arrow{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.22);font-size:13px;line-height:1}
+        #fv-hero .fv-scroll{flex:1;min-height:320px;max-height:420px;overflow:hidden;position:relative;padding:2px 6px 8px 2px;
+          overscroll-behavior:contain;touch-action:pan-y;
+          -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 88%,transparent);mask-image:linear-gradient(180deg,#000 0%,#000 88%,transparent)}
+        #fv-hero .fv-scroll.fv-scrollable{overflow-y:scroll;-webkit-overflow-scrolling:touch;cursor:grab;scrollbar-width:thin;scrollbar-color:rgba(10,46,87,.28) transparent;
+          -webkit-user-select:none;user-select:none;touch-action:none;-webkit-touch-callout:none}
+        #fv-hero .fv-scroll.fv-scrollable.fv-dragging{cursor:grabbing}
+        #fv-hero .fv-scroll.fv-scrollable *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none}
+        #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar{width:6px}
+        #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar-thumb{background:rgba(10,46,87,.28);border-radius:999px}
+        #fv-hero .fv-scroll.fv-scrollable::-webkit-scrollbar-track{background:transparent}
+        #fv-hero .fv-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;margin:0 0 9px;background:#fff;border:1px solid #e5ebf2;border-left-width:4px;box-shadow:0 4px 14px rgba(10,46,87,.05);transition:border-color .35s,opacity .35s,background .35s,box-shadow .35s}
+        #fv-hero .fv-ck{width:18px;height:18px;border-radius:50%;border:2px solid #cdd8e5;flex:none;display:flex;align-items:center;justify-content:center;transition:.3s;background:#fff}
+        #fv-hero .fv-ck svg{width:9px;height:9px;opacity:0;transform:scale(.4);transition:.3s}
+        #fv-hero .fv-row.fv-done .fv-ck svg{opacity:1;transform:scale(1)}
+        #fv-hero .fv-row.fv-done.fv-auto .fv-ck{background:var(--fv-teal);border-color:var(--fv-teal)}
+        #fv-hero .fv-row.fv-done.fv-dec .fv-ck{background:var(--fv-gold);border-color:var(--fv-gold)}
+        #fv-hero .fv-row .fv-tm{font-size:12.5px;font-weight:800;color:var(--fv-blue);font-variant-numeric:tabular-nums;flex:none;min-width:52px;text-align:center;padding:4px 8px;border-radius:8px;background:#f7efd8;transition:.3s}
+        #fv-hero .fv-row.fv-done .fv-tm{background:#e8f6f5}
+        #fv-hero .fv-row .fv-lb{font-size:13.5px;flex:1;min-width:0;line-height:1.35;color:#33465a;transition:.3s}
+        #fv-hero .fv-row .fv-dept{font-size:9.5px;font-weight:700;color:#9aa6b4;letter-spacing:.06em;text-transform:uppercase;flex:none}
+        /* Desktop (≥960): payoff sits under the workflow list (right column) */
+        #fv-hero .fv-payoff{margin:1.15rem 0 0;padding:0;max-height:0;overflow:hidden;opacity:0;border-top:2px solid transparent;transition:max-height .6s ease,opacity .6s ease,padding .6s ease,border-color .6s ease}
+        #fv-hero .fv-payoff.fv-show{max-height:220px;opacity:1;padding:1.05rem 0 0;border-top-color:var(--fv-teal)}
+        #fv-hero .fv-pline{font-size:14px;line-height:1.4;color:var(--fv-blue);font-weight:700;margin:0 0 10px;max-width:36ch}
+        #fv-hero .fv-vals{display:flex;flex-wrap:wrap;gap:8px}
+        #fv-hero .fv-val{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--fv-blue);background:#fff;border:1px solid #dce7ef;border-radius:999px;padding:6px 11px;box-shadow:0 3px 12px rgba(10,46,87,.06);opacity:0;transform:translateY(6px);transition:.35s}
+        #fv-hero .fv-val.fv-on{opacity:1;transform:none}
+        #fv-hero .fv-val i{width:14px;height:14px;border-radius:50%;background:var(--fv-teal);display:inline-flex;align-items:center;justify-content:center;flex:none}
+        #fv-hero .fv-val i svg{width:7px;height:7px}
+        @media(max-width:959.98px){
+          /* Flatten so we can reorder: copy → toggle → arc → list → payoff → CTA */
+          #fv-hero{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+          }
+          #fv-hero .fv-grid,
+          #fv-hero .fv-left,
+          #fv-hero .fv-right,
+          #fv-hero .fv-right-head,
+          #fv-hero .fv-mid{display:contents}
+          /* Keep arc-row as a real box so .fv-saved can sit inside the arc */
+          #fv-hero .fv-arc-row{
+            order:5;
+            display:block;
+            position:relative;
+            width:min(58vw,320px);
+            max-width:100%;
+            margin:0 auto 14px;
+          }
+          #fv-hero .fv-left > .fv-ey{order:1;width:100%;text-align:center;margin:0 0 14px}
+          #fv-hero .fv-h{
+            order:2;
+            text-align:center;
+            margin-left:auto;
+            margin-right:auto;
+            max-width:22ch;
+            font-size:1.5rem;
+          }
+          #fv-hero .fv-sub{
+            order:3;
+            text-align:center;
+            margin-left:auto;
+            margin-right:auto;
+            margin-bottom:1.35rem;
+            max-width:42ch;
+          }
+          /* Before/After — centered above the arc */
+          #fv-hero .fv-toggle{
+            order:4;
+            justify-content:center;
+            margin:0 auto 1.35rem;
+            align-self:center;
+          }
+          /* Smaller arc at tablet/phone — keep true SVG aspect ratio */
+          #fv-hero .fv-arcwrap{
+            position:relative;
+            width:100%;
+            max-width:100%;
+            height:auto;
+            aspect-ratio:240 / 158;
+            margin:0;
+            overflow:visible;
+          }
+          #fv-hero .fv-arcwrap svg{
+            width:100%;
+            height:100%;
+            overflow:visible;
+          }
+          /* Counter in right bowl — inspector left/top, two-line copy */
+          #fv-hero .fv-saved{
+            position:absolute;
+            left:70%;
+            top:71%;
+            width:max-content;
+            max-width:none;
+            min-width:0;
+            margin:0;
+            padding:0;
+            transform:translate(-50%,-50%) scale(.94);
+          }
+          #fv-hero .fv-saved.fv-on{transform:translate(-50%,-50%) scale(1)}
+          #fv-hero .fv-saved-num{font-size:clamp(1.7rem,5.6vw,2.35rem)}
+          #fv-hero .fv-saved-label{font-size:clamp(0.52rem,1.55vw,0.68rem);letter-spacing:0.06em;white-space:nowrap}
         #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
         #fv-hero .fv-syn .fv-d2{width:8px;height:8px;border-radius:50%;background:var(--fv-amber);flex:none}
         #fv-hero .fv-syn.fv-ok{border-color:rgba(0,183,179,.28);background:#e6f7f6;color:#0a7f7c}
@@ -691,9 +810,9 @@
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
           #fv-hero .fv-arc-row{width:min(72vw,280px)}
-          #fv-hero .fv-saved{left:70%;top:71%}
+          #fv-hero .fv-saved{left:76%;top:71%}
           #fv-hero .fv-saved-num{font-size:clamp(1.45rem,6.5vw,1.9rem)}
-          #fv-hero .fv-saved-label{font-size:clamp(0.48rem,1.7vw,0.6rem);letter-spacing:0.05em}
+          #fv-hero .fv-saved-label{font-size:clamp(0.46rem,1.55vw,0.56rem);letter-spacing:0.04em}
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-toggle{flex-wrap:wrap;justify-content:center}
