@@ -8574,7 +8574,7 @@ img, video { max-width: 100%; height: auto; }
           arcfree.style.opacity=0;sun.setAttribute('fill','#F2B632');
           rowEls.forEach(function(r,i){applyBefore(r,tasks[i]);});scroll.scrollTop=0;
           setWork(92);placeSun(92);curPct=92;
-          if(savedEl){cancelAnimationFrame(savedRaf);savedVal=0;if(savedNum)savedNum.textContent='0';savedEl.classList.remove('fv-on');savedEl.setAttribute('aria-hidden','true');}
+          if(savedEl){clearTimeout(savedDelay);cancelAnimationFrame(savedRaf);savedVal=0;if(savedNum)savedNum.textContent='0';savedEl.classList.remove('fv-on');savedEl.setAttribute('aria-hidden','true');}
         }
 
         function toBefore(){
