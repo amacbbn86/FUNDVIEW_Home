@@ -99,16 +99,25 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 .hero .container{position:relative;text-align:center}
 .hero .eyebrow{display:block;margin-bottom:.9rem;color:var(--teal-dark)}
 .hero h1{font-size:clamp(2.25rem,4.8vw,3.75rem);margin:0 auto;max-width:940px;font-weight:900}
+.hero .sub{
+  max-width:780px;margin:1rem auto 0;color:var(--body);
+  font-size:clamp(.98rem,1.35vw,1.12rem);line-height:1.7;
+}
 
 /* ---- Premium video player ---- */
-.video-wrap{position:relative;width:min(900px,72vw);margin:30px auto 0;border-radius:20px;
-  box-shadow:0 2px 0 rgba(255,255,255,.55) inset,0 40px 90px -34px rgba(6,23,49,.6),0 18px 44px -20px rgba(6,23,49,.4),0 0 72px -10px rgba(35,195,216,.28);
+.video-wrap{position:relative;width:min(1000px,76vw);margin:32px auto 0;border-radius:20px;
+  box-shadow:0 2px 0 rgba(255,255,255,.55) inset,0 28px 64px -30px rgba(6,23,49,.58),0 12px 30px -20px rgba(6,23,49,.4);
   border:1px solid rgba(255,255,255,.55);overflow:hidden;
   transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
 .video-wrap::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:0 0 0 1px rgba(35,195,216,.14) inset;z-index:5}
 .video-wrap:hover{transform:translateY(-6px);
-  box-shadow:0 2px 0 rgba(255,255,255,.6) inset,0 54px 110px -34px rgba(6,23,49,.66),0 22px 54px -22px rgba(6,23,49,.44),0 0 100px -6px rgba(35,195,216,.4)}
+  box-shadow:0 2px 0 rgba(255,255,255,.6) inset,0 36px 76px -30px rgba(6,23,49,.64),0 16px 36px -20px rgba(6,23,49,.44)}
 .video-aspect{position:relative;padding-top:62%;background:var(--navy-deep)}
+.video-meta{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  margin-top:1.1rem;color:var(--heading);font-size:.9rem;font-weight:700;
+}
+.video-meta__play{color:var(--teal)}
 .dash{position:absolute;inset:0;display:flex;background:linear-gradient(160deg,#0C2A52 0%,#071B34 100%);font-size:10px}
 .dash-side{width:19%;min-width:118px;background:rgba(255,255,255,.03);border-right:1px solid var(--navy-line);
   padding:12px 9px;display:flex;flex-direction:column;gap:5px;overflow:hidden}
@@ -360,6 +369,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   <div class="container">
     <span class="eyebrow reveal">The Platform That Powers Local Government</span>
     <h1 class="reveal">FUNDVIEW Exists To Make Finance &amp; Operations Easier</h1>
+    <p class="sub reveal">In less than 15 minutes, you'll discover how local governments are simplifying operations, gaining real-time visibility, and eliminating manual work with one connected platform.</p>
 
     <!-- ===== Premium video player ===== -->
     <!-- Swap the .dash poster for: <video poster="general-ledger-poster.jpg" src="..."></video> -->
@@ -439,6 +449,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
         </div>
       </div>
     </div>
+    <p class="video-meta reveal"><span class="video-meta__play" aria-hidden="true">▶</span> Approximately 15-Minute Overview</p>
   </div>
 </section>
 
