@@ -29,11 +29,7 @@
       overflow: hidden;
       color: var(--footer-white);
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(ellipse 68% 50% at 50% 26%, rgba(19, 74, 132, 0.38), transparent 72%),
-        radial-gradient(ellipse 45% 70% at 4% 0%, rgba(0, 183, 179, 0.09), transparent 72%),
-        radial-gradient(ellipse 52% 65% at 100% 16%, rgba(22, 75, 128, 0.16), transparent 72%),
-        linear-gradient(180deg, #08284d 0%, var(--footer-navy) 72%, #051a32 100%);
+      background-color: var(--footer-navy);
     }
 
     .site-footer *,
@@ -42,45 +38,22 @@
       box-sizing: border-box;
     }
 
-    .site-footer::before,
-    .site-footer::after {
+    .site-footer::before {
       content: "";
       position: absolute;
+      z-index: 0;
       inset: 0;
-      z-index: -2;
       pointer-events: none;
-    }
-
-    .site-footer::before {
-      opacity: 0.32;
-      background-image:
-        repeating-linear-gradient(118deg, transparent 0 23px, rgba(255,255,255,0.013) 24px, transparent 25px 49px),
-        repeating-linear-gradient(24deg, rgba(2,17,34,0.08) 0 1px, transparent 1px 5px);
-      mix-blend-mode: soft-light;
-    }
-
-    .site-footer::after {
-      z-index: -1;
-      background:
-        linear-gradient(90deg, rgba(2, 17, 34, 0.32), transparent 24%, transparent 76%, rgba(2, 17, 34, 0.3)),
-        linear-gradient(180deg, transparent 58%, rgba(2, 14, 28, 0.2));
-    }
-
-    .site-footer__watermark {
-      position: absolute;
-      z-index: -1;
-      top: clamp(1rem, 3vw, 3rem);
-      left: 50%;
-      width: clamp(300px, 30vw, 500px);
-      height: auto;
-      color: #4b78aa;
-      opacity: 0.08;
-      transform: translateX(-50%);
-      pointer-events: none;
-      user-select: none;
+      background-image: url("Assets_Footer/fundview-footer-background.png");
+      background-position: center top;
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 0.5;
     }
 
     .site-footer__inner {
+      position: relative;
+      z-index: 1;
       width: min(1600px, 100%);
       margin-inline: auto;
       padding: clamp(4.5rem, 7vw, 7.5rem) clamp(1.5rem, 5vw, 5.5rem) clamp(1.5rem, 2.5vw, 2.5rem);
@@ -89,35 +62,23 @@
     .site-footer__brand {
       display: grid;
       justify-items: center;
-      gap: clamp(0.75rem, 1.3vw, 1.15rem);
+      gap: clamp(0.45rem, 0.8vw, 0.7rem);
       position: relative;
+      width: 100%;
+      min-width: 0;
       text-align: center;
     }
 
     .site-footer__logo {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(0.8rem, 1.5vw, 1.35rem);
-      max-width: 100%;
-      color: #ffffff;
-      line-height: 1;
+      display: block;
+      width: min(590px, 88vw);
       text-decoration: none;
     }
 
-    .site-footer__logo-mark {
+    .site-footer__logo-image {
       display: block;
-      width: clamp(78px, 7vw, 116px);
-      flex: 0 0 auto;
+      width: 100%;
       height: auto;
-      overflow: visible;
-    }
-
-    .site-footer__wordmark {
-      font-size: clamp(2.65rem, 4.1vw, 4.35rem);
-      font-weight: 800;
-      letter-spacing: 0.025em;
-      white-space: nowrap;
     }
 
     .site-footer__tagline {
@@ -131,13 +92,15 @@
     .site-footer__tagline-emphasis {
       position: relative;
       display: inline-block;
+      z-index: 0;
     }
 
     .site-footer__tagline-emphasis::after {
       content: "";
       position: absolute;
+      z-index: -1;
       right: 0;
-      bottom: 0.04em;
+      bottom: -0.08em;
       left: 0;
       height: 3px;
       background: var(--footer-gold);
@@ -163,6 +126,10 @@
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--footer-muted);
+    }
+
+    .site-footer__heading--brand {
+      color: #ffffff;
     }
 
     .site-footer__links {
@@ -292,9 +259,9 @@
     }
 
     @media (max-width: 720px) {
-      .site-footer__watermark {
-        top: 2.5rem;
-        width: 330px;
+      .site-footer::before {
+        background-position: center top;
+        background-size: auto 100%;
       }
 
       .site-footer__inner {
@@ -302,15 +269,7 @@
       }
 
       .site-footer__logo {
-        gap: 0.65rem;
-      }
-
-      .site-footer__logo-mark {
-        width: clamp(64px, 19vw, 86px);
-      }
-
-      .site-footer__wordmark {
-        font-size: clamp(2rem, 10vw, 3rem);
+        width: min(520px, 88vw);
       }
 
       .site-footer__nav {
@@ -336,7 +295,9 @@
       }
 
       .site-footer__tagline {
-        max-width: 26ch;
+        width: min(26ch, 88vw);
+        max-width: none;
+        font-size: clamp(0.92rem, 4.4vw, 1.05rem);
       }
 
       .site-footer__nav {
@@ -394,21 +355,10 @@
 </head>
 <body>
   <footer class="site-footer" aria-label="Site footer">
-    <svg class="site-footer__watermark" viewBox="0 0 120 100" aria-hidden="true">
-      <path fill="currentColor" d="M8 42 41 9a18 18 0 0 1 25 0l33 33-15 15-29-29a3 3 0 0 0-4 0L23 57 8 42Z"/>
-      <circle cx="55" cy="49" r="15" fill="currentColor"/>
-      <path fill="currentColor" d="m24 61 15-15 19 19a4 4 0 0 0 5 0l22-22v-9h27v27l-10-10-27 28a19 19 0 0 1-28 0L24 61Z"/>
-    </svg>
-
     <div class="site-footer__inner">
       <div class="site-footer__brand">
         <a class="site-footer__logo" href="home.html" aria-label="FUNDVIEW home">
-          <svg class="site-footer__logo-mark" viewBox="0 0 120 100" aria-hidden="true">
-            <path fill="#ffffff" d="M8 42 41 9a18 18 0 0 1 25 0l33 33-15 15-29-29a3 3 0 0 0-4 0L23 57 8 42Z"/>
-            <circle cx="55" cy="49" r="15" fill="#ffffff"/>
-            <path fill="#00b7b3" d="m24 61 15-15 19 19a4 4 0 0 0 5 0l22-22v-9h27v27l-10-10-27 28a19 19 0 0 1-28 0L24 61Z"/>
-          </svg>
-          <span class="site-footer__wordmark">FUNDVIEW</span>
+          <img class="site-footer__logo-image" src="Assets_Footer/fundview-logo-official.png" alt="FUNDVIEW">
         </a>
         <p class="site-footer__tagline">
           The Platform That <span class="site-footer__tagline-emphasis">Powers</span> Local Governments
@@ -468,7 +418,7 @@
         </section>
 
         <section class="site-footer__group" aria-labelledby="footer-fundview">
-          <h2 class="site-footer__heading" id="footer-fundview">FUNDVIEW</h2>
+          <h2 class="site-footer__heading site-footer__heading--brand" id="footer-fundview">FUNDVIEW</h2>
           <address class="site-footer__address">
             FAST Technologies LLC<br>
             5225 S Loop 289<br>
