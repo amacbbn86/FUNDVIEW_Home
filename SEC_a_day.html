@@ -868,7 +868,7 @@
         function showSaved(){
           if(!savedEl) return;
           clearTimeout(savedDelay);
-          setNoonTrim(0.5, reduce?0:550);
+          setNoonTrim(0.7, reduce?0:550);
           savedEl.classList.add('fv-on');
           savedEl.setAttribute('aria-hidden','false');
           savedDelay=setTimeout(function(){
@@ -958,7 +958,7 @@
         })();
 
         function ptAt(p){return arcbg.getPointAtLength(totalLen*p/100);}
-        /* noonTrim 0 = full stem from base; 0.5 = hide bottom half (After / counter space) */
+        /* noonTrim 0 = full stem from base; 0.7 = hide bottom 70% (After / counter space) */
         var noonTrim=0,noonTrimRaf=0;
         function setNoonTrim(to, ms){
           cancelAnimationFrame(noonTrimRaf);
