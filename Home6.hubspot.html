@@ -939,12 +939,12 @@
     .experience_fundview {
       position: relative;
       width: 100%;
-      
+
       font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
       background: #081426;
     }
 
-  
+
   @media (min-width: 1024px) {
     #experience_fundview #heroContent,
     #experience_fundview #heroInner,
@@ -953,7 +953,7 @@
     }
   }
 
-  
+
   #experience_fundview:has(#demoOverlay.open),
   #experience_fundview:has(#demoOverlay.bridging),
   #experience_fundview:has(#demoOverlay.handoff-cover),
@@ -971,24 +971,24 @@
   #demoOverlay #exitDemo,
   #demoOverlay #bookDemoMobile {
     z-index: 40;
-    
+
     pointer-events: none;
     visibility: hidden;
   }
 
-  
+
   html { scroll-behavior: smooth; }
 
-  
+
   #heroInner {
     transition: transform 0.75s cubic-bezier(0.32, 0.0, 0.14, 1);
     will-change: transform;
   }
 
-  
+
   .hero-fade { transition: opacity .9s cubic-bezier(0.4,0,0.2,1), transform .9s cubic-bezier(0.4,0,0.2,1); }
 
-  
+
 
 
   /* ——— Glass copy panel + client logo ticker (from home5, adapted for Experience grid) ——— */
@@ -1873,7 +1873,7 @@
   }
   #zoomClip.active, #zoomOutClip.active { opacity: 1; }
 
-  
+
   #zoomBridge {
     position: fixed; inset: 0; z-index: 55;
     width: 100%; height: 100%;
@@ -1886,12 +1886,12 @@
   }
   #zoomBridge.visible { opacity: 1; }
 
-  
+
   #sceneShade { transition: opacity 0.75s cubic-bezier(0.32,0,0.14,1); opacity:0; }
   .zooming #sceneShade { opacity:.18; }
   .zooming.scene-change #sceneShade { opacity:.42; transition-duration: .35s; }
 
-  
+
   #sceneChange {
     position: fixed; inset: 0; z-index: 45; pointer-events: none;
     opacity: 0; transform: translateZ(0);
@@ -1926,11 +1926,11 @@
     #sceneZoom.hover-zoom { transform: none; }
   }
 
-  
+
   #scene { aspect-ratio: 16 / 9; }   /* baseline: stage == frame */
   @supports (container-type: size) {
     #scene { container-type: size; }
-    
+
     @media (max-width: 1023.9px) and (orientation: portrait) {
       #scene {
         aspect-ratio: 16 / 9;
@@ -1940,7 +1940,7 @@
         margin-left: calc(50% - 50vw);
       }
     }
-    
+
     #sceneWrap { container-type: inline-size; }
     @media (min-width: 1024px) {
       #scene {
@@ -1968,14 +1968,14 @@
       inset: auto;
       width:  max(100cqw, calc(100cqh * 16 / 9));
       height: max(100cqh, calc(100cqw * 9 / 16));
-      
+
       right: calc(max(0px, calc(100cqh * 16 / 9) - 100cqw) * -0.15);
-      
+
       top:   calc(max(0px, calc(100cqw * 9 / 16) - 100cqh) * -1.0);
     }
   }
 
-  
+
   @media (min-width: 1024px) and (orientation: portrait) {
     #heroInner { justify-content: space-between; }
     #heroContent {
@@ -1995,7 +1995,7 @@
       justify-content: flex-start !important;
     }
     #heroContent > .fade-left .mt-8 { justify-content: center !important; }  /* CTAs */
-    
+
     #sceneWrap { order: 1 !important; max-width: none !important; width: 100% !important; }
     #scene {
       aspect-ratio: 16 / 9 !important;
@@ -2006,7 +2006,7 @@
     }
   }
 
-  
+
   .experience-eyebrow--stack { display: none; }
   @media (max-width: 1023.98px) {
     #hero,
@@ -2061,7 +2061,7 @@
     #heroInner { transition: none; }
   }
 
-  
+
   #demoOverlay {
     --spring: cubic-bezier(0.22, 1, 0.36, 1);        /* fallback spring */
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* expo-ish out    */
@@ -2083,7 +2083,7 @@
     }
   }
 
-  
+
   #hero {
     transform-origin: 50% 40%;
     transition:
@@ -2095,7 +2095,7 @@
     filter: brightness(0.72) saturate(0.88);
   }
 
-  
+
   #demoOverlay .demo-backdrop {
     opacity: 0;
     cursor: zoom-out;
@@ -2113,7 +2113,7 @@
     transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  
+
   #demoLaptop {
     transform-origin: 50% 62%;
     opacity: 0;
@@ -2126,7 +2126,7 @@
     max-width: 100vw;
     box-sizing: border-box;
   }
-  
+
   #demoOverlay.bridging #demoLaptop,
   #demoOverlay.handoff-cover #demoLaptop,
   #demoOverlay.open #demoLaptop {
@@ -2137,7 +2137,7 @@
   #demoOverlay.handoff-cover #demoLaptop {
     transition: none;
   }
-  
+
   #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) {
     perspective: none;
     transform: none;
@@ -2152,7 +2152,7 @@
     opacity: 0.42;
     transition: none;
   }
-  
+
   #demoOverlay.closing #demoLaptop {
     opacity: 0;
     transform:
@@ -2163,7 +2163,7 @@
       opacity 360ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  
+
   /* Resting shadow is painted once on the chassis and never animated */
   .demo-screen {
     /* Cap at ≤96vw so screen + 1.035× base deck stay inside the viewport */
@@ -2171,7 +2171,7 @@
     width: var(--demo-screen-w);
     max-width: 96vw;
     min-width: 0; /* prevent flex/content min-size from expanding past max-width */
-    
+
     height: min(calc(var(--demo-screen-w) / 1.68), calc(100dvh - 96px));
     max-height: calc(100vh - 96px);
     max-height: calc(100dvh - 96px);
@@ -2187,7 +2187,7 @@
     max-width: 100vw;
     box-sizing: border-box;
   }
-  
+
   @media (min-width: 1300px) {
     .demo-screen {
       --demo-screen-w: min(96vw, 158.4vh);
@@ -2207,7 +2207,7 @@
       width: 15.5rem !important; /* ~248px; sm:w-44 (11rem) was too narrow */
     }
   }
-  
+
   @media (min-width: 640px) and (max-width: 1299.98px) {
     #demoOverlay.open,
     #demoOverlay.bridging,
@@ -2246,7 +2246,7 @@
       width: 10.25rem !important; /* ~164px */
     }
   }
-  
+
   #appShell {
     flex: 1 1 0% !important;
     min-height: 0 !important;
@@ -2256,7 +2256,7 @@
     flex-direction: column !important;
     overflow: hidden !important;
   }
-  
+
   .demo-shadow-lift {
     position: absolute; inset: 0; z-index: -1;
     border-radius: inherit;
@@ -2276,7 +2276,7 @@
   #demoOverlay.handoff-cover .demo-shadow-lift { transition: none; }
   #demoOverlay.closing .demo-shadow-lift { opacity: 0; transition-duration: 400ms; }
 
-  
+
   .demo-contact-shadow {
     position: absolute; left: 50%; bottom: -38px;
     width: 82%; height: 52px;
@@ -2307,7 +2307,7 @@
     transition-duration: 420ms;
   }
 
-  
+
   .demo-glow {
     position: absolute; inset: -8% -12% -14% -12%;
     z-index: -2; pointer-events: none;
@@ -2328,7 +2328,7 @@
   /* Base deck: static shadow, painted once */
   .demo-base { box-shadow: 0 26px 48px -12px rgba(0, 0, 0, 0.5); }
 
-  
+
   .demo-sheen {
     position: absolute; inset: 0; z-index: 40;
     border-radius: inherit; overflow: hidden; pointer-events: none;
@@ -2366,7 +2366,7 @@
     .demo-contact-shadow { bottom: -26px; height: 38px; }
   }
 
-  
+
   @media (max-width: 999.98px) {
     #demoOverlay.open,
     #demoOverlay.bridging,
@@ -2398,14 +2398,14 @@
     }
   }
 
-  
+
   @keyframes demoFadeIn  { from { opacity: 0; } to { opacity: 1; } }
   @keyframes demoDropIn  { from { opacity: 0; transform: translate3d(0, -10px, 0); } to { opacity: 1; transform: none; } }
   @keyframes demoSlideIn { from { opacity: 0; transform: translate3d(-14px, 0, 0); } to { opacity: 1; transform: none; } }
   @keyframes demoRiseIn  { from { opacity: 0; transform: translate3d(0, 14px, 0); } to { opacity: 1; transform: none; } }
   @keyframes demoCardIn  { from { opacity: 0; transform: translate3d(0, 16px, 0) scale(0.975); } to { opacity: 1; transform: none; } }
 
-  
+
   #demoOverlay.bridging #appShell > header,
   #demoOverlay.bridging #sideNav,
   #demoOverlay.bridging #sideNav .side-item,
@@ -2469,7 +2469,7 @@
     flex-shrink: 0;
     color: #17a9b6;
   }
-  
+
   .fin-hero {
     display: flex;
     flex-direction: column;
@@ -3326,7 +3326,7 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-  
+
   @container fin (min-width: 720px) {
     .fin-hero {
       flex-direction: row;
@@ -3377,7 +3377,7 @@
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
   }
-  
+
   @supports not (container-type: inline-size) {
     @media (min-width: 700px) and (max-width: 1099px) {
       .fin-features {
@@ -3440,12 +3440,12 @@
   #demoOverlay #exitDemo,
   #demoOverlay #bookDemoMobile {
     z-index: 40;
-    
+
     pointer-events: none;
     visibility: hidden;
   }
 
-  
+
   #exitDemo {
     position: absolute;
     left: auto;
@@ -3685,7 +3685,7 @@
     }
   }
 
-  
+
   @media (prefers-reduced-motion: reduce) {
     #demoOverlay, #demoOverlay * {
       transition-duration: 0.01ms !important;
@@ -3695,7 +3695,7 @@
     #hero.demo-recede { transform: none; filter: none; }
   }
 
-  
+
   .app-screen { display:none; opacity:0; transition: opacity .18s ease; }
   .app-screen.active { display:block; }
   .app-screen.visible { opacity:1; }
@@ -3828,7 +3828,7 @@
     }
   }
 
-  
+
   .slim-scroll {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
@@ -3839,7 +3839,7 @@
   .slim-scroll::-webkit-scrollbar { width:10px; height:10px; -webkit-appearance: none; display: block; }
   .slim-scroll::-webkit-scrollbar-track { background:#e6ebf1; }
   .slim-scroll::-webkit-scrollbar-thumb { background:#c2ccd6; border-radius:5px; border:2px solid #e6ebf1; }
-  
+
   #screenHost,
   #screenScroll {
     scrollbar-width: thin;
@@ -3867,7 +3867,7 @@
   #screenScroll::-webkit-scrollbar-thumb:vertical {
     background:#c2ccd6; border-radius:4px; border:2px solid #e6ebf1;
   }
-  
+
   @media (min-width: 640px) {
     #screenScroll {
       scrollbar-width: auto;
@@ -3899,7 +3899,7 @@
     min-width: 100%;
   }
 
-  
+
   #appShell > .flex.min-h-0 {
     flex: 1 1 0% !important;
     min-height: 0 !important;
@@ -3929,7 +3929,7 @@
     bottom: 0 !important;
     width: auto !important;
     height: auto !important;
-    
+
     overflow-x: auto !important;
     overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch;
@@ -3938,7 +3938,7 @@
     background: #eef2f6;
     z-index: 1;
   }
-  
+
   #demoOverlay.open:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop,
   #demoOverlay.open.ui-ready:not(.bridging):not(.handoff-cover):not(.closing) #demoLaptop {
     animation: none !important;
@@ -3967,7 +3967,7 @@
 
   .fv-card { background:#fff; border:1px solid #e3e8ee; border-radius:6px; box-shadow:0 1px 2px rgba(13,34,64,.05); }
 
-  
+
   .tab-item {
     display:flex; align-items:center; gap:6px; padding:0 9px;
     max-width:150px; border-right:1px solid #d3dae2; background:#dfe5ec;
@@ -4000,12 +4000,12 @@
   tr.cr-batch.cr-open { background:#eef5fb; }
   .cr-detail > td { background:#f7fafd; padding:0; }
 
-  
+
   /* Desktop: section height follows its content — no forced full-viewport */
   @media (min-width: 1024px) {
     #hero, #heroInner { min-height: 0 !important; }
   }
-  
+
   @media (max-width: 1023.98px) {
     #sceneWrap {
       max-width: none !important;
@@ -4031,7 +4031,7 @@
     }
   }
 
-  
+
   @media (min-width: 640px) and (max-width: 1023.98px) {
     #scene {
       width: 100vw !important;
@@ -4041,7 +4041,7 @@
     }
   }
 
-  
+
   @media (max-width: 639.98px) {
     #scene { height: min(67.8vw, 75.9vh) !important; }
     div.scene-note-m {
@@ -4055,7 +4055,7 @@
     }
   }
 
-  
+
   .scene-blend-side--left { width: 4.5rem; }
   .scene-blend-side--right { width: 2.5rem; }
   @media (max-width: 639.98px) {
@@ -4063,10 +4063,10 @@
     .scene-blend-side--right { width: 1.25rem; }
   }
 
-  
+
   .kpi-grid { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
   @media (min-width: 640px) { .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  
+
   .scene-note-m { display: none; }
   @media (max-width: 640.98px) {
     #handNote { display: none !important; }
@@ -6423,93 +6423,166 @@ img, video { max-width: 100%; height: auto; }
     }
 </style>
 <style data-shared-footer>
-:root {
-      --fv-navy: #0a2e57;
-      --fv-navy-deep: #071f3a;
-      --fv-teal: #00b7b3;
-      --fv-teal-bright: #00e5e0;
-      --fv-gold: #f2b632;
-      --fv-white: #ffffff;
-      --fv-footer-muted: rgba(255, 255, 255, 0.72);
-      --fv-footer-faint: rgba(255, 255, 255, 0.45);
-      --fv-footer-line: rgba(255, 255, 255, 0.12);
+/* Safe when opened directly; also harmless when styles are injected into home6 */
+    html, body {
+      margin: 0;
+      padding: 0;
     }
 
-    *,
-    *::before,
-    *::after {
+    .site-footer {
+      --footer-navy: #061d38;
+      --footer-navy-light: #0a315d;
+      --footer-teal: #00b7b3;
+      --footer-gold: #f2b632;
+      --footer-white: #ffffff;
+      --footer-copy: rgba(255, 255, 255, 0.86);
+      --footer-muted: rgba(255, 255, 255, 0.54);
+      --footer-line: rgba(255, 255, 255, 0.13);
+      position: relative;
+      isolation: isolate;
+      width: 100%;
+      overflow: hidden;
+      color: var(--footer-white);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(ellipse 68% 50% at 50% 26%, rgba(19, 74, 132, 0.38), transparent 72%),
+        radial-gradient(ellipse 45% 70% at 4% 0%, rgba(0, 183, 179, 0.09), transparent 72%),
+        radial-gradient(ellipse 52% 65% at 100% 16%, rgba(22, 75, 128, 0.16), transparent 72%),
+        linear-gradient(180deg, #08284d 0%, var(--footer-navy) 72%, #051a32 100%);
+    }
+
+    .site-footer *,
+    .site-footer *::before,
+    .site-footer *::after {
       box-sizing: border-box;
     }
 
-    body {
-      margin: 0;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #fff;
+    .site-footer::before,
+    .site-footer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
     }
 
-    /* ============================================
-       Global footer
-       ============================================ */
-    .site-footer {
-      width: 100%;
+    .site-footer::before {
+      opacity: 0.32;
+      background-image:
+        repeating-linear-gradient(118deg, transparent 0 23px, rgba(255,255,255,0.013) 24px, transparent 25px 49px),
+        repeating-linear-gradient(24deg, rgba(2,17,34,0.08) 0 1px, transparent 1px 5px);
+      mix-blend-mode: soft-light;
+    }
+
+    .site-footer::after {
+      z-index: -1;
       background:
-        radial-gradient(ellipse 60% 80% at 12% 0%, rgba(0, 183, 179, 0.12), transparent 60%),
-        linear-gradient(160deg, var(--fv-navy) 0%, var(--fv-navy-deep) 100%);
-      color: var(--fv-white);
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        linear-gradient(90deg, rgba(2, 17, 34, 0.32), transparent 24%, transparent 76%, rgba(2, 17, 34, 0.3)),
+        linear-gradient(180deg, transparent 58%, rgba(2, 14, 28, 0.2));
+    }
+
+    .site-footer__watermark {
+      position: absolute;
+      z-index: -1;
+      top: clamp(1rem, 3vw, 3rem);
+      left: 50%;
+      width: clamp(300px, 30vw, 500px);
+      height: auto;
+      color: #4b78aa;
+      opacity: 0.08;
+      transform: translateX(-50%);
+      pointer-events: none;
+      user-select: none;
     }
 
     .site-footer__inner {
-      width: min(1240px, 100%);
-      margin: 0 auto;
-      padding: clamp(3.25rem, 6vw, 5rem) 1.5rem clamp(1.5rem, 3vw, 2rem);
-    }
-
-    /* — Top: brand block + nav columns — */
-    .site-footer__top {
-      display: grid;
-      grid-template-columns: minmax(260px, 1.1fr) minmax(0, 2fr);
-      gap: clamp(2.5rem, 6vw, 5rem);
-      align-items: start;
-      padding-bottom: clamp(2.5rem, 5vw, 3.75rem);
+      width: min(1600px, 100%);
+      margin-inline: auto;
+      padding: clamp(4.5rem, 7vw, 7.5rem) clamp(1.5rem, 5vw, 5.5rem) clamp(1.5rem, 2.5vw, 2.5rem);
     }
 
     .site-footer__brand {
-      max-width: 360px;
-      align-self: start;
+      display: grid;
+      justify-items: center;
+      gap: clamp(0.75rem, 1.3vw, 1.15rem);
+      position: relative;
+      text-align: center;
     }
 
     .site-footer__logo {
-      display: inline-block;
-      line-height: 0;
-      vertical-align: top;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(0.8rem, 1.5vw, 1.35rem);
+      max-width: 100%;
+      color: #ffffff;
+      line-height: 1;
+      text-decoration: none;
     }
 
-    .site-footer__logo img {
+    .site-footer__logo-mark {
       display: block;
-      width: min(100%, 260px);
+      width: clamp(78px, 7vw, 116px);
+      flex: 0 0 auto;
       height: auto;
+      overflow: visible;
+    }
+
+    .site-footer__wordmark {
+      font-size: clamp(2.65rem, 4.1vw, 4.35rem);
+      font-weight: 800;
+      letter-spacing: 0.025em;
+      white-space: nowrap;
+    }
+
+    .site-footer__tagline {
+      margin: 0;
+      font-size: clamp(1rem, 1.28vw, 1.35rem);
+      font-weight: 600;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.94);
+    }
+
+    .site-footer__tagline-emphasis {
+      position: relative;
+      display: inline-block;
+    }
+
+    .site-footer__tagline-emphasis::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0.04em;
+      left: 0;
+      height: 3px;
+      background: var(--footer-gold);
     }
 
     .site-footer__nav {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: clamp(1.5rem, 3vw, 2.5rem);
-      align-self: start;
+      grid-template-columns: 0.95fr 0.95fr 0.85fr 0.95fr 1.15fr;
+      gap: clamp(2rem, 5vw, 6rem);
+      margin-top: clamp(3.5rem, 6vw, 5.5rem);
+      padding-inline: clamp(0rem, 2.5vw, 2.5rem);
     }
 
-    .site-footer__col-title {
-      margin: 0 0 1.1rem;
-      font-size: 0.75rem;
+    .site-footer__group {
+      min-width: 0;
+    }
+
+    .site-footer__heading {
+      margin: 0 0 1.25rem;
+      font-size: 0.76rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      line-height: 1.3;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--fv-footer-faint);
+      color: var(--footer-muted);
     }
 
     .site-footer__links {
       display: grid;
-      gap: 0.7rem;
+      gap: 0.9rem;
       margin: 0;
       padding: 0;
       list-style: none;
@@ -6518,124 +6591,98 @@ img, video { max-width: 100%; height: auto; }
     .site-footer__links a {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9375rem;
+      gap: 0.65rem;
+      width: fit-content;
+      max-width: 100%;
+      color: var(--footer-copy);
+      font-size: 0.97rem;
       font-weight: 500;
-      line-height: 1.4;
-      color: var(--fv-footer-muted);
+      line-height: 1.45;
       text-decoration: none;
-      transition: color 0.18s ease, transform 0.18s ease;
+      transition: color 180ms ease, transform 180ms ease;
     }
 
-    .site-footer__links a:hover,
-    .site-footer__links a:focus-visible {
-      color: var(--fv-teal-bright);
-      transform: translateX(2px);
-      outline: none;
+    .site-footer__links a:hover {
+      color: #ffffff;
+      transform: translateX(3px);
     }
 
-    .site-footer__links a svg {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-      color: var(--fv-footer-faint);
-      transition: color 0.18s ease;
+    .site-footer a:focus-visible {
+      outline: 2px solid var(--footer-teal);
+      outline-offset: 4px;
+      border-radius: 2px;
     }
 
-    .site-footer__links a:hover svg,
-    .site-footer__links a:focus-visible svg {
-      color: var(--fv-teal-bright);
+    .site-footer__links svg {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 17px;
+      color: rgba(255, 255, 255, 0.55);
     }
 
-    /* — Big brand statement (inspired by the oversized-logo footers) — */
-    .site-footer__statement {
-      padding: clamp(2rem, 4.5vw, 3.25rem) 0;
-      border-top: 1px solid var(--fv-footer-line);
-      text-align: center;
-    }
-
-    .site-footer__statement-title {
+    .site-footer__address {
       margin: 0;
-      font-size: clamp(1.6rem, 3.4vw, 2.6rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      color: var(--fv-white);
+      color: var(--footer-copy);
+      font-size: 0.97rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1.75;
     }
 
-    .site-footer__statement-highlight {
-      position: relative;
-      display: inline-block;
-    }
-
-    .site-footer__statement-highlight::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0.04em;
-      height: 4px;
-      background: var(--fv-gold);
-    }
-
-    /* — Bottom bar — */
     .site-footer__bottom {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1.25rem;
-      flex-wrap: wrap;
-      padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
-      border-top: 1px solid var(--fv-footer-line);
+      gap: 1.5rem;
+      margin-top: clamp(3rem, 5vw, 4.5rem);
+      padding-top: clamp(1.25rem, 2vw, 1.75rem);
+      border-top: 1px solid var(--footer-line);
     }
 
     .site-footer__legal {
       display: flex;
       align-items: center;
-      gap: 1.25rem;
       flex-wrap: wrap;
-      font-size: 0.8125rem;
-      color: var(--fv-footer-faint);
+      gap: 0.8rem 1.35rem;
+      color: var(--footer-muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
     }
 
     .site-footer__legal a {
-      color: var(--fv-footer-faint);
+      color: var(--footer-muted);
       text-decoration: none;
-      transition: color 0.18s ease;
+      transition: color 180ms ease;
     }
 
-    .site-footer__legal a:hover,
-    .site-footer__legal a:focus-visible {
-      color: var(--fv-white);
-      outline: none;
+    .site-footer__legal a:hover {
+      color: var(--footer-white);
     }
 
     .site-footer__social {
       display: flex;
       align-items: center;
-      gap: 0.65rem;
+      gap: 0.75rem;
     }
 
     .site-footer__social a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 38px;
-      height: 38px;
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 50%;
-      border: 1px solid var(--fv-footer-line);
-      color: var(--fv-footer-muted);
-      background: rgba(255, 255, 255, 0.04);
-      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+      color: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.025);
+      transition: color 180ms ease, background 180ms ease, border-color 180ms ease, transform 180ms ease;
     }
 
-    .site-footer__social a:hover,
-    .site-footer__social a:focus-visible {
-      background: var(--fv-teal);
-      border-color: var(--fv-teal);
-      color: var(--fv-navy);
+    .site-footer__social a:hover {
+      color: #ffffff;
+      background: rgba(0, 183, 179, 0.22);
+      border-color: rgba(0, 183, 179, 0.75);
       transform: translateY(-2px);
-      outline: none;
     }
 
     .site-footer__social svg {
@@ -6643,28 +6690,79 @@ img, video { max-width: 100%; height: auto; }
       height: 18px;
     }
 
-    /* — Responsive (≤960px: nav on top, centered logo below; 4 even columns) — */
-    @media (max-width: 960px) {
-      .site-footer__top {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-        justify-items: center;
+    @media (max-width: 1100px) {
+      .site-footer__inner {
+        padding-top: 5rem;
       }
 
       .site-footer__nav {
-        order: 1;
-        width: 100%;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: clamp(0.75rem, 2.5vw, 2rem);
-        justify-items: center;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 2.75rem clamp(2rem, 7vw, 5rem);
+      }
+
+      .site-footer__group:nth-child(4),
+      .site-footer__group:nth-child(5) {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .site-footer__watermark {
+        top: 2.5rem;
+        width: 330px;
+      }
+
+      .site-footer__inner {
+        padding: 4.25rem 1.4rem 1.75rem;
+      }
+
+      .site-footer__logo {
+        gap: 0.65rem;
+      }
+
+      .site-footer__logo-mark {
+        width: clamp(64px, 19vw, 86px);
+      }
+
+      .site-footer__wordmark {
+        font-size: clamp(2rem, 10vw, 3rem);
+      }
+
+      .site-footer__nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2.5rem 1.5rem;
+        margin-top: 3.5rem;
+        padding-inline: 0;
+      }
+
+      .site-footer__group:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .site-footer__bottom {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .site-footer__inner {
+        padding-inline: 1.15rem;
+      }
+
+      .site-footer__tagline {
+        max-width: 26ch;
+      }
+
+      .site-footer__nav {
+        grid-template-columns: 1fr;
+        gap: 2.25rem;
         text-align: center;
       }
 
-      .site-footer__nav > div {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      .site-footer__group,
+      .site-footer__group:last-child {
+        grid-column: auto;
       }
 
       .site-footer__links {
@@ -6675,55 +6773,43 @@ img, video { max-width: 100%; height: auto; }
         justify-content: center;
       }
 
-      .site-footer__brand {
-        order: 2;
-        width: 100%;
-        max-width: none;
-        display: flex;
+      .site-footer__address {
+        text-align: center;
+      }
+
+      .site-footer__bottom,
+      .site-footer__legal {
+        align-items: center;
         justify-content: center;
-        align-self: center;
-      }
-
-      .site-footer__logo {
-        display: block;
-      }
-
-      .site-footer__logo img {
-        margin-inline: auto;
-        width: min(100%, 220px);
-      }
-    }
-
-    @media (max-width: 750px) {
-      .site-footer__nav {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 2rem 1.25rem;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .site-footer__inner {
-        padding: 3rem 1.15rem 1.5rem;
+        text-align: center;
       }
 
       .site-footer__bottom {
+        gap: 1.4rem;
+      }
+
+      .site-footer__legal {
         flex-direction: column;
-        align-items: flex-start;
+        gap: 0.7rem;
+        width: 100%;
+      }
+
+      .site-footer__social {
+        justify-content: center;
+        width: 100%;
       }
     }
 
-    @media (max-width: 360px) {
-      .site-footer__nav {
-        grid-template-columns: 1fr;
-        /* prior 2.1rem + 40% between the 4 stacked column groups */
-        gap: 2.94rem;
+    @media (prefers-reduced-motion: reduce) {
+      .site-footer a {
+        transition: none;
       }
     }
 </style>
 </head>
 <body>
 
-  
+
   <header class="site-header" id="site-header">
     <div class="site-header__glass">
       <div class="site-header__inner">
@@ -6738,7 +6824,7 @@ img, video { max-width: 100%; height: auto; }
 
         <nav class="site-nav" id="site-nav" aria-label="Primary">
           <a href="https://245865092.hs-sites-na2.com/book-a-demo">
-            
+
             <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <rect x="3.25" y="4.25" width="17.5" height="15.5" rx="2" stroke="currentColor" stroke-width="1.65"/>
               <path d="M3.25 8.1h17.5" stroke="currentColor" stroke-width="1.65"/>
@@ -6749,7 +6835,7 @@ img, video { max-width: 100%; height: auto; }
             Our ERP Platform
           </a>
           <a href="https://245865092.hs-sites-na2.com/book-a-demo">
-            
+
             <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <rect x="3.6" y="3.6" width="7.1" height="7.1" rx="1.5" stroke="currentColor" stroke-width="1.65"/>
               <rect x="13.3" y="3.6" width="7.1" height="7.1" rx="1.5" stroke="currentColor" stroke-width="1.65"/>
@@ -6759,7 +6845,7 @@ img, video { max-width: 100%; height: auto; }
             Solutions
           </a>
           <a href="https://245865092.hs-sites-na2.com/book-a-demo">
-            
+
             <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <circle cx="12" cy="12" r="8.35" stroke="currentColor" stroke-width="1.65"/>
               <path d="M12 5.15l1.7 5.35L12 12l-1.7-1.5L12 5.15zm0 13.7l-1.7-5.35L12 12l1.7 1.5L12 18.85zM5.15 12l5.35-1.7L12 12l-1.5 1.7L5.15 12zm13.7 0l-5.35 1.7L12 12l1.5-1.7L18.85 12z" fill="currentColor"/>
@@ -6769,7 +6855,7 @@ img, video { max-width: 100%; height: auto; }
             Why FUNDVIEW
           </a>
           <a href="https://245865092.hs-sites-na2.com/book-a-demo">
-            
+
             <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M6.1 7.35c3.1-.15 4.05 3.05 5.9 5.05 1.85 2 3.1 4.35 5.9 4.2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
               <circle cx="5.2" cy="7.35" r="2.15" fill="var(--fv-teal-bright)"/>
@@ -6778,7 +6864,7 @@ img, video { max-width: 100%; height: auto; }
             How We Work
           </a>
           <a href="https://245865092.hs-sites-na2.com/book-a-demo">
-            
+
             <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M20.35 13.55 13.55 20.35a1.85 1.85 0 0 1-2.6 0l-7.1-7.1V3.75h9.35l6.95 6.95a1.85 1.85 0 0 1 0 2.85Z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/>
               <circle cx="8" cy="8" r="1.25" fill="currentColor"/>
@@ -6875,13 +6961,13 @@ img, video { max-width: 100%; height: auto; }
   </script>
 
 
-  
+
   <span id="top" hidden></span>
   <section class="experience_fundview antialiased text-white overflow-x-hidden" id="experience_fundview" aria-label="Experience FUNDVIEW">
 
 
 <section id="hero" class="relative min-h-screen overflow-hidden bg-navy-900">
-  
+
   <div class="pointer-events-none absolute inset-0"
        style="background:
          radial-gradient(1200px 600px at 85% 20%, rgba(31,120,180,.14), transparent 60%),
@@ -6890,10 +6976,10 @@ img, video { max-width: 100%; height: auto; }
 
   <div id="heroInner" class="relative flex min-h-screen flex-col">
 
-    
+
     <div id="heroContent" class="relative z-10 grid flex-1 items-center gap-8 px-5 pb-6 pt-0 sm:px-10 md:grid-rows-[auto_1fr] lg:grid-cols-[minmax(380px,40%)_1fr] lg:grid-rows-none lg:items-stretch lg:gap-0 lg:px-0 lg:pb-0">
 
-      
+
       <div class="hero-fade fade-left order-2 hero-copy-col w-full min-w-0 h-full flex flex-col justify-center mx-auto lg:order-1 lg:mx-0 lg:self-stretch lg:h-auto">
         <div class="hero-copy-content">
           <div class="hero-copy-top">
@@ -6925,14 +7011,14 @@ img, video { max-width: 100%; height: auto; }
         </div>
       </div>
 
-      
+
       <div id="sceneWrap" class="hero-fade fade-plain order-1 relative mx-auto w-full max-w-[1200px] lg:order-2 lg:max-w-none">
         <div id="scene" class="relative mx-auto w-full overflow-hidden lg:mr-0">
 
-          
+
           <div id="sceneZoom" class="absolute inset-0">
 
-            
+
             <video id="sceneImg" class="absolute inset-0 h-full w-full select-none object-cover"
                    style="max-width:none;"
                    src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/FUNDVIEW-Hero-Loop.mp4"
@@ -6941,27 +7027,27 @@ img, video { max-width: 100%; height: auto; }
                    controlslist="nodownload noremoteplayback"
                    aria-label="FUNDVIEW dashboard on a laptop in front of a city hall and water tower"></video>
 
-            
+
             <canvas id="sceneSnap" class="absolute inset-0 hidden h-full w-full select-none object-cover" aria-hidden="true"></canvas>
 
-            
+
             <div id="sceneShade" class="pointer-events-none absolute inset-0 bg-navy-950"></div>
 
-            
+
             <button id="laptopHotspot" aria-label="Open the interactive FUNDVIEW preview"
                     class="absolute z-10 cursor-pointer rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-fvteal/70"
                     style="left:41%; top:28%; width:54%; height:68%; background:transparent;"></button>
 
-            
+
             <div id="screenTarget" class="pointer-events-none absolute"
                  style="left:59%; top:33%; width:33.5%; height:42%;"></div>
 
-            
+
             <div id="laptopGlow" class="pointer-events-none absolute"
                  style="left:38%; top:22%; width:60%; height:76%;
                         background:radial-gradient(ellipse 60% 55% at 50% 48%, rgba(43,212,224,.22), transparent 70%);"></div>
 
-            
+
             <div id="handNote" class="pointer-events-none absolute z-20 hero-fade fade-plain"
                  style="left:35%; top:68%; width:20%;">
               <p class="font-script text-[clamp(18px,2vw,27px)] font-semibold leading-tight text-white"
@@ -6970,7 +7056,7 @@ img, video { max-width: 100%; height: auto; }
               </p>
             </div>
             <svg class="pointer-events-none absolute inset-0 z-20 h-full w-full hero-fade fade-plain" viewBox="0 0 100 101" aria-hidden="true">
-              
+
               <path d="M 42 66 C 50 58, 60 57, 65 65"
                     fill="none" stroke="rgba(255,255,255,.92)" stroke-width="1.6"
                     stroke-linecap="round" vector-effect="non-scaling-stroke"
@@ -6982,11 +7068,11 @@ img, video { max-width: 100%; height: auto; }
             </svg>
           </div>
 
-          
+
           <div class="scene-blend-side scene-blend-side--left pointer-events-none absolute inset-y-0 left-0 z-30" style="background:linear-gradient(to right,#081426,rgba(8,20,38,0));"></div>
           <div class="scene-blend-side scene-blend-side--right pointer-events-none absolute inset-y-0 right-0 z-30" style="background:linear-gradient(to left,#081426,rgba(8,20,38,0));"></div>
           <div class="scene-blend-top pointer-events-none absolute inset-x-0 top-0 z-30 h-16" style="background:linear-gradient(to bottom,#081426,rgba(8,20,38,0));"></div>
-          
+
           <div class="scene-note-m pointer-events-none absolute z-40" style="display:none; left:17%; top:auto; bottom:29%; width:52%;">
             <p class="font-script text-[clamp(18px,2vw,27px)] font-semibold leading-tight text-white" style="text-shadow:0 2px 14px rgba(0,0,0,.75), 0 0 30px rgba(43,212,224,.25);">Click Laptop to Explore FUNDVIEW</p>
           </div>
@@ -7000,7 +7086,7 @@ img, video { max-width: 100%; height: auto; }
 
   </div>
 
-  
+
   <div class="experience-bottom-blend pointer-events-none absolute inset-x-0 bottom-0 z-[35]" aria-hidden="true"></div>
 </section>
 <div id="sceneChange" aria-hidden="true"></div>
@@ -7020,17 +7106,17 @@ img, video { max-width: 100%; height: auto; }
 
 
 <div id="demoOverlay" class="pointer-events-none fixed inset-0 z-50 flex flex-col items-center justify-center opacity-0" aria-hidden="true">
-  
+
   <div class="demo-backdrop absolute inset-0"></div>
 
-  
+
   <button id="exitDemo" type="button">
     <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg>
     Exit Preview
     <kbd class="book-demo-esc">ESC</kbd>
   </button>
 
-  
+
   <a id="bookDemoMobile" href="https://245865092.hs-sites-na2.com/booth-book-a-demo-1" target="_blank" rel="noopener"
      class="book-demo book-demo--chrome">
     <span class="book-demo__icon" aria-hidden="true">
@@ -7043,26 +7129,26 @@ img, video { max-width: 100%; height: auto; }
     <span class="book-demo__arrow" aria-hidden="true">→</span>
   </a>
 
-  
+
   <div id="demoLaptop" class="relative z-10 flex flex-col items-center px-2">
-    
+
     <div class="demo-glow" aria-hidden="true"></div>
     <div class="demo-contact-shadow" aria-hidden="true"></div>
 
-    
+
     <div class="demo-screen relative rounded-t-[14px] rounded-b-md border border-[#6b7280]/70 bg-[#1a1d22] p-[9px] pb-[7px]">
-      
+
       <div class="demo-shadow-lift" aria-hidden="true"></div>
-      
+
       <div class="absolute left-1/2 top-[4px] h-[3px] w-[3px] -translate-x-1/2 rounded-full bg-[#4b5563]"></div>
 
-      
+
       <div id="appShell" class="flex h-full w-full flex-col overflow-hidden rounded-[5px] bg-white text-slate-800">
 
-        
+
         <header class="flex h-10 shrink-0 items-center justify-between border-b border-slate-200 bg-white pl-3 pr-2">
           <div class="flex items-center gap-2">
-            
+
             <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/fundview-logo-official.png" alt="FUNDVIEW"
                  class="h-[17px] w-auto select-none" draggable="false">
           </div>
@@ -7075,21 +7161,21 @@ img, video { max-width: 100%; height: auto; }
         </header>
 
         <div class="flex min-h-0 flex-1">
-          
+
           <aside class="flex w-[46px] shrink-0 flex-col overflow-hidden bg-[#0c2440] sm:w-44" id="sideNav">
             <div id="sideNavItems" class="slim-scroll flex min-h-0 flex-1 flex-col gap-[3px] overflow-y-auto py-2">
-              
+
             </div>
           </aside>
 
-          
+
           <main id="screenHost" class="relative min-h-0 min-w-0 flex-1 bg-[#eef2f6]">
-            
+
 
             <section class="app-screen" data-screen="financial">
               <div class="fin-panel mx-auto px-3 py-4 sm:px-5 sm:py-5">
 
-                
+
                 <div class="fin-hero">
                   <div class="fin-copy min-w-0 flex-1">
                     <div class="fin-copy-heading">
@@ -7099,7 +7185,7 @@ img, video { max-width: 100%; height: auto; }
                     <p>FUNDVIEW Financial Management connects every aspect of your organization's financial operations into one fully integrated platform.</p>
                     <p>FUNDVIEW helps finance departments reduce manual processes, simplify month-end close, strengthen internal controls, and make more confident financial decisions with accurate, real-time information.</p>
                   </div>
-                  
+
                   <div id="fv-stat-financial" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-financial" data-fv-stat="financial" data-fv-stat-id="fv-stat-financial" aria-label="70% — Faster month-end close">
                           <div class="fv-stat-duo__rail">
                             <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
@@ -7135,7 +7221,7 @@ img, video { max-width: 100%; height: auto; }
                         </div>
                 </div>
 
-                
+
                 <div class="mt-6">
                   <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
                   <ul class="fin-features">
@@ -7174,7 +7260,7 @@ img, video { max-width: 100%; height: auto; }
                   </ul>
                 </div>
 
-                
+
                 <blockquote class="fin-quote mt-5">
                   <svg class="fin-feature-icon mt-0.5 shrink-0" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
                   <div class="min-w-0">
@@ -7190,7 +7276,7 @@ img, video { max-width: 100%; height: auto; }
             <section class="app-screen" data-screen="workforce">
               <div class="fin-panel mx-auto px-3 py-4 sm:px-5 sm:py-5">
 
-                
+
                 <div class="fin-hero">
                   <div class="fin-copy min-w-0 flex-1">
                     <div class="fin-copy-heading">
@@ -7200,7 +7286,7 @@ img, video { max-width: 100%; height: auto; }
                     <p>Simplify payroll, human resources, and employee time management with one connected workforce solution designed specifically for local government.</p>
                     <p>FUNDVIEW helps you pay employees accurately, manage employee information with confidence, and eliminate manual processes that slow your team down.</p>
                   </div>
-                  
+
                   <div id="fv-stat-workforce" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-workforce" data-fv-stat="workforce" data-fv-stat-id="fv-stat-workforce" aria-label="30% — Average workload reclaimed">
                           <div class="fv-stat-duo__rail">
                             <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
@@ -7237,7 +7323,7 @@ img, video { max-width: 100%; height: auto; }
                         </div>
                 </div>
 
-                
+
                 <div class="mt-6">
                   <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
                   <ul class="fin-features">
@@ -7276,7 +7362,7 @@ img, video { max-width: 100%; height: auto; }
                   </ul>
                 </div>
 
-                
+
                 <blockquote class="fin-quote mt-5">
                   <svg class="fin-feature-icon mt-0.5 shrink-0" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
                   <div class="min-w-0">
@@ -7292,7 +7378,7 @@ img, video { max-width: 100%; height: auto; }
             <section class="app-screen" data-screen="utility">
               <div class="fin-panel mx-auto px-3 py-4 sm:px-5 sm:py-5">
 
-                
+
                 <div class="fin-hero">
                   <div class="fin-copy min-w-0 flex-1">
                     <div class="fin-copy-heading">
@@ -7302,7 +7388,7 @@ img, video { max-width: 100%; height: auto; }
                     <p>Manage utility billing, field operations, service requests, and customer payments from one connected platform.</p>
                     <p>FUNDVIEW helps local governments improve efficiency, deliver better customer service, and keep utility operations moving with real-time information.</p>
                   </div>
-                  
+
                   <div id="fv-stat-utility" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-utility" data-fv-stat="utility" data-fv-stat-id="fv-stat-utility" aria-label="24/7 — Online payments &amp; account access">
                           <div class="fv-stat-duo__rail">
                             <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
@@ -7338,7 +7424,7 @@ img, video { max-width: 100%; height: auto; }
                         </div>
                 </div>
 
-                
+
                 <div class="mt-6">
                   <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
                   <ul class="fin-features">
@@ -7393,7 +7479,7 @@ img, video { max-width: 100%; height: auto; }
                   </ul>
                 </div>
 
-                
+
                 <blockquote class="fin-quote mt-5">
                   <svg class="fin-feature-icon mt-0.5 shrink-0" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
                   <div class="min-w-0">
@@ -7409,7 +7495,7 @@ img, video { max-width: 100%; height: auto; }
             <section class="app-screen" data-screen="community">
               <div class="fin-panel mx-auto px-3 py-4 sm:px-5 sm:py-5">
 
-                
+
                 <div class="fin-hero">
                   <div class="fin-copy min-w-0 flex-1">
                     <div class="fin-copy-heading">
@@ -7419,7 +7505,7 @@ img, video { max-width: 100%; height: auto; }
                     <p>Support responsible growth, protect your community, and streamline development with one connected solution for permitting, inspections, and code enforcement.</p>
                     <p>FUNDVIEW helps local governments simplify processes, improve communication, and keep projects moving.</p>
                   </div>
-                  
+
                   <div id="fv-stat-community" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-community" data-fv-stat="community" data-fv-stat-id="fv-stat-community" aria-label="One — Platform for permits, inspections &amp; code enforcement">
                           <div class="fv-stat-duo__rail">
                             <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
@@ -7457,7 +7543,7 @@ img, video { max-width: 100%; height: auto; }
                         </div>
                 </div>
 
-                
+
                 <div class="mt-6">
                   <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
                   <ul class="fin-features fin-features-10">
@@ -7504,7 +7590,7 @@ img, video { max-width: 100%; height: auto; }
                   </ul>
                 </div>
 
-                
+
                 <blockquote class="fin-quote mt-5">
                   <svg class="fin-feature-icon mt-0.5 shrink-0" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
                   <div class="min-w-0">
@@ -7520,7 +7606,7 @@ img, video { max-width: 100%; height: auto; }
             <section class="app-screen" data-screen="court">
               <div class="fin-panel mx-auto px-3 py-4 sm:px-5 sm:py-5">
 
-                
+
                 <div class="fin-hero">
                   <div class="fin-copy min-w-0 flex-1">
                     <div class="fin-copy-heading">
@@ -7530,7 +7616,7 @@ img, video { max-width: 100%; height: auto; }
                     <p>FUNDVIEW Municipal Court simplifies every stage of court administration — from citation entry and case management to payments, reporting, and compliance.</p>
                     <p>Fully integrated with FUNDVIEW’s financial platform, court activity updates in real time, eliminating duplicate entry and giving staff greater visibility into daily operations.</p>
                   </div>
-                  
+
                   <div id="fv-stat-court" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-court" data-fv-stat="court" data-fv-stat-id="fv-stat-court" aria-label="Real-time — Court activity posted to finance">
                           <div class="fv-stat-duo__rail">
                             <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
@@ -7567,7 +7653,7 @@ img, video { max-width: 100%; height: auto; }
                         </div>
                 </div>
 
-                
+
                 <div class="mt-6">
                   <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
                   <ul class="fin-features">
@@ -7606,7 +7692,7 @@ img, video { max-width: 100%; height: auto; }
                   </ul>
                 </div>
 
-                
+
                 <blockquote class="fin-quote mt-5">
                   <svg class="fin-feature-icon mt-0.5 shrink-0" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
                   <div class="min-w-0">
@@ -7622,7 +7708,7 @@ img, video { max-width: 100%; height: auto; }
             <section class="app-screen" data-screen="citizen">
               <div class="fin-panel mx-auto px-3 py-4 sm:px-5 sm:py-5">
 
-                
+
                 <div class="fin-hero">
                   <div class="fin-copy min-w-0 flex-1">
                     <div class="fin-copy-heading">
@@ -7631,7 +7717,7 @@ img, video { max-width: 100%; height: auto; }
                     </div>
                     <p>Give citizens secure, convenient online access to utility billing and municipal court services through one easy-to-use self-service portal.</p>
                   </div>
-                  
+
                   <div id="fv-stat-citizen" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-citizen" data-fv-stat="citizen" data-fv-stat-id="fv-stat-citizen" aria-label="24/7 — Self-service citizen access">
                           <div class="fv-stat-duo__rail">
                             <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
@@ -7668,7 +7754,7 @@ img, video { max-width: 100%; height: auto; }
                         </div>
                 </div>
 
-                
+
                 <div class="mt-6">
                   <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
                   <ul class="fin-features">
@@ -7707,7 +7793,7 @@ img, video { max-width: 100%; height: auto; }
                   </ul>
                 </div>
 
-                
+
                 <blockquote class="fin-quote mt-5">
                   <svg class="fin-feature-icon mt-0.5 shrink-0" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
                   <div class="min-w-0">
@@ -7723,7 +7809,7 @@ img, video { max-width: 100%; height: auto; }
             <section class="app-screen" data-screen="platform">
               <div class="fin-panel mx-auto px-3 py-4 sm:px-5 sm:py-5">
 
-                
+
                 <div class="fin-hero">
                   <div class="fin-copy min-w-0 flex-1">
                     <div class="fin-copy-heading">
@@ -7732,7 +7818,7 @@ img, video { max-width: 100%; height: auto; }
                     </div>
                     <p>The power of FUNDVIEW goes beyond individual departments. Every module works together on one connected platform, giving your organization real-time visibility, shared data, automated workflows, and the confidence that comes from having one reliable source of information.</p>
                   </div>
-                  
+
                   <div id="fv-stat-platform" data-fv-anim="v2" class="fv-stat-duo fv-stat-module fv-stat-platform" data-fv-stat="platform" data-fv-stat-id="fv-stat-platform" aria-label="100% — GASB &amp; GAAP compliant">
                           <div class="fv-stat-duo__rail">
                             <div class="fv-stat-card" title="Click to replay" role="button" tabindex="0">
@@ -7769,7 +7855,7 @@ img, video { max-width: 100%; height: auto; }
                         </div>
                 </div>
 
-                
+
                 <div class="mt-6">
                   <div class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#17a9b6]">Feature Highlights</div>
                   <ul class="fin-features">
@@ -7824,7 +7910,7 @@ img, video { max-width: 100%; height: auto; }
                   </ul>
                 </div>
 
-                
+
                 <blockquote class="fin-quote mt-5">
                   <svg class="fin-feature-icon mt-0.5 shrink-0" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.2 18c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4C8.4 10 7.1 11.8 6.8 13.2c.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7S9.8 18 8.2 18H7.2zm9.5 0c-1.7 0-3-1.4-3-3.2 0-2.6 2-5.5 5.3-8.1l1.1 1.4c-2.2 1.9-3.5 3.7-3.8 5.1.5-.2 1-.3 1.5-.3 1.6 0 2.8 1.1 2.8 2.7s-1.3 2.4-2.9 2.4h-1z"/></svg>
                   <div class="min-w-0">
@@ -7840,18 +7926,18 @@ img, video { max-width: 100%; height: auto; }
           </main>
         </div>
 
-        
+
         <div id="tabBar" class="flex h-7 shrink-0 items-stretch border-t border-slate-300 bg-[#e9edf2]">
           <button id="closeAllTabs" class="shrink-0 border-r border-slate-300 px-3 text-[9.5px] font-bold uppercase tracking-wide text-slate-600 transition hover:bg-slate-200">Close All Tabs</button>
           <div id="tabStrip" class="slim-scroll flex min-w-0 flex-1 items-stretch overflow-x-auto"></div>
         </div>
       </div>
 
-      
+
       <div class="demo-sheen" aria-hidden="true"></div>
     </div>
 
-    
+
     <div class="demo-base relative h-[14px] w-[calc(min(96vw,148.8vh)*1.035)] rounded-b-2xl"
          style="background:linear-gradient(180deg,#8a9199 0%,#5c636b 40%,#2a2e34 100%);">
       <div class="absolute left-1/2 top-0 h-[5px] w-28 -translate-x-1/2 rounded-b-lg bg-[#3a3f46]"></div>
@@ -7899,7 +7985,7 @@ img, video { max-width: 100%; height: auto; }
 
   </section>
 
-  
+
   <section class="quicklinks" id="quicklinks" aria-label="Quick links">
     <div class="quicklinks__inner">
       <a class="quicklinks__link" href="https://245865092.hs-sites-na2.com/book-a-demo">Ask a Question</a>
@@ -8728,7 +8814,7 @@ img, video { max-width: 100%; height: auto; }
           <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
         </button>
         <div class="testimonials__track" id="testimonials-track">
-          
+
           <article class="testimonial-card">
             <div class="testimonial-card__quote" aria-hidden="true">&ldquo;</div>
             <p class="testimonial-card__text testimonial-card__text--short">&ldquo;FUNDVIEW has simplified our workflow to the point where we can dedicate more time to the customer. It has truly cut down our workload.&rdquo;</p>
@@ -8802,7 +8888,7 @@ img, video { max-width: 100%; height: auto; }
     </div>
   </section>
 
-  
+
   <section class="customer_story" id="customer_story" aria-labelledby="customer-story-heading">
     <div class="customer_story__inner">
       <div class="customer_story__copy">
@@ -9859,80 +9945,91 @@ img, video { max-width: 100%; height: auto; }
     })();
   </script>
 
-  
+
   <footer class="site-footer" aria-label="Site footer">
+    <svg class="site-footer__watermark" viewBox="0 0 120 100" aria-hidden="true">
+      <path fill="currentColor" d="M8 42 41 9a18 18 0 0 1 25 0l33 33-15 15-29-29a3 3 0 0 0-4 0L23 57 8 42Z"/>
+      <circle cx="55" cy="49" r="15" fill="currentColor"/>
+      <path fill="currentColor" d="m24 61 15-15 19 19a4 4 0 0 0 5 0l22-22v-9h27v27l-10-10-27 28a19 19 0 0 1-28 0L24 61Z"/>
+    </svg>
+
     <div class="site-footer__inner">
-
-      
-      <div class="site-footer__top">
-        <div class="site-footer__brand">
-          <a class="site-footer__logo" href="home.html" aria-label="FUNDVIEW home">
-            <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Footer/LOGO_FUNDVIEW_Footer1_Compressed.png" alt="FUNDVIEW" loading="lazy">
-          </a>
-        </div>
-
-        <nav class="site-footer__nav" aria-label="Footer navigation">
-          <div>
-            <h2 class="site-footer__col-title">Platform</h2>
-            <ul class="site-footer__links">
-              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Solutions</a></li>
-              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Pricing</a></li>
-              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Support</a></li>
-              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Login</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h2 class="site-footer__col-title">Company</h2>
-            <ul class="site-footer__links">
-              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Team</a></li>
-              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Careers</a></li>
-              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Contact Us</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h2 class="site-footer__col-title">Resources</h2>
-            <ul class="site-footer__links">
-              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Resources</a></li>
-              <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Newsletter</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h2 class="site-footer__col-title">Connect</h2>
-            <ul class="site-footer__links">
-              <li>
-                <a href="https://www.youtube.com/channel/UC_NkV6nKSvqjK8WVASbvYdQ" target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.6 7.2a2.6 2.6 0 00-1.83-1.85C18.16 4.9 12 4.9 12 4.9s-6.16 0-7.77.45A2.6 2.6 0 002.4 7.2 27.3 27.3 0 002 12a27.3 27.3 0 00.4 4.8 2.6 2.6 0 001.83 1.85c1.61.45 7.77.45 7.77.45s6.16 0 7.77-.45a2.6 2.6 0 001.83-1.85A27.3 27.3 0 0022 12a27.3 27.3 0 00-.4-4.8z" stroke="currentColor" stroke-width="1.5"/><path d="M10 9.5v5l4.5-2.5L10 9.5z" fill="currentColor"/></svg>
-                  YouTube
-                </a>
-              </li>
-              <li>
-                <a href="https://www.facebook.com/fundviewsoftware" target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.5 8.5H14c-.83 0-1.5.67-1.5 1.5v2h3l-.5 3h-2.5v6h-3v-6H7v-3h2.5v-2A4.5 4.5 0 0114 5.5h1.5v3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                  Facebook
-                </a>
-              </li>
-              <li>
-                <a href="https://www.linkedin.com/company/fund-accounting-solution-technologies-inc-/" target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7.75 10.25V16.5M7.75 7.4v.1M11.5 16.5v-3.75a2.25 2.25 0 014.5 0v3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  LinkedIn
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-
-      
-      <div class="site-footer__statement">
-        <p class="site-footer__statement-title">
-          The Platform That <span class="site-footer__statement-highlight">Powers</span> Local Governments
+      <div class="site-footer__brand">
+        <a class="site-footer__logo" href="home.html" aria-label="FUNDVIEW home">
+          <svg class="site-footer__logo-mark" viewBox="0 0 120 100" aria-hidden="true">
+            <path fill="#ffffff" d="M8 42 41 9a18 18 0 0 1 25 0l33 33-15 15-29-29a3 3 0 0 0-4 0L23 57 8 42Z"/>
+            <circle cx="55" cy="49" r="15" fill="#ffffff"/>
+            <path fill="#00b7b3" d="m24 61 15-15 19 19a4 4 0 0 0 5 0l22-22v-9h27v27l-10-10-27 28a19 19 0 0 1-28 0L24 61Z"/>
+          </svg>
+          <span class="site-footer__wordmark">FUNDVIEW</span>
+        </a>
+        <p class="site-footer__tagline">
+          The Platform That <span class="site-footer__tagline-emphasis">Powers</span> Local Governments
         </p>
       </div>
 
-      
+      <nav class="site-footer__nav" aria-label="Footer navigation">
+        <section class="site-footer__group" aria-labelledby="footer-platform">
+          <h2 class="site-footer__heading" id="footer-platform">Platform</h2>
+          <ul class="site-footer__links">
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Solutions</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Pricing</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Support</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Login</a></li>
+          </ul>
+        </section>
+
+        <section class="site-footer__group" aria-labelledby="footer-company">
+          <h2 class="site-footer__heading" id="footer-company">Company</h2>
+          <ul class="site-footer__links">
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Team</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Careers</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Contact Us</a></li>
+          </ul>
+        </section>
+
+        <section class="site-footer__group" aria-labelledby="footer-resources">
+          <h2 class="site-footer__heading" id="footer-resources">Resources</h2>
+          <ul class="site-footer__links">
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Resources</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Newsletter</a></li>
+          </ul>
+        </section>
+
+        <section class="site-footer__group" aria-labelledby="footer-connect">
+          <h2 class="site-footer__heading" id="footer-connect">Connect</h2>
+          <ul class="site-footer__links">
+            <li>
+              <a href="https://www.youtube.com/channel/UC_NkV6nKSvqjK8WVASbvYdQ" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="m10 9 5 3-5 3V9z" fill="currentColor"/></svg>
+                YouTube
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/fundviewsoftware" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 8.5H13a1.5 1.5 0 0 0-1.5 1.5v2h3l-.5 3h-2.5v6h-3v-6H6v-3h2.5v-2A4.5 4.5 0 0 1 13 5.5h1.5v3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                Facebook
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/fund-accounting-solution-technologies-inc-/" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7.75 10.25v6.25M7.75 7.4v.1M11.5 16.5v-3.75a2.25 2.25 0 0 1 4.5 0v3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                LinkedIn
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section class="site-footer__group" aria-labelledby="footer-fundview">
+          <h2 class="site-footer__heading" id="footer-fundview">FUNDVIEW</h2>
+          <address class="site-footer__address">
+            FAST Technologies LLC<br>
+            5225 S Loop 289<br>
+            Lubbock, TX 79424
+          </address>
+        </section>
+      </nav>
+
       <div class="site-footer__bottom">
         <div class="site-footer__legal">
           <span>&copy; 2026 FUNDVIEW. All rights reserved.</span>
@@ -9940,19 +10037,18 @@ img, video { max-width: 100%; height: auto; }
           <a href="https://245865092.hs-sites-na2.com/book-a-demo">Privacy</a>
         </div>
 
-        <div class="site-footer__social">
+        <div class="site-footer__social" aria-label="FUNDVIEW social media">
           <a href="https://www.youtube.com/channel/UC_NkV6nKSvqjK8WVASbvYdQ" target="_blank" rel="noopener noreferrer" aria-label="FUNDVIEW on YouTube">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.6 2.6 0 00-1.83-1.85C18.16 4.9 12 4.9 12 4.9s-6.16 0-7.77.45A2.6 2.6 0 002.4 7.2 27.3 27.3 0 002 12a27.3 27.3 0 00.4 4.8 2.6 2.6 0 001.83 1.85c1.61.45 7.77.45 7.77.45s6.16 0 7.77-.45a2.6 2.6 0 001.83-1.85A27.3 27.3 0 0022 12a27.3 27.3 0 00-.4-4.8zM10 14.5v-5l4.5 2.5-4.5 2.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.6 2.6 0 0 0-1.83-1.85C18.16 4.9 12 4.9 12 4.9s-6.16 0-7.77.45A2.6 2.6 0 0 0 2.4 7.2 27.3 27.3 0 0 0 2 12a27.3 27.3 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.83 1.85c1.61.45 7.77.45 7.77.45s6.16 0 7.77-.45a2.6 2.6 0 0 0 1.83-1.85A27.3 27.3 0 0 0 22 12a27.3 27.3 0 0 0-.4-4.8zM10 14.5v-5l4.5 2.5-4.5 2.5z"/></svg>
           </a>
           <a href="https://www.facebook.com/fundviewsoftware" target="_blank" rel="noopener noreferrer" aria-label="FUNDVIEW on Facebook">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.87.24-1.46 1.49-1.46H16.5V5.06c-.28-.04-1.22-.12-2.32-.12-2.3 0-3.87 1.4-3.87 3.98V11H7.9v3h2.41v7h3.19z"/></svg>
           </a>
           <a href="https://www.linkedin.com/company/fund-accounting-solution-technologies-inc-/" target="_blank" rel="noopener noreferrer" aria-label="FUNDVIEW on LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 8.65H4.1V19h2.84V8.65zM5.52 7.37a1.69 1.69 0 100-3.37 1.69 1.69 0 000 3.37zM19.9 13.06c0-3.02-1.61-4.42-3.76-4.42-1.73 0-2.5.95-2.94 1.62V8.65H10.4V19h2.84v-5.5c0-1.46.67-2.33 1.94-2.33 1.23 0 1.88.83 1.88 2.33V19h2.84v-5.94z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 8.65H4.1V19h2.84V8.65zM5.52 7.37a1.69 1.69 0 1 0 0-3.37 1.69 1.69 0 0 0 0 3.37zM19.9 13.06c0-3.02-1.61-4.42-3.76-4.42-1.73 0-2.5.95-2.94 1.62V8.65H10.4V19h2.84v-5.5c0-1.46.67-2.33 1.94-2.33 1.23 0 1.88.83 1.88 2.33V19h2.84v-5.94z"/></svg>
           </a>
         </div>
       </div>
-
     </div>
   </footer>
 
@@ -9961,7 +10057,7 @@ img, video { max-width: 100%; height: auto; }
 (function () {
   'use strict';
 
-  
+
   const MODULES = [
     { id:'financial', label:"Financial Management", icon:'<path d="M3 21h18"/><path d="M5 21V9l7-4 7 4v12"/><path d="M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01"/>' },
     { id:'workforce', label:"Workforce Management", icon:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><circle cx="17" cy="10" r="2.5"/><path d="M15 15.5a5 5 0 016 4.5"/>' },
@@ -9984,8 +10080,8 @@ img, video { max-width: 100%; height: auto; }
     sideNavItems.appendChild(b);
   });
 
-  
-  
+
+
   (function ensureScreenScroll() {
     const shell = document.getElementById('screenHost');
     if (!shell || document.getElementById('screenScroll')) return;
@@ -10506,7 +10602,7 @@ img, video { max-width: 100%; height: auto; }
       const vh = (vv && vv.height) ? vv.height : window.innerHeight;
       if (isPhoneDemo()) {
         /* Match CSS fill-bottom: keep top CTA clearance, grow into lower gap */
-        const topChrome = Math.round(4.75 * 16); 
+        const topChrome = Math.round(4.75 * 16);
         const bottomPad = 8;
         const baseDeck = 22;
         const h = Math.round(Math.max(280, vh - topChrome - bottomPad - baseDeck));
@@ -10586,7 +10682,7 @@ img, video { max-width: 100%; height: auto; }
     bindDemoTouchScroll();
   }
 
-  
+
   let touchScrollBound = false;
   let tsActive = false;
   let tsStartX = 0;
@@ -10758,7 +10854,7 @@ img, video { max-width: 100%; height: auto; }
     if (demoOpen && !animating) armDemoScroll();
   });
 
-  
+
   function replayCharts(id) {
     document.querySelectorAll('.app-screen[data-screen="' + id + '"] canvas').forEach(function (c) {
       const ch = Chart.getChart(c);
@@ -10766,7 +10862,7 @@ img, video { max-width: 100%; height: auto; }
     });
   }
 
-  
+
   let countRafs = [];
   function fmtKpi(el, v) {
     const dec = +(el.dataset.dec || 0);
@@ -10864,7 +10960,7 @@ img, video { max-width: 100%; height: auto; }
     });
   }
 
-  
+
   function paintBridgeFromVideo() {
     const src = zoomClip;
     if (!src.videoWidth) return false;
@@ -10922,7 +11018,7 @@ img, video { max-width: 100%; height: auto; }
   }
 
 
-  
+
   const endStill = new Image();
   endStill.decoding = 'async';
   endStill.src = 'https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Section_Experience/zoom-in-end-frame.png';

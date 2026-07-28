@@ -283,8 +283,15 @@ function buildHubspotPage(sourceHtml, target) {
 -->
 `;
 
+  // Source pages can contain mixed Windows/Unix line endings. Normalize the
+  // generated template so carriage returns never become trailing whitespace.
+  const normalizedHtml = html
+    .trim()
+    .replace(/\r\n?/g, "\n")
+    .replace(/[ \t]+$/gm, "");
+
   return `${banner}<!doctype html>
-${html.trim()}
+${normalizedHtml}
 `;
 }
 
