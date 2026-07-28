@@ -8102,7 +8102,7 @@ img, video { max-width: 100%; height: auto; }
         #fv-hero .fv-arc-row{display:flex;align-items:center;gap:clamp(1.1rem,2.4vw,2.25rem);width:100%;max-width:100%;position:relative}
         #fv-hero .fv-arcwrap{position:relative;width:min(100%,320px);flex:0 1 320px;--fv-arc-h:calc(320px * 158 / 240)}
         #fv-hero .fv-arcwrap svg{display:block;width:100%;height:auto;overflow:visible}
-        /* Desktop (≥1101): sit to the right of the arc without reserving space when hidden */
+        /* Desktop (≥960): sit to the right of the arc without reserving space when hidden */
         #fv-hero .fv-saved{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--fv-teal);position:absolute;left:calc(min(100%,320px) + clamp(1rem,2vw,1.75rem));top:50%;flex:0 0 auto;min-width:7.5rem;opacity:0;transform:translateY(-42%) scale(.96);pointer-events:none;visibility:hidden;transition:opacity .55s ease,transform .55s ease,visibility 0s linear .55s}
         #fv-hero .fv-saved.fv-on{opacity:1;transform:translateY(-50%) scale(1);pointer-events:auto;visibility:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s}
         #fv-hero .fv-saved-num{font-size:clamp(2.85rem,4.2vw,3.85rem);font-weight:800;line-height:0.95;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
@@ -8124,7 +8124,8 @@ img, video { max-width: 100%; height: auto; }
         #fv-hero .fv-btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:14px;padding:13px 18px 13px 22px;border-radius:12px;cursor:pointer;box-shadow:0 12px 28px rgba(0,183,179,.34);transition:transform .2s ease,box-shadow .2s ease}
         #fv-hero .fv-btn:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(0,183,179,.4)}
         #fv-hero .fv-btn-arrow{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.22);font-size:13px;line-height:1}
-        #fv-hero .fv-scroll{flex:1;min-height:320px;max-height:460px;overflow:hidden;position:relative;padding:2px 6px 8px 2px;
+        #fv-hero .fv-right{gap:0}
+        #fv-hero .fv-scroll{flex:1;min-height:320px;max-height:420px;overflow:hidden;position:relative;padding:2px 6px 8px 2px;
           overscroll-behavior:contain;touch-action:pan-y;
           -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 88%,transparent);mask-image:linear-gradient(180deg,#000 0%,#000 88%,transparent)}
         #fv-hero .fv-scroll.fv-scrollable{overflow-y:scroll;-webkit-overflow-scrolling:touch;cursor:grab;scrollbar-width:thin;scrollbar-color:rgba(10,46,87,.28) transparent;
@@ -8144,15 +8145,16 @@ img, video { max-width: 100%; height: auto; }
         #fv-hero .fv-row.fv-done .fv-tm{background:#e8f6f5}
         #fv-hero .fv-row .fv-lb{font-size:13.5px;flex:1;min-width:0;line-height:1.35;color:#33465a;transition:.3s}
         #fv-hero .fv-row .fv-dept{font-size:9.5px;font-weight:700;color:#9aa6b4;letter-spacing:.06em;text-transform:uppercase;flex:none}
-        #fv-hero .fv-payoff{margin:clamp(1.15rem,2.2vw,1.65rem) 0 0;padding:0;max-height:0;overflow:hidden;opacity:0;border-top:2px solid transparent;transition:max-height .6s ease,opacity .6s ease,padding .6s ease,border-color .6s ease}
-        #fv-hero .fv-payoff.fv-show{max-height:240px;opacity:1;padding:1.1rem 0 0;border-top-color:var(--fv-teal)}
-        #fv-hero .fv-pline{font-size:15px;color:var(--fv-blue);font-weight:700;margin:0 0 12px}
-        #fv-hero .fv-vals{display:flex;flex-wrap:wrap;gap:8px 10px}
-        #fv-hero .fv-val{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--fv-blue);background:#fff;border:1px solid #dce7ef;border-radius:999px;padding:7px 12px;box-shadow:0 4px 14px rgba(10,46,87,.06);opacity:0;transform:translateY(6px);transition:.35s}
+        /* Desktop (≥960): payoff sits under the workflow list (right column) */
+        #fv-hero .fv-payoff{margin:1.15rem 0 0;padding:0;max-height:0;overflow:hidden;opacity:0;border-top:2px solid transparent;transition:max-height .6s ease,opacity .6s ease,padding .6s ease,border-color .6s ease}
+        #fv-hero .fv-payoff.fv-show{max-height:220px;opacity:1;padding:1.05rem 0 0;border-top-color:var(--fv-teal)}
+        #fv-hero .fv-pline{font-size:14px;line-height:1.4;color:var(--fv-blue);font-weight:700;margin:0 0 10px;max-width:36ch}
+        #fv-hero .fv-vals{display:flex;flex-wrap:wrap;gap:8px}
+        #fv-hero .fv-val{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--fv-blue);background:#fff;border:1px solid #dce7ef;border-radius:999px;padding:6px 11px;box-shadow:0 3px 12px rgba(10,46,87,.06);opacity:0;transform:translateY(6px);transition:.35s}
         #fv-hero .fv-val.fv-on{opacity:1;transform:none}
-        #fv-hero .fv-val i{width:15px;height:15px;border-radius:50%;background:var(--fv-teal);display:inline-flex;align-items:center;justify-content:center;flex:none}
-        #fv-hero .fv-val i svg{width:8px;height:8px}
-        @media(max-width:1100px){
+        #fv-hero .fv-val i{width:14px;height:14px;border-radius:50%;background:var(--fv-teal);display:inline-flex;align-items:center;justify-content:center;flex:none}
+        #fv-hero .fv-val i svg{width:7px;height:7px}
+        @media(max-width:959.98px){
           /* Flatten so we can reorder: copy → toggle → arc → list → payoff → CTA */
           #fv-hero{
             display:flex;
@@ -8271,9 +8273,9 @@ img, video { max-width: 100%; height: auto; }
         }
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
-          #fv-hero .fv-arc-row{width:min(78vw,300px)}
+          #fv-hero .fv-arc-row{width:min(72vw,280px)}
           #fv-hero .fv-saved{left:69%;top:47%;max-width:46%}
-          #fv-hero .fv-saved-num{font-size:clamp(1.65rem,7.5vw,2.15rem)}
+          #fv-hero .fv-saved-num{font-size:clamp(1.55rem,7vw,2rem)}
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-toggle{flex-wrap:wrap;justify-content:center}
