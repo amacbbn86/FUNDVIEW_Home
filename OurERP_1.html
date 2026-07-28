@@ -269,18 +269,78 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 .feature h3{font-size:1.06rem;margin-bottom:.4rem}
 .feature p{font-size:.92rem;color:var(--body)}
 
-/* ===================== ONE PLATFORM (light modules) ===================== */
+/* ===================== ONE PLATFORM (interactive flip cards) ===================== */
 .platform{background:var(--bg)}
-.modules{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
-.module{position:relative;background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px 20px;box-shadow:var(--shadow-sm);
-  transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s}
-.module:hover{transform:translateY(-7px);box-shadow:0 22px 44px -20px rgba(10,34,66,.26),0 0 0 1px rgba(23,166,188,.2);border-color:rgba(23,166,188,.55)}
-.module.hot{border-color:rgba(23,166,188,.5);box-shadow:0 12px 30px rgba(23,166,188,.14)}
-.module .sync{position:absolute;top:14px;right:14px;width:20px;height:20px;stroke:var(--teal);fill:none;stroke-width:2}
-.module .micon{width:42px;height:42px;border-radius:11px;background:var(--teal-soft);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-.module .micon svg{width:22px;height:22px;stroke:var(--teal);fill:none;stroke-width:1.9}
-.module h4{color:var(--heading);font-size:.96rem;margin-bottom:.35rem}
-.module p{font-size:.78rem;color:var(--body);line-height:1.45}
+.platform .section-head{margin-bottom:44px}
+.platform .section-head .eyebrow{display:block;margin-bottom:.55rem}
+.platform-grid-wrap{position:relative}
+.platform-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.flip-card{
+  position:relative;height:210px;perspective:1200px;cursor:pointer;border-radius:18px;
+  transition:transform .35s var(--ease),filter .35s var(--ease);
+}
+.flip-card::after{
+  content:"";position:absolute;z-index:-1;right:8%;bottom:-14px;left:8%;height:24px;
+  border-radius:50%;background:rgba(10,34,66,.16);filter:blur(14px);opacity:.52;
+  transition:opacity .35s var(--ease),transform .35s var(--ease);
+}
+.flip-card:hover,.flip-card:focus-visible,.flip-card.is-flipped{transform:translateY(-6px)}
+.flip-card:hover::after,.flip-card:focus-visible::after,.flip-card.is-flipped::after{opacity:.72;transform:translateY(4px)}
+.flip-card:focus-visible{outline:3px solid var(--teal);outline-offset:4px}
+.flip-card__inner{
+  position:relative;width:100%;height:100%;transform-style:preserve-3d;
+  transition:transform .65s var(--ease);
+}
+.flip-card:hover .flip-card__inner,
+.flip-card:focus-within .flip-card__inner,
+.flip-card.is-flipped .flip-card__inner{transform:rotateY(180deg)}
+.flip-card__face{
+  position:absolute;inset:0;display:grid;grid-template-columns:58px minmax(0,1fr);
+  grid-template-rows:1fr auto;column-gap:16px;padding:20px;border-radius:18px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;
+}
+.flip-card__front{background:var(--white);border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.flip-card__back{
+  color:var(--white);background:var(--navy);border:1px solid var(--navy-line);
+  box-shadow:0 18px 38px -24px rgba(6,23,49,.6);transform:rotateY(180deg);
+}
+.flip-card__icon{
+  display:grid;place-items:center;width:58px;height:58px;border-radius:14px;
+  color:var(--teal);background:var(--teal-soft);
+}
+.flip-card__back .flip-card__icon{color:var(--teal-bright);background:rgba(255,255,255,.08)}
+.flip-card__icon svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.flip-card__copy{min-width:0}
+.flip-card h3{margin:1px 0 .45rem;color:var(--heading);font-size:1rem;line-height:1.25}
+.flip-card__front p{color:var(--body);font-size:.78rem;line-height:1.5}
+.flip-card__back h3{color:var(--white)}
+.flip-card__back ul{display:grid;gap:.24rem;margin:0;padding:0;list-style:none}
+.flip-card__back li{color:rgba(255,255,255,.9);font-size:.77rem;line-height:1.35}
+.flip-card__back li::before{content:"✓";margin-right:.4rem;color:var(--teal-bright);font-weight:900}
+.flip-card__action{grid-column:2;align-self:end;color:var(--teal);font-size:.76rem;font-weight:800}
+.flip-card__back .flip-card__action{color:var(--teal-bright)}
+.flip-helper{
+  position:absolute;z-index:6;top:50%;left:50%;display:grid;place-items:center;
+  width:88px;height:88px;padding:9px;border:1px solid var(--border);border-radius:50%;
+  color:var(--heading);background:var(--white);box-shadow:var(--shadow);
+  transform:translate(-50%,-50%);pointer-events:none;text-align:center;
+  transition:opacity .35s var(--ease),transform .35s var(--ease);
+}
+.flip-helper svg{width:25px;height:25px;color:var(--teal);fill:none;stroke:currentColor;stroke-width:1.8}
+.flip-helper span{font-size:.68rem;font-weight:800;line-height:1.1}
+.platform--interacted .flip-helper{opacity:0;transform:translate(-50%,-50%) scale(.8)}
+.notification-banner{
+  display:flex;align-items:center;gap:18px;margin-top:42px;padding:22px 28px;
+  border:1px solid var(--border);border-radius:16px;background:var(--teal-soft);
+  box-shadow:0 18px 36px -28px rgba(10,34,66,.28);
+}
+.notification-banner__icon{
+  display:grid;place-items:center;width:52px;height:52px;flex:0 0 52px;
+  border-radius:14px;color:var(--teal);background:var(--white);box-shadow:var(--shadow-sm);
+}
+.notification-banner__icon svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.notification-banner h3{margin:0 0 .2rem;color:var(--heading);font-size:1.05rem}
+.notification-banner p{margin:0;color:var(--body);font-size:.9rem}
 
 /* ===================== FINAL CTA (dark, 3 cards) ===================== */
 .cta-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto}
@@ -300,7 +360,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 /* ===================== RESPONSIVE ===================== */
 @media (max-width:1024px){
   .learn-grid,.feature-grid{grid-template-columns:repeat(2,1fr)}
-  .modules{grid-template-columns:repeat(3,1fr)}
+  .platform-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .cta-cards{grid-template-columns:1fr}
   .foot-cols{grid-template-columns:1fr 1fr 1fr}
   .c-arrow.left{left:-8px}.c-arrow.right{right:-8px}
@@ -315,7 +375,10 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .video-wrap{width:100%;border-radius:16px}
   .video-aspect{padding-top:56.25%}
   .learn-grid,.feature-grid{grid-template-columns:1fr}
-  .modules{grid-template-columns:repeat(2,1fr)}
+  .platform-grid{grid-template-columns:1fr}
+  .flip-card{height:220px}
+  .flip-helper{top:22px;width:76px;height:76px}
+  .notification-banner{align-items:flex-start;padding:20px}
   .stats{grid-template-columns:repeat(2,1fr)}
   .dash-cards{grid-template-columns:repeat(2,1fr)}
   .dash-lower{grid-template-columns:1fr}
@@ -628,27 +691,100 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 <section class="section platform">
   <div class="container">
     <div class="section-head reveal">
-      <h2>One Platform. Endless Possibilities.</h2>
-      <p>Fifteen fully integrated modules, working together as one connected system.</p>
+      <span class="eyebrow">One Platform. Endless Possibilities.</span>
+      <h2>Everything Your Municipality Needs, Connected.</h2>
+      <p>Explore every module before and after the card flip.</p>
     </div>
-    <div class="modules">
-      <div class="module hot reveal"><svg class="sync" viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 01-9 9 9 9 0 01-8-5M3 12a9 9 0 019-9 9 9 0 018 5"/><path d="M21 4v4h-4M3 20v-4h4"/></svg><div class="micon"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></div><h4>General Ledger</h4><p>Fund accounting, budgeting, cash management, and financial reporting.</p></div>
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 019-9 9 9 0 018 5"/><path d="M21 4v4h-4"/><path d="M21 12a9 9 0 01-9 9 9 9 0 01-8-5"/><path d="M3 20v-4h4"/></svg></div><h4>Bank Reconciliation</h4><p>Automate up to 90% of reconciliation and close with confidence.</p></div>
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><path d="M4 18V9M9 18V5M14 18v-7M19 18V8"/><path d="M3 21h18"/></svg></div><h4>Budget Manager</h4><p>Streamline budget planning, tracking, and analysis.</p></div>
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M9 13h6M9 16h4"/></svg></div><h4>Accounts Payable</h4><p>Vendor management, invoice processing, and payment generation.</p></div>
-      <div class="module hot reveal"><svg class="sync" viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 01-9 9 9 9 0 01-8-5M3 12a9 9 0 019-9 9 9 0 018 5"/><path d="M21 4v4h-4M3 20v-4h4"/></svg><div class="micon"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2 3h3l2.2 12h11l1.8-8H6"/></svg></div><h4>Purchasing</h4><p>Requisitions, purchase orders, approvals, and vendor tracking.</p></div>
+    <svg width="0" height="0" aria-hidden="true" focusable="false">
+      <symbol id="icon-ledger" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M7 11h10M7 15h6M8 19v-4M12 19v-4M16 19v-4"/></symbol>
+      <symbol id="icon-reconcile" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 16-5"/><path d="M19 3v4h-4M21 12a9 9 0 0 1-16 5"/><path d="M5 21v-4h4"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="icon-budget" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 17v-4M12 17V9M16 17v-6"/></symbol>
+      <symbol id="icon-payable" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M16 3v4h4M8 11h8M8 15h6"/><path d="M9 7h2"/></symbol>
+      <symbol id="icon-purchasing" viewBox="0 0 24 24"><path d="M6 4h12v17H6zM9 2h6v4H9zM9 10h6M9 14h6M9 18h4"/></symbol>
+      <symbol id="icon-assets" viewBox="0 0 24 24"><path d="M4 9h16v12H4zM8 9V5h8v4M9 14h6M12 11v6"/></symbol>
+      <symbol id="icon-payroll" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20a6 6 0 0 1 12 0M13 20a5 5 0 0 1 9 0"/><path d="M8 15v5"/></symbol>
+      <symbol id="icon-time" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2M4 4l2 2M20 4l-2 2"/></symbol>
+      <symbol id="icon-hr" viewBox="0 0 24 24"><circle cx="8" cy="7" r="3"/><circle cx="17" cy="7" r="3"/><path d="M2 20a6 6 0 0 1 12 0M11 20a6 6 0 0 1 11 0"/></symbol>
+      <symbol id="icon-utility" viewBox="0 0 24 24"><path d="M12 2s6 6 6 11a6 6 0 0 1-12 0c0-5 6-11 6-11z"/><path d="M9 15c.7 1.3 1.7 2 3 2"/></symbol>
+      <symbol id="icon-service" viewBox="0 0 24 24"><path d="M5 4h14v17H5zM8 2h8v4H8zM8 10h8M8 14h5"/><path d="m15 17 2 2 4-5"/></symbol>
+      <symbol id="icon-court" viewBox="0 0 24 24"><path d="M3 21h18M5 21V9l7-5 7 5v12M8 12h8M9 21v-5h6v5"/></symbol>
+      <symbol id="icon-code" viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.5 8-8 9-4.5-1-8-4.5-8-9V7z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></symbol>
+      <symbol id="icon-permits" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6zM15 3v4h4M9 11h6M9 15h6"/><path d="m9 19 1.5 1.5L14 17"/></symbol>
+      <symbol id="icon-portal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="15" rx="2"/><path d="M8 22h8M12 19v3M7 8h4v4H7zM14 8h3M14 11h3M7 15h10"/></symbol>
+    </svg>
 
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><h4>Asset Management</h4><p>Track assets, depreciation, maintenance, and mobile audits.</p></div>
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2"/><path d="M5 20a7 7 0 0114 0"/></svg></div><h4>Payroll</h4><p>Complete payroll, benefits, deductions, and tax filing.</p></div>
-      <div class="module hot reveal"><svg class="sync" viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 01-9 9 9 9 0 01-8-5M3 12a9 9 0 019-9 9 9 0 018 5"/><path d="M21 4v4h-4M3 20v-4h4"/></svg><div class="micon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><h4>Distributed Time Entry</h4><p>Department approvals, overtime tracking, and notifications.</p></div>
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0M17 6a3 3 0 010 6M19 20a6 6 0 00-3-5.2"/></svg></div><h4>Human Resources</h4><p>HR data, certifications, hiring, and employee records.</p></div>
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><path d="M12 3s6 5.5 6 10a6 6 0 01-12 0c0-4.5 6-10 6-10z"/></svg></div><h4>Utility Billing</h4><p>Metered billing, deposits, payment processing, and history.</p></div>
+    <div class="platform-grid-wrap">
+      <div class="flip-helper" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 9A7 7 0 0 1 18 6l2 2M17.9 15A7 7 0 0 1 6 18l-2-2"/></svg>
+        <span>Hover<br>to flip</span>
+      </div>
+      <div class="platform-grid">
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip General Ledger details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-ledger"/></svg></div><div class="flip-card__copy"><h3>General Ledger</h3><p>Fund accounting, budgeting, cash management, and financial reporting.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-ledger"/></svg></div><div class="flip-card__copy"><h3>General Ledger</h3><ul><li>Fund accounting</li><li>Cash management</li><li>Audit-ready reports</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Bank Reconciliation details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-reconcile"/></svg></div><div class="flip-card__copy"><h3>Bank Reconciliation</h3><p>Automates up to 70% of reconciliation for faster balancing.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-reconcile"/></svg></div><div class="flip-card__copy"><h3>Bank Reconciliation</h3><ul><li>70% automated</li><li>Exception review</li><li>Faster close</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Budget Manager details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-budget"/></svg></div><div class="flip-card__copy"><h3>Budget Manager</h3><p>Budget planning, tracking, and real-time analysis.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-budget"/></svg></div><div class="flip-card__copy"><h3>Budget Manager</h3><ul><li>Scenario planning</li><li>Live visibility</li><li>Approval routing</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Accounts Payable details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-payable"/></svg></div><div class="flip-card__copy"><h3>Accounts Payable</h3><p>Vendor invoices, approvals, payments, and secure signatures.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-payable"/></svg></div><div class="flip-card__copy"><h3>Accounts Payable</h3><ul><li>Vendor invoices</li><li>Smart approvals</li><li>Payment alerts</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Purchasing details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-purchasing"/></svg></div><div class="flip-card__copy"><h3>Purchasing</h3><p>Requisitions and purchase orders with budget validation.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-purchasing"/></svg></div><div class="flip-card__copy"><h3>Purchasing</h3><ul><li>Requisition to PO</li><li>Budget validation</li><li>Email approvals</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Asset Management details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-assets"/></svg></div><div class="flip-card__copy"><h3>Asset Management</h3><p>Assets, depreciation, insurance, maintenance, and utilization.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-assets"/></svg></div><div class="flip-card__copy"><h3>Asset Management</h3><ul><li>Lifecycle tracking</li><li>Maintenance history</li><li>Renewal alerts</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Payroll details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-payroll"/></svg></div><div class="flip-card__copy"><h3>Payroll</h3><p>Payroll, benefits, accruals, time entry, and reporting.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-payroll"/></svg></div><div class="flip-card__copy"><h3>Payroll</h3><ul><li>Benefits &amp; accruals</li><li>Payroll processing</li><li>System reporting</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Distributed Time Entry details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-time"/></svg></div><div class="flip-card__copy"><h3>Distributed Time Entry</h3><p>Department time entry submitted directly into payroll.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-time"/></svg></div><div class="flip-card__copy"><h3>Distributed Time Entry</h3><ul><li>Department entry</li><li>Direct to payroll</li><li>Faster processing</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Human Resources details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-hr"/></svg></div><div class="flip-card__copy"><h3>Human Resources</h3><p>Hiring, certifications, evaluations, training, and records.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-hr"/></svg></div><div class="flip-card__copy"><h3>Human Resources</h3><ul><li>Hiring &amp; reviews</li><li>Certifications</li><li>Employee records</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Utility Billing details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-utility"/></svg></div><div class="flip-card__copy"><h3>Utility Billing</h3><p>Metered billing, deposits, payments, usage history, and workflows.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-utility"/></svg></div><div class="flip-card__copy"><h3>Utility Billing</h3><ul><li>Metered billing</li><li>Usage history</li><li>Payment processing</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Service Orders details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-service"/></svg></div><div class="flip-card__copy"><h3>Service Orders</h3><p>Requests, dispatch, field work, and real-time updates.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-service"/></svg></div><div class="flip-card__copy"><h3>Service Orders</h3><ul><li>Request intake</li><li>Technician dispatch</li><li>Real-time updates</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Municipal Court details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-court"/></svg></div><div class="flip-card__copy"><h3>Municipal Court</h3><p>Case processing, payments, reporting, and administration.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-court"/></svg></div><div class="flip-card__copy"><h3>Municipal Court</h3><ul><li>Case processing</li><li>Payments &amp; reports</li><li>Court administration</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Code Enforcement details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-code"/></svg></div><div class="flip-card__copy"><h3>Code Enforcement</h3><p>Violations, inspections, photos, notices, and case tracking.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-code"/></svg></div><div class="flip-card__copy"><h3>Code Enforcement</h3><ul><li>Violations tracking</li><li>Inspections &amp; photos</li><li>Case workflow</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Permits details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-permits"/></svg></div><div class="flip-card__copy"><h3>Permits</h3><p>Applications, approvals, inspections, communications, and payments.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-permits"/></svg></div><div class="flip-card__copy"><h3>Permits</h3><ul><li>Online applications</li><li>Inspections</li><li>Secure payments</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip CityCentral details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><svg><use href="#icon-portal"/></svg></div><div class="flip-card__copy"><h3>CityCentral™</h3><p>Citizen self-service for utility billing and municipal court access.</p></div><span class="flip-card__action">View details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><svg><use href="#icon-portal"/></svg></div><div class="flip-card__copy"><h3>CityCentral™</h3><ul><li>Citizen self-service</li><li>Utility &amp; court access</li><li>Secure payments</li></ul></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+      </div>
+    </div>
 
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></div><h4>Service Orders</h4><p>Manage work orders, requests, meter exchanges, and field activities.</p></div>
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg></div><h4>Municipal Court</h4><p>Citation management, case processing, payments, and reporting.</p></div>
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 4.5-3.5 8-8 9-4.5-1-8-4.5-8-9V7z"/><path d="M12 8v4M12 15h.01"/></svg></div><h4>Code Enforcement</h4><p>Manage violations, inspections, images, and case history.</p></div>
-      <div class="module hot reveal"><svg class="sync" viewBox="0 0 24 24" fill="none"><path d="M21 12a9 9 0 01-9 9 9 9 0 01-8-5M3 12a9 9 0 019-9 9 9 0 018 5"/><path d="M21 4v4h-4M3 20v-4h4"/></svg><div class="micon"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h5M9.5 15.5h5"/></svg></div><h4>Permits</h4><p>Permit applications, inspections, approvals, and status updates.</p></div>
-      <div class="module reveal"><div class="micon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M8 8h8M8 11h5"/></svg></div><h4>CityCentral Citizen Portal</h4><p>Online payments, service requests, and account management.</p></div>
+    <div class="notification-banner reveal">
+      <div class="notification-banner__icon"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></div>
+      <div><h3>Text &amp; Email Notifications</h3><p>Keep teams informed with automated approvals, reminders, and workflow updates.</p></div>
     </div>
   </div>
 </section>
@@ -720,6 +856,35 @@ const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
 }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDelay = ((i%6)*0.06)+'s'; io.observe(el); });
+
+/* ===== Platform flip cards ===== */
+(function(){
+  const platform = document.querySelector('.section.platform');
+  if (!platform) return;
+  const cards = platform.querySelectorAll('.flip-card');
+  const markInteracted = () => platform.classList.add('platform--interacted');
+
+  cards.forEach(card => {
+    card.addEventListener('pointerenter', markInteracted, { once:true });
+    card.addEventListener('focus', markInteracted, { once:true });
+    card.addEventListener('click', () => {
+      const next = !card.classList.contains('is-flipped');
+      card.classList.toggle('is-flipped', next);
+      card.setAttribute('aria-pressed', String(next));
+      markInteracted();
+      if (!next) requestAnimationFrame(() => card.blur());
+    });
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        card.click();
+      } else if (event.key === 'Escape') {
+        card.classList.remove('is-flipped');
+        card.setAttribute('aria-pressed', 'false');
+      }
+    });
+  });
+})();
 
 /* ===== 5. Testimonial carousel dots (highlights on hover of arrows / mobile scroll) ===== */
 (function(){
