@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FUNDVIEW Footer Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Preview chrome only — footer styles load from fundview-footer-local.html */
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background:
+        linear-gradient(180deg, #dbe6f2 0%, #c8d7e8 100%);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #3d4f63;
+    }
+
+    .preview-spacer {
+      flex: 1 1 auto;
+      display: grid;
+      place-items: center;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .preview-spacer__label {
+      margin: 0;
+      max-width: 36ch;
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.5;
+      opacity: 0.72;
+    }
+
+    .preview-spacer__label code {
+      font-size: 0.88em;
+    }
+
+    #footer-mount {
+      width: 100%;
+      flex: 0 0 auto;
+    }
+
+    .preview-error {
+      margin: 0;
+      padding: 2rem 1.5rem;
+      background: #061d38;
+      color: #fff;
+      text-align: center;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-spacer" aria-hidden="true">
+    <p class="preview-spacer__label">
+      Footer-only design preview.<br>
+      Source of truth: <code>fundview-footer-local.html</code>
+    </p>
+  </div>
+
+  <div id="footer-mount"></div>
+
+  <script>
+    (async function loadSharedFooter() {
+      const mount = document.getElementById("footer-mount");
+      try {
+        const res = await fetch("fundview-footer-local.html", { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, "text/html");
+
+        doc.querySelectorAll('link[rel="stylesheet"], link[rel="preconnect"]').forEach((link) => {
+          const href = link.getAttribute("href");
+          if (!href) return;
+          if ([...document.head.querySelectorAll("link")].some((l) => l.href === link.href || l.getAttribute("href") === href)) {
+            return;
+          }
+          const clone = link.cloneNode(true);
+          document.head.appendChild(clone);
+        });
+
+        doc.querySelectorAll("head style").forEach((style) => {
+          const clone = document.createElement("style");
+          clone.setAttribute("data-shared-footer", "");
+          clone.textContent = style.textContent;
+          document.head.appendChild(clone);
+        });
+
+        const footer = doc.querySelector("footer.site-footer");
+        if (!footer) throw new Error("No footer.site-footer found in fundview-footer-local.html");
+        mount.replaceWith(footer);
+
+        doc.querySelectorAll("body script").forEach((script) => {
+          const runner = document.createElement("script");
+          runner.textContent = script.textContent;
+          document.body.appendChild(runner);
+        });
+      } catch (err) {
+        console.error("Failed to load shared footer:", err);
+        mount.innerHTML =
+          '<p class="preview-error">Could not load <code>fundview-footer-local.html</code>. ' +
+          "Serve this folder with <code>node _preview_server.js</code> and open " +
+          "<code>http://127.0.0.1:5500/footer-preview.html</code>.</p>";
+      }
+    })();
+  </script>
+</body>
+</html>

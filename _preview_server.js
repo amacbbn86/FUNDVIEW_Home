@@ -61,7 +61,10 @@ const server = http.createServer((req, res) => {
   }
 });
 
+// Bind IPv4 explicitly. On Windows, `localhost` often resolves to ::1 first;
+// prefer http://127.0.0.1:PORT/ if localhost hangs.
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("Preview server running at http://localhost:" + PORT + "/");
+  console.log("Preview server running at http://127.0.0.1:" + PORT + "/");
+  console.log("Footer preview:        http://127.0.0.1:" + PORT + "/footer-preview.html");
   console.log("Serving: " + ROOT);
 });
