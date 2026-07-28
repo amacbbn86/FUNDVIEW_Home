@@ -1,5 +1,5 @@
 /**
- * HubSpot dual-mode helper for home.html / home2–home6.html
+ * HubSpot dual-mode helper for home.html / home2–home6.html / OurERP_1.html
  *
  * EDIT (default / local preview):
  *   node _hubspot_mode.js edit
@@ -13,11 +13,12 @@
  *   node _hubspot_mode.js upload home4    → Home4.hubspot.html (from home4.html)
  *   node _hubspot_mode.js upload home5    → Home5.hubspot.html (from home5.html)
  *   node _hubspot_mode.js upload home6    → Home6.hubspot.html (from home6.html)
+ *   node _hubspot_mode.js upload ourerp   → OurERP_1.hubspot.html (from OurERP_1.html)
  *   → HubSpot page template metadata + HubL includes
  *   → header + footer INLINED (fetch of local files does not work on HubSpot)
  *   → for home2–home6: experience Tailwind CSS is also inlined
  *
- * Usage: node _hubspot_mode.js [edit|upload|status] [home|home2|home3|home4|home5|home6]
+ * Usage: node _hubspot_mode.js [edit|upload|status] [home|home2|home3|home4|home5|home6|ourerp]
  */
 const fs = require("fs");
 const path = require("path");
@@ -35,6 +36,21 @@ const TAILWIND = path.join(
 
 function resolveTarget(name) {
   const key = (name || "home").toLowerCase();
+  if (
+    key === "ourerp" ||
+    key === "ourerp_1" ||
+    key === "ourerp_1.html" ||
+    key === "ourerp-1" ||
+    key === "ourerp-1.html"
+  ) {
+    return {
+      key: "ourerp",
+      source: path.join(ROOT, "OurERP_1.html"),
+      output: path.join(ROOT, "OurERP_1.hubspot.html"),
+      label: "FUNDVIEW Our ERP Platform (Guided Demo)",
+      preview: "http://localhost:5500/OurERP_1.html",
+    };
+  }
   if (key === "home6" || key === "home6.html") {
     return {
       key: "home6",
@@ -259,6 +275,7 @@ function buildHubspotPage(sourceHtml, target) {
   html = sanitizeHublCommentCollisions(html);
 
   html = html.replace(/<title>[\s\S]*?<\/title>\s*/i, "");
+  html = html.replace(/<meta\s+name=["']description["'][^>]*>\s*/gi, "");
 
   html = html.replace(/^[\s\S]*?<!DOCTYPE html>\s*/i, "");
   html = html.replace(/^<!--[\s\S]*?-->\s*/i, "");
@@ -409,7 +426,7 @@ try {
   else if (cmd === "status") status(targetArg);
   else {
     console.error(
-      "Usage: node _hubspot_mode.js [edit|upload|status] [home|home2|home3|home4|home5|home6]"
+      "Usage: node _hubspot_mode.js [edit|upload|status] [home|home2|home3|home4|home5|home6|ourerp]"
     );
     process.exit(1);
   }
