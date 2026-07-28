@@ -5508,9 +5508,10 @@
 
     /* ——— Scroll guide arrow (floating site tour button) ——— */
     .scroll-guide {
+      --scroll-guide-footer-bottom: 0px;
       position: fixed;
-      right: 1.75rem;
-      bottom: 1.75rem;
+      right: calc(1.75rem + env(safe-area-inset-right, 0px));
+      bottom: max(calc(1.75rem + env(safe-area-inset-bottom, 0px)), var(--scroll-guide-footer-bottom));
       z-index: 900;
       display: flex;
       align-items: center;
@@ -5524,7 +5525,7 @@
       color: #fff;
       cursor: pointer;
       box-shadow: 0 12px 28px rgba(7, 31, 58, 0.35);
-      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      transition: bottom 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     /* Over dark sections: invert so the control stays visible */
@@ -5540,6 +5541,11 @@
       color: #fff;
       transform: translateY(-2px);
       box-shadow: 0 16px 32px rgba(0, 183, 179, 0.4);
+    }
+
+    .scroll-guide:focus-visible {
+      outline: 3px solid #f2b632;
+      outline-offset: 4px;
     }
 
     .scroll-guide.is-on-dark:hover,
@@ -5577,8 +5583,8 @@
 
     @media (max-width: 720px) {
       .scroll-guide {
-        right: 1rem;
-        bottom: 1rem;
+        right: calc(1rem + env(safe-area-inset-right, 0px));
+        bottom: max(calc(1rem + env(safe-area-inset-bottom, 0px)), var(--scroll-guide-footer-bottom));
         width: 46px;
         height: 46px;
       }
@@ -5586,6 +5592,17 @@
       .scroll-guide svg {
         width: 20px;
         height: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-guide,
+      .scroll-guide__inner {
+        transition: none;
+      }
+
+      .scroll-guide svg {
+        animation: none;
       }
     }
   </style>
@@ -6601,6 +6618,17 @@ img, video { max-width: 100%; height: auto; }
       font-style: normal;
       font-weight: 500;
       line-height: 1.75;
+    }
+
+    .site-footer__address a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-footer__address a:hover,
+    .site-footer__address a:focus-visible {
+      color: inherit;
+      text-decoration: none;
     }
 
     .site-footer__bottom {
@@ -9111,8 +9139,24 @@ img, video { max-width: 100%; height: auto; }
       const btn = document.getElementById("scroll-guide");
       if (!btn) return;
 
-      const sectionSelector =
-        ".experience_fundview, .quicklinks, .news_and_updates, .stats, .solution_delivers, .daily_improvements_fundview, .see_in_action, .helping_local_testimonial, .customer_story, .listening_evolving, .ready_to_see_fundview, .site-footer";
+      /* Keep every page band and its actual background contrast in one registry. */
+      const sectionRegistry = [
+        { selector: ".experience_fundview", theme: "dark" },
+        { selector: ".quicklinks", theme: "dark" },
+        { selector: ".news_and_updates", theme: "dark" },
+        { selector: ".stats", theme: "dark" },
+        { selector: ".solution_delivers", theme: "light" },
+        { selector: ".daily_improvements_fundview", theme: "light" },
+        { selector: ".see_in_action", theme: "dark" },
+        { selector: ".helping_local_testimonial", theme: "light" },
+        { selector: ".customer_story", theme: "dark" },
+        { selector: ".listening_evolving", theme: "light" },
+        { selector: ".ready_to_see_fundview", theme: "dark" },
+        { selector: ".site-footer", theme: "dark" }
+      ];
+      const sectionSelector = sectionRegistry.map(function (entry) {
+        return entry.selector;
+      }).join(", ");
 
       function getSections() {
         return [...document.querySelectorAll(sectionSelector)];
@@ -9120,23 +9164,6 @@ img, video { max-width: 100%; height: auto; }
 
       let sections = getSections();
       if (!sections.length) return;
-
-      /* Dark backgrounds → white guide + navy arrow; light → navy guide + white arrow */
-      const DARK = {
-        news_and_updates: true,
-        experience_fundview: true,
-        see_in_action: true,
-        customer_story: true,
-        ready_to_see_fundview: true,
-        "site-footer": true
-      };
-      const LIGHT = {
-        stats: true,
-        solution_delivers: true,
-        daily_improvements_fundview: true,
-        helping_local_testimonial: true,
-        listening_evolving: true
-      };
 
       function headerOffset() {
         const header = document.querySelector(".site-header");
@@ -9166,17 +9193,34 @@ img, video { max-width: 100%; height: auto; }
       }
 
       function isDarkSection(el) {
-        if (!el || !el.classList) return false;
-        for (const cls of Object.keys(DARK)) {
-          if (el.classList.contains(cls)) return true;
-        }
-        for (const cls of Object.keys(LIGHT)) {
-          if (el.classList.contains(cls)) return false;
-        }
-        return false;
+        if (!el || !el.matches) return false;
+        const entry = sectionRegistry.find(function (item) {
+          return el.matches(item.selector);
+        });
+        return entry ? entry.theme === "dark" : false;
+      }
+
+      /*
+       * When the footer's bottom row enters the viewport, keep the global guide
+       * above that whole control area. This avoids covering social/legal links
+       * across desktop and stacked mobile layouts without guessing their width.
+       */
+      function updateFooterClearance() {
+        btn.style.setProperty("--scroll-guide-footer-bottom", "0px");
+        const footerBottom = document.querySelector(".site-footer__bottom");
+        if (!footerBottom) return;
+
+        const row = footerBottom.getBoundingClientRect();
+        if (row.top >= window.innerHeight || row.bottom <= 0) return;
+
+        const gap = 16;
+        const maximumBottom = Math.max(gap, window.innerHeight - btn.offsetHeight - gap);
+        const clearBottom = Math.min(maximumBottom, window.innerHeight - row.top + gap);
+        btn.style.setProperty("--scroll-guide-footer-bottom", Math.max(0, clearBottom) + "px");
       }
 
       function update() {
+        updateFooterClearance();
         const up = atBottom();
         btn.classList.toggle("is-up", up);
         btn.setAttribute("aria-label", up ? "Back to top" : "Scroll to next section");
@@ -9206,6 +9250,10 @@ img, video { max-width: 100%; height: auto; }
 
       window.addEventListener("scroll", update, { passive: true });
       window.addEventListener("resize", update);
+      const footerObserver = new MutationObserver(function () {
+        if (document.querySelector(".site-footer")) update();
+      });
+      footerObserver.observe(document.body, { childList: true, subtree: true });
       update();
     })();
 
@@ -9982,9 +10030,11 @@ img, video { max-width: 100%; height: auto; }
         <section class="site-footer__group" aria-labelledby="footer-fundview">
           <h2 class="site-footer__heading site-footer__heading--brand" id="footer-fundview">FUNDVIEW</h2>
           <address class="site-footer__address">
-            FAST Technologies LLC<br>
-            5225 S Loop 289<br>
-            Lubbock, TX 79424
+            Fund Accounting Solution Technologies, Inc.<br>
+            <a href="https://maps.app.goo.gl/WQtW3YwUcE5m2uh3A" target="_blank" rel="noopener noreferrer">
+              5225 S Loop 289<br>
+              Lubbock, TX 79424
+            </a>
           </address>
         </section>
       </nav>
