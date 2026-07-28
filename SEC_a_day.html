@@ -540,10 +540,6 @@
         #fv-hero .fv-legend.fv-on{opacity:1}
         #fv-hero .fv-legend i{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px}
         #fv-hero .fv-legend i svg{width:8px;height:8px}
-        #fv-hero .fv-controls{padding:1.35rem 0 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-        #fv-hero .fv-btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:14px;padding:13px 18px 13px 22px;border-radius:12px;cursor:pointer;box-shadow:0 12px 28px rgba(0,183,179,.34);transition:transform .2s ease,box-shadow .2s ease}
-        #fv-hero .fv-btn:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(0,183,179,.4)}
-        #fv-hero .fv-btn-arrow{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.22);font-size:13px;line-height:1}
         #fv-hero .fv-right{gap:0}
         #fv-hero .fv-scroll{flex:1;min-height:320px;max-height:420px;overflow:hidden;position:relative;padding:2px 6px 8px 2px;
           overscroll-behavior:contain;touch-action:pan-y;
@@ -681,14 +677,6 @@
             align-self:center;
             margin-inline:auto;
           }
-          /* CTA last in the section */
-          #fv-hero .fv-controls{
-            order:12;
-            justify-content:center;
-            width:100%;
-            padding:2rem 0 0;
-            margin:0 auto;
-          }
         }
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
@@ -748,7 +736,6 @@
             </div>
           </div>
 
-          <div class="fv-controls"><a class="fv-btn" data-fv="cta" href="#ready_to_see_fundview">See FUNDVIEW <span class="fv-btn-arrow" aria-hidden="true">&rarr;</span></a></div>
         </div>
 
         <div class="fv-right">
@@ -777,8 +764,6 @@
       (function(){
         var FV_CONFIG = {
           autoPlay: false,
-          ctaHref:  '#ready_to_see_fundview',
-          ctaLabel: 'See FUNDVIEW <span class="fv-btn-arrow" aria-hidden="true">\u2192</span>',
           valWords: ['Accuracy','Compliance','Clarity','Efficiency','Continuity','Confidence'],
           tasks: [
             {bt:'8:03a', at:'8:03a', h:'dec', dept:'UTILITY',        before:'Re-key each overnight payment by hand',      after:'Payments post themselves as they\u2019re paid'},
@@ -822,7 +807,6 @@
           r.innerHTML='<span class="fv-ck">'+CK+'</span><span class="fv-tm"></span><span class="fv-lb"></span><span class="fv-dept">'+t.dept+'</span>';list.appendChild(r);return r;});
         var vals=$('vals');
         var valEls=FV_CONFIG.valWords.map(function(w){var s=document.createElement('span');s.className='fv-val';s.innerHTML='<i>'+CK+'</i>'+w;vals.appendChild(s);return s;});
-        var cta=$('cta'); cta.href=FV_CONFIG.ctaHref; cta.innerHTML=FV_CONFIG.ctaLabel;
 
         var head=$('head'),sub=$('sub'),syn=$('syn'),arccap=$('arccap'),legend=$('legend'),payoff=$('payoff'),
             arcwork=$('arcwork'),arcfree=$('arcfree'),arcbg=$('arcbg'),sun=$('sun'),noonline=$('noonline'),
