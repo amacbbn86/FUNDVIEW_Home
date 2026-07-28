@@ -8078,8 +8078,9 @@ img, video { max-width: 100%; height: auto; }
           font-family:'Sora',Inter,system-ui,'Segoe UI',Arial,sans-serif;color:var(--fv-ink);width:min(1240px,100%);margin:0 auto}
         #fv-hero *{box-sizing:border-box}
         .daily_improvements_fundview > .fv-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-        #fv-hero .fv-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.18fr);gap:clamp(2rem,4vw,3.5rem);align-items:start}
+        #fv-hero .fv-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.18fr);gap:clamp(2.25rem,4vw,3.75rem);align-items:start}
         #fv-hero .fv-left,#fv-hero .fv-right{display:flex;flex-direction:column;min-width:0}
+        #fv-hero .fv-right{gap:0}
         #fv-hero .fv-ey{font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--fv-blue);margin:0 0 14px;text-transform:uppercase}
         #fv-hero .fv-right-head{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;margin:0 0 14px}
         #fv-hero .fv-right-head .fv-ey{margin:0}
@@ -8143,11 +8144,11 @@ img, video { max-width: 100%; height: auto; }
         #fv-hero .fv-row.fv-done .fv-tm{background:#e8f6f5}
         #fv-hero .fv-row .fv-lb{font-size:13.5px;flex:1;min-width:0;line-height:1.35;color:#33465a;transition:.3s}
         #fv-hero .fv-row .fv-dept{font-size:9.5px;font-weight:700;color:#9aa6b4;letter-spacing:.06em;text-transform:uppercase;flex:none}
-        #fv-hero .fv-payoff{margin:clamp(1.75rem,3vw,2.5rem) 0 0;padding:0;max-height:0;overflow:hidden;opacity:0;border-top:2px solid transparent;transition:max-height .6s ease,opacity .6s ease,padding .6s ease,border-color .6s ease}
-        #fv-hero .fv-payoff.fv-show{max-height:220px;opacity:1;padding:1.25rem 0 0;border-top-color:var(--fv-teal)}
+        #fv-hero .fv-payoff{margin:clamp(1.15rem,2.2vw,1.65rem) 0 0;padding:0;max-height:0;overflow:hidden;opacity:0;border-top:2px solid transparent;transition:max-height .6s ease,opacity .6s ease,padding .6s ease,border-color .6s ease}
+        #fv-hero .fv-payoff.fv-show{max-height:240px;opacity:1;padding:1.1rem 0 0;border-top-color:var(--fv-teal)}
         #fv-hero .fv-pline{font-size:15px;color:var(--fv-blue);font-weight:700;margin:0 0 12px}
-        #fv-hero .fv-vals{display:flex;flex-wrap:wrap;gap:10px}
-        #fv-hero .fv-val{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--fv-blue);background:#fff;border:1px solid #dce7ef;border-radius:999px;padding:8px 14px;box-shadow:0 4px 14px rgba(10,46,87,.06);opacity:0;transform:translateY(6px);transition:.35s}
+        #fv-hero .fv-vals{display:flex;flex-wrap:wrap;gap:8px 10px}
+        #fv-hero .fv-val{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--fv-blue);background:#fff;border:1px solid #dce7ef;border-radius:999px;padding:7px 12px;box-shadow:0 4px 14px rgba(10,46,87,.06);opacity:0;transform:translateY(6px);transition:.35s}
         #fv-hero .fv-val.fv-on{opacity:1;transform:none}
         #fv-hero .fv-val i{width:15px;height:15px;border-radius:50%;background:var(--fv-teal);display:inline-flex;align-items:center;justify-content:center;flex:none}
         #fv-hero .fv-val i svg{width:8px;height:8px}
@@ -8162,8 +8163,16 @@ img, video { max-width: 100%; height: auto; }
           #fv-hero .fv-left,
           #fv-hero .fv-right,
           #fv-hero .fv-right-head,
-          #fv-hero .fv-mid,
-          #fv-hero .fv-arc-row{display:contents}
+          #fv-hero .fv-mid{display:contents}
+          /* Keep arc-row as a real box so .fv-saved can sit inside the arc */
+          #fv-hero .fv-arc-row{
+            order:5;
+            display:block;
+            position:relative;
+            width:min(58vw,320px);
+            max-width:100%;
+            margin:0 auto 14px;
+          }
           #fv-hero .fv-left > .fv-ey{order:1;width:100%;text-align:center;margin:0 0 14px}
           #fv-hero .fv-h{
             order:2;
@@ -8188,13 +8197,14 @@ img, video { max-width: 100%; height: auto; }
             margin:0 auto 1.35rem;
             align-self:center;
           }
-          /* Wide elliptical arc: same height as desktop, stretched wider */
+          /* Smaller arc at tablet/phone — keep true SVG aspect ratio */
           #fv-hero .fv-arcwrap{
-            order:5;
-            width:min(94vw,640px);
+            position:relative;
+            width:100%;
             max-width:100%;
-            height:var(--fv-arc-h);
-            margin:0 auto 12px;
+            height:auto;
+            aspect-ratio:240 / 158;
+            margin:0;
             overflow:visible;
           }
           #fv-hero .fv-arcwrap svg{
@@ -8202,25 +8212,27 @@ img, video { max-width: 100%; height: auto; }
             height:100%;
             overflow:visible;
           }
+          /* Counter lives in the right bowl of the arc (matches red-box target) */
+          #fv-hero .fv-saved{
+            position:absolute;
+            left:68%;
+            top:46%;
+            width:auto;
+            max-width:42%;
+            min-width:0;
+            margin:0;
+            padding:0;
+            transform:translate(-50%,-50%) scale(.94);
+          }
+          #fv-hero .fv-saved.fv-on{transform:translate(-50%,-50%) scale(1)}
+          #fv-hero .fv-saved-num{font-size:clamp(1.85rem,6.2vw,2.55rem)}
+          #fv-hero .fv-saved-label,#fv-hero .fv-saved-sub{font-size:clamp(0.58rem,1.7vw,0.72rem);letter-spacing:0.07em}
           #fv-hero .fv-syn{order:6;margin:0 auto 8px}
           #fv-hero .fv-arccap{order:7;text-align:center;margin:0 auto 4px}
-          /* Minutes-saved counter: under arccap, above workflow (≤1100px) */
-          #fv-hero .fv-saved{
-            order:8;
-            position:static;
-            left:auto;top:auto;
-            width:84%;
-            max-width:84%;
-            margin:0.85rem auto 0.35rem;
-            align-self:center;
-            min-width:0;
-            transform:translateY(10px) scale(.96);
-          }
-          #fv-hero .fv-saved.fv-on{transform:none}
-          #fv-hero .fv-legend{order:9;justify-content:center;margin:8px auto 0}
+          #fv-hero .fv-legend{order:8;justify-content:center;margin:8px auto 0}
           /* Workflow title + list share the same centered column */
           #fv-hero .fv-right .fv-ey{
-            order:10;
+            order:9;
             width:84%;
             max-width:84%;
             margin:2rem auto 14px;
@@ -8229,7 +8241,7 @@ img, video { max-width: 100%; height: auto; }
           }
           #fv-hero .fv-scroll,
           #fv-hero .fv-scroll.fv-scrollable{
-            order:11;
+            order:10;
             width:84%;
             max-width:84%;
             flex:0 0 auto;
@@ -8242,7 +8254,7 @@ img, video { max-width: 100%; height: auto; }
             mask-image:linear-gradient(180deg,#000 0%,#000 62%,transparent 100%);
           }
           #fv-hero .fv-payoff{
-            order:12;
+            order:11;
             width:84%;
             max-width:84%;
             align-self:center;
@@ -8250,7 +8262,7 @@ img, video { max-width: 100%; height: auto; }
           }
           /* CTA last in the section */
           #fv-hero .fv-controls{
-            order:13;
+            order:12;
             justify-content:center;
             width:100%;
             padding:2rem 0 0;
@@ -8259,7 +8271,9 @@ img, video { max-width: 100%; height: auto; }
         }
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
-          #fv-hero .fv-arcwrap{width:min(96vw,100%)}
+          #fv-hero .fv-arc-row{width:min(78vw,300px)}
+          #fv-hero .fv-saved{left:69%;top:47%;max-width:46%}
+          #fv-hero .fv-saved-num{font-size:clamp(1.65rem,7.5vw,2.15rem)}
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-toggle{flex-wrap:wrap;justify-content:center}
@@ -8333,12 +8347,11 @@ img, video { max-width: 100%; height: auto; }
             </div>
           </div>
           <div class="fv-scroll" data-fv="scroll" tabindex="0" aria-label="Today's workflow list"><div data-fv="list"></div></div>
+          <div class="fv-payoff" data-fv="payoff">
+            <div class="fv-pline">Real-time visibility means faster decisions — and more:</div>
+            <div class="fv-vals" data-fv="vals"></div>
+          </div>
         </div>
-      </div>
-
-      <div class="fv-payoff" data-fv="payoff">
-        <div class="fv-pline">Real-time visibility means faster decisions — and more:</div>
-        <div class="fv-vals" data-fv="vals"></div>
       </div>
 
 <script>
