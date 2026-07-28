@@ -521,12 +521,13 @@
         #fv-hero .fv-arc-row{display:block;position:relative;width:min(100%,320px);max-width:100%}
         #fv-hero .fv-arcwrap{position:relative;width:100%;--fv-arc-h:calc(100% * 158 / 240);aspect-ratio:240 / 158}
         #fv-hero .fv-arcwrap svg{display:block;width:100%;height:auto;overflow:visible}
-        /* Right bowl only: content-sized box centered in safe zone (clear of arc stroke + noon) */
-        #fv-hero .fv-saved{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--fv-teal);position:absolute;left:56%;right:16%;top:77%;z-index:2;box-sizing:border-box;width:auto;max-width:none;min-width:0;margin:0;padding:0;opacity:0;transform:translateY(-50%) scale(.96);pointer-events:none;visibility:hidden;overflow:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s linear .55s}
-        #fv-hero .fv-saved.fv-on{opacity:1;transform:translateY(-50%) scale(1);pointer-events:auto;visibility:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s}
-        #fv-hero .fv-saved-num{font-size:clamp(1.7rem,2.55vw,2.75rem);font-weight:800;line-height:0.92;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
-        #fv-hero .fv-saved-label{display:flex;flex-direction:column;align-items:center;gap:0.04em;margin-top:0.18rem;font-size:clamp(0.5rem,0.68vw,0.72rem);font-weight:800;letter-spacing:0.035em;text-transform:uppercase;line-height:1.08;max-width:100%}
+        /* Centered in .fv-arc-row; keep vertical (top:77%) */
+        #fv-hero .fv-saved{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--fv-teal);position:absolute;left:50%;right:auto;top:77%;z-index:2;box-sizing:border-box;width:max-content;max-width:none;min-width:0;margin:0;padding:0;opacity:0;transform:translate(-50%,-50%) scale(.96);pointer-events:none;visibility:hidden;overflow:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s linear .55s}
+        #fv-hero .fv-saved.fv-on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto;visibility:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s}
+        #fv-hero .fv-saved-num{font-size:clamp(2.15rem,3.4vw,3.15rem);font-weight:800;line-height:0.92;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
+        #fv-hero .fv-saved-label{display:flex;flex-direction:column;align-items:center;gap:0.04em;margin-top:0.22rem;font-size:clamp(0.62rem,0.9vw,0.86rem);font-weight:800;letter-spacing:0.04em;text-transform:uppercase;line-height:1.1;max-width:100%}
         #fv-hero .fv-saved-line{display:block;white-space:nowrap}
+        /* Noon stem trim on After is driven in JS (smooth y1 → midpoint) */
         #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
         #fv-hero .fv-syn .fv-d2{width:8px;height:8px;border-radius:50%;background:var(--fv-amber);flex:none}
         #fv-hero .fv-syn.fv-ok{border-color:rgba(0,183,179,.28);background:#e6f7f6;color:#0a7f7c}
@@ -634,19 +635,19 @@
           }
           #fv-hero .fv-saved{
             position:absolute;
-            left:56%;
-            right:16%;
+            left:50%;
+            right:auto;
             top:77%;
-            width:auto;
+            width:max-content;
             max-width:none;
             min-width:0;
             margin:0;
             padding:0;
-            transform:translateY(-50%) scale(.94);
+            transform:translate(-50%,-50%) scale(.94);
           }
-          #fv-hero .fv-saved.fv-on{transform:translateY(-50%) scale(1)}
-          #fv-hero .fv-saved-num{font-size:clamp(1.35rem,4.4vw,1.85rem)}
-          #fv-hero .fv-saved-label{font-size:clamp(0.44rem,1.2vw,0.55rem);letter-spacing:0.035em}
+          #fv-hero .fv-saved.fv-on{transform:translate(-50%,-50%) scale(1)}
+          #fv-hero .fv-saved-num{font-size:clamp(1.85rem,5.4vw,2.55rem)}
+          #fv-hero .fv-saved-label{font-size:clamp(0.55rem,1.55vw,0.72rem);letter-spacing:0.04em}
           #fv-hero .fv-saved-line{white-space:nowrap}
           #fv-hero .fv-syn{order:6;margin:0 auto 8px}
           #fv-hero .fv-arccap{order:7;text-align:center;margin:0 auto 4px}
@@ -693,9 +694,9 @@
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
           #fv-hero .fv-arc-row{width:min(72vw,280px)}
-          #fv-hero .fv-saved{left:56%;right:16%;top:77%}
-          #fv-hero .fv-saved-num{font-size:clamp(1.2rem,5vw,1.55rem)}
-          #fv-hero .fv-saved-label{font-size:clamp(0.4rem,1.15vw,0.48rem);letter-spacing:0.03em}
+          #fv-hero .fv-saved{left:50%;right:auto;top:77%;width:max-content}
+          #fv-hero .fv-saved-num{font-size:clamp(1.55rem,6.2vw,2.05rem)}
+          #fv-hero .fv-saved-label{font-size:clamp(0.5rem,1.5vw,0.62rem);letter-spacing:0.035em}
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-toggle{flex-wrap:wrap;justify-content:center}
@@ -867,6 +868,7 @@
         function showSaved(){
           if(!savedEl) return;
           clearTimeout(savedDelay);
+          setNoonTrim(0.5, reduce?0:550);
           savedEl.classList.add('fv-on');
           savedEl.setAttribute('aria-hidden','false');
           savedDelay=setTimeout(function(){
@@ -876,6 +878,7 @@
         function hideSaved(){
           if(!savedEl) return;
           clearTimeout(savedDelay);
+          setNoonTrim(0, reduce?0:550);
           tweenSaved(0, reduce?0:650, function(){
             savedEl.classList.remove('fv-on');
             savedEl.setAttribute('aria-hidden','true');
@@ -955,17 +958,35 @@
         })();
 
         function ptAt(p){return arcbg.getPointAtLength(totalLen*p/100);}
+        /* noonTrim 0 = full stem from base; 0.5 = hide bottom half (After / counter space) */
+        var noonTrim=0,noonTrimRaf=0;
+        function setNoonTrim(to, ms){
+          cancelAnimationFrame(noonTrimRaf);
+          if(reduce || !ms){ noonTrim=to; placeSun(curPct); return; }
+          var from=noonTrim, t0=performance.now(), dur=Math.max(1, ms);
+          (function step(now){
+            var k=Math.min(1,(now-t0)/dur);
+            var e=1-Math.pow(1-k,3);
+            noonTrim=from+(to-from)*e;
+            placeSun(curPct);
+            if(k<1) noonTrimRaf=requestAnimationFrame(step);
+            else noonTrim=to;
+          })(performance.now());
+        }
         function placeSun(p){
           var q=ptAt(p);
           sun.setAttribute('cx',q.x);sun.setAttribute('cy',q.y);
-          /* Dashed stem from arc base up to the ball edge */
+          /* Dashed stem from arc base (or trimmed base) up to the ball edge */
           if(noonline){
             var dx=q.x-120, dy=q.y-NOON_LINE_BASE;
             var len=Math.sqrt(dx*dx+dy*dy)||1;
-            noonline.setAttribute('x1','120');
-            noonline.setAttribute('y1',String(NOON_LINE_BASE));
-            noonline.setAttribute('x2',String(q.x-dx/len*SUN_R));
-            noonline.setAttribute('y2',String(q.y-dy/len*SUN_R));
+            var tipX=q.x-dx/len*SUN_R, tipY=q.y-dy/len*SUN_R;
+            var y1=NOON_LINE_BASE+(tipY-NOON_LINE_BASE)*noonTrim;
+            var x1=120+(tipX-120)*noonTrim;
+            noonline.setAttribute('x1',String(x1));
+            noonline.setAttribute('y1',String(y1));
+            noonline.setAttribute('x2',String(tipX));
+            noonline.setAttribute('y2',String(tipY));
           }
         }
         function setWork(p){arcwork.style.strokeDashoffset=(100-p);}
