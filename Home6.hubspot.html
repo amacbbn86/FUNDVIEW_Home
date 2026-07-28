@@ -8099,14 +8099,15 @@ img, video { max-width: 100%; height: auto; }
         #fv-hero .fv-h span{color:var(--fv-teal)}
         #fv-hero .fv-sub{font-size:clamp(.92rem,1.15vw,1.02rem);line-height:1.55;color:#3d5166;margin:0 0 1.5rem;max-width:36ch;transition:.4s}
         #fv-hero .fv-mid{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
-        #fv-hero .fv-arc-row{display:block;position:relative;width:min(100%,320px);max-width:100%}
+        #fv-hero .fv-arc-row{display:block;position:relative;width:min(100%,320px);max-width:100%;container-type:inline-size;container-name:fv-arc}
         #fv-hero .fv-arcwrap{position:relative;width:100%;--fv-arc-h:calc(100% * 158 / 240);aspect-ratio:240 / 158}
         #fv-hero .fv-arcwrap svg{display:block;width:100%;height:auto;overflow:visible}
         /* Centered in .fv-arc-row; keep vertical (top:77%) */
         #fv-hero .fv-saved{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--fv-teal);position:absolute;left:50%;right:auto;top:77%;z-index:2;box-sizing:border-box;width:max-content;max-width:none;min-width:0;margin:0;padding:0;opacity:0;transform:translate(-50%,-50%) scale(.96);pointer-events:none;visibility:hidden;overflow:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s linear .55s}
         #fv-hero .fv-saved.fv-on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto;visibility:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s}
-        #fv-hero .fv-saved-num{font-size:clamp(2.15rem,3.4vw,4.5rem);font-weight:800;line-height:0.92;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
-        #fv-hero .fv-saved-label{display:flex;flex-direction:column;align-items:center;gap:0.04em;margin-top:0.22rem;font-size:clamp(0.62rem,0.9vw,0.96rem);font-weight:800;letter-spacing:0.04em;text-transform:uppercase;line-height:1.1;max-width:100%}
+        /* Fonts scale with arc width (cqw) — locked to 1920×1080 / 320px-arc balance */
+        #fv-hero .fv-saved-num{font-size:clamp(2.15rem,3.4vw,4.5rem);font-size:20.4cqw;font-weight:800;line-height:0.92;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
+        #fv-hero .fv-saved-label{display:flex;flex-direction:column;align-items:center;gap:0.04em;margin-top:0.22rem;font-size:clamp(0.62rem,0.9vw,0.96rem);font-size:4.8cqw;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;line-height:1.1;max-width:100%}
         #fv-hero .fv-saved-line{display:block;white-space:nowrap}
         /* Noon stem trim on After is driven in JS (smooth y1 → midpoint) */
         #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
@@ -8226,8 +8227,6 @@ img, video { max-width: 100%; height: auto; }
             transform:translate(-50%,-50%) scale(.94);
           }
           #fv-hero .fv-saved.fv-on{transform:translate(-50%,-50%) scale(1)}
-          #fv-hero .fv-saved-num{font-size:clamp(1.85rem,5.4vw,2.55rem)}
-          #fv-hero .fv-saved-label{font-size:clamp(0.55rem,1.55vw,0.72rem);letter-spacing:0.04em}
           #fv-hero .fv-saved-line{white-space:nowrap}
           #fv-hero .fv-syn{order:6;margin:0 auto 8px}
           #fv-hero .fv-arccap{order:7;text-align:center;margin:0 auto 4px}
@@ -8275,8 +8274,6 @@ img, video { max-width: 100%; height: auto; }
           #fv-hero .fv-h{font-size:1.32rem}
           #fv-hero .fv-arc-row{width:min(72vw,280px)}
           #fv-hero .fv-saved{left:50%;right:auto;top:77%;width:max-content}
-          #fv-hero .fv-saved-num{font-size:clamp(1.55rem,6.2vw,2.05rem)}
-          #fv-hero .fv-saved-label{font-size:clamp(0.5rem,1.5vw,0.62rem);letter-spacing:0.035em}
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-toggle{flex-wrap:wrap;justify-content:center}
