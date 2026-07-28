@@ -8099,16 +8099,14 @@ img, video { max-width: 100%; height: auto; }
         #fv-hero .fv-h span{color:var(--fv-teal)}
         #fv-hero .fv-sub{font-size:clamp(.92rem,1.15vw,1.02rem);line-height:1.55;color:#3d5166;margin:0 0 1.5rem;max-width:36ch;transition:.4s}
         #fv-hero .fv-mid{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
-        #fv-hero .fv-arc-row{display:flex;align-items:center;gap:clamp(1.1rem,2.4vw,2.25rem);width:100%;max-width:100%;position:relative}
-        #fv-hero .fv-arcwrap{position:relative;width:min(100%,320px);flex:0 1 320px;--fv-arc-h:calc(320px * 158 / 240)}
+        #fv-hero .fv-arc-row{display:block;position:relative;width:min(100%,320px);max-width:100%}
+        #fv-hero .fv-arcwrap{position:relative;width:100%;--fv-arc-h:calc(100% * 158 / 240);aspect-ratio:240 / 158}
         #fv-hero .fv-arcwrap svg{display:block;width:100%;height:auto;overflow:visible}
-        /* Desktop (≥960): sit to the right of the arc without reserving space when hidden */
-        #fv-hero .fv-saved{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--fv-teal);position:absolute;left:calc(min(100%,320px) + clamp(1rem,2vw,1.75rem));top:50%;flex:0 0 auto;min-width:7.5rem;opacity:0;transform:translateY(-42%) scale(.96);pointer-events:none;visibility:hidden;transition:opacity .55s ease,transform .55s ease,visibility 0s linear .55s}
-        #fv-hero .fv-saved.fv-on{opacity:1;transform:translateY(-50%) scale(1);pointer-events:auto;visibility:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s}
-        #fv-hero .fv-saved-num{font-size:clamp(2.85rem,4.2vw,3.85rem);font-weight:800;line-height:0.95;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
-        #fv-hero .fv-saved-label,#fv-hero .fv-saved-sub{display:block;font-size:clamp(0.72rem,0.95vw,0.84rem);font-weight:800;letter-spacing:0.08em;text-transform:uppercase;line-height:1.2}
-        #fv-hero .fv-saved-label{margin-top:0.35rem}
-        #fv-hero .fv-saved-sub{margin-top:0.12rem}
+        /* Inside the right bowl of the arc (desktop + shared base) */
+        #fv-hero .fv-saved{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--fv-teal);position:absolute;left:70%;top:62%;z-index:2;flex:0 0 auto;width:max-content;max-width:46%;min-width:0;margin:0;padding:0;opacity:0;transform:translate(-50%,-50%) scale(.96);pointer-events:none;visibility:hidden;transition:opacity .55s ease,transform .55s ease,visibility 0s linear .55s}
+        #fv-hero .fv-saved.fv-on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto;visibility:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s}
+        #fv-hero .fv-saved-num{font-size:clamp(2.4rem,3.6vw,3.35rem);font-weight:800;line-height:0.92;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
+        #fv-hero .fv-saved-label{display:block;margin-top:0.28rem;font-size:clamp(0.62rem,0.85vw,0.78rem);font-weight:800;letter-spacing:0.07em;text-transform:uppercase;line-height:1.2;white-space:nowrap}
         #fv-hero .fv-syn{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid #ecd9b0;background:#fdf4e0;color:var(--fv-amber);transition:.5s}
         #fv-hero .fv-syn .fv-d2{width:8px;height:8px;border-radius:50%;background:var(--fv-amber);flex:none}
         #fv-hero .fv-syn.fv-ok{border-color:rgba(0,183,179,.28);background:#e6f7f6;color:#0a7f7c}
@@ -8213,21 +8211,21 @@ img, video { max-width: 100%; height: auto; }
             height:100%;
             overflow:visible;
           }
-          /* Counter in right bowl of the arc — inspector-tuned left/top */
+          /* Counter in right bowl — inspector left/top, two-line copy */
           #fv-hero .fv-saved{
             position:absolute;
             left:70%;
             top:71%;
-            width:auto;
-            max-width:42%;
+            width:max-content;
+            max-width:none;
             min-width:0;
             margin:0;
             padding:0;
             transform:translate(-50%,-50%) scale(.94);
           }
           #fv-hero .fv-saved.fv-on{transform:translate(-50%,-50%) scale(1)}
-          #fv-hero .fv-saved-num{font-size:clamp(1.85rem,6.2vw,2.55rem)}
-          #fv-hero .fv-saved-label,#fv-hero .fv-saved-sub{font-size:clamp(0.58rem,1.7vw,0.72rem);letter-spacing:0.07em}
+          #fv-hero .fv-saved-num{font-size:clamp(1.7rem,5.6vw,2.35rem)}
+          #fv-hero .fv-saved-label{font-size:clamp(0.52rem,1.55vw,0.68rem);letter-spacing:0.06em;white-space:nowrap}
           #fv-hero .fv-syn{order:6;margin:0 auto 8px}
           #fv-hero .fv-arccap{order:7;text-align:center;margin:0 auto 4px}
           #fv-hero .fv-legend{order:8;justify-content:center;margin:8px auto 0}
@@ -8273,8 +8271,9 @@ img, video { max-width: 100%; height: auto; }
         @media(max-width:600px){
           #fv-hero .fv-h{font-size:1.32rem}
           #fv-hero .fv-arc-row{width:min(72vw,280px)}
-          #fv-hero .fv-saved{left:70%;top:71%;max-width:46%}
-          #fv-hero .fv-saved-num{font-size:clamp(1.55rem,7vw,2rem)}
+          #fv-hero .fv-saved{left:70%;top:71%}
+          #fv-hero .fv-saved-num{font-size:clamp(1.45rem,6.5vw,1.9rem)}
+          #fv-hero .fv-saved-label{font-size:clamp(0.48rem,1.7vw,0.6rem);letter-spacing:0.05em}
           #fv-hero .fv-row .fv-dept{display:none}
           #fv-hero .fv-seg{font-size:11.5px;padding:8px 12px}
           #fv-hero .fv-toggle{flex-wrap:wrap;justify-content:center}
@@ -8318,8 +8317,7 @@ img, video { max-width: 100%; height: auto; }
             </div>
             <div class="fv-saved" data-fv="saved" aria-hidden="true">
               <span class="fv-saved-num" data-fv="saved-num">0</span>
-              <span class="fv-saved-label">Minutes Saved</span>
-              <span class="fv-saved-sub">Per Work Day</span>
+              <span class="fv-saved-label">Minutes Saved Per Day</span>
             </div>
             </div>
             <div class="fv-syn" data-fv="syn"><span class="fv-d2"></span>Books out of sync until the day-end packet</div>
