@@ -1012,7 +1012,7 @@
           legend.classList.remove('fv-on');payoff.classList.remove('fv-show');valEls.forEach(function(el){el.classList.remove('fv-on');});
           arcfree.style.opacity=0;sun.setAttribute('fill','#F2B632');
           rowEls.forEach(function(r,i){applyBefore(r,tasks[i]);});scroll.scrollTop=0;
-          setWork(92);placeSun(92);curPct=92;
+          setWork(92);noonTrim=0;cancelAnimationFrame(noonTrimRaf);placeSun(92);curPct=92;
           if(savedEl){clearTimeout(savedDelay);cancelAnimationFrame(savedRaf);savedVal=0;if(savedNum)savedNum.textContent='0';savedEl.classList.remove('fv-on');savedEl.setAttribute('aria-hidden','true');}
         }
 
