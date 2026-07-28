@@ -1425,7 +1425,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.35rem;
+    gap: 1rem;
     min-width: 0;
     width: 100%;
   }
@@ -1514,15 +1514,15 @@
       to top,
       #000 0%,
       #000 18%,
-      rgba(0, 0, 0, 0.55) 48%,
-      transparent 100%
+      rgba(0, 0, 0, 0.55) 42%,
+      transparent 65%
     );
     mask-image: linear-gradient(
       to top,
       #000 0%,
       #000 18%,
-      rgba(0, 0, 0, 0.55) 48%,
-      transparent 100%
+      rgba(0, 0, 0, 0.55) 42%,
+      transparent 65%
     );
   }
 
@@ -5506,105 +5506,6 @@
       border: 0;
     }
 
-    /* ——— Scroll guide arrow (floating site tour button) ——— */
-    .scroll-guide {
-      --scroll-guide-footer-bottom: 0px;
-      position: fixed;
-      right: calc(1.75rem + env(safe-area-inset-right, 0px));
-      bottom: max(calc(1.75rem + env(safe-area-inset-bottom, 0px)), var(--scroll-guide-footer-bottom));
-      z-index: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 52px;
-      height: 52px;
-      padding: 0;
-      border: 0;
-      border-radius: 50%;
-      background: #0a2e57;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 12px 28px rgba(7, 31, 58, 0.35);
-      transition: bottom 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    /* Over dark sections: invert so the control stays visible */
-    .scroll-guide.is-on-dark {
-      background: #fff;
-      color: #0a2e57;
-      box-shadow: 0 12px 28px rgba(7, 31, 58, 0.22);
-    }
-
-    .scroll-guide:hover,
-    .scroll-guide:focus-visible {
-      background: #00b7b3;
-      color: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 16px 32px rgba(0, 183, 179, 0.4);
-    }
-
-    .scroll-guide:focus-visible {
-      outline: 3px solid #f2b632;
-      outline-offset: 4px;
-    }
-
-    .scroll-guide.is-on-dark:hover,
-    .scroll-guide.is-on-dark:focus-visible {
-      background: #00b7b3;
-      color: #fff;
-      box-shadow: 0 16px 32px rgba(0, 183, 179, 0.4);
-    }
-
-    .scroll-guide__inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.35s ease;
-    }
-
-    .scroll-guide.is-up .scroll-guide__inner {
-      transform: rotate(180deg);
-    }
-
-    .scroll-guide svg {
-      width: 22px;
-      height: 22px;
-      animation: scroll-guide-bob 2.2s ease-in-out infinite;
-    }
-
-    .scroll-guide.is-up svg {
-      animation: none;
-    }
-
-    @keyframes scroll-guide-bob {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(4px); }
-    }
-
-    @media (max-width: 720px) {
-      .scroll-guide {
-        right: calc(1rem + env(safe-area-inset-right, 0px));
-        bottom: max(calc(1rem + env(safe-area-inset-bottom, 0px)), var(--scroll-guide-footer-bottom));
-        width: 46px;
-        height: 46px;
-      }
-
-      .scroll-guide svg {
-        width: 20px;
-        height: 20px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .scroll-guide,
-      .scroll-guide__inner {
-        transition: none;
-      }
-
-      .scroll-guide svg {
-        animation: none;
-      }
-    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" rel="stylesheet" data-experience-fundview="">
   <style data-experience-tailwind>
@@ -5938,6 +5839,109 @@ img, video { max-width: 100%; height: auto; }
 }
 
 </style>
+
+  <style id="home6-scroll-guide">
+    /* ——— Scroll guide arrow (floating site tour button) ——— */
+    button.scroll-guide {
+      --scroll-guide-footer-bottom: 0px;
+      position: fixed;
+      right: calc(1.75rem + env(safe-area-inset-right, 0px));
+      bottom: max(calc(1.75rem + env(safe-area-inset-bottom, 0px)), var(--scroll-guide-footer-bottom));
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background-color: #0a2e57;
+      background-image: none;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(7, 31, 58, 0.35);
+      transition: bottom 0.2s ease, background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Over dark sections: invert so the control stays visible */
+    button.scroll-guide.is-on-dark {
+      background-color: #fff;
+      color: #0a2e57;
+      box-shadow: 0 12px 28px rgba(7, 31, 58, 0.22);
+    }
+
+    button.scroll-guide:hover,
+    button.scroll-guide:focus-visible {
+      background-color: #00b7b3;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(0, 183, 179, 0.4);
+    }
+
+    button.scroll-guide:focus-visible {
+      outline: 3px solid #f2b632;
+      outline-offset: 4px;
+    }
+
+    button.scroll-guide.is-on-dark:hover,
+    button.scroll-guide.is-on-dark:focus-visible {
+      background-color: #00b7b3;
+      color: #fff;
+      box-shadow: 0 16px 32px rgba(0, 183, 179, 0.4);
+    }
+
+    .scroll-guide__inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.35s ease;
+    }
+
+    button.scroll-guide.is-up .scroll-guide__inner {
+      transform: rotate(180deg);
+    }
+
+    button.scroll-guide svg {
+      width: 22px;
+      height: 22px;
+      animation: scroll-guide-bob 2.2s ease-in-out infinite;
+    }
+
+    button.scroll-guide.is-up svg {
+      animation: none;
+    }
+
+    @keyframes scroll-guide-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+
+    @media (max-width: 720px) {
+      button.scroll-guide {
+        right: calc(1rem + env(safe-area-inset-right, 0px));
+        bottom: max(calc(1rem + env(safe-area-inset-bottom, 0px)), var(--scroll-guide-footer-bottom));
+        width: 46px;
+        height: 46px;
+      }
+
+      button.scroll-guide svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      button.scroll-guide,
+      .scroll-guide__inner {
+        transition: none;
+      }
+
+      button.scroll-guide svg {
+        animation: none;
+      }
+    }
+  </style>
 
   <style id="home6-mid-desktop-glass-fit">
     @media (min-width: 1024px) and (max-width: 1300px) {
@@ -9208,23 +9212,28 @@ img, video { max-width: 100%; height: auto; }
       function updateFooterClearance() {
         btn.style.setProperty("--scroll-guide-footer-bottom", "0px");
         const footerBottom = document.querySelector(".site-footer__bottom");
-        if (!footerBottom) return;
+        if (!footerBottom) return 0;
 
         const row = footerBottom.getBoundingClientRect();
-        if (row.top >= window.innerHeight || row.bottom <= 0) return;
+        if (row.top >= window.innerHeight || row.bottom <= 0) return 0;
 
         const gap = 16;
         const maximumBottom = Math.max(gap, window.innerHeight - btn.offsetHeight - gap);
         const clearBottom = Math.min(maximumBottom, window.innerHeight - row.top + gap);
-        btn.style.setProperty("--scroll-guide-footer-bottom", Math.max(0, clearBottom) + "px");
+        const applied = Math.max(0, clearBottom);
+        btn.style.setProperty("--scroll-guide-footer-bottom", applied + "px");
+        return applied;
       }
 
       function update() {
-        updateFooterClearance();
+        const footerClearance = updateFooterClearance();
         const up = atBottom();
         btn.classList.toggle("is-up", up);
         btn.setAttribute("aria-label", up ? "Back to top" : "Scroll to next section");
-        btn.classList.toggle("is-on-dark", isDarkSection(sectionUnderGuide()));
+        /* Footer clearance can lift the control into the previous band; keep dark
+           contrast while the guide is actively avoiding footer controls. */
+        const dark = footerClearance > 0 || isDarkSection(sectionUnderGuide());
+        btn.classList.toggle("is-on-dark", dark);
       }
 
       btn.addEventListener("click", function () {
@@ -9251,7 +9260,9 @@ img, video { max-width: 100%; height: auto; }
       window.addEventListener("scroll", update, { passive: true });
       window.addEventListener("resize", update);
       const footerObserver = new MutationObserver(function () {
-        if (document.querySelector(".site-footer")) update();
+        if (!document.querySelector(".site-footer__bottom")) return;
+        update();
+        footerObserver.disconnect();
       });
       footerObserver.observe(document.body, { childList: true, subtree: true });
       update();
