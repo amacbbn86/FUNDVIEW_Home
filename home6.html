@@ -6952,7 +6952,7 @@
         #fv-hero .fv-saved{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--fv-teal);position:absolute;left:50%;right:auto;top:77%;z-index:2;box-sizing:border-box;width:max-content;max-width:none;min-width:0;margin:0;padding:0;opacity:0;transform:translate(-50%,-50%) scale(.96);pointer-events:none;visibility:hidden;overflow:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s linear .55s}
         #fv-hero .fv-saved.fv-on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto;visibility:visible;transition:opacity .55s ease,transform .55s ease,visibility 0s}
         /* Fonts scale with arc width (cqw) — locked to 1920×1080 / 320px-arc balance */
-        #fv-hero .fv-saved-num{font-size:clamp(2.15rem,3.4vw,4.5rem);font-size:20.4cqw;font-weight:800;line-height:0.92;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
+        #fv-hero .fv-saved-num{font-size:clamp(2.15rem,3.4vw,4.5rem);font-size:17cqw;font-weight:800;line-height:0.92;font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
         #fv-hero .fv-saved-label{display:flex;flex-direction:column;align-items:center;gap:0.04em;margin-top:0.22rem;font-size:clamp(0.62rem,0.9vw,0.96rem);font-size:4.8cqw;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;line-height:1.1;max-width:100%}
         #fv-hero .fv-saved-line{display:block;white-space:nowrap}
         /* Noon stem trim on After is driven in JS (smooth y1 → midpoint) */
@@ -6967,8 +6967,9 @@
         #fv-hero .fv-legend.fv-on{opacity:1}
         #fv-hero .fv-legend i{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px}
         #fv-hero .fv-legend i svg{width:8px;height:8px}
-        #fv-hero .fv-controls{padding:1.35rem 0 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-        #fv-hero .fv-btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:14px;padding:13px 18px 13px 22px;border-radius:12px;cursor:pointer;box-shadow:0 12px 28px rgba(0,183,179,.34);transition:transform .2s ease,box-shadow .2s ease}
+        #fv-hero .fv-controls{padding:1.35rem 0 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;width:fit-content;max-width:100%}
+        /* CTA width tracks .fv-arccap via --fv-cta-w (set in JS) */
+        #fv-hero .fv-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;box-sizing:border-box;width:var(--fv-cta-w,auto);min-width:var(--fv-cta-w,0);text-decoration:none;background:var(--fv-teal);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:14px;padding:13px 18px;border-radius:12px;cursor:pointer;box-shadow:0 12px 28px rgba(0,183,179,.34);transition:transform .2s ease,box-shadow .2s ease,width .25s ease}
         #fv-hero .fv-btn:hover{transform:translateY(-1px);box-shadow:0 16px 32px rgba(0,183,179,.4)}
         #fv-hero .fv-btn-arrow{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.22);font-size:13px;line-height:1}
         #fv-hero .fv-scroll{flex:1;min-height:320px;max-height:420px;overflow:hidden;position:relative;padding:2px 6px 8px 2px;
@@ -7107,11 +7108,12 @@
             align-self:center;
             margin-inline:auto;
           }
-          /* CTA last in the section */
+          /* CTA last in the section — width still tracks .fv-arccap */
           #fv-hero .fv-controls{
             order:12;
             justify-content:center;
-            width:100%;
+            width:fit-content;
+            max-width:100%;
             padding:2rem 0 0;
             margin:0 auto;
           }
@@ -7257,6 +7259,18 @@
         var totalLen=arcbg.getTotalLength(),curPct=92,timers=[],mode=null;
         var NOON_LINE_BASE=140, SUN_R=10;
         var savedVal=0,savedRaf=0,savedDelay=0;
+
+        /* Keep .fv-btn the same width as .fv-arccap (Before/After copy + resize) */
+        function syncCtaWidth(){
+          if(!arccap||!root) return;
+          var w=Math.ceil(arccap.getBoundingClientRect().width);
+          if(w>0) root.style.setProperty('--fv-cta-w', w+'px');
+        }
+        if(arccap&&'ResizeObserver' in window){
+          new ResizeObserver(function(){syncCtaWidth();}).observe(arccap);
+        } else {
+          window.addEventListener('resize', syncCtaWidth);
+        }
 
         function parseFVTime(s){
           var m=String(s||'').trim().match(/^(\d{1,2}):(\d{2})\s*([ap])/i);
@@ -7442,6 +7456,7 @@
         function toBefore(){
           timers.forEach(clearTimeout);timers=[];setActive('before');lockScroll();
           head.innerHTML=C.beforeHead;sub.textContent=C.beforeSub;arccap.innerHTML=C.beforeArc;
+          requestAnimationFrame(syncCtaWidth);
           var fromAfter=mode==='after';
           mode='before';
           hideSaved();
@@ -7481,6 +7496,7 @@
           timers.forEach(clearTimeout);timers=[];setActive('after');lockScroll();mode='after';
           rowEls.forEach(function(r,i){applyBefore(r,tasks[i]);});scroll.scrollTop=0;
           head.innerHTML=C.afterHead;sub.textContent=C.afterSub;arccap.innerHTML=C.afterArc;legend.classList.add('fv-on');
+          requestAnimationFrame(syncCtaWidth);
           tweenSun(curPct,50,reduce?0:2900);
           showSaved();
           var n=rowEls.length;
