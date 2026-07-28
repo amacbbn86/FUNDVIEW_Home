@@ -7258,7 +7258,7 @@
         var segs=[].slice.call(root.querySelectorAll('.fv-seg'));
         var totalLen=arcbg.getTotalLength(),curPct=92,timers=[],mode=null;
         var NOON_LINE_BASE=140, SUN_R=10;
-        var savedVal=0,savedRaf=0;
+        var savedVal=0,savedRaf=0,savedDelay=0;
 
         function parseFVTime(s){
           var m=String(s||'').trim().match(/^(\d{1,2}):(\d{2})\s*([ap])/i);
@@ -7292,12 +7292,16 @@
         }
         function showSaved(){
           if(!savedEl) return;
+          clearTimeout(savedDelay);
           savedEl.classList.add('fv-on');
           savedEl.setAttribute('aria-hidden','false');
-          tweenSaved(minutesSaved, reduce?0:1400);
+          savedDelay=setTimeout(function(){
+            tweenSaved(minutesSaved, reduce?0:1400);
+          }, reduce?0:300);
         }
         function hideSaved(){
           if(!savedEl) return;
+          clearTimeout(savedDelay);
           tweenSaved(0, reduce?0:650, function(){
             savedEl.classList.remove('fv-on');
             savedEl.setAttribute('aria-hidden','true');
@@ -7414,7 +7418,7 @@
           arcfree.style.opacity=0;sun.setAttribute('fill','#F2B632');
           rowEls.forEach(function(r,i){applyBefore(r,tasks[i]);});scroll.scrollTop=0;
           setWork(92);placeSun(92);curPct=92;
-          if(savedEl){cancelAnimationFrame(savedRaf);savedVal=0;if(savedNum)savedNum.textContent='0';savedEl.classList.remove('fv-on');savedEl.setAttribute('aria-hidden','true');}
+          if(savedEl){clearTimeout(savedDelay);cancelAnimationFrame(savedRaf);savedVal=0;if(savedNum)savedNum.textContent='0';savedEl.classList.remove('fv-on');savedEl.setAttribute('aria-hidden','true');}
         }
 
         function toBefore(){
