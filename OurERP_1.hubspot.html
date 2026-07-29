@@ -242,7 +242,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 .FUNDVIEW_Text_Scroll__copy + .FUNDVIEW_Text_Scroll__copy{margin-top:1.15em}
 .FUNDVIEW_Text_Scroll .word{display:inline-block;white-space:nowrap}
 .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{
-  opacity:0;filter:blur(5px);transform:translate3d(0,16px,0) scale(.975);
+  opacity:.22;filter:blur(2.25px);transform:translate3d(0,12px,0) scale(.985);
   transform-origin:center bottom;will-change:opacity,transform,filter;
 }
 
@@ -2319,15 +2319,16 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
   function applyProgress(progress){
     const total=words.length;
     const revealWindow=.2;
+    const restingOpacity=.22;
     words.forEach((word,index)=>{
       const wordProgress=index/Math.max(total-1,1);
       const start=wordProgress*(1-revealWindow);
       const local=Math.max(0,Math.min(1,(progress-start)/revealWindow));
       const eased=1-Math.pow(1-local,4);
       const hidden=1-eased;
-      word.style.opacity=eased.toFixed(3);
-      word.style.filter=`blur(${(hidden*5).toFixed(2)}px)`;
-      word.style.transform=`translate3d(0,${(hidden*16).toFixed(2)}px,0) scale(${(.975+eased*.025).toFixed(4)})`;
+      word.style.opacity=(restingOpacity+eased*(1-restingOpacity)).toFixed(3);
+      word.style.filter=`blur(${(hidden*2.25).toFixed(2)}px)`;
+      word.style.transform=`translate3d(0,${(hidden*12).toFixed(2)}px,0) scale(${(.985+eased*.015).toFixed(4)})`;
     });
   }
 
