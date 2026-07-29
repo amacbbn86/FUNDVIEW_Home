@@ -213,7 +213,8 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 
 /* ===================== FUNDVIEW TEXT SCROLL ===================== */
 .FUNDVIEW_Text_Scroll{
-  --edge-fade:clamp(56px,7vh,76px);
+  --edge-fade-top:clamp(56px,7vh,76px);
+  --edge-fade-bottom:clamp(38px,4vh,48px);
   position:relative;min-height:clamp(608px,83.2vh,784px);
   padding:clamp(88px,11vh,124px) 0;display:flex;align-items:center;
   overflow:hidden;overflow:clip;isolation:isolate;background:#fff;color:#0b2a4a;
@@ -228,20 +229,20 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 .FUNDVIEW_Text_Scroll::after{
   content:"";position:absolute;z-index:2;inset:0;pointer-events:none;
   background:
-    linear-gradient(to bottom,#fff 0%,rgba(255,255,255,.94) 18%,rgba(255,255,255,.68) 42%,rgba(255,255,255,.30) 68%,rgba(255,255,255,0) 100%) top/100% var(--edge-fade) no-repeat,
-    linear-gradient(to top,#fff 0%,rgba(255,255,255,.94) 18%,rgba(255,255,255,.68) 42%,rgba(255,255,255,.30) 68%,rgba(255,255,255,0) 100%) bottom/100% var(--edge-fade) no-repeat;
+    linear-gradient(to bottom,#fff 0%,rgba(255,255,255,.94) 18%,rgba(255,255,255,.68) 42%,rgba(255,255,255,.30) 68%,rgba(255,255,255,0) 100%) top/100% var(--edge-fade-top) no-repeat,
+    linear-gradient(to top,#fff 0%,rgba(255,255,255,.92) 18%,rgba(255,255,255,.62) 44%,rgba(255,255,255,.24) 70%,rgba(255,255,255,0) 100%) bottom/100% var(--edge-fade-bottom) no-repeat;
 }
 .FUNDVIEW_Text_Scroll__visual{
   position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none;
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--edge-fade),#000 calc(100% - var(--edge-fade)),transparent 100%);
-  mask-image:linear-gradient(to bottom,transparent 0,#000 var(--edge-fade),#000 calc(100% - var(--edge-fade)),transparent 100%);
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--edge-fade-top),#000 calc(100% - var(--edge-fade-bottom)),transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 var(--edge-fade-top),#000 calc(100% - var(--edge-fade-bottom)),transparent 100%);
 }
 .FUNDVIEW_Text_Scroll__background{
-  position:absolute;z-index:0;inset:calc(-32vh - 32%) 0;
+  position:absolute;z-index:0;inset:-24% 0;
   background-image:url('{{ get_asset_url("./assets/ourerp-winnsboro-sunset.jpg") }}');
-  background-position:center 98%;background-size:cover;background-repeat:no-repeat;
+  background-position:center bottom;background-size:cover;background-repeat:no-repeat;
   filter:saturate(1.1) contrast(1.06);
-  transform:translate3d(0,0,0) scale(1.08);transform-origin:center;
+  transform:translate3d(0,-80px,0) scale(1.04);transform-origin:center bottom;
   will-change:transform;pointer-events:none;
 }
 .FUNDVIEW_Text_Scroll .container{
@@ -584,21 +585,24 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .trust__heading{margin-top:8px}
   .trust__logo-item img{height:57px}
   .trust__viewport{min-height:110px}
-  .FUNDVIEW_Text_Scroll{--edge-fade:clamp(40px,6vh,54px);min-height:clamp(544px,75.2vh,656px);padding:64px 0}
+  .FUNDVIEW_Text_Scroll{--edge-fade-top:clamp(40px,6vh,54px);--edge-fade-bottom:clamp(30px,4vh,38px);min-height:clamp(544px,75.2vh,656px);padding:64px 0}
   .FUNDVIEW_Text_Scroll::before{
     background:
       radial-gradient(ellipse 100% 94% at 50% 52%,rgba(255,250,235,.86) 0%,rgba(255,247,228,.84) 68%,rgba(255,242,216,.78) 84%,rgba(255,235,201,.52) 92%,rgba(252,224,181,.18) 97%,rgba(244,211,165,0) 100%),
       linear-gradient(90deg,rgba(255,249,233,.30) 0%,rgba(255,247,228,.26) 42%,rgba(255,242,218,.20) 72%,rgba(255,236,205,.10) 92%,rgba(244,211,165,0) 100%),
       linear-gradient(180deg,rgba(9,25,39,.035) 0%,rgba(9,25,39,0) 22%,rgba(9,25,39,0) 76%,rgba(54,25,17,.06) 100%);
   }
-  .FUNDVIEW_Text_Scroll__background{inset:calc(-23vh - 23%) 0;background-position:51% 96%;transform:translate3d(0,0,0) scale(1.06)}
+  .FUNDVIEW_Text_Scroll__background{inset:-22% 0;background-position:51% bottom;transform:translate3d(0,-56px,0) scale(1.03)}
   .FUNDVIEW_Text_Scroll__copy{font-size:clamp(1rem,4.6vw,1.26rem);line-height:1.42}
   .FUNDVIEW_Text_Scroll__copy--lead{font-size:clamp(1.48rem,7.2vw,2rem);line-height:1.16}
   .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{opacity:.22;filter:blur(1px);transform:translate3d(0,8px,0) scale(.988)}
 }
 @media (prefers-reduced-motion:reduce){
-  .FUNDVIEW_Text_Scroll__background{inset:-30% 0;transform:none!important;will-change:auto}
+  .FUNDVIEW_Text_Scroll__background{transform:translate3d(0,-80px,0) scale(1.04)!important;will-change:auto}
   .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{opacity:1!important;filter:none!important;transform:none!important;will-change:auto}
+}
+@media (max-width:600px) and (prefers-reduced-motion:reduce){
+  .FUNDVIEW_Text_Scroll__background{transform:translate3d(0,-56px,0) scale(1.03)!important}
 }
 @media (max-width:420px){.foot-cols{grid-template-columns:1fr}}
 </style>
@@ -2412,9 +2416,13 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
       const travelSpan=viewH+sectionRect.height;
       const smoothProgress=targetProgress*targetProgress*(3-2*targetProgress);
       const motionProgress=targetProgress*.7+smoothProgress*.3;
-      const offset=(motionProgress-.5)*travelSpan*compensationRatio;
-      const startScale=mobile?1.06:1.08;
-      const scale=startScale+motionProgress*(mobile?.03:.04);
+      const rawParallax=(motionProgress-.5)*travelSpan*compensationRatio;
+      const parallaxLimit=mobile?44:60;
+      const parallaxY=Math.max(-parallaxLimit,Math.min(parallaxLimit,rawParallax));
+      const baseOffset=mobile?-56:-80;
+      const offset=baseOffset+parallaxY;
+      const startScale=mobile?1.03:1.04;
+      const scale=startScale+motionProgress*(mobile?.015:.02);
       background.style.transform=`translate3d(0,${offset.toFixed(3)}px,0) scale(${scale.toFixed(4)})`;
     }
     ticking=false;
