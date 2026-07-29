@@ -204,6 +204,15 @@ function rewriteLocalAssets(markup) {
   );
 }
 
+function rewriteLocalCssAssets(html) {
+  return html.replace(
+    /url\((["']?)(assets\/[^)"']+)\1\)/gi,
+    function (_, quote, rel) {
+      return `url('{{ get_asset_url("./${rel}") }}')`;
+    }
+  );
+}
+
 function inlineHeaderFooter(html) {
   const header = extractPartial(HEADER, "header");
   const footer = extractPartial(FOOTER, "footer");
@@ -281,6 +290,7 @@ function buildHubspotPage(sourceHtml, target) {
 
   html = inlineHeaderFooter(html);
   html = inlineExperienceTailwind(html);
+  html = rewriteLocalCssAssets(html);
   html = stripHtmlComments(html);
   html = sanitizeHublCommentCollisions(html);
 

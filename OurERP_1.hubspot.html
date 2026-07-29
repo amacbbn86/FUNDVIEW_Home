@@ -213,22 +213,38 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 
 /* ===================== FUNDVIEW TEXT SCROLL ===================== */
 .FUNDVIEW_Text_Scroll{
-  position:relative;min-height:150vh;padding:72px 0 96px;
-  background:linear-gradient(180deg,#FFFFFF 0%,#F5F7F9 48%,#EEF2F5 100%);
-  color:#0b2a4a;
+  position:relative;min-height:clamp(680px,92vh,900px);
+  padding:clamp(72px,9vh,104px) 0;display:flex;align-items:center;
+  overflow:hidden;overflow:clip;isolation:isolate;background:#dce7e9;color:#0b2a4a;
+}
+.FUNDVIEW_Text_Scroll__background{
+  position:absolute;z-index:0;inset:-10% 0;
+  background-image:url('{{ get_asset_url("./assets/ourerp-winnsboro-sunset.jpg") }}');
+  background-position:center 50%;background-size:cover;background-repeat:no-repeat;
+  transform:translate3d(0,0,0) scale(1.015);transform-origin:center;
+  will-change:transform;pointer-events:none;
+}
+.FUNDVIEW_Text_Scroll::after{
+  content:"";position:absolute;z-index:1;inset:0;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(5,24,41,.18) 0%,rgba(5,24,41,0) 34%,rgba(5,24,41,0) 70%,rgba(5,24,41,.25) 100%),
+    radial-gradient(ellipse 68% 82% at 36% 52%,rgba(242,247,248,.78) 0%,rgba(238,245,247,.62) 42%,rgba(224,235,238,.24) 70%,rgba(12,38,55,0) 100%),
+    linear-gradient(90deg,rgba(229,238,241,.30) 0%,rgba(229,238,241,.06) 64%,rgba(5,27,43,.18) 100%);
 }
 .FUNDVIEW_Text_Scroll .container{
-  position:sticky;top:18vh;display:flex;align-items:center;min-height:64vh;
+  position:relative;z-index:2;
 }
 .FUNDVIEW_Text_Scroll__copy{
   max-width:920px;margin:0 auto;text-align:left;
   font-size:clamp(1.16rem,2.08vw,1.88rem);font-weight:700;line-height:1.35;
-  letter-spacing:-.02em;color:#0b2a4a;
+  letter-spacing:-.02em;color:#0b2a4a;text-shadow:0 1px 12px rgba(244,249,250,.28);
 }
 .FUNDVIEW_Text_Scroll__copy + .FUNDVIEW_Text_Scroll__copy{margin-top:1.15em}
 .FUNDVIEW_Text_Scroll .word{display:inline-block;white-space:nowrap}
-.FUNDVIEW_Text_Scroll .char{display:inline;color:#0b2a4a;opacity:.16;will-change:opacity}
-.FUNDVIEW_Text_Scroll .char.is-space{display:inline;white-space:pre}
+.FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{
+  opacity:0;filter:blur(5px);transform:translate3d(0,16px,0) scale(.975);
+  transform-origin:center bottom;will-change:opacity,transform,filter;
+}
 
 .dash{position:absolute;inset:0;display:flex;background:linear-gradient(160deg,#0C2A52 0%,#071B34 100%);font-size:10px}
 .dash-side{width:19%;min-width:118px;background:rgba(255,255,255,.03);border-right:1px solid var(--navy-line);
@@ -548,9 +564,19 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .trust__heading{margin-top:8px}
   .trust__logo-item img{height:57px}
   .trust__viewport{min-height:110px}
-  .FUNDVIEW_Text_Scroll{min-height:170vh;padding:48px 0 72px}
-  .FUNDVIEW_Text_Scroll .container{top:12vh;min-height:70vh}
+  .FUNDVIEW_Text_Scroll{min-height:clamp(640px,88vh,760px);padding:52px 0}
+  .FUNDVIEW_Text_Scroll__background{inset:-8% 0;background-position:51% 50%;transform:translate3d(0,0,0) scale(1.01)}
+  .FUNDVIEW_Text_Scroll::after{
+    background:
+      linear-gradient(180deg,rgba(5,24,41,.18),rgba(5,24,41,0) 32%,rgba(5,24,41,0) 72%,rgba(5,24,41,.24)),
+      radial-gradient(ellipse 94% 76% at 42% 52%,rgba(242,247,248,.80),rgba(235,243,245,.60) 48%,rgba(216,230,234,.20) 78%,rgba(12,38,55,0)),
+      linear-gradient(90deg,rgba(229,238,241,.22),rgba(5,27,43,.13));
+  }
   .FUNDVIEW_Text_Scroll__copy{font-size:clamp(1rem,4.96vw,1.36rem);line-height:1.4}
+}
+@media (prefers-reduced-motion:reduce){
+  .FUNDVIEW_Text_Scroll__background{transform:none!important;will-change:auto}
+  .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{opacity:1!important;filter:none!important;transform:none!important;will-change:auto}
 }
 @media (max-width:420px){.foot-cols{grid-template-columns:1fr}}
 </style>
@@ -1640,6 +1666,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 
 
 <section class="FUNDVIEW_Text_Scroll" id="FUNDVIEW_Text_Scroll" data-div-reveal="true" aria-label="FUNDVIEW connected ERP platform">
+  <div class="FUNDVIEW_Text_Scroll__background" aria-hidden="true"></div>
   <div class="container">
     <div class="FUNDVIEW_Text_Scroll__content" data-highlight-text>
       <p class="FUNDVIEW_Text_Scroll__copy">FUNDVIEW is more than a collection of software modules—it's a connected ERP platform built specifically for local government. Every department shares the same data, works from the same real-time information, and operates within one secure cloud environment.</p>
@@ -2257,16 +2284,16 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
   requestAnimationFrame(tick);
 })();
 
-/* ===== FUNDVIEW text scroll reveal (Jesko-style character opacity) ===== */
+/* ===== FUNDVIEW cinematic word reveal + parallax ===== */
 (function(){
   const section=document.getElementById('FUNDVIEW_Text_Scroll');
   if(!section) return;
   const content=section.querySelector('[data-highlight-text]');
+  const background=section.querySelector('.FUNDVIEW_Text_Scroll__background');
   if(!content) return;
-  const MIN_OP=.16,MAX_OP=1,BAND=.14;
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const paragraphs=[...content.querySelectorAll('.FUNDVIEW_Text_Scroll__copy')];
-  const chars=[];
+  const words=[];
 
   function splitParagraph(p){
     const text=p.textContent||'';
@@ -2274,44 +2301,33 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
     text.split(/(\s+)/).forEach(token=>{
       if(!token) return;
       if(/^\s+$/.test(token)){
-        const space=document.createElement('span');
-        space.className='char is-space';
-        space.textContent=token;
-        space.style.opacity=String(MIN_OP);
-        p.appendChild(space);
-        chars.push(space);
+        p.appendChild(document.createTextNode(token));
         return;
       }
       const word=document.createElement('span');
       word.className='word';
-      token.split('').forEach(ch=>{
-        const span=document.createElement('span');
-        span.className='char';
-        span.textContent=ch;
-        span.style.opacity=String(MIN_OP);
-        word.appendChild(span);
-        chars.push(span);
-      });
+      word.textContent=token;
       p.appendChild(word);
+      words.push(word);
     });
   }
 
   paragraphs.forEach(splitParagraph);
-  if(!chars.length) return;
+  if(!words.length) return;
+  section.classList.add('is-word-reveal-ready');
 
   function applyProgress(progress){
-    const total=chars.length;
-    chars.forEach((char,index)=>{
-      const charProgress=index/Math.max(total-1,1);
-      const start=charProgress-BAND;
-      const end=charProgress+BAND;
-      let opacity=MIN_OP;
-      if(progress>=end) opacity=MAX_OP;
-      else if(progress>start){
-        const local=(progress-start)/(end-start);
-        opacity=MIN_OP+(MAX_OP-MIN_OP)*local;
-      }
-      char.style.opacity=opacity.toFixed(3);
+    const total=words.length;
+    const revealWindow=.2;
+    words.forEach((word,index)=>{
+      const wordProgress=index/Math.max(total-1,1);
+      const start=wordProgress*(1-revealWindow);
+      const local=Math.max(0,Math.min(1,(progress-start)/revealWindow));
+      const eased=1-Math.pow(1-local,4);
+      const hidden=1-eased;
+      word.style.opacity=eased.toFixed(3);
+      word.style.filter=`blur(${(hidden*5).toFixed(2)}px)`;
+      word.style.transform=`translate3d(0,${(hidden*16).toFixed(2)}px,0) scale(${(.975+eased*.025).toFixed(4)})`;
     });
   }
 
@@ -2322,12 +2338,18 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
 
   let ticking=false;
   function update(){
-    const rect=section.getBoundingClientRect();
     const viewH=window.innerHeight||1;
-    const start=viewH*0.85;
-    const end=-rect.height*0.15;
-    const progress=1-(rect.top-end)/(start-end);
-    applyProgress(Math.max(0,Math.min(1,progress)));
+    const sectionRect=section.getBoundingClientRect();
+    const sectionProgress=Math.max(0,Math.min(1,(viewH-sectionRect.top)/(viewH+sectionRect.height)));
+    const revealProgress=Math.max(0,Math.min(1,(sectionProgress-.12)/.76));
+    applyProgress(revealProgress);
+
+    if(background){
+      const mobile=window.matchMedia('(max-width: 480px)').matches;
+      const range=Math.min(mobile?34:64,viewH*(mobile?.04:.065));
+      const offset=(sectionProgress-.5)*range*2;
+      background.style.transform=`translate3d(0,${offset.toFixed(2)}px,0) scale(${mobile?'1.01':'1.015'})`;
+    }
     ticking=false;
   }
   function onScroll(){
