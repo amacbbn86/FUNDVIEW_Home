@@ -173,7 +173,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 }
 .trust__logo-card{display:flex;flex-direction:column;align-items:center;width:100%}
 .trust__logo-item img{
-  width:auto;height:91px;max-width:100%;object-fit:contain;filter:grayscale(100%);
+  width:auto;height:82px;max-width:100%;object-fit:contain;filter:grayscale(100%);
   opacity:.85;transition:opacity .3s ease,filter .3s ease;
 }
 .trust__logo-item img:hover{filter:grayscale(0);opacity:1}
@@ -471,7 +471,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .hero h1{font-size:2rem}
 }
 @media (max-width:1200px){
-  .trust__logo-item img{height:77px}
+  .trust__logo-item img{height:69px}
   .trust__viewport{min-height:130px}
 }
 @media (max-width:860px){
@@ -507,7 +507,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 }
 @media (max-width:480px){
   .trust.client_ticker{padding:56px 0 40px}
-  .trust__logo-item img{height:63px}
+  .trust__logo-item img{height:57px}
   .trust__viewport{min-height:110px}
 }
 @media (max-width:420px){.foot-cols{grid-template-columns:1fr}}
@@ -1042,7 +1042,7 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
     });
     track.insertBefore(before,track.firstChild);track.appendChild(after);
     visible=window.innerWidth>1024?5:3;
-    slideWidth=(viewport.offsetWidth/visible)*.85;
+    slideWidth=(viewport.offsetWidth/visible)*.7225;
     [...track.children].forEach(item=>{
       item.style.flex=`0 0 ${slideWidth}px`;
       item.style.width=`${slideWidth}px`;
