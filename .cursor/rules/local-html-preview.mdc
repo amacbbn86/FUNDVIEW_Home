@@ -11,8 +11,11 @@ Alex works on HubSpot/homepage HTML files in this repo (`OurERP_1.html`, `home6.
 
 1. Identify the HTML file he is actively working on this session (open editor tab, recent edits, or the file named in the latest request). Prefer that file over older ones.
 2. Ensure a local static server is serving the repo root. Prefer port **5500** (historical Live Server port). If 5500 is free, start one; if something already serves the repo on 5500, reuse it.
-3. Immediately give him a clickable preview URL in the form:
+3. Immediately give him a clickable preview URL in **exactly this format** (same pattern he already uses):
+   - `http://localhost:5500/OurERP_1.html`
+   - `http://localhost:5500/home7.html`
    - `http://localhost:5500/<ActiveFile>.html`
+   Never substitute a different host, port, path style, or file-tree index URL unless 5500 truly cannot be used.
 4. Do this proactively when resuming after reboot / new chat / new session on homepage HTML work — do not wait for him to ask for “the link again.”
 5. If the server died (port empty, connection refused), restart it and re-share the same URL pattern.
 
