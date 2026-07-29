@@ -502,6 +502,18 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   margin:0;color:var(--heading);font-size:.98rem;font-weight:700;line-height:1.4;letter-spacing:-.01em;
 }
 
+/* ===================== READY FOR FUNDVIEW DEMO ===================== */
+.SEC_Ready_for_FUNDVIEW_demo.ocp-hero{padding:clamp(56px,7vw,88px) 0}
+.ready-demo__content{
+  position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;
+  gap:clamp(22px,3vw,30px);max-width:820px;margin:0 auto;text-align:center;
+}
+.ready-demo__content h2{
+  margin:0;color:#fff;font-size:clamp(1.55rem,3vw,2.15rem);font-weight:900;
+  letter-spacing:-.025em;line-height:1.28;
+}
+.ready-demo__content .btn{min-width:min(100%,360px)}
+
 /* ===================== CUSTOMER RESULTS (light carousel) ===================== */
 .results{background:var(--bg)}
 .carousel{position:relative;max-width:1040px;margin:0 auto}
@@ -2040,6 +2052,16 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
           <p>Automated workflows and notifications</p>
         </article>
       </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="SEC_Ready_for_FUNDVIEW_demo ocp-hero reveal" aria-labelledby="ready-for-fundview-demo-title">
+  <div class="container">
+    <div class="ready-demo__content">
+      <h2 id="ready-for-fundview-demo-title">Ready to learn how FUNDVIEW can improve your local government’s finance and operations?</h2>
+      <a href="#demo" class="btn btn-gold btn-lg">I'm Ready For My Personalized Demo</a>
     </div>
   </div>
 </section>
