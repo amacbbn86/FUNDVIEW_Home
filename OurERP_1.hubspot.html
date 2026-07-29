@@ -1979,7 +1979,7 @@ const io = new IntersectionObserver((entries) => {
 }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDelay = ((i%6)*0.06)+'s'; io.observe(el); });
 
-/* ===== Client logo ticker — auto-scroll + drag scrub (home7-style; no pause on hover) ===== */
+/* ===== Client logo ticker — Book-a-Demo nav (pause + center) + home7 drag; no pause on hover ===== */
 (function initTrustTicker(){
   const track=document.getElementById('trust-track');
   if(!track) return;
@@ -1989,9 +1989,12 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
   const pause=document.getElementById('trust-pause');
   const originals=[...track.children];
   const total=originals.length;
+  const STEP_MS=500;
   let visible=window.innerWidth>1024?5:3;
   let slideWidth=0,setWidth=0,offset=0,lastTime=0,paused=false,stepping=false;
+  let centerIndex=Math.min(Math.floor(visible/2),Math.max(0,total-1));
   let dragging=false,pointerId=null,startX=0,startOffset=0;
+  let stepEndHandler=null,stepFallbackTimer=null;
 
   function setPauseUI(){
     pause.classList.toggle('is-playing',!paused);
@@ -2004,13 +2007,78 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
   }
   function removeClones(){track.querySelectorAll('.trust__logo-item--clone').forEach(el=>el.remove())}
   function apply(animate){
-    track.style.transition=animate?'transform .5s cubic-bezier(.4,0,.2,1)':'none';
+    track.style.transition=animate?`transform ${STEP_MS/1000}s cubic-bezier(.4,0,.2,1)`:'none';
     track.style.transform=`translate3d(-${offset}px,0,0)`;
   }
   function wrap(){
     if(!setWidth) return;
-    if(offset>=setWidth*2) offset-=setWidth;
-    if(offset<setWidth) offset+=setWidth;
+    while(offset>=setWidth*2) offset-=setWidth;
+    while(offset<setWidth) offset+=setWidth;
+  }
+  function offsetForCenter(index){
+    return (total+index)*slideWidth+slideWidth/2-viewport.offsetWidth/2;
+  }
+  function normalizeOffsetTarget(targetOffset){
+    while(targetOffset<offset-setWidth/2) targetOffset+=setWidth;
+    while(targetOffset>offset+setWidth/2) targetOffset-=setWidth;
+    return targetOffset;
+  }
+  function syncCenterIndexFromOffset(){
+    if(!slideWidth||!total) return;
+    wrap();
+    const viewportCenterPx=offset+viewport.offsetWidth/2;
+    const trackIndex=Math.round((viewportCenterPx-slideWidth/2)/slideWidth);
+    const logicalIndex=trackIndex-total;
+    centerIndex=((logicalIndex%total)+total)%total;
+  }
+  function snapOffsetToCenter(){
+    wrap();
+    syncCenterIndexFromOffset();
+    offset=offsetForCenter(centerIndex);
+    wrap();
+  }
+  function clearStepTimers(){
+    if(stepEndHandler){
+      track.removeEventListener('transitionend',stepEndHandler);
+      stepEndHandler=null;
+    }
+    if(stepFallbackTimer){
+      clearTimeout(stepFallbackTimer);
+      stepFallbackTimer=null;
+    }
+  }
+  function completeStep(){
+    if(!stepping) return;
+    clearStepTimers();
+    snapOffsetToCenter();
+    apply(false);
+    stepping=false;
+  }
+  function snapToNearestCenter(animate){
+    if(!setWidth||!slideWidth) return;
+    if(stepping) completeStep();
+    wrap();
+    syncCenterIndexFromOffset();
+    const targetOffset=normalizeOffsetTarget(offsetForCenter(centerIndex));
+    const distance=Math.abs(targetOffset-offset);
+    if(!animate||distance<0.5){
+      offset=targetOffset;
+      wrap();
+      apply(false);
+      return;
+    }
+    stepping=true;
+    stepEndHandler=function onSnapEnd(e){
+      if(e.target!==track) return;
+      if(e.propertyName!=='transform'&&e.propertyName!=='-webkit-transform') return;
+      completeStep();
+    };
+    track.addEventListener('transitionend',stepEndHandler);
+    stepFallbackTimer=setTimeout(completeStep,STEP_MS+100);
+    apply(false);
+    void track.offsetWidth;
+    offset=targetOffset;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>apply(true)));
   }
   function rebuild(){
     removeClones();
@@ -2029,7 +2097,9 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
       item.style.width=`${slideWidth}px`;
     });
     setWidth=slideWidth*total;
-    offset=setWidth;
+    centerIndex=Math.min(Math.floor(visible/2),Math.max(0,total-1));
+    offset=offsetForCenter(centerIndex);
+    wrap();
     apply(false);
   }
   function tick(time){
@@ -2042,16 +2112,44 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
     }
     requestAnimationFrame(tick);
   }
-  function step(direction){
-    if(stepping||dragging||!slideWidth) return;
-    paused=true;setPauseUI();stepping=true;
+  function manualStep(direction){
+    if(!setWidth||!slideWidth) return;
+    if(stepping) completeStep();
+    stepping=true;
+    wrap();
+    syncCenterIndexFromOffset();
+    const prevIndex=centerIndex;
+    centerIndex=(centerIndex+direction+total)%total;
+    if(direction<0&&offset-slideWidth<setWidth){
+      offset+=setWidth;apply(false);void track.offsetWidth;
+    }
+    if(direction>0&&prevIndex===total-1){
+      offset-=setWidth;apply(false);void track.offsetWidth;
+    }
+    stepEndHandler=function onStepEnd(e){
+      if(e.target!==track) return;
+      if(e.propertyName!=='transform'&&e.propertyName!=='-webkit-transform') return;
+      completeStep();
+    };
+    track.addEventListener('transitionend',stepEndHandler);
+    stepFallbackTimer=setTimeout(completeStep,STEP_MS+100);
     offset+=direction*slideWidth;
-    apply(true);
-    window.setTimeout(()=>{wrap();apply(false);stepping=false;lastTime=0},520);
+    requestAnimationFrame(()=>apply(true));
+  }
+  /* Book-a-Demo arrow behavior: pause + snap closest logo to center, then step one */
+  function onArrowClick(direction){
+    if(dragging||!slideWidth) return;
+    if(!paused){
+      if(stepping) completeStep();
+      snapToNearestCenter(false);
+      paused=true;setPauseUI();
+      lastTime=0;
+    }
+    manualStep(direction);
   }
   function onPointerDown(e){
     if(e.button!=null&&e.button!==0) return;
-    if(stepping) return;
+    if(stepping) completeStep();
     dragging=true;
     pointerId=e.pointerId;
     startX=e.clientX;
@@ -2072,12 +2170,21 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
     dragging=false;
     pointerId=null;
     viewport.classList.remove('is-dragging');
+    syncCenterIndexFromOffset();
     lastTime=0;
   }
 
-  prev.addEventListener('click',()=>step(-1));
-  next.addEventListener('click',()=>step(1));
-  pause.addEventListener('click',()=>{paused=!paused;lastTime=0;setPauseUI()});
+  prev.addEventListener('click',e=>{e.preventDefault();onArrowClick(-1)});
+  next.addEventListener('click',e=>{e.preventDefault();onArrowClick(1)});
+  pause.addEventListener('click',e=>{
+    e.preventDefault();
+    if(paused){
+      paused=false;setPauseUI();lastTime=0;
+    }else{
+      paused=true;setPauseUI();lastTime=0;
+      snapToNearestCenter(true);
+    }
+  });
   viewport.addEventListener('pointerdown',onPointerDown);
   viewport.addEventListener('pointermove',onPointerMove);
   viewport.addEventListener('pointerup',endDrag);
