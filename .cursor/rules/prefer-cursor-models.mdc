@@ -1,0 +1,26 @@
+---
+description: Keep quota on included Cursor models and minimize Other Models spend
+alwaysApply: true
+---
+
+# Prefer Cursor models; conserve "Other Models" quota
+
+Alex's plan includes **Cursor Models** (Cursor Grok 4.5, Composer 2.5) at no extra usage cost. **Other Models** (Claude, GPT) draw down a limited quota and then on-demand spend.
+
+## Required agent behavior
+
+1. **Always pass an explicit Cursor model when delegating.** Never let a subagent silently inherit an Other Model from the parent.
+   - Default for code edits, CSS/JS tuning, HubSpot export, git sync: `composer-2.5-fast`
+   - Default for research, exploration, multi-file reasoning: `cursor-grok-4.5-high-fast`
+2. **Do not fan out subagents for small tasks.** Each subagent is a separate billed context that re-reads large files like `OurERP_1.html` (~1,500 lines). One agent doing three sequential tweaks costs far less than three agents.
+3. **Avoid re-reading the whole file.** Use `Grep` and targeted `Read` offsets instead of full-file reads when tuning known selectors.
+4. **Batch related visual tweaks** into a single delegation instead of one agent per adjustment.
+5. **Do not attach screenshots to subagent prompts** unless the image is essential; images are expensive context.
+6. For trivial single-value changes (e.g. adjusting `baseOffset`), edit directly in the foreground rather than delegating.
+
+## What burns quota fastest
+
+- Background subagents running on Claude/GPT
+- Repeated full reads of `OurERP_1.html` and `OurERP_1.hubspot.html`
+- Long interrupt/resume chains on one long-lived agent
+- Screenshot images in prompts
