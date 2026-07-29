@@ -105,7 +105,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 
 /* ===================== HERO ===================== */
 .hero{
-  position:relative;padding:56px 0 28px;overflow:hidden;
+  position:relative;padding:56px 0 18px;overflow:hidden;
   background:#FFF;
 }
 .hero::before{content:"";position:absolute;inset:0;
@@ -128,22 +128,17 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 
 /* ---- Premium video player ---- */
 .video-wrap{position:relative;width:min(788px,60vw);margin:32px auto 0;border-radius:20px;
-  box-shadow:0 2px 0 rgba(255,255,255,.55) inset,0 28px 64px -30px rgba(6,23,49,.58),0 12px 30px -20px rgba(6,23,49,.4);
+  box-shadow:0 2px 0 rgba(255,255,255,.55) inset,0 18px 38px -24px rgba(6,23,49,.46),0 8px 18px -14px rgba(6,23,49,.28);
   border:1px solid rgba(255,255,255,.55);overflow:hidden;
   transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
 .video-wrap::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:0 0 0 1px rgba(35,195,216,.14) inset;z-index:5}
 .video-wrap:hover{transform:translateY(-6px);
-  box-shadow:0 2px 0 rgba(255,255,255,.6) inset,0 36px 76px -30px rgba(6,23,49,.64),0 16px 36px -20px rgba(6,23,49,.44)}
+  box-shadow:0 2px 0 rgba(255,255,255,.6) inset,0 22px 44px -24px rgba(6,23,49,.5),0 10px 22px -15px rgba(6,23,49,.3)}
 .video-aspect{position:relative;padding-top:52.5%;background:var(--navy-deep)}
-.video-meta{
-  display:flex;align-items:center;justify-content:center;gap:.5rem;
-  margin-top:1.1rem;color:var(--heading);font-size:.9rem;font-weight:700;
-}
-.video-meta__play{color:var(--teal)}
 
 /* ===================== CLIENT TICKER ===================== */
 .trust.client_ticker{
-  position:relative;z-index:1;padding:20px 0 48px;text-align:center;
+  position:relative;z-index:1;padding:12px 0 48px;text-align:center;
   background:#FFF;
 }
 .trust__heading{
@@ -186,7 +181,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   position:relative;z-index:2;display:flex;align-items:center;justify-content:center;
   width:28px;height:28px;flex-shrink:0;padding:0;border:1px solid var(--border);
   border-radius:50%;color:var(--muted);background:var(--white);cursor:pointer;
-  transform:translateY(8px);
+  margin-block:0;transform:none;
   transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
 }
 .trust__nav-btn:hover,.trust__nav-btn:focus-visible{
@@ -197,7 +192,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   display:flex;align-items:center;justify-content:center;width:38px;height:28px;
   flex-shrink:0;margin:0;padding:0 10px;border:1px solid var(--border);
   border-radius:999px;color:var(--muted);background:var(--white);
-  transform:translateY(calc(-50% + 8px));
+  transform:translateY(-50%);
   cursor:pointer;transition:background-color .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease),box-shadow .2s var(--ease);
 }
 .trust__pause-btn svg{
@@ -254,7 +249,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   background-image:url("assets/ourerp-winnsboro-sunset.jpg");
   background-position:center bottom;background-size:cover;background-repeat:no-repeat;
   filter:saturate(1.1) contrast(1.06);
-  transform:translate3d(0,-80px,0) scale(1.04);transform-origin:center bottom;
+  transform:translate3d(0,-97.5px,0) scale(1.248);transform-origin:center bottom;
   will-change:transform;pointer-events:none;
 }
 .FUNDVIEW_Text_Scroll .container{
@@ -560,7 +555,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 @media (max-width:860px){
   .trust__carousel-wrap{justify-content:flex-start}
   .trust__viewport{width:100%;flex:1}
-  .trust__pause-btn{position:relative;top:auto;left:auto;transform:translateY(8px)}
+  .trust__pause-btn{position:relative;top:auto;left:auto;transform:none}
   .trust__heading{margin-top:10px}
   .tulia{grid-template-columns:1fr;gap:30px}
   .carousel-track{grid-template-columns:1fr}
@@ -586,14 +581,14 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .play-btn svg{width:22px;height:22px}
   .foot-cols{grid-template-columns:1fr 1fr}
   .foot-company{grid-column:1/-1}
-  .hero{padding:40px 0 20px}
+  .hero{padding:40px 0 14px}
   .c-arrow{display:none}
 }
 @media (max-width:600px){
   .hero h1{font-size:clamp(1.85rem,6.5vw,2.45rem);max-width:18ch}
 }
 @media (max-width:480px){
-  .trust.client_ticker{padding:12px 0 40px}
+  .trust.client_ticker{padding:10px 0 40px}
   .trust__heading{margin-top:8px}
   .trust__logo-item img{height:57px}
   .trust__viewport{min-height:110px}
@@ -604,17 +599,17 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
       linear-gradient(90deg,rgba(255,249,233,.30) 0%,rgba(255,247,228,.26) 42%,rgba(255,242,218,.20) 72%,rgba(255,236,205,.10) 92%,rgba(244,211,165,0) 100%),
       linear-gradient(180deg,rgba(9,25,39,.035) 0%,rgba(9,25,39,0) 22%,rgba(9,25,39,0) 76%,rgba(54,25,17,.06) 100%);
   }
-  .FUNDVIEW_Text_Scroll__background{inset:-22% 0;background-position:51% bottom;transform:translate3d(0,-56px,0) scale(1.03)}
+  .FUNDVIEW_Text_Scroll__background{inset:-22% 0;background-position:center bottom;transform:translate3d(0,-67.5px,0) scale(1.236)}
   .FUNDVIEW_Text_Scroll__copy{font-size:clamp(1rem,4.6vw,1.26rem);line-height:1.42}
   .FUNDVIEW_Text_Scroll__copy--lead{font-size:clamp(1.48rem,7.2vw,2rem);line-height:1.16}
   .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{opacity:.22;filter:blur(1px);transform:translate3d(0,8px,0) scale(.988)}
 }
 @media (prefers-reduced-motion:reduce){
-  .FUNDVIEW_Text_Scroll__background{transform:translate3d(0,-80px,0) scale(1.04)!important;will-change:auto}
+  .FUNDVIEW_Text_Scroll__background{transform:translate3d(0,-97.5px,0) scale(1.248)!important;will-change:auto}
   .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{opacity:1!important;filter:none!important;transform:none!important;will-change:auto}
 }
 @media (max-width:600px) and (prefers-reduced-motion:reduce){
-  .FUNDVIEW_Text_Scroll__background{transform:translate3d(0,-56px,0) scale(1.03)!important}
+  .FUNDVIEW_Text_Scroll__background{transform:translate3d(0,-67.5px,0) scale(1.236)!important}
 }
 @media (max-width:420px){.foot-cols{grid-template-columns:1fr}}
 </style>
@@ -739,7 +734,6 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
         </div>
       </div>
     </div>
-    <p class="video-meta reveal"><span class="video-meta__play" aria-hidden="true">▶</span> Approximately 15-Minute Overview</p>
   </div>
 </section>
 
@@ -1442,12 +1436,12 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
       const smoothProgress=targetProgress*targetProgress*(3-2*targetProgress);
       const motionProgress=targetProgress*.7+smoothProgress*.3;
       const rawParallax=(motionProgress-.5)*travelSpan*compensationRatio;
-      const parallaxLimit=mobile?44:60;
+      const parallaxLimit=mobile?64:90;
       const parallaxY=Math.max(-parallaxLimit,Math.min(parallaxLimit,rawParallax));
-      const baseOffset=mobile?-56:-80;
+      const baseOffset=mobile?-67.5:-97.5;
       const offset=baseOffset+parallaxY;
-      const startScale=mobile?1.03:1.04;
-      const scale=startScale+motionProgress*(mobile?.015:.02);
+      const startScale=mobile?1.236:1.248;
+      const scale=startScale+motionProgress*(mobile?.018:.024);
       background.style.transform=`translate3d(0,${offset.toFixed(3)}px,0) scale(${scale.toFixed(4)})`;
     }
     ticking=false;
