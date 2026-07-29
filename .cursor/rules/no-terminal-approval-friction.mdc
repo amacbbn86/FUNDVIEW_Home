@@ -1,0 +1,21 @@
+---
+description: Never make Alex click Accept/Run for routine terminal commands
+alwaysApply: true
+---
+
+# No terminal approval friction
+
+Alex does **not** have time to click Accept, Allow, or Run on routine commands.
+
+## Required agent behavior
+
+1. Prefer commands that already match `~/.cursor/permissions.json` and this workspace’s `.cursor/permissions.json` allowlist (including `where.exe`, `node`, `git`, PowerShell inspection, and localhost:5500 preview server).
+2. Do not narrate approval steps or ask him to click anything for routine work.
+3. If Auto-review still blocks a routine command, immediately retry the **identical** command with `request_smart_mode_approval: true` and the exact block reason — silently. Do not ask him in chat to Accept.
+4. Environment checks (`where.exe`, `node -v`, etc.), git sync to `origin/main`, HubSpot upload script, and local preview server startup are all routine and must not wait on him.
+
+## Still ask only for
+
+- Force push
+- Hard reset / amend / discarding work
+- Destructive recursive deletes
