@@ -201,6 +201,25 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 .trust__pause-btn.is-playing{color:var(--teal-dark);background:var(--teal-soft);border-color:var(--teal)}
 .trust__pause-btn.is-paused{color:var(--body);background:var(--bg);border-color:#c9d7e2}
 
+/* ===================== FUNDVIEW TEXT SCROLL ===================== */
+.FUNDVIEW_Text_Scroll{
+  position:relative;min-height:150vh;padding:72px 0 96px;
+  background:linear-gradient(180deg,#FFFFFF 0%,#F5F7F9 48%,#EEF2F5 100%);
+  color:#0b2a4a;
+}
+.FUNDVIEW_Text_Scroll .container{
+  position:sticky;top:18vh;display:flex;align-items:center;min-height:64vh;
+}
+.FUNDVIEW_Text_Scroll__copy{
+  max-width:920px;margin:0 auto;text-align:left;
+  font-size:clamp(1.45rem,2.6vw,2.35rem);font-weight:700;line-height:1.35;
+  letter-spacing:-.02em;color:#0b2a4a;
+}
+.FUNDVIEW_Text_Scroll__copy + .FUNDVIEW_Text_Scroll__copy{margin-top:1.15em}
+.FUNDVIEW_Text_Scroll .word{display:inline-block;white-space:nowrap}
+.FUNDVIEW_Text_Scroll .char{display:inline;color:#0b2a4a;opacity:.16;will-change:opacity}
+.FUNDVIEW_Text_Scroll .char.is-space{display:inline;white-space:pre}
+
 .dash{position:absolute;inset:0;display:flex;background:linear-gradient(160deg,#0C2A52 0%,#071B34 100%);font-size:10px}
 .dash-side{width:19%;min-width:118px;background:rgba(255,255,255,.03);border-right:1px solid var(--navy-line);
   padding:12px 9px;display:flex;flex-direction:column;gap:5px;overflow:hidden}
@@ -514,6 +533,9 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .trust.client_ticker{padding:12px 0 40px}
   .trust__logo-item img{height:57px}
   .trust__viewport{min-height:110px}
+  .FUNDVIEW_Text_Scroll{min-height:170vh;padding:48px 0 72px}
+  .FUNDVIEW_Text_Scroll .container{top:12vh;min-height:70vh}
+  .FUNDVIEW_Text_Scroll__copy{font-size:clamp(1.25rem,6.2vw,1.7rem);line-height:1.4}
 }
 @media (max-width:420px){.foot-cols{grid-template-columns:1fr}}
 </style>
@@ -679,6 +701,16 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
     <div class="trust__heading">
       <p class="trust__heading-primary">Built for Local Government</p>
       <p class="trust__heading-secondary">Trusted by 180+ cities</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= FUNDVIEW TEXT SCROLL ======================= -->
+<section class="FUNDVIEW_Text_Scroll" id="FUNDVIEW_Text_Scroll" data-div-reveal="true" aria-label="FUNDVIEW connected ERP platform">
+  <div class="container">
+    <div class="FUNDVIEW_Text_Scroll__content" data-highlight-text>
+      <p class="FUNDVIEW_Text_Scroll__copy">FUNDVIEW is more than a collection of software modules—it's a connected ERP platform built specifically for local government. Every department shares the same data, works from the same real-time information, and operates within one secure cloud environment.</p>
+      <p class="FUNDVIEW_Text_Scroll__copy">As work is completed throughout the organization, financial information updates automatically, workflows continue without interruption, and leadership gains immediate visibility into operations. The result is fewer disconnected systems, less duplicate entry, stronger collaboration between departments, and more confident decision-making across the organization.</p>
     </div>
   </div>
 </section>
@@ -1224,6 +1256,89 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
   rebuild();setPauseUI();
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){paused=true;setPauseUI()}
   requestAnimationFrame(tick);
+})();
+
+/* ===== FUNDVIEW text scroll reveal (Jesko-style character opacity) ===== */
+(function(){
+  const section=document.getElementById('FUNDVIEW_Text_Scroll');
+  if(!section) return;
+  const content=section.querySelector('[data-highlight-text]');
+  if(!content) return;
+  const MIN_OP=.16,MAX_OP=1,BAND=.14;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const paragraphs=[...content.querySelectorAll('.FUNDVIEW_Text_Scroll__copy')];
+  const chars=[];
+
+  function splitParagraph(p){
+    const text=p.textContent||'';
+    p.textContent='';
+    text.split(/(\s+)/).forEach(token=>{
+      if(!token) return;
+      if(/^\s+$/.test(token)){
+        const space=document.createElement('span');
+        space.className='char is-space';
+        space.textContent=token;
+        space.style.opacity=String(MIN_OP);
+        p.appendChild(space);
+        chars.push(space);
+        return;
+      }
+      const word=document.createElement('span');
+      word.className='word';
+      token.split('').forEach(ch=>{
+        const span=document.createElement('span');
+        span.className='char';
+        span.textContent=ch;
+        span.style.opacity=String(MIN_OP);
+        word.appendChild(span);
+        chars.push(span);
+      });
+      p.appendChild(word);
+    });
+  }
+
+  paragraphs.forEach(splitParagraph);
+  if(!chars.length) return;
+
+  function applyProgress(progress){
+    const total=chars.length;
+    chars.forEach((char,index)=>{
+      const charProgress=index/Math.max(total-1,1);
+      const start=charProgress-BAND;
+      const end=charProgress+BAND;
+      let opacity=MIN_OP;
+      if(progress>=end) opacity=MAX_OP;
+      else if(progress>start){
+        const local=(progress-start)/(end-start);
+        opacity=MIN_OP+(MAX_OP-MIN_OP)*local;
+      }
+      char.style.opacity=opacity.toFixed(3);
+    });
+  }
+
+  if(reduce){
+    applyProgress(1);
+    return;
+  }
+
+  let ticking=false;
+  function update(){
+    const rect=section.getBoundingClientRect();
+    const viewH=window.innerHeight||1;
+    const start=viewH*0.85;
+    const end=-rect.height*0.15;
+    const progress=1-(rect.top-end)/(start-end);
+    applyProgress(Math.max(0,Math.min(1,progress)));
+    ticking=false;
+  }
+  function onScroll(){
+    if(ticking) return;
+    ticking=true;
+    requestAnimationFrame(update);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  update();
 })();
 
 /* ===== Platform flip cards ===== */
