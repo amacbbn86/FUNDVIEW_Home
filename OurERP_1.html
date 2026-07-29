@@ -147,7 +147,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   background:#FFF;
 }
 .trust__heading{
-  display:grid;gap:.35rem;justify-items:center;margin:0 0 28px;text-align:center;
+  display:grid;gap:.35rem;justify-items:center;margin:28px 0 0;text-align:center;
 }
 .trust__heading-primary{
   margin:0;color:var(--heading);font-size:clamp(1.15rem,2vw,1.45rem);
@@ -644,12 +644,6 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 
 <!-- ======================= CLIENT TICKER ======================= -->
 <section class="trust client_ticker" id="client_ticker" aria-label="Cities that trust FUNDVIEW">
-  <div class="container">
-    <div class="trust__heading">
-      <p class="trust__heading-primary">Built for Local Government</p>
-      <p class="trust__heading-secondary">Trusted by 180+ cities</p>
-    </div>
-  </div>
   <div class="trust__carousel" id="trust-carousel" aria-live="polite">
     <div class="trust__carousel-wrap">
       <button class="trust__nav-btn trust__nav-btn--prev" id="trust-prev" type="button" aria-label="Previous logos">
@@ -680,6 +674,12 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
       <svg class="trust__play-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" hidden><path d="M3 1.5l10 5.5-10 5.5V1.5z" fill="currentColor"/></svg>
       <span class="trust__pause-label">Playing</span>
     </button>
+  </div>
+  <div class="container">
+    <div class="trust__heading">
+      <p class="trust__heading-primary">Built for Local Government</p>
+      <p class="trust__heading-secondary">Trusted by 180+ cities</p>
+    </div>
   </div>
 </section>
 
