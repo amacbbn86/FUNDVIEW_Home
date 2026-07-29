@@ -146,9 +146,9 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   font-weight:700;line-height:1.35;letter-spacing:.04em;
 }
 .trust__carousel{width:100%;max-width:100vw;margin:0 auto 16px;padding:0 16px;box-sizing:border-box}
-.trust__carousel-wrap{display:flex;align-items:center;gap:8px}
+.trust__carousel-wrap{position:relative;display:flex;align-items:center;justify-content:center;gap:8px}
 .trust__viewport{
-  position:relative;overflow:hidden;width:100%;min-height:160px;flex:1;
+  position:relative;overflow:hidden;width:75%;min-height:160px;flex:0 1 75%;
   cursor:grab;touch-action:pan-y;-webkit-user-select:none;user-select:none;
 }
 .trust__viewport.is-dragging{cursor:grabbing}
@@ -174,18 +174,21 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   position:relative;z-index:2;display:flex;align-items:center;justify-content:center;
   width:28px;height:28px;flex-shrink:0;padding:0;border:1px solid var(--border);
   border-radius:50%;color:var(--muted);background:var(--white);cursor:pointer;
+  transform:translateY(8px);
   transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
 }
 .trust__nav-btn:hover,.trust__nav-btn:focus-visible{
   color:var(--white);background:var(--teal);border-color:var(--teal);
 }
 .trust__pause-btn{
-  position:relative;z-index:2;display:flex;align-items:center;justify-content:center;
-  gap:6px;margin:12px auto 0;padding:6px 14px;border:1px solid var(--border);
-  border-radius:999px;color:var(--muted);background:var(--white);font:600 .75rem/1 Inter,sans-serif;
+  position:absolute;z-index:2;top:50%;left:calc(87.5% + 44px);
+  display:flex;align-items:center;justify-content:center;width:28px;height:28px;
+  flex-shrink:0;margin:0;padding:0;border:1px solid var(--border);
+  border-radius:50%;color:var(--muted);background:var(--white);
+  transform:translateY(calc(-50% + 8px));
   cursor:pointer;transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
 }
-.trust__pause-btn:hover{color:var(--body);background:var(--bg);border-color:#c9d7e2}
+.trust__pause-btn:hover,.trust__pause-btn:focus-visible{color:var(--body);background:var(--bg);border-color:#c9d7e2}
 .trust__pause-btn.is-playing{color:var(--teal-dark);background:var(--teal-soft);border-color:var(--teal)}
 .trust__pause-btn.is-paused{color:var(--body);background:var(--bg);border-color:#c9d7e2}
 
@@ -487,6 +490,9 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .trust__viewport{min-height:130px}
 }
 @media (max-width:860px){
+  .trust__carousel-wrap{justify-content:flex-start}
+  .trust__viewport{width:100%;flex:1}
+  .trust__pause-btn{position:relative;top:auto;left:auto;transform:translateY(8px)}
   .tulia{grid-template-columns:1fr;gap:30px}
   .carousel-track{grid-template-columns:1fr}
   .section{padding:70px 0}
@@ -1597,12 +1603,11 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
       <button class="trust__nav-btn trust__nav-btn--next" id="trust-next" type="button" aria-label="Next logos">
         <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
       </button>
+      <button class="trust__pause-btn is-playing" id="trust-pause" type="button" aria-label="Pause carousel rotation" aria-pressed="false" title="Pause carousel rotation">
+        <svg class="trust__pause-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/></svg>
+        <svg class="trust__play-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" hidden><path d="M3 1.5l10 5.5-10 5.5V1.5z" fill="currentColor"/></svg>
+      </button>
     </div>
-    <button class="trust__pause-btn is-playing" id="trust-pause" type="button" aria-label="Pause carousel rotation" aria-pressed="false">
-      <svg class="trust__pause-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/></svg>
-      <svg class="trust__play-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" hidden><path d="M3 1.5l10 5.5-10 5.5V1.5z" fill="currentColor"/></svg>
-      <span class="trust__pause-label">Playing</span>
-    </button>
   </div>
   <div class="container">
     <div class="trust__heading">
@@ -2034,9 +2039,9 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
     pause.classList.toggle('is-paused',paused);
     pause.setAttribute('aria-pressed',paused?'true':'false');
     pause.setAttribute('aria-label',paused?'Resume carousel rotation':'Pause carousel rotation');
+    pause.title=paused?'Resume carousel rotation':'Pause carousel rotation';
     pause.querySelector('.trust__pause-icon').hidden=paused;
     pause.querySelector('.trust__play-icon').hidden=!paused;
-    pause.querySelector('.trust__pause-label').textContent=paused?'Paused':'Playing';
   }
   function removeClones(){track.querySelectorAll('.trust__logo-item--clone').forEach(el=>el.remove())}
   function apply(animate){
