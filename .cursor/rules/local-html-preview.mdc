@@ -21,20 +21,24 @@ Alex works on HubSpot/homepage HTML files in this repo (`OurERP_1.html`, `home6.
 
 ## How to start the server (Windows / this repo)
 
-From the repo root `C:\Users\amcintyre\Projects\FUNDVIEW_Home`. Prefer a tiny Node static server (Python Store stub is broken; `npx` needs `%APPDATA%\npm` to exist):
+From the repo root `C:\Users\amcintyre\Projects\FUNDVIEW_Home` (or the home clone path). Prefer the repo preview server — it disables caching and auto-reloads HTML after save:
 
 ```powershell
-New-Item -ItemType Directory -Force -Path "$env:APPDATA\npm" | Out-Null
-node -e "const http=require('http'),fs=require('fs'),path=require('path'),url=require('url');const root=process.cwd();const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.svg':'image/svg+xml','.webp':'image/webp','.gif':'image/gif','.json':'application/json','.ico':'image/x-icon'};http.createServer((req,res)=>{let p=decodeURIComponent(url.parse(req.url).pathname);if(p==='/')p='/index.html';const fp=path.join(root,path.normalize(p).replace(/^([\\\\/])+/,''));if(!fp.startsWith(root)){res.writeHead(403);return res.end('Forbidden')}fs.readFile(fp,(err,data)=>{if(err){res.writeHead(404);return res.end('Not found')}res.writeHead(200,{'Content-Type':mime[path.extname(fp)]||'application/octet-stream','Cache-Control':'no-store'});res.end(data)})}).listen(5500,'127.0.0.1',()=>console.log('Serving http://localhost:5500/'))"
+node _preview_server.js 5500
 ```
+
+One-click alternative: double-click `start-preview.cmd` in the repo root (opens `http://localhost:5500/OurERP_1.html`).
 
 Fallback once `%APPDATA%\npm` exists:
 
 ```powershell
+New-Item -ItemType Directory -Force -Path "$env:APPDATA\npm" | Out-Null
 npx --yes serve -l 5500 .
 ```
 
 Run it in the background. Confirm the port is listening before pasting the link.
+
+**Stale preview guard:** Always serve the dual-mode source file (e.g. `OurERP_1.html`), never the `.hubspot.html` export. Prefer `_preview_server.js` so Cache-Control is `no-store` and the page live-reloads on save.
 
 ## Notes
 
