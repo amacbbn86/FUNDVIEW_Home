@@ -224,22 +224,30 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   mask-image:linear-gradient(to bottom,transparent 0,#000 var(--edge-fade),#000 calc(100% - var(--edge-fade)),transparent 100%);
 }
 .FUNDVIEW_Text_Scroll__background{
-  position:absolute;z-index:0;inset:-16% 0;
+  position:absolute;z-index:0;inset:-30% 0;
   background-image:url('{{ get_asset_url("./assets/ourerp-winnsboro-sunset.jpg") }}');
   background-position:center 50%;background-size:cover;background-repeat:no-repeat;
   filter:saturate(1.1) contrast(1.06);
-  transform:translate3d(0,0,0) scale(1.09);transform-origin:center;
+  transform:translate3d(0,0,0) scale(1.12);transform-origin:center;
   will-change:transform;pointer-events:none;
 }
 .FUNDVIEW_Text_Scroll__visual::after{
   content:"";position:absolute;z-index:1;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 66% 78% at 40% 52%,rgba(250,248,236,.56) 0%,rgba(247,245,232,.32) 48%,rgba(242,242,228,.10) 68%,rgba(238,241,225,0) 82%),
-    linear-gradient(90deg,rgba(246,244,231,.18) 0%,rgba(246,244,231,.06) 62%,rgba(5,24,38,.14) 100%),
-    linear-gradient(180deg,rgba(24,44,53,.06) 0%,rgba(24,44,53,0) 26%,rgba(24,44,53,0) 74%,rgba(82,42,20,.10) 100%);
+    radial-gradient(ellipse 66% 78% at 40% 52%,rgba(250,248,236,.32) 0%,rgba(247,245,232,.18) 48%,rgba(242,242,228,.05) 68%,rgba(238,241,225,0) 82%),
+    linear-gradient(90deg,rgba(246,244,231,.08) 0%,rgba(246,244,231,.03) 62%,rgba(5,24,38,.10) 100%),
+    linear-gradient(180deg,rgba(24,44,53,.04) 0%,rgba(24,44,53,0) 26%,rgba(24,44,53,0) 74%,rgba(82,42,20,.08) 100%);
 }
 .FUNDVIEW_Text_Scroll .container{
   position:relative;z-index:2;
+}
+.FUNDVIEW_Text_Scroll__content{position:relative;isolation:isolate}
+.FUNDVIEW_Text_Scroll__content::before{
+  content:"";position:absolute;z-index:-1;inset:-18% -9%;pointer-events:none;
+  background:
+    radial-gradient(ellipse 78% 90% at 44% 50%,rgba(255,252,241,.84) 0%,rgba(253,250,238,.70) 42%,rgba(249,247,233,.38) 66%,rgba(244,244,229,.10) 82%,rgba(240,242,226,0) 100%),
+    linear-gradient(90deg,rgba(255,252,241,.22) 0%,rgba(255,252,241,.12) 72%,rgba(255,252,241,0) 96%);
+  filter:blur(4px);
 }
 .FUNDVIEW_Text_Scroll__copy{
   max-width:920px;margin:0 auto;text-align:left;
@@ -252,9 +260,11 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 .FUNDVIEW_Text_Scroll__copy--support{max-width:860px;margin-left:auto;margin-right:auto}
 .FUNDVIEW_Text_Scroll__copy--outcome{font-weight:800}
 .FUNDVIEW_Text_Scroll__copy + .FUNDVIEW_Text_Scroll__copy{margin-top:1.35em}
+.FUNDVIEW_Text_Scroll__line{display:block}
+.FUNDVIEW_Text_Scroll__line + .FUNDVIEW_Text_Scroll__line{margin-top:.16em}
 .FUNDVIEW_Text_Scroll .word{display:inline-block;white-space:nowrap}
 .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{
-  opacity:.12;filter:blur(8px);transform:translate3d(0,14px,0) scale(.972);
+  opacity:.08;filter:blur(10px);transform:translate3d(0,16px,0) scale(.968);
   transform-origin:center bottom;will-change:opacity,transform,filter;
 }
 
@@ -577,16 +587,21 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .trust__logo-item img{height:57px}
   .trust__viewport{min-height:110px}
   .FUNDVIEW_Text_Scroll{--edge-fade:clamp(42px,7vh,58px);min-height:clamp(680px,94vh,820px);padding:64px 0}
-  .FUNDVIEW_Text_Scroll__background{inset:-13% 0;background-position:51% 50%;transform:translate3d(0,0,0) scale(1.07)}
+  .FUNDVIEW_Text_Scroll__background{inset:-20% 0;background-position:51% 50%;transform:translate3d(0,0,0) scale(1.08)}
   .FUNDVIEW_Text_Scroll__visual::after{
     background:
-      radial-gradient(ellipse 104% 76% at 46% 52%,rgba(250,248,236,.62) 0%,rgba(247,245,232,.36) 52%,rgba(242,242,228,.10) 76%,rgba(238,241,225,0) 92%),
-      linear-gradient(90deg,rgba(246,244,231,.17) 0%,rgba(246,244,231,.06) 72%,rgba(5,24,38,.10) 100%),
-      linear-gradient(180deg,rgba(24,44,53,.05) 0%,rgba(24,44,53,0) 24%,rgba(24,44,53,0) 76%,rgba(82,42,20,.08) 100%);
+      radial-gradient(ellipse 104% 76% at 46% 52%,rgba(250,248,236,.34) 0%,rgba(247,245,232,.20) 52%,rgba(242,242,228,.05) 76%,rgba(238,241,225,0) 92%),
+      linear-gradient(90deg,rgba(246,244,231,.09) 0%,rgba(246,244,231,.03) 72%,rgba(5,24,38,.08) 100%),
+      linear-gradient(180deg,rgba(24,44,53,.03) 0%,rgba(24,44,53,0) 24%,rgba(24,44,53,0) 76%,rgba(82,42,20,.06) 100%);
+  }
+  .FUNDVIEW_Text_Scroll__content::before{
+    inset:-12% -6%;
+    background:radial-gradient(ellipse 108% 90% at 48% 50%,rgba(255,252,241,.86) 0%,rgba(253,250,238,.68) 48%,rgba(249,247,233,.32) 72%,rgba(244,244,229,.08) 88%,rgba(240,242,226,0) 100%);
+    filter:blur(3px);
   }
   .FUNDVIEW_Text_Scroll__copy{font-size:clamp(1rem,4.6vw,1.26rem);line-height:1.42}
   .FUNDVIEW_Text_Scroll__copy--lead{font-size:clamp(1.48rem,7.2vw,2rem);line-height:1.16}
-  .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{filter:blur(6px);transform:translate3d(0,11px,0) scale(.978)}
+  .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{filter:blur(7px);transform:translate3d(0,12px,0) scale(.976)}
 }
 @media (prefers-reduced-motion:reduce){
   .FUNDVIEW_Text_Scroll__background{transform:none!important;will-change:auto}
@@ -1685,9 +1700,17 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   </div>
   <div class="container">
     <div class="FUNDVIEW_Text_Scroll__content" data-highlight-text>
-      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--lead">FUNDVIEW is one connected ERP platform—built for local government.</p>
-      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--support">Every department works from the same real-time data. Financials update automatically. Workflows keep moving. Leadership sees what’s happening now.</p>
-      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--outcome">Fewer disconnected systems. Less duplicate entry. Stronger collaboration. More confident decisions.</p>
+      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--lead"><span class="FUNDVIEW_Text_Scroll__line">FUNDVIEW is one connected ERP platform—built for local government.</span></p>
+      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--support">
+        <span class="FUNDVIEW_Text_Scroll__line">Every department works from the same real-time data.</span>
+        <span class="FUNDVIEW_Text_Scroll__line">Financials update automatically.</span>
+        <span class="FUNDVIEW_Text_Scroll__line">Workflows keep moving.</span>
+        <span class="FUNDVIEW_Text_Scroll__line">Leadership sees what’s happening now.</span>
+      </p>
+      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--outcome">
+        <span class="FUNDVIEW_Text_Scroll__line">Fewer disconnected systems. Less duplicate entry.</span>
+        <span class="FUNDVIEW_Text_Scroll__line">Stronger collaboration. More confident decisions.</span>
+      </p>
     </div>
   </div>
 </section>
@@ -2309,46 +2332,64 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
   const background=section.querySelector('.FUNDVIEW_Text_Scroll__background');
   if(!content) return;
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const paragraphs=[...content.querySelectorAll('.FUNDVIEW_Text_Scroll__copy')];
+  const lineElements=[...content.querySelectorAll('.FUNDVIEW_Text_Scroll__line')];
+  const lineWords=[];
   const words=[];
 
-  function splitParagraph(p){
-    const text=p.textContent||'';
-    p.textContent='';
+  function splitLine(line){
+    const text=line.textContent||'';
+    const group=[];
+    line.textContent='';
     text.split(/(\s+)/).forEach(token=>{
       if(!token) return;
       if(/^\s+$/.test(token)){
-        p.appendChild(document.createTextNode(token));
+        line.appendChild(document.createTextNode(token));
         return;
       }
       const word=document.createElement('span');
       word.className='word';
       word.textContent=token;
-      p.appendChild(word);
+      line.appendChild(word);
+      group.push(word);
       words.push(word);
     });
+    if(group.length) lineWords.push(group);
   }
 
-  paragraphs.forEach(splitParagraph);
+  lineElements.forEach(splitLine);
   if(!words.length) return;
   section.classList.add('is-word-reveal-ready');
 
   function applyProgress(progress,mobile=window.matchMedia('(max-width: 600px)').matches){
-    const total=words.length;
-    const revealWindow=.11;
-    const restingOpacity=.12;
-    const blur=mobile?6:8;
-    const lift=mobile?11:14;
-    const baseScale=mobile?.978:.972;
-    words.forEach((word,index)=>{
-      const wordProgress=index/Math.max(total-1,1);
-      const start=wordProgress*(1-revealWindow);
-      const local=Math.max(0,Math.min(1,(progress-start)/revealWindow));
-      const eased=1-Math.pow(1-local,6);
-      const hidden=1-eased;
-      word.style.opacity=(restingOpacity+eased*(1-restingOpacity)).toFixed(3);
-      word.style.filter=`blur(${(hidden*blur).toFixed(2)}px)`;
-      word.style.transform=`translate3d(0,${(hidden*lift).toFixed(2)}px,0) scale(${(baseScale+eased*(1-baseScale)).toFixed(4)})`;
+    const revealStart=.02;
+    const revealComplete=.65;
+    const wordWindow=.045;
+    const lineWordStagger=.045;
+    const lineDuration=wordWindow+lineWordStagger;
+    const lineStaggerSpan=revealComplete-revealStart-lineDuration;
+    const restingOpacity=.08;
+    const blur=mobile?7:10;
+    const lift=mobile?12:16;
+    const baseScale=mobile?.976:.968;
+    lineWords.forEach((group,lineIndex)=>{
+      const lineProgress=lineIndex/Math.max(lineWords.length-1,1);
+      const lineStart=revealStart+lineProgress*lineStaggerSpan;
+      group.forEach((word,wordIndex)=>{
+        const wordProgress=wordIndex/Math.max(group.length-1,1);
+        const start=lineStart+wordProgress*lineWordStagger;
+        const local=Math.max(0,Math.min(1,(progress-start)/wordWindow));
+        if(progress>=start+wordWindow-1e-6){
+          word.style.opacity='1';
+          word.style.filter='none';
+          word.style.transform='none';
+          return;
+        }
+        const eased=1-Math.pow(1-local,7);
+        const hidden=1-eased;
+        word.style.opacity=(restingOpacity+eased*(1-restingOpacity)).toFixed(3);
+        word.style.filter=`blur(${(hidden*blur).toFixed(2)}px)`;
+        word.style.transform=`translate3d(0,${(hidden*lift).toFixed(2)}px,0) scale(${(baseScale+eased*(1-baseScale)).toFixed(4)})`;
+      });
     });
   }
 
@@ -2358,27 +2399,44 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
   }
 
   let ticking=false;
-  function update(){
+  let currentProgress=null;
+  let lastFrameTime=0;
+  let renderedWordProgress=-1;
+  function update(time){
     const viewH=window.innerHeight||1;
     const sectionRect=section.getBoundingClientRect();
     if(sectionRect.bottom < -viewH*.5 || sectionRect.top > viewH*1.5){
       ticking=false;
+      lastFrameTime=0;
       return;
     }
-    const sectionProgress=Math.max(0,Math.min(1,(viewH-sectionRect.top)/(viewH+sectionRect.height)));
-    const revealProgress=Math.max(0,Math.min(1,(sectionProgress-.1)/.8));
+    const targetProgress=Math.max(0,Math.min(1,(viewH-sectionRect.top)/(viewH+sectionRect.height)));
     const mobile=window.matchMedia('(max-width: 600px)').matches;
-    applyProgress(revealProgress,mobile);
+    if(Math.abs(targetProgress-renderedWordProgress)>.0001){
+      applyProgress(targetProgress,mobile);
+      renderedWordProgress=targetProgress;
+    }
 
     if(background){
-      const range=Math.min(mobile?84:150,viewH*(mobile?.1:.17));
-      const motionProgress=sectionProgress*sectionProgress*(3-2*sectionProgress);
+      if(currentProgress===null) currentProgress=targetProgress;
+      const elapsed=lastFrameTime?Math.min(64,time-lastFrameTime):16.67;
+      const smoothing=1-Math.exp(-elapsed/80);
+      currentProgress+=(targetProgress-currentProgress)*smoothing;
+      if(Math.abs(targetProgress-currentProgress)<.00035) currentProgress=targetProgress;
+      const range=Math.min(mobile?120:270,viewH*(mobile?.145:.3));
+      const motionProgress=currentProgress*currentProgress*currentProgress*(currentProgress*(currentProgress*6-15)+10);
       const offset=(motionProgress-.5)*range*2;
-      const startScale=mobile?1.07:1.09;
-      const scale=startScale+motionProgress*(mobile?.04:.06);
+      const startScale=mobile?1.08:1.12;
+      const scale=startScale+motionProgress*(mobile?.06:.1);
       background.style.transform=`translate3d(0,${offset.toFixed(2)}px,0) scale(${scale.toFixed(4)})`;
     }
-    ticking=false;
+    lastFrameTime=time;
+    if(background&&Math.abs(targetProgress-currentProgress)>=.00035){
+      requestAnimationFrame(update);
+    }else{
+      ticking=false;
+      lastFrameTime=0;
+    }
   }
   function onScroll(){
     if(ticking) return;
