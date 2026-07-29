@@ -218,6 +218,13 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   padding:clamp(88px,11vh,124px) 0;display:flex;align-items:center;
   overflow:hidden;overflow:clip;isolation:isolate;background:#fff;color:#0b2a4a;
 }
+.FUNDVIEW_Text_Scroll::before{
+  content:"";position:absolute;z-index:1;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 72% 88% at 42% 52%,rgba(255,246,220,.16) 0%,rgba(255,238,201,.09) 44%,rgba(252,224,181,.025) 68%,rgba(244,211,165,0) 86%),
+    linear-gradient(90deg,rgba(255,248,229,.24) 0%,rgba(255,244,218,.16) 38%,rgba(255,238,207,.07) 66%,rgba(13,31,45,.04) 84%,rgba(8,22,35,.10) 100%),
+    linear-gradient(180deg,rgba(9,25,39,.07) 0%,rgba(9,25,39,0) 24%,rgba(9,25,39,0) 70%,rgba(54,25,17,.10) 100%);
+}
 .FUNDVIEW_Text_Scroll__visual{
   position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none;
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--edge-fade),#000 calc(100% - var(--edge-fade)),transparent 100%);
@@ -231,24 +238,10 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   transform:translate3d(0,0,0) scale(1.12);transform-origin:center;
   will-change:transform;pointer-events:none;
 }
-.FUNDVIEW_Text_Scroll__visual::after{
-  content:"";position:absolute;z-index:1;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 66% 78% at 40% 52%,rgba(250,248,236,.32) 0%,rgba(247,245,232,.18) 48%,rgba(242,242,228,.05) 68%,rgba(238,241,225,0) 82%),
-    linear-gradient(90deg,rgba(246,244,231,.08) 0%,rgba(246,244,231,.03) 62%,rgba(5,24,38,.10) 100%),
-    linear-gradient(180deg,rgba(24,44,53,.04) 0%,rgba(24,44,53,0) 26%,rgba(24,44,53,0) 74%,rgba(82,42,20,.08) 100%);
-}
 .FUNDVIEW_Text_Scroll .container{
   position:relative;z-index:2;
 }
-.FUNDVIEW_Text_Scroll__content{position:relative;isolation:isolate}
-.FUNDVIEW_Text_Scroll__content::before{
-  content:"";position:absolute;z-index:-1;inset:-18% -9%;pointer-events:none;
-  background:
-    radial-gradient(ellipse 78% 90% at 44% 50%,rgba(255,252,241,.84) 0%,rgba(253,250,238,.70) 42%,rgba(249,247,233,.38) 66%,rgba(244,244,229,.10) 82%,rgba(240,242,226,0) 100%),
-    linear-gradient(90deg,rgba(255,252,241,.22) 0%,rgba(255,252,241,.12) 72%,rgba(255,252,241,0) 96%);
-  filter:blur(4px);
-}
+.FUNDVIEW_Text_Scroll__content{position:relative}
 .FUNDVIEW_Text_Scroll__copy{
   max-width:920px;margin:0 auto;text-align:left;
   font-size:clamp(1.08rem,1.7vw,1.5rem);font-weight:700;line-height:1.42;
@@ -587,18 +580,13 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .trust__logo-item img{height:57px}
   .trust__viewport{min-height:110px}
   .FUNDVIEW_Text_Scroll{--edge-fade:clamp(42px,7vh,58px);min-height:clamp(680px,94vh,820px);padding:64px 0}
-  .FUNDVIEW_Text_Scroll__background{inset:-20% 0;background-position:51% 50%;transform:translate3d(0,0,0) scale(1.08)}
-  .FUNDVIEW_Text_Scroll__visual::after{
+  .FUNDVIEW_Text_Scroll::before{
     background:
-      radial-gradient(ellipse 104% 76% at 46% 52%,rgba(250,248,236,.34) 0%,rgba(247,245,232,.20) 52%,rgba(242,242,228,.05) 76%,rgba(238,241,225,0) 92%),
-      linear-gradient(90deg,rgba(246,244,231,.09) 0%,rgba(246,244,231,.03) 72%,rgba(5,24,38,.08) 100%),
-      linear-gradient(180deg,rgba(24,44,53,.03) 0%,rgba(24,44,53,0) 24%,rgba(24,44,53,0) 76%,rgba(82,42,20,.06) 100%);
+      radial-gradient(ellipse 112% 82% at 48% 52%,rgba(255,246,220,.17) 0%,rgba(255,238,201,.09) 48%,rgba(252,224,181,.025) 74%,rgba(244,211,165,0) 92%),
+      linear-gradient(90deg,rgba(255,248,229,.22) 0%,rgba(255,244,218,.14) 44%,rgba(255,238,207,.06) 74%,rgba(8,22,35,.08) 100%),
+      linear-gradient(180deg,rgba(9,25,39,.055) 0%,rgba(9,25,39,0) 22%,rgba(9,25,39,0) 74%,rgba(54,25,17,.08) 100%);
   }
-  .FUNDVIEW_Text_Scroll__content::before{
-    inset:-12% -6%;
-    background:radial-gradient(ellipse 108% 90% at 48% 50%,rgba(255,252,241,.86) 0%,rgba(253,250,238,.68) 48%,rgba(249,247,233,.32) 72%,rgba(244,244,229,.08) 88%,rgba(240,242,226,0) 100%);
-    filter:blur(3px);
-  }
+  .FUNDVIEW_Text_Scroll__background{inset:-20% 0;background-position:51% 50%;transform:translate3d(0,0,0) scale(1.08)}
   .FUNDVIEW_Text_Scroll__copy{font-size:clamp(1rem,4.6vw,1.26rem);line-height:1.42}
   .FUNDVIEW_Text_Scroll__copy--lead{font-size:clamp(1.48rem,7.2vw,2rem);line-height:1.16}
   .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{filter:blur(7px);transform:translate3d(0,12px,0) scale(.976)}
