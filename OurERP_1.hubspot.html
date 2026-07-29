@@ -213,36 +213,48 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 
 /* ===================== FUNDVIEW TEXT SCROLL ===================== */
 .FUNDVIEW_Text_Scroll{
-  position:relative;min-height:clamp(680px,92vh,900px);
-  padding:clamp(72px,9vh,104px) 0;display:flex;align-items:center;
-  overflow:hidden;overflow:clip;isolation:isolate;background:#dce7e9;color:#0b2a4a;
+  --edge-fade:clamp(52px,8vh,76px);
+  position:relative;min-height:clamp(760px,104vh,980px);
+  padding:clamp(88px,11vh,124px) 0;display:flex;align-items:center;
+  overflow:hidden;overflow:clip;isolation:isolate;background:#fff;color:#0b2a4a;
+}
+.FUNDVIEW_Text_Scroll__visual{
+  position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--edge-fade),#000 calc(100% - var(--edge-fade)),transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 var(--edge-fade),#000 calc(100% - var(--edge-fade)),transparent 100%);
 }
 .FUNDVIEW_Text_Scroll__background{
-  position:absolute;z-index:0;inset:-10% 0;
+  position:absolute;z-index:0;inset:-16% 0;
   background-image:url('{{ get_asset_url("./assets/ourerp-winnsboro-sunset.jpg") }}');
   background-position:center 50%;background-size:cover;background-repeat:no-repeat;
-  transform:translate3d(0,0,0) scale(1.015);transform-origin:center;
+  filter:saturate(1.1) contrast(1.06);
+  transform:translate3d(0,0,0) scale(1.09);transform-origin:center;
   will-change:transform;pointer-events:none;
 }
-.FUNDVIEW_Text_Scroll::after{
+.FUNDVIEW_Text_Scroll__visual::after{
   content:"";position:absolute;z-index:1;inset:0;pointer-events:none;
   background:
-    linear-gradient(180deg,rgba(5,24,41,.18) 0%,rgba(5,24,41,0) 34%,rgba(5,24,41,0) 70%,rgba(5,24,41,.25) 100%),
-    radial-gradient(ellipse 68% 82% at 36% 52%,rgba(242,247,248,.78) 0%,rgba(238,245,247,.62) 42%,rgba(224,235,238,.24) 70%,rgba(12,38,55,0) 100%),
-    linear-gradient(90deg,rgba(229,238,241,.30) 0%,rgba(229,238,241,.06) 64%,rgba(5,27,43,.18) 100%);
+    radial-gradient(ellipse 66% 78% at 40% 52%,rgba(250,248,236,.56) 0%,rgba(247,245,232,.32) 48%,rgba(242,242,228,.10) 68%,rgba(238,241,225,0) 82%),
+    linear-gradient(90deg,rgba(246,244,231,.18) 0%,rgba(246,244,231,.06) 62%,rgba(5,24,38,.14) 100%),
+    linear-gradient(180deg,rgba(24,44,53,.06) 0%,rgba(24,44,53,0) 26%,rgba(24,44,53,0) 74%,rgba(82,42,20,.10) 100%);
 }
 .FUNDVIEW_Text_Scroll .container{
   position:relative;z-index:2;
 }
 .FUNDVIEW_Text_Scroll__copy{
   max-width:920px;margin:0 auto;text-align:left;
-  font-size:clamp(1.16rem,2.08vw,1.88rem);font-weight:700;line-height:1.35;
-  letter-spacing:-.02em;color:#0b2a4a;text-shadow:0 1px 12px rgba(244,249,250,.28);
+  font-size:clamp(1.08rem,1.7vw,1.5rem);font-weight:700;line-height:1.42;
+  letter-spacing:-.018em;color:#0b2a4a;text-shadow:0 1px 9px rgba(255,255,255,.32),0 1px 2px rgba(255,255,255,.54);
 }
-.FUNDVIEW_Text_Scroll__copy + .FUNDVIEW_Text_Scroll__copy{margin-top:1.15em}
+.FUNDVIEW_Text_Scroll__copy--lead{
+  font-size:clamp(1.72rem,3.2vw,2.8rem);font-weight:850;line-height:1.12;letter-spacing:-.035em;
+}
+.FUNDVIEW_Text_Scroll__copy--support{max-width:860px;margin-left:auto;margin-right:auto}
+.FUNDVIEW_Text_Scroll__copy--outcome{font-weight:800}
+.FUNDVIEW_Text_Scroll__copy + .FUNDVIEW_Text_Scroll__copy{margin-top:1.35em}
 .FUNDVIEW_Text_Scroll .word{display:inline-block;white-space:nowrap}
 .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{
-  opacity:.22;filter:blur(2.25px);transform:translate3d(0,12px,0) scale(.985);
+  opacity:.12;filter:blur(8px);transform:translate3d(0,14px,0) scale(.972);
   transform-origin:center bottom;will-change:opacity,transform,filter;
 }
 
@@ -564,15 +576,17 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .trust__heading{margin-top:8px}
   .trust__logo-item img{height:57px}
   .trust__viewport{min-height:110px}
-  .FUNDVIEW_Text_Scroll{min-height:clamp(640px,88vh,760px);padding:52px 0}
-  .FUNDVIEW_Text_Scroll__background{inset:-8% 0;background-position:51% 50%;transform:translate3d(0,0,0) scale(1.01)}
-  .FUNDVIEW_Text_Scroll::after{
+  .FUNDVIEW_Text_Scroll{--edge-fade:clamp(42px,7vh,58px);min-height:clamp(680px,94vh,820px);padding:64px 0}
+  .FUNDVIEW_Text_Scroll__background{inset:-13% 0;background-position:51% 50%;transform:translate3d(0,0,0) scale(1.07)}
+  .FUNDVIEW_Text_Scroll__visual::after{
     background:
-      linear-gradient(180deg,rgba(5,24,41,.18),rgba(5,24,41,0) 32%,rgba(5,24,41,0) 72%,rgba(5,24,41,.24)),
-      radial-gradient(ellipse 94% 76% at 42% 52%,rgba(242,247,248,.80),rgba(235,243,245,.60) 48%,rgba(216,230,234,.20) 78%,rgba(12,38,55,0)),
-      linear-gradient(90deg,rgba(229,238,241,.22),rgba(5,27,43,.13));
+      radial-gradient(ellipse 104% 76% at 46% 52%,rgba(250,248,236,.62) 0%,rgba(247,245,232,.36) 52%,rgba(242,242,228,.10) 76%,rgba(238,241,225,0) 92%),
+      linear-gradient(90deg,rgba(246,244,231,.17) 0%,rgba(246,244,231,.06) 72%,rgba(5,24,38,.10) 100%),
+      linear-gradient(180deg,rgba(24,44,53,.05) 0%,rgba(24,44,53,0) 24%,rgba(24,44,53,0) 76%,rgba(82,42,20,.08) 100%);
   }
-  .FUNDVIEW_Text_Scroll__copy{font-size:clamp(1rem,4.96vw,1.36rem);line-height:1.4}
+  .FUNDVIEW_Text_Scroll__copy{font-size:clamp(1rem,4.6vw,1.26rem);line-height:1.42}
+  .FUNDVIEW_Text_Scroll__copy--lead{font-size:clamp(1.48rem,7.2vw,2rem);line-height:1.16}
+  .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{filter:blur(6px);transform:translate3d(0,11px,0) scale(.978)}
 }
 @media (prefers-reduced-motion:reduce){
   .FUNDVIEW_Text_Scroll__background{transform:none!important;will-change:auto}
@@ -1666,11 +1680,14 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 
 
 <section class="FUNDVIEW_Text_Scroll" id="FUNDVIEW_Text_Scroll" data-div-reveal="true" aria-label="FUNDVIEW connected ERP platform">
-  <div class="FUNDVIEW_Text_Scroll__background" aria-hidden="true"></div>
+  <div class="FUNDVIEW_Text_Scroll__visual" aria-hidden="true">
+    <div class="FUNDVIEW_Text_Scroll__background"></div>
+  </div>
   <div class="container">
     <div class="FUNDVIEW_Text_Scroll__content" data-highlight-text>
-      <p class="FUNDVIEW_Text_Scroll__copy">FUNDVIEW is more than a collection of software modules—it's a connected ERP platform built specifically for local government. Every department shares the same data, works from the same real-time information, and operates within one secure cloud environment.</p>
-      <p class="FUNDVIEW_Text_Scroll__copy">As work is completed throughout the organization, financial information updates automatically, workflows continue without interruption, and leadership gains immediate visibility into operations. The result is fewer disconnected systems, less duplicate entry, stronger collaboration between departments, and more confident decision-making across the organization.</p>
+      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--lead">FUNDVIEW is one connected ERP platform—built for local government.</p>
+      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--support">Every department works from the same real-time data. Financials update automatically. Workflows keep moving. Leadership sees what’s happening now.</p>
+      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--outcome">Fewer disconnected systems. Less duplicate entry. Stronger collaboration. More confident decisions.</p>
     </div>
   </div>
 </section>
@@ -2316,19 +2333,22 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
   if(!words.length) return;
   section.classList.add('is-word-reveal-ready');
 
-  function applyProgress(progress){
+  function applyProgress(progress,mobile=window.matchMedia('(max-width: 600px)').matches){
     const total=words.length;
-    const revealWindow=.2;
-    const restingOpacity=.22;
+    const revealWindow=.11;
+    const restingOpacity=.12;
+    const blur=mobile?6:8;
+    const lift=mobile?11:14;
+    const baseScale=mobile?.978:.972;
     words.forEach((word,index)=>{
       const wordProgress=index/Math.max(total-1,1);
       const start=wordProgress*(1-revealWindow);
       const local=Math.max(0,Math.min(1,(progress-start)/revealWindow));
-      const eased=1-Math.pow(1-local,4);
+      const eased=1-Math.pow(1-local,6);
       const hidden=1-eased;
       word.style.opacity=(restingOpacity+eased*(1-restingOpacity)).toFixed(3);
-      word.style.filter=`blur(${(hidden*2.25).toFixed(2)}px)`;
-      word.style.transform=`translate3d(0,${(hidden*12).toFixed(2)}px,0) scale(${(.985+eased*.015).toFixed(4)})`;
+      word.style.filter=`blur(${(hidden*blur).toFixed(2)}px)`;
+      word.style.transform=`translate3d(0,${(hidden*lift).toFixed(2)}px,0) scale(${(baseScale+eased*(1-baseScale)).toFixed(4)})`;
     });
   }
 
@@ -2341,15 +2361,22 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
   function update(){
     const viewH=window.innerHeight||1;
     const sectionRect=section.getBoundingClientRect();
+    if(sectionRect.bottom < -viewH*.5 || sectionRect.top > viewH*1.5){
+      ticking=false;
+      return;
+    }
     const sectionProgress=Math.max(0,Math.min(1,(viewH-sectionRect.top)/(viewH+sectionRect.height)));
-    const revealProgress=Math.max(0,Math.min(1,(sectionProgress-.12)/.76));
-    applyProgress(revealProgress);
+    const revealProgress=Math.max(0,Math.min(1,(sectionProgress-.1)/.8));
+    const mobile=window.matchMedia('(max-width: 600px)').matches;
+    applyProgress(revealProgress,mobile);
 
     if(background){
-      const mobile=window.matchMedia('(max-width: 480px)').matches;
-      const range=Math.min(mobile?34:64,viewH*(mobile?.04:.065));
-      const offset=(sectionProgress-.5)*range*2;
-      background.style.transform=`translate3d(0,${offset.toFixed(2)}px,0) scale(${mobile?'1.01':'1.015'})`;
+      const range=Math.min(mobile?84:150,viewH*(mobile?.1:.17));
+      const motionProgress=sectionProgress*sectionProgress*(3-2*sectionProgress);
+      const offset=(motionProgress-.5)*range*2;
+      const startScale=mobile?1.07:1.09;
+      const scale=startScale+motionProgress*(mobile?.04:.06);
+      background.style.transform=`translate3d(0,${offset.toFixed(2)}px,0) scale(${scale.toFixed(4)})`;
     }
     ticking=false;
   }
