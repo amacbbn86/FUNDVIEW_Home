@@ -463,6 +463,57 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 .ocp-featured .ocp-copy h3{font-size:1.08rem}
 .ocp-featured .ocp-copy p{max-width:none}
 
+/* ===================== WHY ORGANIZATIONS CHOOSE FUNDVIEW ===================== */
+.SEC_why_organizations_choose_fundview{
+  position:relative;overflow:hidden;padding:clamp(72px,8vw,110px) 0;
+  background:
+    radial-gradient(circle at 12% 88%,rgba(23,166,188,.08),transparent 28%),
+    radial-gradient(circle at 92% 12%,rgba(23,166,188,.07),transparent 26%),
+    linear-gradient(180deg,#f4fafc 0%,#fff 48%,#f7fbfd 100%);
+}
+.SEC_why_organizations_choose_fundview::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:
+    radial-gradient(circle at 18% 78%,rgba(23,166,188,.22) 0 1.5px,transparent 2px),
+    radial-gradient(circle at 28% 88%,rgba(23,166,188,.18) 0 1.2px,transparent 2px),
+    radial-gradient(circle at 86% 18%,rgba(23,166,188,.2) 0 1.4px,transparent 2px),
+    radial-gradient(circle at 94% 28%,rgba(23,166,188,.16) 0 1.1px,transparent 2px);
+}
+.wocf-layout{
+  position:relative;z-index:1;display:grid;
+  grid-template-columns:minmax(240px,.78fr) minmax(0,1.45fr);
+  gap:clamp(36px,5vw,72px);align-items:center;
+}
+.wocf-intro{max-width:360px}
+.wocf-intro::before{
+  content:"";display:block;width:42px;height:3px;margin-bottom:22px;border-radius:3px;background:var(--teal);
+}
+.wocf-intro h2{
+  margin:0;color:var(--heading);font-size:clamp(1.85rem,3.2vw,2.6rem);
+  font-weight:900;letter-spacing:-.03em;line-height:1.15;
+}
+.wocf-grid{
+  --wocf-icon:52px;--wocf-gap:16px;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:clamp(24px,3.5vw,42px);
+  border-top:1px solid rgba(10,34,66,.1);
+}
+.wocf-item{
+  display:grid;grid-template-columns:var(--wocf-icon) minmax(0,1fr);align-items:center;gap:var(--wocf-gap);
+  min-height:86px;padding:22px 0;border-bottom:1px solid rgba(10,34,66,.1);
+}
+.wocf-icon{
+  width:var(--wocf-icon);height:var(--wocf-icon);border-radius:50%;
+  display:grid;place-items:center;border:1.5px solid rgba(23,166,188,.55);background:rgba(255,255,255,.55);
+}
+.wocf-icon img{width:28px;height:28px;object-fit:contain;display:block}
+.wocf-icon:not(:has(img))::after{
+  content:"";width:16px;height:16px;border-radius:4px;border:1.5px solid rgba(23,166,188,.5);
+}
+.wocf-item p{
+  margin:0;color:var(--heading);font-size:.98rem;font-weight:700;line-height:1.4;letter-spacing:-.01em;
+}
+
 /* ===================== CUSTOMER RESULTS (light carousel) ===================== */
 .results{background:var(--bg)}
 .carousel{position:relative;max-width:1040px;margin:0 auto}
@@ -660,6 +711,9 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .customer-outcomes__intro p{max-width:560px}
   .SEC_one_connected_platform{padding:0 0 70px}
   .ocp-hero__inner{align-items:flex-start}
+  .SEC_why_organizations_choose_fundview{padding:70px 0}
+  .wocf-layout{grid-template-columns:1fr;gap:34px;align-items:start}
+  .wocf-intro{max-width:560px}
   .stats{grid-template-columns:repeat(3,1fr);gap:30px 12px}
 }
 @media (min-width:601px) and (max-width:1023.98px){
@@ -682,6 +736,8 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   .ocp-item:first-child{border-top:1px solid rgba(10,34,66,.1)}
   .ocp-featured{--ocp-icon:72px;--ocp-gap:20px;padding-top:22px;align-items:flex-start}
   .ocp-featured .ocp-copy{max-width:none}
+  .wocf-grid{grid-template-columns:1fr;--wocf-icon:48px;--wocf-gap:14px}
+  .wocf-item{min-height:0;padding:18px 0}
   .platform-grid{grid-template-columns:1fr}
   .flip-card{height:220px}
   .flip-helper{top:22px;width:76px;height:76px}
@@ -1032,6 +1088,51 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
           <p>Protect sensitive information with role-based security, audit trails, and a platform built to support the compliance requirements of local government.</p>
         </div>
       </article>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= WHY ORGANIZATIONS CHOOSE FUNDVIEW ======================= -->
+<section class="SEC_why_organizations_choose_fundview" aria-labelledby="why-organizations-choose-title">
+  <div class="container">
+    <div class="wocf-layout">
+      <div class="wocf-intro reveal">
+        <h2 id="why-organizations-choose-title">Why Organizations Choose the FUNDVIEW Platform</h2>
+      </div>
+      <div class="wocf-grid">
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="one-connected-erp"><!-- PNG: assets/icons/SEC_why_organizations_choose_fundview/01-one-connected-erp.png --></div>
+          <p>One connected ERP platform</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="connected-financial-operational-data"><!-- PNG: assets/icons/SEC_why_organizations_choose_fundview/02-connected-financial-operational-data.png --></div>
+          <p>Connected financial and operational data</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="realtime-visibility"><!-- PNG: assets/icons/SEC_why_organizations_choose_fundview/03-realtime-visibility.png --></div>
+          <p>Real-time visibility across every department</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="scalable-community-grows"><!-- PNG: assets/icons/SEC_why_organizations_choose_fundview/04-scalable-community-grows.png --></div>
+          <p>Scalable as your community grows</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="built-for-local-government"><!-- PNG: assets/icons/SEC_why_organizations_choose_fundview/05-built-for-local-government.png --></div>
+          <p>Built specifically for local government</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="us-based-support"><!-- PNG: assets/icons/SEC_why_organizations_choose_fundview/06-us-based-support.png --></div>
+          <p>U.S.-based support from experts who understand local government</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="cloud-based-secure"><!-- PNG: assets/icons/SEC_why_organizations_choose_fundview/07-cloud-based-secure.png --></div>
+          <p>Cloud-based and secure</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="automated-workflows-notifications"><!-- PNG: assets/icons/SEC_why_organizations_choose_fundview/08-automated-workflows-notifications.png --></div>
+          <p>Automated workflows and notifications</p>
+        </article>
+      </div>
     </div>
   </div>
 </section>
