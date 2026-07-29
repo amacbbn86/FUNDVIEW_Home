@@ -1,5 +1,7 @@
 {
+  "approvalMode": "allowlist",
   "terminalAllowlist": [
+    "git",
     "git status",
     "git log",
     "git diff",
