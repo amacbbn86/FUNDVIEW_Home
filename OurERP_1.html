@@ -530,10 +530,19 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 /* ===================== CUSTOMER RESULTS (light carousel) ===================== */
 .results{background:var(--bg)}
 .carousel{position:relative;max-width:1040px;margin:0 auto}
-.carousel-track{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
-.qcard{background:#fff;border:1px solid var(--border);border-radius:18px;padding:34px 30px;box-shadow:var(--shadow-sm);
-  display:flex;flex-direction:column;transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s}
-.qcard:hover{transform:translateY(-7px);box-shadow:0 26px 50px -22px rgba(10,34,66,.26),0 0 0 1px rgba(23,166,188,.16);border-color:rgba(23,166,188,.4)}
+.carousel-viewport{
+  overflow:hidden;width:100%;cursor:grab;touch-action:pan-y;user-select:none;
+}
+.carousel-viewport.is-dragging{cursor:grabbing}
+.carousel-track{
+  display:flex;gap:26px;will-change:transform;align-items:stretch;
+}
+.qcard{
+  flex:0 0 calc((100% - 52px)/3);min-width:0;box-sizing:border-box;
+  background:#fff;border:1px solid var(--border);border-radius:18px;padding:34px 30px;box-shadow:var(--shadow-sm);
+  display:flex;flex-direction:column;transition:box-shadow .35s var(--ease),border-color .35s,transform .35s var(--ease);
+}
+.carousel-viewport:not(.is-dragging) .qcard:hover{transform:translateY(-7px);box-shadow:0 26px 50px -22px rgba(10,34,66,.26),0 0 0 1px rgba(23,166,188,.16);border-color:rgba(23,166,188,.4)}
 .qcard .qmark{font-size:3.4rem;line-height:.5;color:var(--teal-bright);font-family:Georgia,serif;font-weight:700;height:30px;display:block;opacity:.9}
 .qcard p{color:var(--body);font-size:1rem;line-height:1.62;margin:16px 0 22px;flex:1}
 .stars{color:var(--gold);font-size:1.02rem;letter-spacing:3px;margin-bottom:14px}
@@ -718,7 +727,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 @media (max-width:860px){
   .trust__carousel-wrap{grid-template-columns:38px 28px minmax(0,1fr) 28px 38px}
   .tulia{grid-template-columns:1fr;gap:30px}
-  .carousel-track{grid-template-columns:1fr}
+  .qcard{flex:0 0 100%}
   .section,.SEC_learn{padding:70px 0}
   .SEC_customer_outcomes{padding:0 0 70px}
   .customer-outcomes__panel{grid-template-columns:1fr;gap:28px}
@@ -1169,30 +1178,44 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
       <p>Helping local governments work better together.</p>
     </div>
     <div class="carousel reveal">
-      <button class="c-arrow left" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <div class="carousel-track" id="qTrack">
-        <div class="qcard">
-          <span class="qmark">&ldquo;</span>
-          <p>FUNDVIEW has simplified our workflow to the point where we can dedicate more time to the customer. It has truly cut down our workload.</p>
-          <div class="stars">★★★★★</div>
-          <div class="who"><strong>Christian</strong><span>City of Sweetwater, TX</span></div>
-        </div>
-        <div class="qcard">
-          <span class="qmark">&ldquo;</span>
-          <p>We highly recommend FUNDVIEW to other cities and have even hosted other city secretaries and court clerks to come and view our system.</p>
-          <div class="stars">★★★★★</div>
-          <div class="who"><strong>Annie</strong><span>Nazarene, TX</span></div>
-        </div>
-        <div class="qcard">
-          <span class="qmark">&ldquo;</span>
-          <p>I would definitely recommend the Accounts Payable, Payroll &amp; General Ledger — they work wonderful and I would rate those a definite 10.</p>
-          <div class="stars">★★★★★</div>
-          <div class="who"><strong>Karen</strong><span>Big Lake, TX</span></div>
+      <button class="c-arrow left" type="button" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="carousel-viewport" id="qViewport">
+        <div class="carousel-track" id="qTrack">
+          <div class="qcard">
+            <span class="qmark">&ldquo;</span>
+            <p>FUNDVIEW has simplified our workflow to the point where we can dedicate more time to the customer. It has truly cut down our workload.</p>
+            <div class="stars">★★★★★</div>
+            <div class="who"><strong>Christian</strong><span>City of Sweetwater, TX</span></div>
+          </div>
+          <div class="qcard">
+            <span class="qmark">&ldquo;</span>
+            <p>We highly recommend FUNDVIEW to other cities and have even hosted other city secretaries and court clerks to come and view our system.</p>
+            <div class="stars">★★★★★</div>
+            <div class="who"><strong>Ammie</strong><span>Muenster, TX</span></div>
+          </div>
+          <div class="qcard">
+            <span class="qmark">&ldquo;</span>
+            <p>I would definitely recommend the Accounts Payable, Payroll &amp; General Ledger — they work wonderful and I would rate those a definite 10.</p>
+            <div class="stars">★★★★★</div>
+            <div class="who"><strong>Karen</strong><span>Big Lake, TX</span></div>
+          </div>
+          <div class="qcard">
+            <span class="qmark">&ldquo;</span>
+            <p>FUNDVIEW has been a great asset in many ways to the City of Mason. FUNDVIEW has made preparing for the annual audit so much easier by allowing the auditors direct access to the information needed. This saves time and paper as well as the time the auditors have to spend in our office since most of the work is done in advance. Most of all, Customer Support is amazing. I have always had prompt and helpful response, which is very appreciated.</p>
+            <div class="stars">★★★★★</div>
+            <div class="who"><strong>Donna</strong><span>City of Mason, TX</span></div>
+          </div>
+          <div class="qcard">
+            <span class="qmark">&ldquo;</span>
+            <p>Love it and so handy and easy!</p>
+            <div class="stars">★★★★★</div>
+            <div class="who"><strong>Lisa</strong><span>City of Winnsboro, TX</span></div>
+          </div>
         </div>
       </div>
-      <button class="c-arrow right" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      <button class="c-arrow right" type="button" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
-    <div class="c-dots"><i class="active"></i><i></i><i></i></div>
+    <div class="c-dots" id="qDots" aria-label="Testimonial slides"><i class="active"></i><i></i><i></i><i></i><i></i></div>
   </div>
 </section>
 
@@ -1809,19 +1832,214 @@ document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDela
   });
 })();
 
-/* ===== 5. Testimonial carousel dots (highlights on hover of arrows / mobile scroll) ===== */
-(function(){
-  const track = document.getElementById('qTrack');
-  const dots = document.querySelectorAll('.c-dots i');
-  const cards = track.children;
-  function setDot(i){ dots.forEach((d,x)=>d.classList.toggle('active', x===i)); }
-  document.querySelector('.c-arrow.left').addEventListener('click', ()=>{
-    track.scrollBy({left:-track.clientWidth/3-24, behavior:'smooth'});
+/* ===== 5. Customer Results carousel — infinite loop + drag + snap ===== */
+(function initResultsCarousel(){
+  const viewport=document.getElementById('qViewport');
+  const track=document.getElementById('qTrack');
+  const prev=document.querySelector('.section.results .c-arrow.left');
+  const next=document.querySelector('.section.results .c-arrow.right');
+  const dots=[...document.querySelectorAll('#qDots i')];
+  if(!viewport||!track||!prev||!next) return;
+
+  const GAP=26;
+  const STEP_MS=420;
+  const originals=[...track.querySelectorAll('.qcard')];
+  const total=originals.length;
+  if(!total) return;
+
+  let visible=1,cardWidth=0,step=0,setWidth=0,offset=0,index=0;
+  let dragging=false,pointerId=null,startX=0,startOffset=0,moved=false;
+  let stepping=false,stepEndHandler=null,stepFallbackTimer=null;
+
+  function removeClones(){
+    track.querySelectorAll('.qcard--clone').forEach(el=>el.remove());
+  }
+  function apply(animate){
+    track.style.transition=animate?`transform ${STEP_MS/1000}s cubic-bezier(.4,0,.2,1)`:'none';
+    track.style.transform=`translate3d(${-offset}px,0,0)`;
+  }
+  function wrap(){
+    if(!setWidth) return;
+    while(offset>=setWidth*2) offset-=setWidth;
+    while(offset<setWidth) offset+=setWidth;
+  }
+  function setDot(i){
+    dots.forEach((d,x)=>d.classList.toggle('active',x===i));
+  }
+  function syncIndexFromOffset(){
+    if(!step) return;
+    wrap();
+    const raw=Math.round((offset-setWidth)/step);
+    index=((raw%total)+total)%total;
+    setDot(index);
+  }
+  function clearStepTimers(){
+    if(stepEndHandler){
+      track.removeEventListener('transitionend',stepEndHandler);
+      stepEndHandler=null;
+    }
+    if(stepFallbackTimer){
+      clearTimeout(stepFallbackTimer);
+      stepFallbackTimer=null;
+    }
+  }
+  function completeStep(){
+    if(!stepping) return;
+    clearStepTimers();
+    wrap();
+    syncIndexFromOffset();
+    apply(false);
+    stepping=false;
+  }
+  function snapToNearest(animate){
+    if(!step||!setWidth) return;
+    if(stepping) completeStep();
+    wrap();
+    const relative=offset-setWidth;
+    const nearest=Math.round(relative/step);
+    let target=setWidth+nearest*step;
+    while(target<offset-setWidth/2) target+=setWidth;
+    while(target>offset+setWidth/2) target-=setWidth;
+    const distance=Math.abs(target-offset);
+    if(!animate||distance<.5){
+      offset=target;
+      wrap();
+      syncIndexFromOffset();
+      apply(false);
+      return;
+    }
+    stepping=true;
+    stepEndHandler=function onSnapEnd(e){
+      if(e.target!==track) return;
+      if(e.propertyName!=='transform'&&e.propertyName!=='-webkit-transform') return;
+      completeStep();
+    };
+    track.addEventListener('transitionend',stepEndHandler);
+    stepFallbackTimer=setTimeout(completeStep,STEP_MS+120);
+    apply(false);
+    void track.offsetWidth;
+    offset=target;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>apply(true)));
+  }
+  function stepBy(direction){
+    if(!step||!setWidth||dragging) return;
+    if(stepping) completeStep();
+    wrap();
+    syncIndexFromOffset();
+    const prevIndex=index;
+    index=(index+direction+total)%total;
+    if(direction<0&&offset-step<setWidth){
+      offset+=setWidth;apply(false);void track.offsetWidth;
+    }
+    if(direction>0&&prevIndex===total-1){
+      offset-=setWidth;apply(false);void track.offsetWidth;
+    }
+    stepping=true;
+    stepEndHandler=function onStepEnd(e){
+      if(e.target!==track) return;
+      if(e.propertyName!=='transform'&&e.propertyName!=='-webkit-transform') return;
+      completeStep();
+    };
+    track.addEventListener('transitionend',stepEndHandler);
+    stepFallbackTimer=setTimeout(completeStep,STEP_MS+120);
+    offset+=direction*step;
+    setDot(index);
+    requestAnimationFrame(()=>apply(true));
+  }
+  function goToIndex(targetIndex,animate){
+    if(!step||!setWidth) return;
+    if(stepping) completeStep();
+    wrap();
+    index=((targetIndex%total)+total)%total;
+    let target=setWidth+index*step;
+    while(target<offset-setWidth/2) target+=setWidth;
+    while(target>offset+setWidth/2) target-=setWidth;
+    if(!animate){
+      offset=target;wrap();setDot(index);apply(false);return;
+    }
+    stepping=true;
+    stepEndHandler=function onGoEnd(e){
+      if(e.target!==track) return;
+      if(e.propertyName!=='transform'&&e.propertyName!=='-webkit-transform') return;
+      completeStep();
+    };
+    track.addEventListener('transitionend',stepEndHandler);
+    stepFallbackTimer=setTimeout(completeStep,STEP_MS+120);
+    apply(false);
+    void track.offsetWidth;
+    offset=target;
+    setDot(index);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>apply(true)));
+  }
+  function rebuild(){
+    removeClones();
+    const before=document.createDocumentFragment(),after=document.createDocumentFragment();
+    originals.forEach(card=>{
+      const a=card.cloneNode(true),b=card.cloneNode(true);
+      a.classList.add('qcard--clone');b.classList.add('qcard--clone');
+      a.setAttribute('aria-hidden','true');b.setAttribute('aria-hidden','true');
+      a.setAttribute('inert','');b.setAttribute('inert','');
+      before.appendChild(a);after.appendChild(b);
+    });
+    track.insertBefore(before,track.firstChild);
+    track.appendChild(after);
+
+    visible=window.innerWidth<=860?1:3;
+    const viewportW=viewport.clientWidth;
+    cardWidth=(viewportW-(visible-1)*GAP)/visible;
+    step=cardWidth+GAP;
+    [...track.children].forEach(card=>{
+      card.style.flex=`0 0 ${cardWidth}px`;
+      card.style.width=`${cardWidth}px`;
+    });
+    setWidth=step*total;
+    offset=setWidth+index*step;
+    wrap();
+    apply(false);
+    setDot(index);
+  }
+  function onPointerDown(e){
+    if(e.button!=null&&e.button!==0) return;
+    if(e.target.closest('a,button')) return;
+    if(stepping) completeStep();
+    dragging=true;moved=false;pointerId=e.pointerId;
+    startX=e.clientX;startOffset=offset;
+    viewport.classList.add('is-dragging');
+    track.style.transition='none';
+    try{viewport.setPointerCapture(e.pointerId)}catch(err){}
+  }
+  function onPointerMove(e){
+    if(!dragging||e.pointerId!==pointerId) return;
+    const dx=e.clientX-startX;
+    if(Math.abs(dx)>3) moved=true;
+    offset=startOffset-dx;
+    wrap();
+    apply(false);
+  }
+  function endDrag(e){
+    if(!dragging) return;
+    if(e&&pointerId!=null&&e.pointerId!==pointerId) return;
+    dragging=false;pointerId=null;
+    viewport.classList.remove('is-dragging');
+    snapToNearest(true);
+  }
+
+  prev.addEventListener('click',e=>{e.preventDefault();stepBy(-1)});
+  next.addEventListener('click',e=>{e.preventDefault();stepBy(1)});
+  dots.forEach((dot,i)=>dot.addEventListener('click',()=>goToIndex(i,true)));
+  viewport.addEventListener('pointerdown',onPointerDown);
+  viewport.addEventListener('pointermove',onPointerMove);
+  viewport.addEventListener('pointerup',endDrag);
+  viewport.addEventListener('pointercancel',endDrag);
+  viewport.addEventListener('lostpointercapture',endDrag);
+  viewport.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation()}},true);
+
+  let resizeTimer;
+  window.addEventListener('resize',()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(rebuild,150);
   });
-  document.querySelector('.c-arrow.right').addEventListener('click', ()=>{
-    track.scrollBy({left:track.clientWidth/3+24, behavior:'smooth'});
-  });
-  dots.forEach((d,i)=>d.addEventListener('click', ()=>{ setDot(i); cards[i].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }));
+  rebuild();
 })();
 
 /* ===== 6. Decorative play interaction ===== */
