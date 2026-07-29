@@ -94,10 +94,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 /* ===================== HERO ===================== */
 .hero{
   position:relative;padding:56px 0 80px;overflow:hidden;
-  background:
-    radial-gradient(circle at 12% 6%,rgba(35,195,216,.10),transparent 42%),
-    radial-gradient(circle at 88% 2%,rgba(23,166,188,.09),transparent 40%),
-    linear-gradient(180deg,#F5FAFD 0%,#E9F1F8 100%);
+  background:#FFF;
 }
 .hero::before{content:"";position:absolute;inset:0;
   background-image:radial-gradient(rgba(10,34,66,.045) 1px,transparent 1px);background-size:26px 26px;
@@ -106,11 +103,12 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 .hero .container{position:relative;text-align:center}
 .hero .eyebrow{display:block;margin-bottom:.9rem;color:var(--teal-dark)}
 .hero h1{
-  margin:0 auto;max-width:14ch;text-align:center;
+  margin:0 auto;max-width:940px;text-align:center;
   font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   font-size:clamp(3rem,3.2vw,3.5rem);font-weight:800;line-height:1.12;
   color:#0a2e57;letter-spacing:-.02em;
 }
+.hero h1 .text-accent{color:#00b7b3}
 .hero .sub{
   max-width:780px;margin:1rem auto 0;color:var(--body);
   font-size:clamp(.98rem,1.35vw,1.12rem);line-height:1.7;
@@ -130,6 +128,62 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
   margin-top:1.1rem;color:var(--heading);font-size:.9rem;font-weight:700;
 }
 .video-meta__play{color:var(--teal)}
+
+/* ===================== CLIENT TICKER ===================== */
+.trust.client_ticker{
+  position:relative;z-index:1;padding:72px 0 48px;text-align:center;
+  background:#FFF;
+}
+.trust__heading{
+  display:grid;gap:.35rem;justify-items:center;margin:0 0 28px;text-align:center;
+}
+.trust__heading-primary{
+  margin:0;color:var(--heading);font-size:clamp(1.15rem,2vw,1.45rem);
+  font-weight:800;line-height:1.2;letter-spacing:-.01em;
+}
+.trust__heading-secondary{
+  margin:0;color:var(--muted);font-size:clamp(.82rem,1.2vw,.95rem);
+  font-weight:700;line-height:1.35;letter-spacing:.04em;
+}
+.trust__carousel{width:100%;max-width:100vw;margin:0 auto 16px;padding:0 16px;box-sizing:border-box}
+.trust__carousel-wrap{display:flex;align-items:center;gap:8px}
+.trust__viewport{position:relative;overflow:hidden;width:100%;min-height:160px;flex:1}
+.trust__viewport::before,.trust__viewport::after{
+  content:"";position:absolute;top:0;bottom:0;z-index:2;width:7%;
+  pointer-events:none;
+}
+.trust__viewport::before{left:0;background:linear-gradient(90deg,#FFF 0%,rgba(255,255,255,0) 100%)}
+.trust__viewport::after{right:0;background:linear-gradient(270deg,#FFF 0%,rgba(255,255,255,0) 100%)}
+.trust__track{display:flex;align-items:center;will-change:transform}
+.trust__logo-item{
+  flex:0 0 auto;display:flex;justify-content:center;align-items:center;
+  margin:0;padding:0;box-sizing:border-box;
+}
+.trust__logo-card{display:flex;flex-direction:column;align-items:center;width:100%}
+.trust__logo-item img{
+  width:auto;height:91px;max-width:100%;object-fit:contain;filter:grayscale(100%);
+  opacity:.85;transition:opacity .3s ease,filter .3s ease;
+}
+.trust__logo-item img:hover{filter:grayscale(0);opacity:1}
+.trust__nav-btn{
+  position:relative;z-index:2;display:flex;align-items:center;justify-content:center;
+  width:28px;height:28px;flex-shrink:0;padding:0;border:1px solid var(--border);
+  border-radius:50%;color:var(--muted);background:var(--white);cursor:pointer;
+  transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
+}
+.trust__nav-btn:hover,.trust__nav-btn:focus-visible{
+  color:var(--white);background:var(--teal);border-color:var(--teal);
+}
+.trust__pause-btn{
+  position:relative;z-index:2;display:flex;align-items:center;justify-content:center;
+  gap:6px;margin:12px auto 0;padding:6px 14px;border:1px solid var(--border);
+  border-radius:999px;color:var(--muted);background:var(--white);font:600 .75rem/1 Inter,sans-serif;
+  cursor:pointer;transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
+}
+.trust__pause-btn:hover{color:var(--body);background:var(--bg);border-color:#c9d7e2}
+.trust__pause-btn.is-playing{color:var(--teal-dark);background:var(--teal-soft);border-color:var(--teal)}
+.trust__pause-btn.is-paused{color:var(--body);background:var(--bg);border-color:#c9d7e2}
+
 .dash{position:absolute;inset:0;display:flex;background:linear-gradient(160deg,#0C2A52 0%,#071B34 100%);font-size:10px}
 .dash-side{width:19%;min-width:118px;background:rgba(255,255,255,.03);border-right:1px solid var(--navy-line);
   padding:12px 9px;display:flex;flex-direction:column;gap:5px;overflow:hidden}
@@ -404,6 +458,10 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 @media (min-width:1024px) and (max-width:1350px){
   .hero h1{font-size:2rem}
 }
+@media (max-width:1200px){
+  .trust__logo-item img{height:77px}
+  .trust__viewport{min-height:130px}
+}
 @media (max-width:860px){
   .tulia{grid-template-columns:1fr;gap:30px}
   .carousel-track{grid-template-columns:1fr}
@@ -434,6 +492,11 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 }
 @media (max-width:600px){
   .hero h1{font-size:clamp(1.85rem,6.5vw,2.45rem);max-width:18ch}
+}
+@media (max-width:480px){
+  .trust.client_ticker{padding:56px 0 40px}
+  .trust__logo-item img{height:63px}
+  .trust__viewport{min-height:110px}
 }
 @media (max-width:420px){.foot-cols{grid-template-columns:1fr}}
 </style>
@@ -1395,7 +1458,7 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
 <section class="hero">
   <div class="container">
     <span class="eyebrow reveal">The Platform That Powers Local Government</span>
-    <h1 class="reveal">FUNDVIEW Exists To Make Finance &amp; Operations Easier</h1>
+    <h1 class="reveal">FUNDVIEW Exists To <span class="text-accent">Make Finance &amp; Operations Easier</span></h1>
     <p class="sub reveal">In less than 15 minutes, you'll discover how local governments are simplifying operations, gaining real-time visibility, and eliminating manual work with one connected platform.</p>
 
 
@@ -1477,6 +1540,47 @@ h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spac
       </div>
     </div>
     <p class="video-meta reveal"><span class="video-meta__play" aria-hidden="true">▶</span> Approximately 15-Minute Overview</p>
+  </div>
+</section>
+
+
+<section class="trust client_ticker" id="client_ticker" aria-label="Cities that trust FUNDVIEW">
+  <div class="container">
+    <div class="trust__heading">
+      <p class="trust__heading-primary">Built for Local Government</p>
+      <p class="trust__heading-secondary">Trusted by 180+ cities</p>
+    </div>
+  </div>
+  <div class="trust__carousel" id="trust-carousel" aria-live="polite">
+    <div class="trust__carousel-wrap">
+      <button class="trust__nav-btn trust__nav-btn--prev" id="trust-prev" type="button" aria-label="Previous logos">
+        <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </button>
+      <div class="trust__viewport">
+        <div class="trust__track" id="trust-track">
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Reno.png" alt="Reno, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Anthony.png" alt="Anthony, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_City_of_Iowa_Colony.png" alt="City of Iowa Colony, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Hickory%20Creek.png" alt="Hickory Creek, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Jacksboro.png" alt="Jacksboro, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Keene.png" alt="Keene, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Quinlan.png" alt="Quinlan, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Mason%20(1).png" alt="Mason, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Winnsboro%20(1).png" alt="Winnsboro, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Big%20Lake%20(1).png" alt="Big Lake, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Sweetwater%20(1).png" alt="Sweetwater, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Muenster%20(1).png" alt="Muenster, TX" loading="lazy"></div></div>
+        </div>
+      </div>
+      <button class="trust__nav-btn trust__nav-btn--next" id="trust-next" type="button" aria-label="Next logos">
+        <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </button>
+    </div>
+    <button class="trust__pause-btn is-playing" id="trust-pause" type="button" aria-label="Pause carousel rotation" aria-pressed="false">
+      <svg class="trust__pause-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="2" y="1" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="8.5" y="1" width="3.5" height="12" rx="1" fill="currentColor"/></svg>
+      <svg class="trust__play-icon" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" hidden><path d="M3 1.5l10 5.5-10 5.5V1.5z" fill="currentColor"/></svg>
+      <span class="trust__pause-label">Playing</span>
+    </button>
   </div>
 </section>
 
@@ -1869,6 +1973,88 @@ const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
 }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDelay = ((i%6)*0.06)+'s'; io.observe(el); });
+
+/* ===== Client logo ticker ===== */
+(function initTrustTicker(){
+  const track=document.getElementById('trust-track');
+  if(!track) return;
+  const viewport=track.parentElement;
+  const prev=document.getElementById('trust-prev');
+  const next=document.getElementById('trust-next');
+  const pause=document.getElementById('trust-pause');
+  const originals=[...track.children];
+  const total=originals.length;
+  let visible=window.innerWidth>1024?5:3;
+  let slideWidth=0,setWidth=0,offset=0,lastTime=0,paused=false,stepping=false;
+
+  function setPauseUI(){
+    pause.classList.toggle('is-playing',!paused);
+    pause.classList.toggle('is-paused',paused);
+    pause.setAttribute('aria-pressed',paused?'true':'false');
+    pause.setAttribute('aria-label',paused?'Resume carousel rotation':'Pause carousel rotation');
+    pause.querySelector('.trust__pause-icon').hidden=paused;
+    pause.querySelector('.trust__play-icon').hidden=!paused;
+    pause.querySelector('.trust__pause-label').textContent=paused?'Paused':'Playing';
+  }
+  function removeClones(){track.querySelectorAll('.trust__logo-item--clone').forEach(el=>el.remove())}
+  function apply(animate){
+    track.style.transition=animate?'transform .5s cubic-bezier(.4,0,.2,1)':'none';
+    track.style.transform=`translate3d(-${offset}px,0,0)`;
+  }
+  function wrap(){
+    if(offset>=setWidth*2) offset-=setWidth;
+    if(offset<setWidth) offset+=setWidth;
+  }
+  function rebuild(){
+    removeClones();
+    const before=document.createDocumentFragment(),after=document.createDocumentFragment();
+    originals.forEach(item=>{
+      const first=item.cloneNode(true),last=item.cloneNode(true);
+      first.classList.add('trust__logo-item--clone');last.classList.add('trust__logo-item--clone');
+      first.setAttribute('aria-hidden','true');last.setAttribute('aria-hidden','true');
+      before.appendChild(first);after.appendChild(last);
+    });
+    track.insertBefore(before,track.firstChild);track.appendChild(after);
+    visible=window.innerWidth>1024?5:3;
+    slideWidth=(viewport.offsetWidth/visible)*.85;
+    [...track.children].forEach(item=>{
+      item.style.flex=`0 0 ${slideWidth}px`;
+      item.style.width=`${slideWidth}px`;
+    });
+    setWidth=slideWidth*total;
+    offset=setWidth;
+    apply(false);
+  }
+  function tick(time){
+    if(!lastTime) lastTime=time;
+    const elapsed=Math.min(time-lastTime,100);
+    lastTime=time;
+    if(!paused&&!stepping&&setWidth){
+      offset+=(slideWidth*5/28)*(elapsed/1000);
+      wrap();apply(false);
+    }
+    requestAnimationFrame(tick);
+  }
+  function step(direction){
+    if(stepping||!slideWidth) return;
+    paused=true;setPauseUI();stepping=true;
+    offset+=direction*slideWidth;
+    apply(true);
+    window.setTimeout(()=>{wrap();apply(false);stepping=false;lastTime=0},520);
+  }
+
+  prev.addEventListener('click',()=>step(-1));
+  next.addEventListener('click',()=>step(1));
+  pause.addEventListener('click',()=>{paused=!paused;lastTime=0;setPauseUI()});
+  let resizeTimer;
+  window.addEventListener('resize',()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(rebuild,150);
+  });
+  rebuild();setPauseUI();
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){paused=true;setPauseUI()}
+  requestAnimationFrame(tick);
+})();
 
 /* ===== Platform flip cards ===== */
 (function(){
