@@ -1,0 +1,3145 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: FUNDVIEW Our ERP Platform (Guided Demo)
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+  {% if content.html_title %}<title>{{ content.html_title }}</title>{% endif %}
+  <meta name="description" content="{{ content.meta_description }}">
+  {% if brand_settings.primaryFavicon.src %}
+  <link rel="shortcut icon" href="{{ brand_settings.primaryFavicon.src }}" />
+  {% endif %}
+  {{ standard_header_includes }}
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+<style>
+/* =========================================================
+   FUNDVIEW BRAND TOKENS  (sampled from homepage + mockup)
+   ========================================================= */
+:root{
+  /* Teal */
+  --teal:        #17A6BC;
+  --teal-bright: #23C3D8;
+  --teal-dark:   #0C7C8D;
+  --teal-soft:   #E6F6F9;
+
+  /* Navy */
+  --navy:        #0A2447;
+  --navy-deep:   #061a35;
+  --navy-mid:    #123058;
+  --navy-panel:  #0F2C51;
+  --navy-line:   rgba(255,255,255,.10);
+
+  /* Gold accent (primary CTA + stars) */
+  --gold:        #F5B301;
+  --gold-hover:  #E0A200;
+
+  /* Neutrals */
+  --heading:     #0B2A4A;
+  --body:        #4A5C6E;
+  --muted:       #8A9AAA;
+  --bg:          #F1F6FA;
+  --bg-alt:      #E9F1F7;
+  --white:       #FFFFFF;
+  --border:      #E1EAF1;
+
+  --radius-sm: 8px;
+  --radius:    14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --shadow-sm: 0 4px 14px rgba(10,34,66,.06);
+  --shadow:    0 12px 34px rgba(10,34,66,.10);
+  --shadow-lg: 0 34px 80px rgba(6,23,49,.34);
+  --maxw: 1180px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color:var(--body);background:var(--white);line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+h1,h2,h3,h4,h5{color:var(--heading);line-height:1.15;font-weight:800;letter-spacing:-.02em}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--teal)}
+
+/* ===================== BUTTONS ===================== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+  font-family:inherit;font-weight:700;font-size:1rem;padding:.95rem 1.9rem;
+  border-radius:var(--radius-sm);cursor:pointer;border:2px solid transparent;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease),color .25s var(--ease);
+  white-space:nowrap;
+}
+.btn-lg{font-size:1.06rem;padding:1.1rem 2.5rem}
+.btn-sm{font-size:.8rem;letter-spacing:.06em;padding:.7rem 1.3rem;text-transform:uppercase}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 10px 24px rgba(245,179,1,.32)}
+.btn-gold:hover{background:var(--gold-hover);transform:translateY(-3px);box-shadow:0 16px 34px rgba(245,179,1,.42)}
+.btn-teal{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-bright) 100%);color:#fff;box-shadow:0 12px 26px rgba(23,166,188,.34)}
+.btn-teal:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(23,166,188,.46)}
+.btn-outline{background:transparent;color:var(--teal);border-color:var(--teal)}
+.btn-outline:hover{background:var(--teal);color:#fff;transform:translateY(-2px)}
+
+/* ===================== HERO ===================== */
+.hero{
+  position:relative;padding:56px 0 18px;overflow:hidden;
+  background:#FFF;
+}
+.hero::before{content:"";position:absolute;inset:0;
+  background-image:radial-gradient(rgba(10,34,66,.045) 1px,transparent 1px);background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(circle at 50% 26%,#000 0%,transparent 70%);
+          mask-image:radial-gradient(circle at 50% 26%,#000 0%,transparent 70%);pointer-events:none}
+.hero .container{position:relative;text-align:center}
+.hero .eyebrow{display:block;margin-bottom:.9rem;color:var(--teal-dark)}
+.hero h1{
+  margin:0 auto;max-width:940px;text-align:center;
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:clamp(3rem,3.2vw,3.5rem);font-weight:800;line-height:1.12;
+  color:#0a2e57;letter-spacing:-.02em;
+}
+.hero h1 .text-accent{color:#00b7b3}
+.hero .sub{
+  max-width:780px;margin:1rem auto 0;color:var(--body);
+  font-size:clamp(.98rem,1.35vw,1.12rem);line-height:1.7;
+}
+
+/* ---- Premium video player ---- */
+.video-wrap{position:relative;width:min(788px,60vw);margin:32px auto 0;border-radius:20px;
+  box-shadow:0 2px 0 rgba(255,255,255,.55) inset,0 18px 38px -24px rgba(6,23,49,.46),0 8px 18px -14px rgba(6,23,49,.28);
+  border:1px solid rgba(255,255,255,.55);overflow:hidden;
+  transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
+.video-wrap::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:0 0 0 1px rgba(35,195,216,.14) inset;z-index:5}
+.video-wrap:hover{transform:translateY(-6px);
+  box-shadow:0 2px 0 rgba(255,255,255,.6) inset,0 22px 44px -24px rgba(6,23,49,.5),0 10px 22px -15px rgba(6,23,49,.3)}
+.video-aspect{position:relative;padding-top:52.5%;background:var(--navy-deep)}
+
+/* ===================== CLIENT TICKER ===================== */
+.trust.client_ticker{
+  position:relative;z-index:1;padding:12px 0 48px;text-align:center;
+  background:#FFF;
+}
+.trust__carousel{width:100%;max-width:100vw;margin:0 auto;padding:0 16px;box-sizing:border-box}
+.trust__carousel-wrap{
+  --trust-control-gap:8px;
+  position:relative;display:grid;align-items:center;justify-content:center;
+  grid-template-columns:38px 28px minmax(0,75%) 28px 38px;
+  column-gap:var(--trust-control-gap);
+}
+.trust__viewport{
+  position:relative;grid-column:3;display:flex;align-items:center;overflow:hidden;
+  width:100%;min-height:160px;
+  cursor:grab;touch-action:pan-y;-webkit-user-select:none;user-select:none;
+}
+.trust__viewport.is-dragging{cursor:grabbing}
+.trust__viewport::before,.trust__viewport::after{
+  content:"";position:absolute;top:0;bottom:0;z-index:2;width:7%;
+  pointer-events:none;
+}
+.trust__viewport::before{left:0;background:linear-gradient(90deg,#FFF 0%,rgba(255,255,255,0) 100%)}
+.trust__viewport::after{right:0;background:linear-gradient(270deg,#FFF 0%,rgba(255,255,255,0) 100%)}
+.trust__track{display:flex;flex:0 0 auto;align-items:center;will-change:transform}
+.trust__logo-item{
+  flex:0 0 auto;display:flex;justify-content:center;align-items:center;
+  margin:0;padding:0;box-sizing:border-box;
+}
+.trust__logo-card{display:flex;flex-direction:column;align-items:center;width:100%}
+.trust__logo-item img{
+  width:auto;height:82px;max-width:100%;object-fit:contain;filter:grayscale(100%);
+  opacity:.85;pointer-events:none;-webkit-user-drag:none;user-select:none;
+  transition:opacity .3s ease,filter .3s ease;
+}
+.trust__logo-item img:hover{filter:grayscale(0);opacity:1}
+.trust__nav-btn{
+  position:relative;z-index:2;display:flex;align-items:center;justify-content:center;
+  width:28px;height:28px;flex-shrink:0;padding:0;border:1px solid var(--border);
+  border-radius:50%;color:var(--muted);background:var(--white);cursor:pointer;
+  align-self:center;margin-block:0;transform:none;
+  transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
+}
+.trust__nav-btn--prev{grid-column:2}
+.trust__nav-btn--next{grid-column:4}
+.trust__nav-btn:hover,.trust__nav-btn:focus-visible{
+  color:var(--white);background:var(--teal);border-color:var(--teal);
+}
+.trust__pause-btn{
+  position:relative;z-index:2;grid-column:5;align-self:center;
+  display:flex;align-items:center;justify-content:center;width:38px;height:28px;
+  flex-shrink:0;margin:0;padding:0 10px;border:1px solid var(--border);
+  border-radius:999px;color:var(--muted);background:var(--white);
+  transform:none;
+  cursor:pointer;transition:background-color .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease),box-shadow .2s var(--ease);
+}
+.trust__pause-btn svg{
+  position:absolute;top:50%;left:50%;display:block;width:12px;height:12px;
+  opacity:0;transform:translate(-50%,-50%) scale(.72);pointer-events:none;
+  transition:opacity .16s var(--ease),transform .16s var(--ease);
+}
+.trust__pause-btn.is-playing{color:var(--teal-dark);background:#e7f6f3;border-color:#80cbbf}
+.trust__pause-btn.is-paused{color:var(--white);background:var(--teal);border-color:var(--teal-dark);box-shadow:0 2px 8px rgba(0,128,128,.2)}
+.trust__pause-btn.is-playing .trust__play-icon,
+.trust__pause-btn.is-paused .trust__pause-icon{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.trust__pause-btn.is-playing:hover,
+.trust__pause-btn.is-playing:focus-visible{color:var(--white);background:var(--teal);border-color:var(--teal-dark)}
+.trust__pause-btn.is-playing:hover .trust__play-icon,
+.trust__pause-btn.is-playing:focus-visible .trust__play-icon,
+.trust__pause-btn.is-paused:hover .trust__pause-icon,
+.trust__pause-btn.is-paused:focus-visible .trust__pause-icon{opacity:0;transform:translate(-50%,-50%) scale(.72)}
+.trust__pause-btn.is-playing:hover .trust__pause-icon,
+.trust__pause-btn.is-playing:focus-visible .trust__pause-icon,
+.trust__pause-btn.is-paused:hover .trust__play-icon,
+.trust__pause-btn.is-paused:focus-visible .trust__play-icon{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.trust__pause-btn.is-paused:hover,
+.trust__pause-btn.is-paused:focus-visible{color:var(--teal-dark);background:#e7f6f3;border-color:#80cbbf;box-shadow:none}
+.trust__pause-btn:focus-visible{outline:3px solid rgba(0,128,128,.24);outline-offset:2px}
+
+/* ===================== FUNDVIEW TEXT SCROLL ===================== */
+.FUNDVIEW_Text_Scroll{
+  --edge-fade-top:clamp(56px,7vh,76px);
+  --edge-fade-bottom:clamp(38px,4vh,48px);
+  position:relative;min-height:clamp(608px,83.2vh,784px);
+  padding:clamp(88px,11vh,124px) 0;display:flex;align-items:center;
+  overflow:hidden;overflow:clip;isolation:isolate;background:#fff;color:#0b2a4a;
+}
+.FUNDVIEW_Text_Scroll::before{
+  content:"";position:absolute;z-index:1;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 96% 92% at 50% 52%,rgba(255,250,235,.80) 0%,rgba(255,247,228,.78) 58%,rgba(255,242,216,.72) 78%,rgba(255,235,201,.44) 90%,rgba(252,224,181,.16) 96%,rgba(244,211,165,0) 100%),
+    linear-gradient(90deg,rgba(255,249,233,.34) 0%,rgba(255,247,228,.28) 36%,rgba(255,242,218,.20) 62%,rgba(255,236,205,.10) 82%,rgba(252,226,188,.04) 94%,rgba(244,211,165,0) 100%),
+    linear-gradient(180deg,rgba(9,25,39,.04) 0%,rgba(9,25,39,0) 24%,rgba(9,25,39,0) 72%,rgba(54,25,17,.07) 100%);
+}
+.FUNDVIEW_Text_Scroll::after{
+  content:"";position:absolute;z-index:2;inset:0;pointer-events:none;
+  background:
+    linear-gradient(to bottom,#fff 0%,rgba(255,255,255,.94) 18%,rgba(255,255,255,.68) 42%,rgba(255,255,255,.30) 68%,rgba(255,255,255,0) 100%) top/100% var(--edge-fade-top) no-repeat,
+    linear-gradient(to top,#fff 0%,rgba(255,255,255,.92) 18%,rgba(255,255,255,.62) 44%,rgba(255,255,255,.24) 70%,rgba(255,255,255,0) 100%) bottom/100% var(--edge-fade-bottom) no-repeat;
+}
+.FUNDVIEW_Text_Scroll__visual{
+  position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--edge-fade-top),#000 calc(100% - var(--edge-fade-bottom)),transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 var(--edge-fade-top),#000 calc(100% - var(--edge-fade-bottom)),transparent 100%);
+}
+.FUNDVIEW_Text_Scroll__background{
+  position:absolute;z-index:0;inset:-24% 0;
+  background-image:url("https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_Parallax%20Scroll/FUNDVIEW_Text_Scroll_Background_Compressed.png");
+  background-position:center bottom;background-size:cover;background-repeat:no-repeat;
+  filter:saturate(1.1) contrast(1.06);
+  transform:translate3d(0,-42.432px,0) scale(1.6224);transform-origin:center bottom;
+  will-change:transform;pointer-events:none;
+}
+.FUNDVIEW_Text_Scroll .container{
+  position:relative;z-index:3;
+}
+.FUNDVIEW_Text_Scroll__content{position:relative;max-width:880px;margin-inline:auto}
+.FUNDVIEW_Text_Scroll__copy{
+  max-width:none;margin:0;text-align:left;
+  font-size:clamp(1.08rem,1.7vw,1.5rem);font-weight:700;line-height:1.42;
+  letter-spacing:-.018em;color:#0b2a4a;text-shadow:0 1px 9px rgba(255,255,255,.32),0 1px 2px rgba(255,255,255,.54);
+}
+.FUNDVIEW_Text_Scroll__copy--lead{
+  font-size:clamp(1.72rem,3.2vw,2.8rem);font-weight:850;line-height:1.12;letter-spacing:-.035em;
+}
+.FUNDVIEW_Text_Scroll__copy--outcome{font-weight:800}
+.FUNDVIEW_Text_Scroll__copy + .FUNDVIEW_Text_Scroll__copy{margin-top:1.35em}
+.FUNDVIEW_Text_Scroll__line{display:block}
+.FUNDVIEW_Text_Scroll__line + .FUNDVIEW_Text_Scroll__line{margin-top:.16em}
+.FUNDVIEW_Text_Scroll .word{display:inline-block;white-space:nowrap}
+.FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{
+  opacity:.20;filter:blur(1.5px);transform:translate3d(0,10px,0) scale(.985);
+  transform-origin:center bottom;will-change:opacity,transform,filter;
+}
+
+.dash{position:absolute;inset:0;display:flex;background:linear-gradient(160deg,#0C2A52 0%,#071B34 100%);font-size:10px}
+.dash-side{width:19%;min-width:118px;background:rgba(255,255,255,.03);border-right:1px solid var(--navy-line);
+  padding:12px 9px;display:flex;flex-direction:column;gap:5px;overflow:hidden}
+.dash-brand{display:flex;align-items:center;gap:.35rem;color:#fff;font-weight:800;font-size:.78em;margin-bottom:8px}
+.dash-brand .mark{width:15px;height:15px}
+.dash-side .item{display:flex;align-items:center;gap:.4rem;font-size:.72em;color:#9FB3CC;padding:4px 6px;border-radius:5px}
+.dash-side .item.child{padding-left:16px;font-size:.68em}
+.dash-side .item.active{background:rgba(35,195,216,.18);color:#fff;font-weight:600}
+.dash-side .dot{width:5px;height:5px;border-radius:2px;background:currentColor;opacity:.85}
+.dash-main{flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.dash-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.dash-top .dtitle{color:#fff;font-weight:700;font-size:.95em}
+.dash-drop{font-size:.66em;color:#bcd0e6;border:1px solid var(--navy-line);border-radius:5px;padding:3px 8px;display:flex;gap:6px;align-items:center}
+.dash-icons{display:flex;gap:7px;opacity:.7}
+.dash-icons i{width:11px;height:11px;border-radius:50%;border:1.4px solid #bcd0e6;display:inline-block}
+.dash-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.dash-card{background:rgba(255,255,255,.05);border:1px solid var(--navy-line);border-radius:7px;padding:8px 9px}
+.dash-card .lbl{font-size:.62em;color:#8DA2BE;letter-spacing:.02em}
+.dash-card .val{color:#fff;font-weight:800;font-size:1.05em;margin-top:2px}
+.dash-card .chg{font-size:.58em;color:var(--teal-bright);margin-top:2px}
+.dash-card .chg.down{color:#f0a13a}
+.dash-lower{display:grid;grid-template-columns:1.5fr 1.15fr 1fr;gap:8px;flex:1;min-height:0}
+.dash-panel{background:rgba(255,255,255,.05);border:1px solid var(--navy-line);border-radius:7px;padding:9px;display:flex;flex-direction:column;min-width:0}
+.dash-panel .ph{font-size:.66em;color:#c3d4e6;margin-bottom:6px;font-weight:600;display:flex;justify-content:space-between;gap:6px}
+.dash-panel .ph .legend{display:flex;gap:6px;color:#8DA2BE;font-weight:500}
+.dash-panel .ph .legend span{display:flex;align-items:center;gap:3px}
+.dash-panel .ph .legend b{width:6px;height:6px;border-radius:2px;display:inline-block}
+.bars{display:flex;align-items:flex-end;gap:5px;flex:1;min-height:48px}
+.bars span{flex:1;border-radius:2px 2px 0 0;background:linear-gradient(180deg,var(--teal-bright),var(--teal));opacity:.9}
+.bars span:nth-child(even){background:linear-gradient(180deg,#3f6ea5,#28496f);opacity:.75}
+.donut-wrap{display:flex;align-items:center;gap:8px;flex:1}
+.donut{flex:none;width:62px;height:62px;border-radius:50%;position:relative;
+  background:conic-gradient(var(--teal-bright) 0 30%,#3f7cb8 30% 55%,#2f5c8c 55% 65%,#4a8fd0 65% 80%,#24486f 80% 100%)}
+.donut::after{content:"";position:absolute;inset:12px;border-radius:50%;background:#0B2547}
+.donut-legend{font-size:.6em;color:#bcd0e6;display:flex;flex-direction:column;gap:3px}
+.donut-legend span{display:flex;align-items:center;gap:4px}
+.donut-legend b{width:6px;height:6px;border-radius:2px;display:inline-block}
+.qa{display:flex;flex-direction:column;gap:5px}
+.qa a{display:flex;align-items:center;gap:5px;font-size:.66em;color:#cfe0ee;background:rgba(255,255,255,.04);border:1px solid var(--navy-line);border-radius:5px;padding:5px 7px}
+.qa a b{width:5px;height:5px;border-radius:50%;background:var(--teal-bright);flex:none}
+
+.play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:82px;height:82px;border-radius:50%;
+  background:linear-gradient(135deg,var(--teal) 0%,var(--teal-bright) 100%);border:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 16px 40px rgba(12,124,141,.5);
+  transition:transform .3s var(--ease);z-index:3}
+.play-btn::before{content:"";position:absolute;inset:-13px;border-radius:50%;border:2px solid rgba(35,195,216,.55);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{transform:scale(.85);opacity:.9}70%{transform:scale(1.25);opacity:0}100%{opacity:0}}
+.play-btn svg{width:28px;height:28px;margin-left:5px;fill:#fff}
+.play-btn:hover{transform:translate(-50%,-50%) scale(1.08)}
+
+.controls{position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;align-items:center;gap:12px;
+  padding:11px 16px;background:linear-gradient(0deg,rgba(4,14,28,.92),rgba(4,14,28,0));color:#cfe0ee;font-size:.8rem}
+.controls .ico{width:16px;height:16px;fill:#cfe0ee;cursor:pointer;flex:none;transition:fill .2s}
+.controls .ico:hover{fill:#fff}
+.progress{flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.22);position:relative;cursor:pointer}
+.progress::after{content:"";position:absolute;left:0;top:0;height:100%;width:2%;background:var(--teal-bright);border-radius:4px}
+.progress::before{content:"";position:absolute;left:2%;top:50%;transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;background:#fff}
+.time{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ===================== SECTION SHELL ===================== */
+.section,.SEC_learn{padding:92px 0}
+.section-head{text-align:center;max-width:760px;margin:0 auto 56px}
+.section-head h2{font-size:clamp(1.8rem,3.4vw,2.55rem);margin:.55rem 0 .9rem;font-weight:900;letter-spacing:-.025em;display:inline-block}
+.section-head h2::after{content:"";display:block;width:56px;height:4px;margin:16px auto 0;border-radius:4px;background:linear-gradient(90deg,var(--teal),var(--teal-bright))}
+.dark .section-head h2::after{background:linear-gradient(90deg,var(--teal-bright),#5fe0ef)}
+.section-head p{font-size:1.08rem;color:var(--body);line-height:1.6}
+.section-head .section-note{font-size:.99rem;max-width:660px;margin:16px auto 0;color:var(--body);line-height:1.7}
+.dark .section-head .section-note{color:#a9c0d8}
+.dark{background:linear-gradient(180deg,var(--navy) 0%,var(--navy-deep) 100%);color:#c6d8ea;position:relative;overflow:hidden}
+.dark h2,.dark h3,.dark h4,.dark h5{color:#fff}
+.dark .section-head p{color:#a9c0d8}
+.glow-tr::before{content:"";position:absolute;top:-120px;right:-120px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(35,195,216,.16),transparent 70%)}
+.glow-bl::after{content:"";position:absolute;bottom:-140px;left:-100px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(23,166,188,.13),transparent 70%)}
+.dark .container{position:relative;z-index:1}
+
+/* ===================== WHAT YOU'LL LEARN ===================== */
+.learn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.learn-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:34px 30px;box-shadow:var(--shadow-sm);
+  transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s}
+.learn-card:hover{transform:translateY(-8px);box-shadow:0 26px 50px -22px rgba(10,34,66,.28),0 0 0 1px rgba(23,166,188,.18);border-color:rgba(23,166,188,.55)}
+.icon-badge{width:54px;height:54px;border-radius:14px;background:var(--teal-soft);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.icon-badge svg{width:27px;height:27px;stroke:var(--teal);fill:none;stroke-width:1.9}
+.learn-card h3{font-size:1.16rem;margin-bottom:.5rem}
+.learn-card p{font-size:.96rem;color:var(--body)}
+/* Featured teal card */
+.learn-card.featured{background:linear-gradient(150deg,var(--teal) 0%,var(--teal-bright) 100%);border-color:transparent;color:#fff;box-shadow:0 20px 44px rgba(23,166,188,.4)}
+.learn-card.featured h3{color:#fff}
+.learn-card.featured p{color:rgba(255,255,255,.92)}
+.learn-card.featured .icon-badge{background:rgba(255,255,255,.2)}
+.learn-card.featured .icon-badge svg{stroke:#fff}
+
+/* ===================== CUSTOMER OUTCOMES ===================== */
+.SEC_customer_outcomes{padding:0 0 92px}
+.customer-outcomes__panel{
+  position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.45fr);
+  gap:clamp(38px,5vw,76px);align-items:center;padding:clamp(40px,5vw,68px);
+  border:1px solid rgba(23,166,188,.18);border-radius:24px;
+  background:linear-gradient(135deg,#fff 0%,#f7fbfd 58%,#eef8fa 100%);
+  box-shadow:0 28px 70px -46px rgba(10,34,66,.42);
+}
+.customer-outcomes__panel::before{
+  content:"";position:absolute;inset:0 auto 0 0;width:5px;
+  background:linear-gradient(180deg,var(--teal),var(--teal-bright));
+}
+.customer-outcomes__intro{position:relative}
+.customer-outcomes__intro .eyebrow{display:block;margin-bottom:14px}
+.customer-outcomes__intro h2{
+  font-size:clamp(1.9rem,3.4vw,2.65rem);margin:0 0 16px;font-weight:900;letter-spacing:-.03em;
+}
+.customer-outcomes__intro p{max-width:340px;color:var(--body);font-size:1rem;line-height:1.7}
+.customer-outcomes__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}
+.customer-outcomes__item{
+  display:flex;align-items:flex-start;gap:13px;min-height:62px;padding:17px 0;
+  border-bottom:1px solid var(--border);color:var(--heading);font-size:.98rem;font-weight:700;line-height:1.45;
+}
+.customer-outcomes__check{
+  display:grid;place-items:center;flex:0 0 25px;width:25px;height:25px;margin-top:1px;
+  border-radius:50%;background:var(--teal-soft);color:var(--teal-dark);
+}
+.customer-outcomes__check svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.4}
+
+/* ===================== ONE CONNECTED PLATFORM ===================== */
+.SEC_one_connected_platform{padding:0 0 92px;background:var(--bg)}
+.ocp-hero{
+  position:relative;overflow:hidden;padding:clamp(48px,6vw,78px) 0;
+  background:
+    radial-gradient(circle at 16% 42%,rgba(35,195,216,.18),transparent 34%),
+    radial-gradient(circle at 84% 18%,rgba(245,179,1,.08),transparent 30%),
+    linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%);
+  color:#fff;
+}
+.ocp-hero::before,.ocp-hero::after{
+  content:"";position:absolute;border-radius:50%;pointer-events:none;
+  border:1px solid rgba(35,195,216,.16);
+}
+.ocp-hero::before{width:480px;height:480px;right:-140px;top:-210px}
+.ocp-hero::after{width:300px;height:300px;right:8%;bottom:-170px;border-color:rgba(255,255,255,.08)}
+.ocp-hero__inner{
+  position:relative;z-index:1;display:flex;align-items:center;gap:clamp(22px,3vw,34px);
+}
+.ocp-hero__icon{
+  flex:0 0 auto;width:144px;height:144px;border-radius:50%;
+  display:grid;place-items:center;background:rgba(255,255,255,.06);
+  border:1px solid rgba(35,195,216,.35);box-shadow:0 0 0 10px rgba(35,195,216,.08);
+}
+.ocp-hero__icon img{width:93px;height:93px;object-fit:contain;display:block}
+.ocp-hero__icon:has(img){background:transparent;border-color:transparent;box-shadow:none}
+.ocp-hero__icon:has(img) img{width:144px;height:144px}
+.ocp-hero__icon:not(:has(img))::after{
+  content:"";width:42px;height:42px;border-radius:50%;
+  border:2px solid rgba(35,195,216,.75);box-shadow:0 0 0 8px rgba(35,195,216,.12);
+}
+.ocp-hero__copy{max-width:760px}
+.ocp-hero__copy h2{
+  margin:0 0 12px;color:#fff;font-size:clamp(1.85rem,3.2vw,2.55rem);font-weight:900;letter-spacing:-.03em;
+}
+.ocp-hero__copy p{margin:0;color:rgba(214,230,242,.92);font-size:clamp(1rem,1.5vw,1.12rem);line-height:1.65}
+.ocp-body{padding:clamp(36px,4.5vw,64px) 0 0}
+.ocp-grid{
+  --ocp-icon:85px;--ocp-gap:28px;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:clamp(36px,5vw,64px);row-gap:0;
+}
+.ocp-item{
+  display:grid;grid-template-columns:var(--ocp-icon) minmax(0,1fr);align-items:center;gap:var(--ocp-gap);
+  min-height:148px;padding:28px 0;border-bottom:1px solid rgba(10,34,66,.1);
+}
+.ocp-item:nth-child(-n+2){border-top:1px solid rgba(10,34,66,.1)}
+.ocp-item:nth-last-child(-n+2){border-bottom-color:rgba(10,34,66,.1)}
+.ocp-icon{
+  width:var(--ocp-icon);height:var(--ocp-icon);margin:0;padding:0;
+  display:grid;place-items:center;background:transparent;
+}
+.ocp-icon img{width:var(--ocp-icon);height:var(--ocp-icon);object-fit:contain;display:block}
+.ocp-icon:not(:has(img)){
+  border-radius:16px;background:rgba(23,166,188,.1);
+}
+.ocp-icon:not(:has(img))::after{
+  content:"";width:22px;height:22px;border-radius:6px;border:2px solid rgba(23,166,188,.55);
+}
+.ocp-copy{min-width:0}
+.ocp-copy h3{margin:0 0 8px;font-size:1.08rem;font-weight:800;letter-spacing:-.02em;color:var(--heading);line-height:1.25}
+.ocp-copy p{margin:0;color:var(--body);font-size:.96rem;line-height:1.58}
+.ocp-featured{
+  --ocp-icon:85px;--ocp-gap:28px;
+  display:grid;grid-template-columns:var(--ocp-icon) minmax(0,1fr);align-items:center;gap:var(--ocp-gap);
+  margin:0;padding:28px 0 0;border-top:1px solid rgba(10,34,66,.1);
+}
+.ocp-featured .ocp-copy{max-width:52ch}
+.ocp-featured .ocp-copy h3{font-size:1.08rem}
+.ocp-featured .ocp-copy p{max-width:none}
+
+/* ===================== WHY ORGANIZATIONS CHOOSE FUNDVIEW ===================== */
+.SEC_why_organizations_choose_fundview{
+  position:relative;overflow:hidden;padding:clamp(72px,8vw,110px) 0;
+  background:
+    radial-gradient(circle at 12% 88%,rgba(23,166,188,.08),transparent 28%),
+    radial-gradient(circle at 92% 12%,rgba(23,166,188,.07),transparent 26%),
+    linear-gradient(180deg,#f4fafc 0%,#fff 48%,#f7fbfd 100%);
+}
+.SEC_why_organizations_choose_fundview::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:
+    radial-gradient(circle at 18% 78%,rgba(23,166,188,.22) 0 1.5px,transparent 2px),
+    radial-gradient(circle at 28% 88%,rgba(23,166,188,.18) 0 1.2px,transparent 2px),
+    radial-gradient(circle at 86% 18%,rgba(23,166,188,.2) 0 1.4px,transparent 2px),
+    radial-gradient(circle at 94% 28%,rgba(23,166,188,.16) 0 1.1px,transparent 2px);
+}
+.wocf-layout{
+  position:relative;z-index:1;display:grid;
+  grid-template-columns:minmax(240px,.78fr) minmax(0,1.45fr);
+  gap:clamp(36px,5vw,72px);align-items:center;
+}
+.wocf-intro{max-width:360px}
+.wocf-intro::before{
+  content:"";display:block;width:42px;height:3px;margin-bottom:22px;border-radius:3px;background:var(--teal);
+}
+.wocf-intro h2{
+  margin:0;color:var(--heading);font-size:clamp(1.85rem,3.2vw,2.6rem);
+  font-weight:900;letter-spacing:-.03em;line-height:1.15;
+}
+.wocf-grid{
+  --wocf-icon:65px;--wocf-gap:16px;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:clamp(24px,3.5vw,42px);
+  border-top:1px solid rgba(10,34,66,.1);
+}
+.wocf-item{
+  display:grid;grid-template-columns:var(--wocf-icon) minmax(0,1fr);align-items:center;gap:var(--wocf-gap);
+  min-height:86px;padding:22px 0;border-bottom:1px solid rgba(10,34,66,.1);
+}
+.wocf-icon{
+  width:var(--wocf-icon);height:var(--wocf-icon);border-radius:50%;
+  display:grid;place-items:center;border:1.5px solid rgba(23,166,188,.55);background:rgba(255,255,255,.55);
+}
+.wocf-icon img{width:var(--wocf-icon);height:var(--wocf-icon);object-fit:contain;display:block}
+.wocf-icon:has(img){border-color:transparent;background:transparent}
+.wocf-icon:not(:has(img))::after{
+  content:"";width:16px;height:16px;border-radius:4px;border:1.5px solid rgba(23,166,188,.5);
+}
+.wocf-item p{
+  margin:0;color:var(--heading);font-size:.98rem;font-weight:700;line-height:1.4;letter-spacing:-.01em;
+}
+
+/* ===================== READY FOR FUNDVIEW DEMO ===================== */
+.SEC_Ready_for_FUNDVIEW_demo.ocp-hero{padding:clamp(56px,7vw,88px) 0}
+.ready-demo__content{
+  position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;
+  gap:clamp(22px,3vw,30px);max-width:820px;margin:0 auto;text-align:center;
+}
+.ready-demo__content h2{
+  margin:0;color:#fff;font-size:clamp(1.55rem,3vw,2.15rem);font-weight:900;
+  letter-spacing:-.025em;line-height:1.28;
+}
+.ready-demo__content .btn{min-width:min(100%,360px)}
+
+/* ===================== CUSTOMER RESULTS (light carousel) ===================== */
+.results{background:var(--bg)}
+.carousel{position:relative;max-width:1040px;margin:0 auto}
+.carousel-viewport{
+  overflow:hidden;width:100%;cursor:grab;touch-action:pan-y;user-select:none;
+}
+.carousel-viewport.is-dragging{cursor:grabbing}
+.carousel-track{
+  display:flex;gap:26px;will-change:transform;align-items:stretch;
+}
+.qcard{
+  flex:0 0 calc((100% - 52px)/3);min-width:0;box-sizing:border-box;
+  background:#fff;border:1px solid var(--border);border-radius:18px;padding:34px 30px;box-shadow:var(--shadow-sm);
+  display:flex;flex-direction:column;transition:box-shadow .35s var(--ease),border-color .35s,transform .35s var(--ease);
+}
+.carousel-viewport:not(.is-dragging) .qcard:hover{transform:translateY(-7px);box-shadow:0 26px 50px -22px rgba(10,34,66,.26),0 0 0 1px rgba(23,166,188,.16);border-color:rgba(23,166,188,.4)}
+.qcard .qmark{font-size:3.4rem;line-height:.5;color:var(--teal-bright);font-family:Georgia,serif;font-weight:700;height:30px;display:block;opacity:.9}
+.qcard p,.qcard__quote{color:var(--body);font-size:1rem;line-height:1.62;margin:16px 0 22px;flex:1}
+.qcard--expandable .qcard__quote{
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden;
+  margin:16px 0 10px;flex:1;
+}
+.qcard--expandable.is-expanded .qcard__quote{
+  display:block;-webkit-line-clamp:unset;overflow:visible;
+}
+.qcard__more{
+  align-self:center;flex:0 0 auto;width:36px;height:36px;margin:0 0 14px;padding:0;
+  border:1px solid var(--border);border-radius:50%;background:#fff;color:var(--teal);
+  display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-sm);
+  transition:background .2s,border-color .2s,transform .2s,color .2s;
+}
+.qcard__more:hover,.qcard__more:focus-visible{
+  background:var(--teal);color:#fff;border-color:var(--teal);transform:translateY(-1px);
+}
+.qcard__more svg{
+  width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .25s var(--ease);
+}
+.qcard--expandable.is-expanded .qcard__more svg{transform:rotate(180deg)}
+.stars{color:var(--gold);font-size:1.02rem;letter-spacing:3px;margin-bottom:14px}
+.qcard .who{border-top:1px solid var(--border);padding-top:16px}
+.qcard .who strong{display:block;color:var(--heading);font-weight:800;font-size:.98rem}
+.qcard .who span{display:block;color:var(--muted);font-weight:600;font-size:.85rem;margin-top:2px}
+.c-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--border);
+  box-shadow:var(--shadow-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;z-index:2}
+.c-arrow:hover{background:var(--teal);transform:translateY(-50%) scale(1.06)}
+.c-arrow:hover svg{stroke:#fff}
+.c-arrow svg{width:18px;height:18px;stroke:var(--teal);fill:none;stroke-width:2.4}
+.c-arrow.left{left:-56px}.c-arrow.right{right:-56px}
+.c-dots{display:flex;justify-content:center;gap:9px;margin-top:30px}
+.c-dots i{width:9px;height:9px;border-radius:50%;background:#c7d5e2;cursor:pointer;transition:background .2s,width .2s}
+.c-dots i.active{background:var(--teal);width:24px;border-radius:6px}
+
+/* ===================== CUSTOMER STORY (home7 1:1) ===================== */
+.SEC_Customer_Story.customer_story,
+.customer_story{
+  width:100%;padding:clamp(3.5rem,7vw,6rem) 1.5rem;
+  background:linear-gradient(135deg,#0a2e57 0%,#0d3a6b 55%,#0a2e57 100%);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#fff;
+}
+.customer_story__inner{
+  width:min(1200px,100%);margin:0 auto;display:grid;
+  grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr);
+  gap:clamp(2rem,5vw,4.5rem);align-items:center;
+}
+.customer_story__eyebrow{
+  display:inline-block;margin-bottom:1rem;font-size:.8125rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:#00b7b3;
+}
+.customer_story__title{
+  margin:0 0 1rem;font-size:clamp(2rem,4vw,3.25rem);font-weight:800;
+  line-height:1.1;letter-spacing:-.02em;color:#fff;
+}
+.customer_story__lead{
+  margin:0 0 2rem;font-size:clamp(1.0625rem,1.6vw,1.25rem);line-height:1.65;
+  color:rgba(255,255,255,.82);max-width:46ch;
+}
+.customer_story__cta{
+  display:inline-flex;align-items:center;gap:.6rem;padding:.95rem 1.75rem;
+  background:#00b7b3;color:#052038;font-size:1.0625rem;font-weight:700;text-decoration:none;
+  border-radius:999px;transition:background .2s ease,transform .2s ease,box-shadow .2s ease;
+  box-shadow:0 14px 30px rgba(0,183,179,.28);
+}
+.customer_story__cta:hover,
+.customer_story__cta:focus-visible{
+  background:#00d4cf;transform:translateY(-2px);box-shadow:0 18px 38px rgba(0,183,179,.38);
+}
+.customer_story__cta-icon{width:1.15em;height:1.15em}
+.customer_story__media{position:relative}
+.customer_story__video{
+  position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;
+  border-radius:16px;overflow:hidden;cursor:pointer;background:#061a30;
+  box-shadow:0 30px 70px rgba(0,0,0,.45);
+}
+.customer_story__thumb{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.customer_story__video:hover .customer_story__thumb,
+.customer_story__video:focus-visible .customer_story__thumb{transform:scale(1.04)}
+.customer_story__play{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:clamp(64px,8vw,88px);height:clamp(64px,8vw,88px);border-radius:50%;
+  background:rgba(0,183,179,.92);color:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .2s ease,background .2s ease;
+}
+.customer_story__video:hover .customer_story__play,
+.customer_story__video:focus-visible .customer_story__play{
+  transform:translate(-50%,-50%) scale(1.08);background:#00d4cf;
+}
+.customer_story__play svg{width:42%;height:42%;margin-left:6%}
+.customer_story__iframe{
+  width:100%;aspect-ratio:16/9;border:0;border-radius:16px;display:block;
+  box-shadow:0 30px 70px rgba(0,0,0,.45);
+}
+
+/* ===================== STATS (dark ring band) ===================== */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;max-width:1040px;margin:0 auto}
+.stat{text-align:center}
+.ring{width:82px;height:82px;margin:0 auto 16px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;
+  background:conic-gradient(var(--teal-bright) 0 var(--p,70%),rgba(255,255,255,.12) var(--p,70%) 100%)}
+.ring::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--navy-deep)}
+.ring svg{position:relative;z-index:1;width:30px;height:30px;stroke:var(--teal-bright);fill:none;stroke-width:1.9}
+.stat .num{font-size:clamp(1.9rem,3vw,2.5rem);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1}
+.stat .lbl{font-size:.86rem;color:#a9c0d8;margin-top:8px;font-weight:600}
+
+/* ===================== FEATURE CARDS (light) ===================== */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature{background:#fff;border:1px solid var(--border);border-radius:18px;padding:28px 28px;box-shadow:var(--shadow-sm);
+  display:flex;gap:16px;transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s}
+.feature:hover{transform:translateY(-7px);box-shadow:0 24px 48px -22px rgba(10,34,66,.26),0 0 0 1px rgba(23,166,188,.16);border-color:rgba(23,166,188,.4)}
+.feature .ficon{width:46px;height:46px;flex:none;border-radius:12px;background:var(--teal-soft);display:flex;align-items:center;justify-content:center}
+.feature .ficon svg{width:24px;height:24px;stroke:var(--teal);fill:none;stroke-width:1.9}
+.feature h3{font-size:1.06rem;margin-bottom:.4rem}
+.feature p{font-size:.92rem;color:var(--body)}
+
+/* ===================== ONE PLATFORM (interactive flip cards) ===================== */
+.platform{background:var(--bg)}
+.platform .section-head{margin-bottom:44px}
+.platform .section-head .eyebrow{display:block;margin-bottom:.55rem}
+.platform-grid-wrap{position:relative}
+.platform-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.flip-card{
+  position:relative;height:230px;perspective:1200px;cursor:pointer;border-radius:18px;
+  transition:transform .35s var(--ease),filter .35s var(--ease);
+}
+.flip-card::after{
+  content:"";position:absolute;z-index:-1;right:8%;bottom:-14px;left:8%;height:24px;
+  border-radius:50%;background:rgba(10,34,66,.16);filter:blur(14px);opacity:.52;
+  transition:opacity .35s var(--ease),transform .35s var(--ease);
+}
+.flip-card:hover,.flip-card:focus-visible,.flip-card.is-flipped{transform:translateY(-6px)}
+.flip-card:hover::after,.flip-card:focus-visible::after,.flip-card.is-flipped::after{opacity:.72;transform:translateY(4px)}
+.flip-card:focus-visible{outline:3px solid var(--teal);outline-offset:4px}
+.flip-card__inner{
+  position:relative;width:100%;height:100%;transform-style:preserve-3d;
+  transition:transform .65s var(--ease);
+}
+.flip-card:hover .flip-card__inner,
+.flip-card:focus-within .flip-card__inner,
+.flip-card.is-flipped .flip-card__inner{transform:rotateY(180deg)}
+.flip-card__face{
+  position:absolute;inset:0;display:grid;grid-template-columns:108px minmax(0,1fr);
+  grid-template-rows:1fr auto;column-gap:20px;padding:22px 24px 18px;border-radius:18px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;
+}
+.flip-card__front{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  padding:20px 24px;background:var(--white);border:1px solid var(--border);
+  box-shadow:var(--shadow-sm);text-align:center;
+}
+.flip-card__back{
+  grid-template-columns:76px minmax(0,1fr);
+  color:var(--white);background:var(--navy);border:1px solid var(--navy-line);
+  box-shadow:0 18px 38px -24px rgba(6,23,49,.6);transform:rotateY(180deg);
+}
+.flip-card__icon{
+  display:grid;place-items:center;width:108px;height:108px;flex:0 0 auto;
+  border-radius:24px;overflow:hidden;background:transparent;
+  box-shadow:0 14px 26px -18px rgba(10,34,66,.5);
+}
+.flip-card__back .flip-card__icon{
+  width:76px;height:76px;box-sizing:content-box;border:4px solid var(--white);
+  border-radius:22px;
+  box-shadow:
+    -2.4px 3.2px 0 rgba(220,226,233,.88),
+    -4.8px 6.4px 0 rgba(167,179,194,.66),
+    -8.8px 11.2px 7.2px rgba(2,15,34,.38),
+    -16px 20px 20px rgba(0,0,0,.34);
+  transform:translate(4px,-5px);
+}
+.flip-card__icon img{width:100%;height:100%;object-fit:contain;display:block}
+.flip-card__copy{min-width:0}
+.flip-card h3{margin:1px 0 .55rem;color:var(--heading);font-size:1.08rem;line-height:1.25}
+.flip-card__front h3{margin:0;font-size:1.25rem}
+.flip-card__back h3{color:var(--white)}
+.flip-card__back p{margin:0;color:rgba(255,255,255,.9);font-size:.82rem;line-height:1.5}
+.flip-card__action{grid-column:1/-1;align-self:end;justify-self:center;color:var(--teal);font-size:.84rem;font-weight:800}
+.flip-card__front .flip-card__action{align-self:center;margin-top:2px}
+.flip-card__back .flip-card__action{color:var(--teal-bright)}
+.capability-card__corner-icon{
+  position:absolute;top:10px;right:10px;z-index:2;display:block;width:32px;height:32px;
+  background-color:#00b7b3;
+  -webkit-mask:url("https://245865092.hs-sites-na2.com/hubfs/Landing%20Page/ICON_Corner_PhoneEmail_Tr.png") center/contain no-repeat;
+  mask:url("https://245865092.hs-sites-na2.com/hubfs/Landing%20Page/ICON_Corner_PhoneEmail_Tr.png") center/contain no-repeat;
+  pointer-events:none;
+}
+.flip-card__back .capability-card__corner-icon{background-color:#FFF}
+.flip-helper{
+  position:absolute;z-index:6;top:50%;left:50%;display:grid;place-items:center;
+  width:88px;height:88px;padding:9px;border:1px solid var(--border);border-radius:50%;
+  color:var(--heading);background:var(--white);box-shadow:var(--shadow);
+  transform:translate(-50%,-50%);pointer-events:none;text-align:center;
+  transition:opacity .35s var(--ease),transform .35s var(--ease);
+}
+.flip-helper svg{width:25px;height:25px;color:var(--teal);fill:none;stroke:currentColor;stroke-width:1.8}
+.flip-helper span{font-size:.68rem;font-weight:800;line-height:1.1}
+.platform--interacted .flip-helper{opacity:0;transform:translate(-50%,-50%) scale(.8)}
+.notification-banner{
+  display:flex;align-items:center;gap:18px;margin-top:42px;padding:22px 28px;
+  border:1px solid var(--border);border-radius:16px;background:var(--teal-soft);
+  box-shadow:0 18px 36px -28px rgba(10,34,66,.28);
+}
+.notification-banner__icon{
+  display:grid;place-items:center;width:52px;height:52px;flex:0 0 52px;
+  border-radius:14px;color:var(--teal);background:var(--white);box-shadow:var(--shadow-sm);
+}
+.notification-banner__icon svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.notification-banner h3{margin:0 0 .2rem;color:var(--heading);font-size:1.05rem}
+.notification-banner p{margin:0;color:var(--body);font-size:.9rem}
+
+/* ===================== FINAL CTA (dark, 3 cards) ===================== */
+.cta-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto}
+.cta-card{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid var(--navy-line);border-radius:20px;padding:38px 32px;text-align:center;backdrop-filter:blur(6px);
+  display:flex;flex-direction:column;align-items:center;transition:transform .35s var(--ease),border-color .35s,box-shadow .35s,background .35s}
+.cta-card:hover{transform:translateY(-8px);border-color:rgba(35,195,216,.6);background:linear-gradient(180deg,rgba(35,195,216,.12),rgba(255,255,255,.04));box-shadow:0 30px 60px -28px rgba(0,0,0,.6),0 0 60px -14px rgba(35,195,216,.3)}
+.cta-card .cicon{width:56px;height:56px;border-radius:14px;background:rgba(35,195,216,.16);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.cta-card .cicon svg{width:28px;height:28px;stroke:var(--teal-bright);fill:none;stroke-width:1.9}
+.cta-card h3{font-size:1.2rem;margin-bottom:.5rem}
+.cta-card p{color:#a9c0d8;font-size:.94rem;margin-bottom:22px;flex:1}
+.cta-card .btn{width:100%}
+
+/* ===================== REVEAL ===================== */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width:1024px){
+  .learn-grid,.feature-grid{grid-template-columns:repeat(2,1fr)}
+  .platform-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cta-cards{grid-template-columns:1fr}
+  .foot-cols{grid-template-columns:1fr 1fr 1fr}
+  .c-arrow.left{left:-8px}.c-arrow.right{right:-8px}
+}
+@media (min-width:1024px) and (max-width:1499.98px){
+  .hero h1{font-size:2.5rem}
+}
+@media (min-width:1024px) and (max-width:1350px){
+  .hero h1{font-size:2rem}
+}
+@media (max-width:1200px){
+  .trust__logo-item img{height:69px}
+  .trust__viewport{min-height:130px}
+}
+@media (max-width:860px){
+  .trust__carousel-wrap{grid-template-columns:38px 28px minmax(0,1fr) 28px 38px}
+  .customer_story__inner{grid-template-columns:1fr;gap:2rem}
+  .customer_story__copy{text-align:center;max-width:640px;margin:0 auto}
+  .customer_story__lead{margin-left:auto;margin-right:auto}
+  .customer_story__media{order:-1}
+  .qcard{flex:0 0 100%}
+  .section,.SEC_learn{padding:70px 0}
+  .SEC_customer_outcomes{padding:0 0 70px}
+  .customer-outcomes__panel{grid-template-columns:1fr;gap:28px}
+  .customer-outcomes__intro p{max-width:560px}
+  .SEC_one_connected_platform{padding:0 0 70px}
+  .ocp-hero__inner{align-items:flex-start}
+  .SEC_why_organizations_choose_fundview{padding:70px 0}
+  .wocf-layout{grid-template-columns:1fr;gap:34px;align-items:start}
+  .wocf-intro{max-width:560px}
+  .stats{grid-template-columns:repeat(3,1fr);gap:30px 12px}
+}
+@media (min-width:601px) and (max-width:1023.98px){
+  .hero h1{font-size:clamp(1.9rem,4.5vw,2.35rem);max-width:22ch}
+}
+@media (max-width:640px){
+  .video-wrap{width:100%;border-radius:16px}
+  .video-aspect{padding-top:56.25%}
+  .learn-grid,.feature-grid{grid-template-columns:1fr}
+  .customer-outcomes__panel{padding:34px 26px;border-radius:18px}
+  .customer-outcomes__list{grid-template-columns:1fr}
+  .customer-outcomes__item{min-height:0}
+  .ocp-hero{padding:40px 0}
+  .ocp-hero__inner{flex-direction:column;gap:18px}
+  .ocp-hero__icon{width:117px;height:117px}
+  .ocp-hero__icon:has(img) img{width:117px;height:117px}
+  .ocp-grid{grid-template-columns:1fr;column-gap:0;--ocp-icon:72px;--ocp-gap:20px}
+  .ocp-item{min-height:0;padding:22px 0}
+  .ocp-item:nth-child(-n+2){border-top:none}
+  .ocp-item:first-child{border-top:1px solid rgba(10,34,66,.1)}
+  .ocp-featured{--ocp-icon:72px;--ocp-gap:20px;padding-top:22px;align-items:flex-start}
+  .ocp-featured .ocp-copy{max-width:none}
+  .wocf-grid{grid-template-columns:1fr;--wocf-icon:60px;--wocf-gap:14px}
+  .wocf-item{min-height:0;padding:18px 0}
+  .platform-grid{grid-template-columns:1fr}
+  .flip-card{height:220px}
+  .flip-helper{top:22px;width:76px;height:76px}
+  .notification-banner{align-items:flex-start;padding:20px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .dash-cards{grid-template-columns:repeat(2,1fr)}
+  .dash-lower{grid-template-columns:1fr}
+  .dash-side{display:none}
+  .play-btn{width:64px;height:64px}
+  .play-btn svg{width:22px;height:22px}
+  .foot-cols{grid-template-columns:1fr 1fr}
+  .foot-company{grid-column:1/-1}
+  .hero{padding:40px 0 14px}
+  .c-arrow{display:none}
+}
+@media (max-width:600px){
+  .hero h1{font-size:clamp(1.85rem,6.5vw,2.45rem);max-width:18ch}
+}
+@media (max-width:480px){
+  .trust.client_ticker{padding:10px 0 40px}
+  .trust__logo-item img{height:57px}
+  .trust__viewport{min-height:110px}
+  .FUNDVIEW_Text_Scroll{--edge-fade-top:clamp(40px,6vh,54px);--edge-fade-bottom:clamp(30px,4vh,38px);min-height:clamp(544px,75.2vh,656px);padding:64px 0}
+  .FUNDVIEW_Text_Scroll::before{
+    background:
+      radial-gradient(ellipse 100% 94% at 50% 52%,rgba(255,250,235,.86) 0%,rgba(255,247,228,.84) 68%,rgba(255,242,216,.78) 84%,rgba(255,235,201,.52) 92%,rgba(252,224,181,.18) 97%,rgba(244,211,165,0) 100%),
+      linear-gradient(90deg,rgba(255,249,233,.30) 0%,rgba(255,247,228,.26) 42%,rgba(255,242,218,.20) 72%,rgba(255,236,205,.10) 92%,rgba(244,211,165,0) 100%),
+      linear-gradient(180deg,rgba(9,25,39,.035) 0%,rgba(9,25,39,0) 22%,rgba(9,25,39,0) 76%,rgba(54,25,17,.06) 100%);
+  }
+  .FUNDVIEW_Text_Scroll__background{inset:-22% 0;background-position:center bottom;transform:translate3d(0,-29.376px,0) scale(1.6068)}
+  .FUNDVIEW_Text_Scroll__copy{font-size:clamp(1rem,4.6vw,1.26rem);line-height:1.42}
+  .FUNDVIEW_Text_Scroll__copy--lead{font-size:clamp(1.48rem,7.2vw,2rem);line-height:1.16}
+  .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{opacity:.22;filter:blur(1px);transform:translate3d(0,8px,0) scale(.988)}
+}
+@media (prefers-reduced-motion:reduce){
+  .FUNDVIEW_Text_Scroll__background{transform:translate3d(0,-42.432px,0) scale(1.6224)!important;will-change:auto}
+  .FUNDVIEW_Text_Scroll.is-word-reveal-ready .word{opacity:1!important;filter:none!important;transform:none!important;will-change:auto}
+}
+@media (max-width:600px) and (prefers-reduced-motion:reduce){
+  .FUNDVIEW_Text_Scroll__background{transform:translate3d(0,-29.376px,0) scale(1.6068)!important}
+}
+@media (max-width:420px){.foot-cols{grid-template-columns:1fr}}
+</style>
+
+<style data-shared-header>
+:root {
+      --fv-navy: #0a2e57;
+      --fv-navy-deep: #071f3a;
+      --fv-navy-soft: #3a4756;
+      --fv-teal: #00b7b3;
+      --fv-teal-bright: #00e5e0;
+      --fv-teal-hover: #00928f;
+      --fv-cta: #f2b632;
+      --fv-cta-hover: #e0a628;
+      --fv-cta-text: #0a2e57;
+      --fv-glass: rgba(255, 255, 255, 0.08);
+      --fv-glass-border: rgba(255, 255, 255, 0.16);
+      --fv-divider: rgba(255, 255, 255, 0.12);
+      /* Fallback left inset; overwritten at ≥1024 to match .hero-copy-content */
+      --fv-content-left: 2.5rem;
+      /* Lattice-like nav rhythm: small flex gap + horizontal padding on each link */
+      --fv-nav-gap: 0.15rem;
+      --fv-nav-link-pad-x: 0.75em;
+    }
+
+    /* Sync header logo left edge with #experience_fundview .hero-copy-content
+       (same column + padding + max-width box used by .hero__ticker-align). */
+    @media (min-width: 1024px) {
+      :root {
+        --fv-hero-col: max(380px, 40vw);
+        --fv-hero-pad-l: clamp(2rem, 3.5vw, 3.25rem);
+        --fv-hero-pad-r: clamp(3.5rem, 5.5vw, 5.5rem);
+        --fv-hero-inner: calc(var(--fv-hero-col) - var(--fv-hero-pad-l) - var(--fv-hero-pad-r));
+        --fv-hero-content-w: min(36rem, calc(var(--fv-hero-inner) * 0.92));
+        --fv-content-left: calc(
+          var(--fv-hero-pad-l) + (var(--fv-hero-inner) - var(--fv-hero-content-w)) / 2
+        );
+      }
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--fv-navy-soft);
+      background: #fff;
+    }
+
+    body.nav-open {
+      overflow: hidden;
+    }
+
+    /* Full-bleed header: navy spectrum + glass treatment edge-to-edge */
+    .site-header {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      /* Keep the header/nav above the experience_fundview spotlight (backdrop 1190, panel/tabs 1200),
+         while staying below the full-screen video modal (10000). */
+      z-index: 5000;
+      padding: 0;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.12) 0%,
+          rgba(255, 255, 255, 0.04) 100%
+        ),
+        radial-gradient(ellipse 70% 90% at 15% 15%, rgba(0, 183, 179, 0.18), transparent 60%),
+        radial-gradient(ellipse 55% 80% at 90% 0%, rgba(0, 183, 179, 0.1), transparent 55%),
+        linear-gradient(135deg, #0a2e57 0%, #071f3a 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(18px) saturate(145%);
+      -webkit-backdrop-filter: blur(18px) saturate(145%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.22) inset,
+        0 10px 28px rgba(3, 14, 30, 0.28),
+        0 22px 48px rgba(3, 14, 30, 0.2);
+    }
+
+    /* Kept for markup compatibility — fills the full header area (no inset container) */
+    .site-header__glass {
+      position: relative;
+      width: 100%;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    /* Soft highlight edge — reinforces the glass / 3D read across the full header */
+    .site-header__glass::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.45) 20%,
+        rgba(0, 229, 224, 0.35) 50%,
+        rgba(255, 255, 255, 0.45) 80%,
+        transparent 100%
+      );
+      pointer-events: none;
+    }
+
+    .site-header__inner {
+      position: relative;
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      column-gap: 1.75rem;
+      /* Logo left edge tracks .hero-copy-content; right pad keeps CTA breathing room */
+      padding: 0.9rem 2.5rem 0.9rem var(--fv-content-left);
+    }
+
+    .site-header__logo {
+      display: flex;
+      align-items: center;
+      justify-self: start;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .site-header__logo img {
+      display: block;
+      height: 42px;
+      width: auto;
+      /* Official header logo is dark — invert for navy glass header */
+      filter: brightness(0) invert(1);
+    }
+
+    /* ≤1150px: logo −20% until a narrower breakpoint overrides (e.g. ≤991px → 36px) */
+    @media (max-width: 1150px) {
+      .site-header__logo img {
+        height: 33.6px; /* 42px × 0.8 */
+      }
+    }
+
+    /* Desktop (non-hamburger): pack links tightly and sit them toward the CTA/right */
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      justify-self: end;
+      width: auto;
+      max-width: 100%;
+      flex-wrap: nowrap;
+      gap: var(--fv-nav-gap);
+      margin-left: auto;
+    }
+
+    .site-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.4em var(--fv-nav-link-pad-x);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.81rem; /* default; wide desktop bumps to 0.9rem below */
+      font-weight: 600;
+      line-height: 1.2;
+      color: rgba(255, 255, 255, 0.92);
+      text-decoration: none;
+      white-space: nowrap;
+      text-shadow: 0 1px 2px rgba(3, 14, 30, 0.35);
+      transition: color 0.2s ease;
+    }
+
+    .site-nav a:hover,
+    .site-nav a:focus-visible {
+      color: var(--fv-teal-bright);
+    }
+
+    /* Nav icons: 1:1; stacked size bumps → 1.44em × 1.15.
+       Hidden in desktop (non-hamburger) nav; shown only in mobile menu. */
+    .site-nav__icon {
+      display: none;
+      width: 1.66em;
+      height: 1.66em;
+      flex-shrink: 0;
+      color: currentColor;
+      overflow: visible;
+    }
+
+    .site-nav__icon .accent {
+      stroke: var(--fv-teal-bright);
+      fill: var(--fv-teal-bright);
+    }
+
+    .site-header__actions {
+      display: flex;
+      align-items: center;
+      justify-self: end;
+      flex-wrap: nowrap;
+      gap: 0.75rem;
+    }
+
+    .site-header__actions--mobile {
+      display: none;
+    }
+
+    .site-header__cta,
+    .site-header__cta:link,
+    .site-header__cta:visited {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.7rem 1.1rem;
+      border-radius: 999px;
+      background: var(--fv-cta);
+      color: #0a2e57;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 0.875rem;
+      font-weight: 700;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.35) inset,
+        0 8px 20px rgba(242, 182, 50, 0.35),
+        0 14px 28px rgba(3, 14, 30, 0.25);
+      transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .site-header__cta:hover,
+    .site-header__cta:focus-visible,
+    .site-header__cta:active {
+      background: var(--fv-cta-hover);
+      color: #0a2e57;
+      transform: translateY(-1px);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.4) inset,
+        0 12px 26px rgba(242, 182, 50, 0.42),
+        0 18px 34px rgba(3, 14, 30, 0.3);
+    }
+
+    .site-header__cta-icon {
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      flex-shrink: 0;
+    }
+
+    .site-header__menu-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      justify-self: end;
+    }
+
+    .hamburger {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 26px;
+      height: 18px;
+    }
+
+    .hamburger__line {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(3, 14, 30, 0.35);
+      transform-origin: center;
+      transition: transform 0.28s ease, opacity 0.2s ease, width 0.2s ease;
+    }
+
+    .site-header__menu-toggle:hover .hamburger__line:nth-child(1) {
+      width: 85%;
+    }
+
+    .site-header__menu-toggle:hover .hamburger__line:nth-child(2) {
+      width: 65%;
+    }
+
+    .site-header__menu-toggle[aria-expanded="true"] .hamburger__line:nth-child(1) {
+      width: 100%;
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .site-header__menu-toggle[aria-expanded="true"] .hamburger__line:nth-child(2) {
+      width: 100%;
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .site-header__menu-toggle[aria-expanded="true"] .hamburger__line:nth-child(3) {
+      width: 100%;
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Wide desktop only: full-size nav labels */
+    @media (min-width: 1201px) {
+      .site-nav a {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* 991px and below: full-width hamburger menu */
+    @media (max-width: 991px) {
+      .site-header__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 1rem;
+        padding: 0.75rem 1.25rem;
+        row-gap: 0;
+      }
+
+      .site-header__actions--desktop {
+        display: none;
+      }
+
+      .site-header__menu-toggle {
+        display: inline-flex;
+        position: relative;
+        z-index: 2;
+      }
+
+      .site-nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        margin-left: 0;
+        justify-self: stretch;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0;
+        padding: 0.35rem 0 1rem;
+        border-radius: 0;
+        border: 0;
+        border-bottom: 1px solid var(--fv-glass-border);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%),
+          linear-gradient(135deg, rgba(10, 46, 87, 0.98) 0%, rgba(7, 31, 58, 0.99) 100%);
+        backdrop-filter: blur(18px) saturate(145%);
+        -webkit-backdrop-filter: blur(18px) saturate(145%);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.14) inset,
+          0 18px 40px rgba(3, 14, 30, 0.45);
+        transform: translateY(-0.5rem);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform 0.4s ease, opacity 0.28s ease, visibility 0.28s ease;
+        z-index: 1;
+      }
+
+      .site-header.is-open .site-nav {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      .site-nav a {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        line-height: 1.3;
+        color: rgba(255, 255, 255, 0.94);
+        white-space: normal;
+        border-bottom: 1px solid var(--fv-divider);
+        text-shadow: none;
+      }
+
+      .site-nav a:hover,
+      .site-nav a:focus-visible {
+        color: var(--fv-teal-bright);
+      }
+
+      .site-nav__icon {
+        display: block;
+        width: 1.66em;
+        height: 1.66em;
+      }
+
+      .site-header__actions--mobile {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 1.15rem 1.25rem 0.35rem;
+      }
+
+      .site-header__actions--mobile .site-header__cta,
+      .site-header__actions--mobile .site-header__cta:link,
+      .site-header__actions--mobile .site-header__cta:visited {
+        width: 100%;
+        justify-content: center;
+        padding: 0.9rem 1.2rem;
+        font-size: 0.9375rem;
+        color: #0a2e57;
+        border-bottom: 0;
+      }
+
+      .site-header__actions--mobile .site-header__cta:hover,
+      .site-header__actions--mobile .site-header__cta:focus-visible,
+      .site-header__actions--mobile .site-header__cta:active {
+        color: #0a2e57;
+        background: var(--fv-cta-hover);
+      }
+
+      .site-header__logo img {
+        height: 36px;
+      }
+    }
+</style>
+<style data-shared-footer>
+/* Safe when opened directly; also harmless when styles are injected into home6 */
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .site-footer {
+      --footer-navy: #061d38;
+      --footer-navy-light: #0a315d;
+      --footer-teal: #00b7b3;
+      --footer-gold: #f2b632;
+      --footer-white: #ffffff;
+      --footer-copy: rgba(255, 255, 255, 0.86);
+      --footer-muted: rgba(255, 255, 255, 0.54);
+      --footer-line: rgba(255, 255, 255, 0.13);
+      position: relative;
+      isolation: isolate;
+      width: 100%;
+      overflow: hidden;
+      color: var(--footer-white);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: var(--footer-navy);
+    }
+
+    .site-footer *,
+    .site-footer *::before,
+    .site-footer *::after {
+      box-sizing: border-box;
+    }
+
+    .site-footer::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      pointer-events: none;
+      background-image: url("https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Footer/Footer_Background_1_Compressed.png");
+      background-position: center top;
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 0.5;
+    }
+
+    .site-footer__inner {
+      position: relative;
+      z-index: 1;
+      width: min(1600px, 100%);
+      margin-inline: auto;
+      padding: clamp(4.5rem, 7vw, 7.5rem) clamp(1.5rem, 5vw, 5.5rem) clamp(1.5rem, 2.5vw, 2.5rem);
+    }
+
+    .site-footer__brand {
+      --footer-lockup-width: min(640px, 88vw);
+      display: grid;
+      justify-items: center;
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .site-footer__logo {
+      display: block;
+      width: var(--footer-lockup-width);
+      text-decoration: none;
+    }
+
+    .site-footer__logo-image {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .site-footer__tagline {
+      width: calc(var(--footer-lockup-width) * 0.7207);
+      margin: calc(var(--footer-lockup-width) * -0.0674 + 1.36rem) 0 0;
+      justify-self: center;
+      transform: translateX(calc(var(--footer-lockup-width) * 0.13575));
+      color: rgba(255, 255, 255, 0.94);
+      font-size: clamp(0.68rem, calc(var(--footer-lockup-width) * 0.0325), 1.3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      text-align: justify;
+      text-align-last: justify;
+      white-space: nowrap;
+    }
+
+    .site-footer__tagline-emphasis {
+      position: relative;
+      display: inline-block;
+      z-index: 0;
+    }
+
+    .site-footer__tagline-emphasis::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      right: 0;
+      bottom: -0.08em;
+      left: 0;
+      height: 3px;
+      background: var(--footer-gold);
+    }
+
+    .site-footer__nav {
+      display: grid;
+      grid-template-columns: 0.95fr 0.95fr 0.85fr 0.95fr 1.15fr;
+      gap: clamp(2rem, 5vw, 6rem);
+      margin-top: clamp(3.5rem, 6vw, 5.5rem);
+      padding-inline: clamp(0rem, 2.5vw, 2.5rem);
+    }
+
+    .site-footer__group {
+      min-width: 0;
+    }
+
+    .site-footer__heading {
+      margin: 0 0 1.25rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--footer-muted);
+    }
+
+    .site-footer__heading--brand {
+      color: #ffffff;
+    }
+
+    .site-footer__links {
+      display: grid;
+      gap: 0.9rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .site-footer__links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: fit-content;
+      max-width: 100%;
+      color: var(--footer-copy);
+      font-size: 0.97rem;
+      font-weight: 500;
+      line-height: 1.45;
+      text-decoration: none;
+      transition: color 180ms ease, transform 180ms ease;
+    }
+
+    .site-footer__links a:hover {
+      color: #ffffff;
+      transform: translateX(3px);
+    }
+
+    .site-footer a:focus-visible {
+      outline: 2px solid var(--footer-teal);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    .site-footer__links svg {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 17px;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .site-footer__address {
+      margin: 0;
+      color: var(--footer-copy);
+      font-size: 0.97rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 1.75;
+    }
+
+    .site-footer__address a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-footer__address a:hover,
+    .site-footer__address a:focus-visible {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-footer__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-top: clamp(3rem, 5vw, 4.5rem);
+      padding-top: clamp(1.25rem, 2vw, 1.75rem);
+      border-top: 1px solid var(--footer-line);
+    }
+
+    .site-footer__legal {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.35rem;
+      color: var(--footer-muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .site-footer__legal a {
+      color: var(--footer-muted);
+      text-decoration: none;
+      transition: color 180ms ease;
+    }
+
+    .site-footer__legal a:hover {
+      color: var(--footer-white);
+    }
+
+    .site-footer__social {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .site-footer__social a {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      color: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.025);
+      transition: color 180ms ease, background 180ms ease, border-color 180ms ease, transform 180ms ease;
+    }
+
+    .site-footer__social a:hover {
+      color: #ffffff;
+      background: rgba(0, 183, 179, 0.22);
+      border-color: rgba(0, 183, 179, 0.75);
+      transform: translateY(-2px);
+    }
+
+    .site-footer__social svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    @media (max-width: 1100px) {
+      .site-footer__inner {
+        padding-top: 5rem;
+      }
+
+      .site-footer__nav {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 2.75rem clamp(2rem, 7vw, 5rem);
+      }
+
+      .site-footer__group:nth-child(4),
+      .site-footer__group:nth-child(5) {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .site-footer::before {
+        background-position: center top;
+        background-size: auto 100%;
+      }
+
+      .site-footer__inner {
+        padding: 4.25rem 1.4rem 1.75rem;
+      }
+
+      .site-footer__logo {
+        width: var(--footer-lockup-width);
+      }
+
+      .site-footer__nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2.5rem 1.5rem;
+        margin-top: 3.5rem;
+        padding-inline: 0;
+      }
+
+      .site-footer__group:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .site-footer__bottom {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .site-footer__brand {
+        --footer-lockup-width: min(640px, 94vw);
+      }
+
+      .site-footer__inner {
+        padding-inline: 1.15rem;
+      }
+
+      .site-footer__tagline {
+        font-size: max(0.62rem, calc(var(--footer-lockup-width) * 0.0325));
+      }
+
+      .site-footer__nav {
+        grid-template-columns: 1fr;
+        gap: 2.25rem;
+        text-align: center;
+      }
+
+      .site-footer__group,
+      .site-footer__group:last-child {
+        grid-column: auto;
+      }
+
+      .site-footer__links {
+        justify-items: center;
+      }
+
+      .site-footer__links a {
+        justify-content: center;
+      }
+
+      .site-footer__address {
+        text-align: center;
+      }
+
+      .site-footer__bottom,
+      .site-footer__legal {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .site-footer__bottom {
+        gap: 1.4rem;
+      }
+
+      .site-footer__legal {
+        flex-direction: column;
+        gap: 0.7rem;
+        width: 100%;
+      }
+
+      .site-footer__social {
+        justify-content: center;
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .site-footer a {
+        transition: none;
+      }
+    }
+</style>
+</head>
+<body>
+
+
+  <header class="site-header" id="site-header">
+    <div class="site-header__glass">
+      <div class="site-header__inner">
+        <a class="site-header__logo" href="https://245865092.hs-sites-na2.com/book-a-demo" aria-label="FUNDVIEW home">
+          <img
+            src="https://245865092.hs-sites-na2.com/hubfs/Landing%20Page/Logo_FundView%20-%20Official%20Header.png"
+            alt="FUNDVIEW"
+            width="200"
+            height="42"
+          >
+        </a>
+
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+
+            <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3.25" y="4.25" width="17.5" height="15.5" rx="2" stroke="currentColor" stroke-width="1.65"/>
+              <path d="M3.25 8.1h17.5" stroke="currentColor" stroke-width="1.65"/>
+              <path d="M8.2 11.05a3.2 3.2 0 11-0.05 6.4 3.2 3.2 0 010.05-6.4z" fill="var(--fv-teal-bright)"/>
+              <path d="M8.2 14.25V11.05A3.2 3.2 0 0111 15.7L8.2 14.25z" fill="#0a2e57" fill-opacity="0.45"/>
+              <path d="M13.45 11.4h5M13.45 14.25h4.05M13.45 17.1h3.1" stroke="currentColor" stroke-width="1.55" stroke-linecap="round"/>
+            </svg>
+            Our ERP Platform
+          </a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+
+            <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3.6" y="3.6" width="7.1" height="7.1" rx="1.5" stroke="currentColor" stroke-width="1.65"/>
+              <rect x="13.3" y="3.6" width="7.1" height="7.1" rx="1.5" stroke="currentColor" stroke-width="1.65"/>
+              <rect x="3.6" y="13.3" width="7.1" height="7.1" rx="1.5" stroke="currentColor" stroke-width="1.65"/>
+              <rect x="13.3" y="13.3" width="7.1" height="7.1" rx="1.5" stroke="var(--fv-teal-bright)" stroke-width="1.65"/>
+            </svg>
+            Solutions
+          </a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+
+            <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.35" stroke="currentColor" stroke-width="1.65"/>
+              <path d="M12 5.15l1.7 5.35L12 12l-1.7-1.5L12 5.15zm0 13.7l-1.7-5.35L12 12l1.7 1.5L12 18.85zM5.15 12l5.35-1.7L12 12l-1.5 1.7L5.15 12zm13.7 0l-5.35 1.7L12 12l1.5-1.7L18.85 12z" fill="currentColor"/>
+              <path d="M8.05 8.05l2.55 1.35L12 12 9.4 10.6 8.05 8.05zm7.9 0l-1.35 2.55L12 12l1.4-2.6 2.55-1.35zM8.05 15.95l2.55-1.35L12 12 9.4 13.4 8.05 15.95zm7.9 0l-1.35-2.55L12 12l1.4 2.6 2.55 1.35z" fill="var(--fv-teal-bright)"/>
+              <circle cx="12" cy="12" r="1.6" fill="var(--fv-teal-bright)"/>
+            </svg>
+            Why FUNDVIEW
+          </a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+
+            <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6.1 7.35c3.1-.15 4.05 3.05 5.9 5.05 1.85 2 3.1 4.35 5.9 4.2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+              <circle cx="5.2" cy="7.35" r="2.15" fill="var(--fv-teal-bright)"/>
+              <circle cx="18.8" cy="16.55" r="2.15" fill="var(--fv-teal-bright)"/>
+            </svg>
+            How We Work
+          </a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">
+
+            <svg class="site-nav__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20.35 13.55 13.55 20.35a1.85 1.85 0 0 1-2.6 0l-7.1-7.1V3.75h9.35l6.95 6.95a1.85 1.85 0 0 1 0 2.85Z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/>
+              <circle cx="8" cy="8" r="1.25" fill="currentColor"/>
+              <text x="13.35" y="15.35" text-anchor="middle" fill="var(--fv-teal-bright)" font-size="7.2" font-family="Inter, Arial, sans-serif" font-weight="700">$</text>
+            </svg>
+            Pricing
+          </a>
+
+          <div class="site-header__actions site-header__actions--mobile">
+            <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+              <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M2.75 12S6.25 5.75 12 5.75 21.25 12 21.25 12 17.75 18.25 12 18.25 2.75 12 2.75 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+              Demo FUNDVIEW
+            </a>
+          </div>
+        </nav>
+
+        <div class="site-header__actions site-header__actions--desktop">
+          <a class="site-header__cta" href="https://245865092.hs-sites-na2.com/book-a-demo">
+            <svg class="site-header__cta-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M2.75 12S6.25 5.75 12 5.75 21.25 12 21.25 12 17.75 18.25 12 18.25 2.75 12 2.75 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+            Demo FUNDVIEW
+          </a>
+        </div>
+
+        <button
+          class="site-header__menu-toggle"
+          type="button"
+          id="menu-toggle"
+          aria-label="Menu"
+          aria-controls="site-nav"
+          aria-expanded="false"
+        >
+          <span class="hamburger" aria-hidden="true">
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <script>
+(function () {
+      const header = document.getElementById("site-header");
+      const toggle = document.getElementById("menu-toggle");
+      const nav = document.getElementById("site-nav");
+      if (!header || !toggle || !nav) return;
+
+      const mq = window.matchMedia("(max-width: 991px)");
+
+      function setOpen(isOpen) {
+        header.classList.toggle("is-open", isOpen);
+        toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        document.body.classList.toggle("nav-open", isOpen && mq.matches);
+      }
+
+      function closeMenu() {
+        setOpen(false);
+      }
+
+      toggle.addEventListener("click", function () {
+        const isOpen = toggle.getAttribute("aria-expanded") === "true";
+        setOpen(!isOpen);
+      });
+
+      nav.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", closeMenu);
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") closeMenu();
+      });
+
+      document.addEventListener("click", function (event) {
+        if (!mq.matches) return;
+        if (!header.contains(event.target)) closeMenu();
+      });
+
+      function handleBreakpoint(event) {
+        if (!event.matches) closeMenu();
+      }
+
+      if (typeof mq.addEventListener === "function") {
+        mq.addEventListener("change", handleBreakpoint);
+      } else if (typeof mq.addListener === "function") {
+        mq.addListener(handleBreakpoint);
+      }
+    })();
+  </script>
+
+
+
+<section class="hero">
+  <div class="container">
+    <span class="eyebrow reveal">The Platform That Powers Local Government</span>
+    <h1 class="reveal">FUNDVIEW Exists To <span class="text-accent">Make Finance &amp; Operations Easier</span></h1>
+    <p class="sub reveal">In less than 15 minutes, you'll discover how local governments are simplifying operations, gaining real-time visibility, and eliminating manual work with one connected platform.</p>
+
+
+
+    <div class="video-wrap reveal" role="button" tabindex="0" aria-label="Play the FUNDVIEW overview video">
+      <div class="video-aspect">
+        <div class="dash" aria-hidden="true">
+          <div class="dash-side">
+            <div class="dash-brand"><svg class="mark" viewBox="0 0 40 40"><path d="M20 2 L38 20 L20 38 L2 20 Z" fill="#17A6BC"/><path d="M20 10 L30 20 L20 30 L10 20 Z" fill="#23C3D8"/></svg>FUNDVIEW</div>
+            <div class="item"><span class="dot"></span>Dashboard</div>
+            <div class="item"><span class="dot"></span>Financials</div>
+            <div class="item child active"><span class="dot"></span>General Ledger</div>
+            <div class="item child"><span class="dot"></span>Bank Reconciliation</div>
+            <div class="item child"><span class="dot"></span>Budget Manager</div>
+            <div class="item child"><span class="dot"></span>Accounts Payable</div>
+            <div class="item child"><span class="dot"></span>Purchasing</div>
+            <div class="item"><span class="dot"></span>Utility Billing</div>
+            <div class="item"><span class="dot"></span>Payroll</div>
+            <div class="item"><span class="dot"></span>Court</div>
+            <div class="item"><span class="dot"></span>Permits</div>
+            <div class="item"><span class="dot"></span>Reporting</div>
+          </div>
+          <div class="dash-main">
+            <div class="dash-top">
+              <div class="dtitle">General Ledger Dashboard</div>
+              <div class="dash-drop">This Year (FY2024) ▾</div>
+              <div class="dash-icons"><i></i><i></i><i></i></div>
+            </div>
+            <div class="dash-cards">
+              <div class="dash-card"><div class="lbl">Total Revenues</div><div class="val">$28.4M</div><div class="chg">▲ 6.2% vs prior year</div></div>
+              <div class="dash-card"><div class="lbl">Total Expenses</div><div class="val">$22.7M</div><div class="chg">▲ 5.4% vs prior year</div></div>
+              <div class="dash-card"><div class="lbl">Fund Balance</div><div class="val">$15.6M</div><div class="chg">▲ 8.1% vs prior year</div></div>
+              <div class="dash-card"><div class="lbl">Open Items</div><div class="val">248</div><div class="chg down">▼ 12% vs prior year</div></div>
+            </div>
+            <div class="dash-lower">
+              <div class="dash-panel">
+                <div class="ph">Revenues vs Expenses
+                  <span class="legend"><span><b style="background:#23C3D8"></b>Rev</span><span><b style="background:#3f6ea5"></b>Exp</span></span>
+                </div>
+                <div class="bars"><span style="height:55%"></span><span style="height:40%"></span><span style="height:72%"></span><span style="height:48%"></span><span style="height:84%"></span><span style="height:58%"></span><span style="height:92%"></span><span style="height:64%"></span><span style="height:70%"></span><span style="height:50%"></span></div>
+              </div>
+              <div class="dash-panel">
+                <div class="ph">Expenses by Department</div>
+                <div class="donut-wrap">
+                  <div class="donut"></div>
+                  <div class="donut-legend">
+                    <span><b style="background:#23C3D8"></b>Public Safety 30%</span>
+                    <span><b style="background:#3f7cb8"></b>Public Works 25%</span>
+                    <span><b style="background:#2f5c8c"></b>Community Dev. 10%</span>
+                    <span><b style="background:#4a8fd0"></b>Parks &amp; Rec. 15%</span>
+                    <span><b style="background:#24486f"></b>Other 20%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="dash-panel">
+                <div class="ph">Quick Actions</div>
+                <div class="qa">
+                  <a><b></b>View General Ledger</a>
+                  <a><b></b>Reconcile Bank Accounts</a>
+                  <a><b></b>Review Budget</a>
+                  <a><b></b>Run Financial Reports</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="play-btn" aria-label="Play video"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+
+        <div class="controls">
+          <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <span class="time">0:00</span>
+          <div class="progress"></div>
+          <span class="time">14:32</span>
+          <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4z"/></svg>
+          <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94a7.9 7.9 0 000-1.88l2-1.56-2-3.46-2.36.96a7.7 7.7 0 00-1.62-.94L14.5 2h-4l-.36 2.06c-.58.24-1.12.55-1.62.94L6.16 4 4.16 7.46l2 1.56a7.9 7.9 0 000 1.88l-2 1.56 2 3.46 2.36-.96c.5.39 1.04.7 1.62.94L10.5 22h4l.36-2.06c.58-.24 1.12-.55 1.62-.94l2.36.96 2-3.46-2-1.56zM12 15.5A3.5 3.5 0 1112 8.5a3.5 3.5 0 010 7z"/></svg>
+          <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="trust client_ticker" id="client_ticker" aria-label="Cities that trust FUNDVIEW">
+  <div class="trust__carousel" id="trust-carousel" aria-live="polite">
+    <div class="trust__carousel-wrap">
+      <button class="trust__nav-btn trust__nav-btn--prev" id="trust-prev" type="button" aria-label="Previous logos">
+        <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </button>
+      <div class="trust__viewport">
+        <div class="trust__track" id="trust-track">
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Reno.png" alt="Reno, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Anthony.png" alt="Anthony, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_City_of_Iowa_Colony.png" alt="City of Iowa Colony, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Hickory%20Creek.png" alt="Hickory Creek, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Jacksboro.png" alt="Jacksboro, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Keene.png" alt="Keene, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Quinlan.png" alt="Quinlan, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Mason%20(1).png" alt="Mason, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Winnsboro%20(1).png" alt="Winnsboro, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Big%20Lake%20(1).png" alt="Big Lake, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Sweetwater%20(1).png" alt="Sweetwater, TX" loading="lazy"></div></div>
+          <div class="trust__logo-item"><div class="trust__logo-card"><img src="https://245865092.hs-sites-na2.com/hubfs/Client%20Town-City%20Logos/TX_Muenster%20(1).png" alt="Muenster, TX" loading="lazy"></div></div>
+        </div>
+      </div>
+      <button class="trust__nav-btn trust__nav-btn--next" id="trust-next" type="button" aria-label="Next logos">
+        <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </button>
+      <button class="trust__pause-btn is-playing" id="trust-pause" type="button" aria-label="Pause carousel" aria-pressed="false" title="Pause carousel">
+        <svg class="trust__pause-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="2.5" height="10" rx=".75" fill="currentColor"/><rect x="7.5" y="1" width="2.5" height="10" rx=".75" fill="currentColor"/></svg>
+        <svg class="trust__play-icon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.25 1.5L10.5 6l-7.25 4.5v-9z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<section class="FUNDVIEW_Text_Scroll" id="FUNDVIEW_Text_Scroll" data-div-reveal="true" aria-label="FUNDVIEW connected ERP platform">
+  <div class="FUNDVIEW_Text_Scroll__visual" aria-hidden="true">
+    <div class="FUNDVIEW_Text_Scroll__background"></div>
+  </div>
+  <div class="container">
+    <div class="FUNDVIEW_Text_Scroll__content" data-highlight-text>
+      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--lead"><span class="FUNDVIEW_Text_Scroll__line">FUNDVIEW is one connected ERP platform—built for local government.</span></p>
+      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--support">
+        <span class="FUNDVIEW_Text_Scroll__line">Every department works from the same real-time data.</span>
+        <span class="FUNDVIEW_Text_Scroll__line">Financials update automatically.</span>
+        <span class="FUNDVIEW_Text_Scroll__line">Workflows keep moving.</span>
+        <span class="FUNDVIEW_Text_Scroll__line">Leadership sees what’s happening now.</span>
+      </p>
+      <p class="FUNDVIEW_Text_Scroll__copy FUNDVIEW_Text_Scroll__copy--outcome">
+        <span class="FUNDVIEW_Text_Scroll__line">Fewer disconnected systems. Less duplicate entry.</span>
+        <span class="FUNDVIEW_Text_Scroll__line">Stronger collaboration. More confident decisions.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<section class="SEC_learn">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>What You'll Learn</h2>
+      <p>Everything your city needs — explained in one focused session.</p>
+    </div>
+    <div class="learn-grid">
+      <div class="learn-card reveal">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="2.5"/><circle cx="5" cy="18" r="2.5"/><circle cx="19" cy="18" r="2.5"/><path d="M12 8.5v3M10 13l-3.2 2.6M14 13l3.2 2.6"/></svg></div>
+        <h3>One Connected Platform</h3><p>See how every department works together on a single system.</p>
+      </div>
+      <div class="learn-card reveal">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M4 20V10M9 20V4M14 20v-7M19 20V8"/><path d="M3 20h18"/></svg></div>
+        <h3>Financial Management</h3><p>Gain real-time visibility into your city's finances and fund balances.</p>
+      </div>
+      <div class="learn-card reveal">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0M16 6a3 3 0 010 6M18 20a6 6 0 00-3-5.2"/></svg></div>
+        <h3>Payroll &amp; HR</h3><p>Simplify payroll, benefits, HR, and employee management.</p>
+      </div>
+      <div class="learn-card reveal">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M12 3s6 5.5 6 10a6 6 0 01-12 0c0-4.5 6-10 6-10z"/></svg></div>
+        <h3>Utility Billing</h3><p>Improve customer service while cutting manual work.</p>
+      </div>
+      <div class="learn-card reveal">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h5M9.5 15.5h5"/></svg></div>
+        <h3>Permits, Court &amp; Community Development</h3><p>Manage permits, inspections, citations, and court operations from one platform.</p>
+      </div>
+      <div class="learn-card featured reveal">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 10-3.5 7.1"/><path d="M21 5v5h-5"/></svg></div>
+        <h3>Why Cities Switch</h3><p>Understand why municipalities are replacing disconnected software with FUNDVIEW.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="SEC_customer_outcomes" aria-labelledby="customer-outcomes-title">
+  <div class="container">
+    <div class="customer-outcomes__panel reveal">
+      <div class="customer-outcomes__intro">
+        <span class="eyebrow">Built for better government</span>
+        <h2 id="customer-outcomes-title">Customer Outcomes</h2>
+        <p>A connected platform gives every department the clarity, control, and confidence to serve its community better.</p>
+      </div>
+      <ul class="customer-outcomes__list">
+        <li class="customer-outcomes__item"><span class="customer-outcomes__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8"/></svg></span><span>One source of truth across every department</span></li>
+        <li class="customer-outcomes__item"><span class="customer-outcomes__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8"/></svg></span><span>Real-time visibility into financial and operational activity</span></li>
+        <li class="customer-outcomes__item"><span class="customer-outcomes__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8"/></svg></span><span>Eliminate duplicate data entry and disconnected systems</span></li>
+        <li class="customer-outcomes__item"><span class="customer-outcomes__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8"/></svg></span><span>Improve collaboration across departments</span></li>
+        <li class="customer-outcomes__item"><span class="customer-outcomes__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8"/></svg></span><span>Automate notifications and routine workflows</span></li>
+        <li class="customer-outcomes__item"><span class="customer-outcomes__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8"/></svg></span><span>Increase security and accountability</span></li>
+        <li class="customer-outcomes__item"><span class="customer-outcomes__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8"/></svg></span><span>Access information securely from anywhere</span></li>
+        <li class="customer-outcomes__item"><span class="customer-outcomes__check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8"/></svg></span><span>Support better decisions with real-time reporting</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<section class="SEC_one_connected_platform" aria-labelledby="one-connected-platform-title">
+  <div class="ocp-hero reveal">
+    <div class="container">
+      <div class="ocp-hero__inner">
+        <div class="ocp-hero__icon" aria-hidden="true" data-icon-slot="hero">
+          <img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_One%20Connected%20Platform/01-connected-platform.png" alt="" width="144" height="144" loading="lazy" decoding="async">
+        </div>
+        <div class="ocp-hero__copy">
+          <h2 id="one-connected-platform-title">One Connected Platform</h2>
+          <p>Every department works from the same connected ERP, eliminating disconnected software and improving collaboration across the organization.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ocp-body">
+    <div class="container">
+      <div class="ocp-grid">
+        <article class="ocp-item reveal">
+          <div class="ocp-icon" aria-hidden="true" data-icon-slot="real-time-general-ledger"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_One%20Connected%20Platform/02-real-time-general-ledger.png" alt="" width="85" height="85" loading="lazy" decoding="async"></div>
+          <div class="ocp-copy">
+            <h3>Real-Time General Ledger</h3>
+            <p>Financial information updates automatically as work is completed, giving finance teams immediate visibility without waiting for end-of-day or batch processes.</p>
+          </div>
+        </article>
+        <article class="ocp-item reveal">
+          <div class="ocp-icon" aria-hidden="true" data-icon-slot="dashboards-reporting"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_One%20Connected%20Platform/03-dashboards-reporting.png" alt="" width="85" height="85" loading="lazy" decoding="async"></div>
+          <div class="ocp-copy">
+            <h3>Dashboards &amp; Reporting</h3>
+            <p>Access real-time dashboards and reports that provide leadership with the information they need to make confident decisions.</p>
+          </div>
+        </article>
+        <article class="ocp-item reveal">
+          <div class="ocp-icon" aria-hidden="true" data-icon-slot="text-email-notifications"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_One%20Connected%20Platform/04-text-email-notifications.png" alt="" width="85" height="85" loading="lazy" decoding="async"></div>
+          <div class="ocp-copy">
+            <h3>Text &amp; Email Notifications</h3>
+            <p>Automatically notify employees, departments, contractors, and citizens of important updates, approvals, reminders, and status changes.</p>
+          </div>
+        </article>
+        <article class="ocp-item reveal">
+          <div class="ocp-icon" aria-hidden="true" data-icon-slot="document-management"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_One%20Connected%20Platform/05-document-management.png" alt="" width="85" height="85" loading="lazy" decoding="async"></div>
+          <div class="ocp-copy">
+            <h3>Document Management</h3>
+            <p>Keep documents, images, and supporting records connected to the transactions, cases, permits, employees, and accounts they belong to.</p>
+          </div>
+        </article>
+        <article class="ocp-item reveal">
+          <div class="ocp-icon" aria-hidden="true" data-icon-slot="approval-workflows"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_One%20Connected%20Platform/06-approval-workflows.png" alt="" width="85" height="85" loading="lazy" decoding="async"></div>
+          <div class="ocp-copy">
+            <h3>Approval Workflows</h3>
+            <p>Automate routing and approvals for purchasing, payroll, permits, and other operational processes to improve accountability and reduce delays.</p>
+          </div>
+        </article>
+        <article class="ocp-item reveal">
+          <div class="ocp-icon" aria-hidden="true" data-icon-slot="cloud-based-access"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_One%20Connected%20Platform/07-cloud-based-access.png" alt="" width="85" height="85" loading="lazy" decoding="async"></div>
+          <div class="ocp-copy">
+            <h3>Cloud-Based Access</h3>
+            <p>Securely access FUNDVIEW from the office, in the field, or while working remotely through a modern cloud platform.</p>
+          </div>
+        </article>
+      </div>
+      <article class="ocp-featured reveal">
+        <div class="ocp-icon" aria-hidden="true" data-icon-slot="security-compliance"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_One%20Connected%20Platform/08-security-compliance.png" alt="" width="85" height="85" loading="lazy" decoding="async"></div>
+        <div class="ocp-copy">
+          <h3>Security &amp; Compliance</h3>
+          <p>Protect sensitive information with role-based security, audit trails, and a platform built to support the compliance requirements of local government.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<section class="SEC_why_organizations_choose_fundview" aria-labelledby="why-organizations-choose-title">
+  <div class="container">
+    <div class="wocf-layout">
+      <div class="wocf-intro reveal">
+        <h2 id="why-organizations-choose-title">Why Organizations Choose the FUNDVIEW Platform</h2>
+      </div>
+      <div class="wocf-grid">
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="one-connected-erp"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_why_organizations_choose_fundview/01-one-connected-platform.png" alt="" width="65" height="65" loading="lazy" decoding="async"></div>
+          <p>One connected ERP platform</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="connected-financial-operational-data"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_why_organizations_choose_fundview/02-connected-financial-operational-data.png" alt="" width="65" height="65" loading="lazy" decoding="async"></div>
+          <p>Connected financial and operational data</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="realtime-visibility"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_why_organizations_choose_fundview/03-real-time-visibility.png" alt="" width="65" height="65" loading="lazy" decoding="async"></div>
+          <p>Real-time visibility across every department</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="scalable-community-grows"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_why_organizations_choose_fundview/04-scalable-community-growth.png" alt="" width="65" height="65" loading="lazy" decoding="async"></div>
+          <p>Scalable as your community grows</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="built-for-local-government"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_why_organizations_choose_fundview/05-local-government.png" alt="" width="65" height="65" loading="lazy" decoding="async"></div>
+          <p>Built specifically for local government</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="us-based-support"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_why_organizations_choose_fundview/06-us-based-support.png" alt="" width="65" height="65" loading="lazy" decoding="async"></div>
+          <p>U.S.-based support from experts who understand local government</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="cloud-based-secure"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_why_organizations_choose_fundview/07-cloud-based-secure.png" alt="" width="65" height="65" loading="lazy" decoding="async"></div>
+          <p>Cloud-based and secure</p>
+        </article>
+        <article class="wocf-item reveal">
+          <div class="wocf-icon" aria-hidden="true" data-icon-slot="automated-workflows-notifications"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_why_organizations_choose_fundview/08-automated-workflows-notifications.png" alt="" width="65" height="65" loading="lazy" decoding="async"></div>
+          <p>Automated workflows and notifications</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="SEC_Ready_for_FUNDVIEW_demo ocp-hero reveal" aria-labelledby="ready-for-fundview-demo-title">
+  <div class="container">
+    <div class="ready-demo__content">
+      <h2 id="ready-for-fundview-demo-title">Ready to learn how FUNDVIEW can improve your local government’s finance and operations?</h2>
+      <a href="#demo" class="btn btn-gold btn-lg">I'm Ready For My Personalized Demo</a>
+    </div>
+  </div>
+</section>
+
+
+<section class="section results">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Customer Results</h2>
+      <p>Helping local governments work better together.</p>
+    </div>
+    <div class="carousel reveal">
+      <button class="c-arrow left" type="button" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="carousel-viewport" id="qViewport">
+        <div class="carousel-track" id="qTrack">
+          <div class="qcard">
+            <span class="qmark">&ldquo;</span>
+            <p>FUNDVIEW has simplified our workflow to the point where we can dedicate more time to the customer. It has truly cut down our workload.</p>
+            <div class="stars">★★★★★</div>
+            <div class="who"><strong>Christian</strong><span>City of Sweetwater, TX</span></div>
+          </div>
+          <div class="qcard">
+            <span class="qmark">&ldquo;</span>
+            <p>We highly recommend FUNDVIEW to other cities and have even hosted other city secretaries and court clerks to come and view our system.</p>
+            <div class="stars">★★★★★</div>
+            <div class="who"><strong>Ammie</strong><span>Muenster, TX</span></div>
+          </div>
+          <div class="qcard">
+            <span class="qmark">&ldquo;</span>
+            <p>I would definitely recommend the Accounts Payable, Payroll &amp; General Ledger — they work wonderful and I would rate those a definite 10.</p>
+            <div class="stars">★★★★★</div>
+            <div class="who"><strong>Karen</strong><span>Big Lake, TX</span></div>
+          </div>
+          <div class="qcard qcard--expandable" data-quote="donna">
+            <span class="qmark">&ldquo;</span>
+            <p class="qcard__quote">FUNDVIEW has been a great asset in many ways to the City of Mason. FUNDVIEW has made preparing for the annual audit so much easier by allowing the auditors direct access to the information needed. This saves time and paper as well as the time the auditors have to spend in our office since most of the work is done in advance. Most of all, Customer Support is amazing. I have always had prompt and helpful response, which is very appreciated.</p>
+            <button type="button" class="qcard__more" aria-expanded="false" aria-label="Read more">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="stars">★★★★★</div>
+            <div class="who"><strong>Donna</strong><span>City of Mason, TX</span></div>
+          </div>
+          <div class="qcard">
+            <span class="qmark">&ldquo;</span>
+            <p>Love it and so handy and easy!</p>
+            <div class="stars">★★★★★</div>
+            <div class="who"><strong>Lisa</strong><span>City of Winnsboro, TX</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="c-arrow right" type="button" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="c-dots" id="qDots" aria-label="Testimonial slides"><i class="active"></i><i></i><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+
+<section class="SEC_Customer_Story customer_story" id="SEC_Customer_Story" aria-labelledby="customer-story-heading">
+  <div class="customer_story__inner">
+    <div class="customer_story__copy">
+      <span class="customer_story__eyebrow">Customer Story</span>
+      <h2 class="customer_story__title" id="customer-story-heading">Watch the City of Tulia Story</h2>
+      <p class="customer_story__lead">See how one Texas city connected finance and operations, preserved institutional knowledge, and created capacity for future growth.</p>
+      <a class="customer_story__cta" href="https://www.youtube.com/watch?v=x3G-SIItVno" id="customer-stories-video" target="_blank" rel="noopener">
+        <svg class="customer_story__cta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+        Watch the Story
+      </a>
+    </div>
+    <div class="customer_story__media">
+      <button type="button" class="customer_story__video" data-video-id="x3G-SIItVno" aria-label="Play the City of Tulia story video">
+        <img class="customer_story__thumb" src="https://i.ytimg.com/vi/x3G-SIItVno/maxresdefault.jpg" alt="City of Tulia, Texas story" loading="lazy">
+        <span class="customer_story__play" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<section class="section dark glow-tr">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Designed for the Way Local Governments Actually Work</h2>
+      <p>Helping your team work faster and smarter.</p>
+      <p class="section-note">FUNDVIEW connects finance, payroll, utility billing, municipal court, permitting, code enforcement, citizen services, and more in one fully integrated platform — so your staff spends less time managing systems and more time serving the community.</p>
+    </div>
+    <div class="stats reveal">
+      <div class="stat">
+        <div class="ring" style="--p:30%"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-4"/><path d="M9 3v4h4M15 3h6v6M21 3l-9 9"/></svg></div>
+        <div class="num">30%</div><div class="lbl">Average Reclaimed Workload</div>
+      </div>
+      <div class="stat">
+        <div class="ring" style="--p:50%"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M14 3v5h5M8 13h8M8 16h5"/></svg></div>
+        <div class="num">50%</div><div class="lbl">Reduced Bank Reconciliation Time</div>
+      </div>
+      <div class="stat">
+        <div class="ring" style="--p:70%"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <div class="num">70%</div><div class="lbl">Faster Month-End Close</div>
+      </div>
+      <div class="stat">
+        <div class="ring" style="--p:96%"><svg viewBox="0 0 24 24"><path d="M20 8.5c0 5-8 11-8 11S4 13.5 4 8.5a4 4 0 018-1 4 4 0 018 1z"/></svg></div>
+        <div class="num">96%</div><div class="lbl">Customer Retention Rate</div>
+      </div>
+      <div class="stat">
+        <div class="ring" style="--p:100%"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="num">100%</div><div class="lbl">GASB &amp; GAAP Compliant</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="feature-grid">
+      <div class="feature reveal">
+        <div class="ficon"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="2.4"/><circle cx="5" cy="18" r="2.4"/><circle cx="19" cy="18" r="2.4"/><path d="M12 8.4v3M10 13l-3 2.6M14 13l3 2.6"/></svg></div>
+        <div><h3>All-in-One ERP Software</h3><p>Manage finance, payroll, utilities, and citizen services from a single, integrated system — no more juggling disconnected tools.</p></div>
+      </div>
+      <div class="feature reveal">
+        <div class="ficon"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div><h3>Secure &amp; Compliant</h3><p>Built with government-grade security and compliance standards to protect sensitive data and meet regulatory requirements.</p></div>
+      </div>
+      <div class="feature reveal">
+        <div class="ficon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M14.5 9a2.5 2.5 0 00-5 0c0 3 5 1.5 5 4.5a2.5 2.5 0 01-5 0M12 6.5v11"/></svg></div>
+        <div><h3>Save Time &amp; Money</h3><p>Automate routine tasks, reduce manual errors, and free up your team to focus on what matters most — serving your community.</p></div>
+      </div>
+      <div class="feature reveal">
+        <div class="ficon"><svg viewBox="0 0 24 24"><path d="M12 21s-6-4.5-6-9a6 6 0 016-6 6 6 0 016 6c0 4.5-6 9-6 9z"/><path d="M8 11l2.5 2.5L16 9"/></svg></div>
+        <div><h3>U.S.-Based Support That Cares</h3><p>Experts who understand local government. We're with you every step of the way and truly care about your success.</p></div>
+      </div>
+      <div class="feature reveal">
+        <div class="ficon"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1118 0M12 3v3M12 21v-3M10 15l4-6"/></svg></div>
+        <div><h3>Create Capacity</h3><p>Replace disconnected systems and manual work with streamlined processes that spend less time managing systems.</p></div>
+      </div>
+      <div class="feature reveal">
+        <div class="ficon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></div>
+        <div><h3>Simplify Operations</h3><p>Streamline your processes, replace disconnected systems, and reduce manual work across your organization.</p></div>
+      </div>
+      <div class="feature reveal">
+        <div class="ficon"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg></div>
+        <div><h3>Preserve Institutional Knowledge</h3><p>Keep information accessible across departments and safeguard knowledge through staff transitions.</p></div>
+      </div>
+      <div class="feature reveal">
+        <div class="ficon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+        <div><h3>Thoughtfully Designed</h3><p>Built with customer-centric simplicity and organization in every workflow, so your team works with less friction.</p></div>
+      </div>
+      <div class="feature reveal">
+        <div class="ficon"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div><h3>Real-Time Visibility</h3><p>Every module updates the General Ledger in real time, giving leaders instant visibility into performance and finances.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section platform">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">One Platform. Endless Possibilities.</span>
+      <h2>Everything Your Municipality Needs, Connected.</h2>
+      <p>Explore every module before and after the card flip.</p>
+    </div>
+    <div class="platform-grid-wrap">
+      <div class="flip-helper" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 9A7 7 0 0 1 18 6l2 2M17.9 15A7 7 0 0 1 6 18l-2-2"/></svg>
+        <span>Hover<br>to flip</span>
+      </div>
+      <div class="platform-grid">
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip General Ledger details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/01-general-ledger_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>General Ledger</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/01-general-ledger_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>General Ledger</h3><p>Fund accounting, budgeting, cash management, and financial reporting.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Bank Reconciliation details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/02-bank-reconciliation_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Bank Reconciliation</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/02-bank-reconciliation_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Bank Reconciliation</h3><p>Automates up to 70% of reconciliation for faster balancing.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Budget Manager details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/03-budgeting-forecasting_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Budget Manager</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/03-budgeting-forecasting_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Budget Manager</h3><p>Budget planning, tracking, and real-time analysis.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Accounts Payable details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/04-accounts-payable_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Accounts Payable</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/04-accounts-payable_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Accounts Payable</h3><p>Vendor invoices, approvals, payments, and secure signatures.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Purchasing details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/05-purchasing-requisitions_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Purchasing</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/05-purchasing-requisitions_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Purchasing</h3><p>Requisitions and purchase orders with budget validation.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Asset Management details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/06-procurement-logistics_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Asset Management</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/06-procurement-logistics_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Asset Management</h3><p>Assets, depreciation, insurance, maintenance, and utilization.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Payroll details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/07-payroll_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Payroll</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/07-payroll_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Payroll</h3><p>Payroll, benefits, accruals, time entry, and reporting.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Distributed Time Entry details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/08-time-and-attendance_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Distributed Time Entry</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/08-time-and-attendance_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Distributed Time Entry</h3><p>Department time entry submitted directly into payroll.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Human Resources details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/09-human-resources_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Human Resources</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/09-human-resources_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Human Resources</h3><p>Hiring, certifications, evaluations, training, and records.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Utility Billing details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/10-utility-billing_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Utility Billing</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/10-utility-billing_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Utility Billing</h3><p>Metered billing, deposits, payments, usage history, and workflows.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Service Orders details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/11-work-orders_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Service Orders</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/11-work-orders_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Service Orders</h3><p>Requests, dispatch, field work, and real-time updates.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Municipal Court details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/12-court-case-management_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Municipal Court</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><span class="capability-card__corner-icon" aria-hidden="true"></span><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/12-court-case-management_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Municipal Court</h3><p>Case processing, payments, reporting, and administration.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Code Enforcement details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/14-workflow-automation_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Code Enforcement</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/14-workflow-automation_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Code Enforcement</h3><p>Violations, inspections, photos, notices, and case tracking.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip Permits details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/13-permits-licensing_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Permits</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/13-permits-licensing_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>Permits</h3><p>Applications, approvals, inspections, communications, and payments.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+        <article class="flip-card reveal" tabindex="0" role="button" aria-label="Flip CityCentral details" aria-pressed="false"><div class="flip-card__inner">
+          <div class="flip-card__face flip-card__front"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/15-citizen-self-service_Compressed.png" alt="" width="108" height="108" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>CityCentral™</h3></div><span class="flip-card__action">Get details ↗</span></div>
+          <div class="flip-card__face flip-card__back"><div class="flip-card__icon"><img src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Our%20ERP%20Platform/SEC_15%20Solution%20Cards/15-citizen-self-service_Compressed.png" alt="" width="76" height="76" loading="lazy" decoding="async"></div><div class="flip-card__copy"><h3>CityCentral™</h3><p>Citizen self-service for utility billing and municipal court access.</p></div><span class="flip-card__action">Explore →</span></div>
+        </div></article>
+      </div>
+    </div>
+
+    <div class="notification-banner reveal">
+      <div class="notification-banner__icon"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></div>
+      <div><h3>Text &amp; Email Notifications</h3><p>Keep teams informed with automated approvals, reminders, and workflow updates.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section dark glow-tr glow-bl" id="demo">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Ready to See FUNDVIEW?</h2>
+      <p>Choose the conversation that's right for you.</p>
+    </div>
+    <div class="cta-cards">
+      <div class="cta-card reveal">
+        <div class="cicon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <h3>15-Minute Q&amp;A</h3>
+        <p>Ask questions. Get a quick overview. Explore at your own pace.</p>
+        <a href="#" class="btn btn-teal">Talk to Our Team →</a>
+      </div>
+      <div class="cta-card reveal">
+        <div class="cicon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <h3>60-Minute Personalized Demo</h3>
+        <p>See how FUNDVIEW works based on your city's actual needs.</p>
+        <a href="#" class="btn btn-teal">Book a Time →</a>
+      </div>
+      <div class="cta-card reveal">
+        <div class="cicon"><svg viewBox="0 0 24 24"><path d="M20 12V7a2 2 0 00-2-2h-3l-2-2H6a2 2 0 00-2 2v14a2 2 0 002 2h6"/><path d="M16 15l2 2 4-4"/></svg></div>
+        <h3>Request Pricing</h3>
+        <p>Receive a customized pricing estimate for your city.</p>
+        <a href="#" class="btn btn-teal">Get a Quote →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__brand">
+        <a class="site-footer__logo" href="home.html" aria-label="FUNDVIEW home">
+          <img class="site-footer__logo-image" src="https://245865092.fs1.hubspotusercontent-na2.net/hubfs/245865092/Site_Home%20Page/Footer/LOGO_FUNDVIEW_Footer1.png" alt="FUNDVIEW">
+        </a>
+        <p class="site-footer__tagline">
+          The Platform That <span class="site-footer__tagline-emphasis">Powers</span> Local Governments
+        </p>
+      </div>
+
+      <nav class="site-footer__nav" aria-label="Footer navigation">
+        <section class="site-footer__group" aria-labelledby="footer-platform">
+          <h2 class="site-footer__heading" id="footer-platform">Platform</h2>
+          <ul class="site-footer__links">
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Solutions</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Pricing</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Support</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Login</a></li>
+          </ul>
+        </section>
+
+        <section class="site-footer__group" aria-labelledby="footer-company">
+          <h2 class="site-footer__heading" id="footer-company">Company</h2>
+          <ul class="site-footer__links">
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Team</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Careers</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Contact Us</a></li>
+          </ul>
+        </section>
+
+        <section class="site-footer__group" aria-labelledby="footer-resources">
+          <h2 class="site-footer__heading" id="footer-resources">Resources</h2>
+          <ul class="site-footer__links">
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Resources</a></li>
+            <li><a href="https://245865092.hs-sites-na2.com/book-a-demo">Newsletter</a></li>
+          </ul>
+        </section>
+
+        <section class="site-footer__group" aria-labelledby="footer-connect">
+          <h2 class="site-footer__heading" id="footer-connect">Connect</h2>
+          <ul class="site-footer__links">
+            <li>
+              <a href="https://www.youtube.com/channel/UC_NkV6nKSvqjK8WVASbvYdQ" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="m10 9 5 3-5 3V9z" fill="currentColor"/></svg>
+                YouTube
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/fundviewsoftware" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 8.5H13a1.5 1.5 0 0 0-1.5 1.5v2h3l-.5 3h-2.5v6h-3v-6H6v-3h2.5v-2A4.5 4.5 0 0 1 13 5.5h1.5v3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                Facebook
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/fund-accounting-solution-technologies-inc-/" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7.75 10.25v6.25M7.75 7.4v.1M11.5 16.5v-3.75a2.25 2.25 0 0 1 4.5 0v3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                LinkedIn
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section class="site-footer__group" aria-labelledby="footer-fundview">
+          <h2 class="site-footer__heading site-footer__heading--brand" id="footer-fundview">FUNDVIEW</h2>
+          <address class="site-footer__address">
+            Fund Accounting Solution Technologies, Inc.<br>
+            <a href="https://maps.app.goo.gl/WQtW3YwUcE5m2uh3A" target="_blank" rel="noopener noreferrer">
+              5225 S Loop 289<br>
+              Lubbock, TX 79424
+            </a>
+          </address>
+        </section>
+      </nav>
+
+      <div class="site-footer__bottom">
+        <div class="site-footer__legal">
+          <span>&copy; 2026 FUNDVIEW. All rights reserved.</span>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Terms</a>
+          <a href="https://245865092.hs-sites-na2.com/book-a-demo">Privacy</a>
+        </div>
+
+        <div class="site-footer__social" aria-label="FUNDVIEW social media">
+          <a href="https://www.youtube.com/channel/UC_NkV6nKSvqjK8WVASbvYdQ" target="_blank" rel="noopener noreferrer" aria-label="FUNDVIEW on YouTube">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.6 2.6 0 0 0-1.83-1.85C18.16 4.9 12 4.9 12 4.9s-6.16 0-7.77.45A2.6 2.6 0 0 0 2.4 7.2 27.3 27.3 0 0 0 2 12a27.3 27.3 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.83 1.85c1.61.45 7.77.45 7.77.45s6.16 0 7.77-.45a2.6 2.6 0 0 0 1.83-1.85A27.3 27.3 0 0 0 22 12a27.3 27.3 0 0 0-.4-4.8zM10 14.5v-5l4.5 2.5-4.5 2.5z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/fundviewsoftware" target="_blank" rel="noopener noreferrer" aria-label="FUNDVIEW on Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.87.24-1.46 1.49-1.46H16.5V5.06c-.28-.04-1.22-.12-2.32-.12-2.3 0-3.87 1.4-3.87 3.98V11H7.9v3h2.41v7h3.19z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/fund-accounting-solution-technologies-inc-/" target="_blank" rel="noopener noreferrer" aria-label="FUNDVIEW on LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 8.65H4.1V19h2.84V8.65zM5.52 7.37a1.69 1.69 0 1 0 0-3.37 1.69 1.69 0 0 0 0 3.37zM19.9 13.06c0-3.02-1.61-4.42-3.76-4.42-1.73 0-2.5.95-2.94 1.62V8.65H10.4V19h2.84v-5.5c0-1.46.67-2.33 1.94-2.33 1.23 0 1.88.83 1.88 2.33V19h2.84v-5.94z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+<script>
+/* ===== Scroll reveal ===== */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDelay = ((i%6)*0.06)+'s'; io.observe(el); });
+
+/* ===== Client logo ticker — Book-a-Demo nav (pause + center) + home7 drag; no pause on hover ===== */
+(function initTrustTicker(){
+  const track=document.getElementById('trust-track');
+  if(!track) return;
+  const viewport=track.parentElement;
+  const prev=document.getElementById('trust-prev');
+  const next=document.getElementById('trust-next');
+  const pause=document.getElementById('trust-pause');
+  const originals=[...track.children];
+  const total=originals.length;
+  const STEP_MS=500;
+  let visible=window.innerWidth>1024?5:3;
+  let slideWidth=0,setWidth=0,offset=0,lastTime=0,paused=false,stepping=false;
+  let centerIndex=Math.min(Math.floor(visible/2),Math.max(0,total-1));
+  let dragging=false,pointerId=null,startX=0,startOffset=0;
+  let stepEndHandler=null,stepFallbackTimer=null;
+
+  function setPauseUI(){
+    pause.classList.toggle('is-playing',!paused);
+    pause.classList.toggle('is-paused',paused);
+    pause.setAttribute('aria-pressed',paused?'true':'false');
+    pause.setAttribute('aria-label',paused?'Play carousel':'Pause carousel');
+    pause.title=paused?'Play carousel':'Pause carousel';
+  }
+  function removeClones(){track.querySelectorAll('.trust__logo-item--clone').forEach(el=>el.remove())}
+  function apply(animate){
+    track.style.transition=animate?`transform ${STEP_MS/1000}s cubic-bezier(.4,0,.2,1)`:'none';
+    track.style.transform=`translate3d(-${offset}px,0,0)`;
+  }
+  function wrap(){
+    if(!setWidth) return;
+    while(offset>=setWidth*2) offset-=setWidth;
+    while(offset<setWidth) offset+=setWidth;
+  }
+  function offsetForCenter(index){
+    return (total+index)*slideWidth+slideWidth/2-viewport.offsetWidth/2;
+  }
+  function normalizeOffsetTarget(targetOffset){
+    while(targetOffset<offset-setWidth/2) targetOffset+=setWidth;
+    while(targetOffset>offset+setWidth/2) targetOffset-=setWidth;
+    return targetOffset;
+  }
+  function syncCenterIndexFromOffset(){
+    if(!slideWidth||!total) return;
+    wrap();
+    const viewportCenterPx=offset+viewport.offsetWidth/2;
+    const trackIndex=Math.round((viewportCenterPx-slideWidth/2)/slideWidth);
+    const logicalIndex=trackIndex-total;
+    centerIndex=((logicalIndex%total)+total)%total;
+  }
+  function snapOffsetToCenter(){
+    wrap();
+    syncCenterIndexFromOffset();
+    offset=offsetForCenter(centerIndex);
+    wrap();
+  }
+  function clearStepTimers(){
+    if(stepEndHandler){
+      track.removeEventListener('transitionend',stepEndHandler);
+      stepEndHandler=null;
+    }
+    if(stepFallbackTimer){
+      clearTimeout(stepFallbackTimer);
+      stepFallbackTimer=null;
+    }
+  }
+  function completeStep(){
+    if(!stepping) return;
+    clearStepTimers();
+    snapOffsetToCenter();
+    apply(false);
+    stepping=false;
+  }
+  function snapToNearestCenter(animate){
+    if(!setWidth||!slideWidth) return;
+    if(stepping) completeStep();
+    wrap();
+    syncCenterIndexFromOffset();
+    const targetOffset=normalizeOffsetTarget(offsetForCenter(centerIndex));
+    const distance=Math.abs(targetOffset-offset);
+    if(!animate||distance<0.5){
+      offset=targetOffset;
+      wrap();
+      apply(false);
+      return;
+    }
+    stepping=true;
+    stepEndHandler=function onSnapEnd(e){
+      if(e.target!==track) return;
+      if(e.propertyName!=='transform'&&e.propertyName!=='-webkit-transform') return;
+      completeStep();
+    };
+    track.addEventListener('transitionend',stepEndHandler);
+    stepFallbackTimer=setTimeout(completeStep,STEP_MS+100);
+    apply(false);
+    void track.offsetWidth;
+    offset=targetOffset;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>apply(true)));
+  }
+  function rebuild(){
+    removeClones();
+    const before=document.createDocumentFragment(),after=document.createDocumentFragment();
+    originals.forEach(item=>{
+      const first=item.cloneNode(true),last=item.cloneNode(true);
+      first.classList.add('trust__logo-item--clone');last.classList.add('trust__logo-item--clone');
+      first.setAttribute('aria-hidden','true');last.setAttribute('aria-hidden','true');
+      before.appendChild(first);after.appendChild(last);
+    });
+    track.insertBefore(before,track.firstChild);track.appendChild(after);
+    visible=window.innerWidth>1024?5:3;
+    slideWidth=(viewport.offsetWidth/visible)*.7225;
+    [...track.children].forEach(item=>{
+      item.style.flex=`0 0 ${slideWidth}px`;
+      item.style.width=`${slideWidth}px`;
+    });
+    setWidth=slideWidth*total;
+    centerIndex=Math.min(Math.floor(visible/2),Math.max(0,total-1));
+    offset=offsetForCenter(centerIndex);
+    wrap();
+    apply(false);
+  }
+  function tick(time){
+    if(!lastTime) lastTime=time;
+    const elapsed=Math.min(time-lastTime,100);
+    lastTime=time;
+    if(!paused&&!stepping&&!dragging&&setWidth){
+      offset+=(slideWidth*5/28)*(elapsed/1000);
+      wrap();apply(false);
+    }
+    requestAnimationFrame(tick);
+  }
+  function manualStep(direction){
+    if(!setWidth||!slideWidth) return;
+    if(stepping) completeStep();
+    stepping=true;
+    wrap();
+    syncCenterIndexFromOffset();
+    const prevIndex=centerIndex;
+    centerIndex=(centerIndex+direction+total)%total;
+    if(direction<0&&offset-slideWidth<setWidth){
+      offset+=setWidth;apply(false);void track.offsetWidth;
+    }
+    if(direction>0&&prevIndex===total-1){
+      offset-=setWidth;apply(false);void track.offsetWidth;
+    }
+    stepEndHandler=function onStepEnd(e){
+      if(e.target!==track) return;
+      if(e.propertyName!=='transform'&&e.propertyName!=='-webkit-transform') return;
+      completeStep();
+    };
+    track.addEventListener('transitionend',stepEndHandler);
+    stepFallbackTimer=setTimeout(completeStep,STEP_MS+100);
+    offset+=direction*slideWidth;
+    requestAnimationFrame(()=>apply(true));
+  }
+  /* Book-a-Demo arrow behavior: pause + snap closest logo to center, then step one */
+  function onArrowClick(direction){
+    if(dragging||!slideWidth) return;
+    if(!paused){
+      if(stepping) completeStep();
+      snapToNearestCenter(false);
+      paused=true;setPauseUI();
+      lastTime=0;
+    }
+    manualStep(direction);
+  }
+  function onPointerDown(e){
+    if(e.button!=null&&e.button!==0) return;
+    if(stepping) completeStep();
+    dragging=true;
+    pointerId=e.pointerId;
+    startX=e.clientX;
+    startOffset=offset;
+    viewport.classList.add('is-dragging');
+    track.style.transition='none';
+    try{viewport.setPointerCapture(e.pointerId)}catch(err){}
+  }
+  function onPointerMove(e){
+    if(!dragging||e.pointerId!==pointerId) return;
+    offset=startOffset-(e.clientX-startX);
+    wrap();
+    apply(false);
+  }
+  function endDrag(e){
+    if(!dragging) return;
+    if(e&&pointerId!=null&&e.pointerId!==pointerId) return;
+    dragging=false;
+    pointerId=null;
+    viewport.classList.remove('is-dragging');
+    syncCenterIndexFromOffset();
+    lastTime=0;
+  }
+
+  prev.addEventListener('click',e=>{e.preventDefault();onArrowClick(-1)});
+  next.addEventListener('click',e=>{e.preventDefault();onArrowClick(1)});
+  pause.addEventListener('click',e=>{
+    e.preventDefault();
+    if(paused){
+      paused=false;setPauseUI();lastTime=0;
+    }else{
+      paused=true;setPauseUI();lastTime=0;
+      snapToNearestCenter(true);
+    }
+  });
+  viewport.addEventListener('pointerdown',onPointerDown);
+  viewport.addEventListener('pointermove',onPointerMove);
+  viewport.addEventListener('pointerup',endDrag);
+  viewport.addEventListener('pointercancel',endDrag);
+  viewport.addEventListener('lostpointercapture',endDrag);
+  let resizeTimer;
+  window.addEventListener('resize',()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(rebuild,150);
+  });
+  rebuild();setPauseUI();
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){paused=true;setPauseUI()}
+  requestAnimationFrame(tick);
+})();
+
+/* ===== FUNDVIEW cinematic word reveal + parallax ===== */
+(function(){
+  const section=document.getElementById('FUNDVIEW_Text_Scroll');
+  if(!section) return;
+  const content=section.querySelector('[data-highlight-text]');
+  const background=section.querySelector('.FUNDVIEW_Text_Scroll__background');
+  if(!content) return;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lineElements=[...content.querySelectorAll('.FUNDVIEW_Text_Scroll__line')];
+  const lineWords=[];
+  const words=[];
+
+  function splitLine(line){
+    const text=line.textContent||'';
+    const group=[];
+    line.textContent='';
+    text.split(/(\s+)/).forEach(token=>{
+      if(!token) return;
+      if(/^\s+$/.test(token)){
+        line.appendChild(document.createTextNode(token));
+        return;
+      }
+      const word=document.createElement('span');
+      word.className='word';
+      word.textContent=token;
+      line.appendChild(word);
+      group.push(word);
+      words.push(word);
+    });
+    if(group.length) lineWords.push(group);
+  }
+
+  lineElements.forEach(splitLine);
+  if(!words.length) return;
+  section.classList.add('is-word-reveal-ready');
+
+  function applyProgress(progress,mobile=window.matchMedia('(max-width: 600px)').matches){
+    const revealStart=.12;
+    const revealComplete=.75;
+    const wordWindow=.045;
+    const lineWordStagger=.045;
+    const lineDuration=wordWindow+lineWordStagger;
+    const lineStaggerSpan=revealComplete-revealStart-lineDuration;
+    const restingOpacity=mobile?.22:.20;
+    const blur=mobile?1:1.5;
+    const lift=mobile?8:10;
+    const baseScale=mobile?.988:.985;
+    lineWords.forEach((group,lineIndex)=>{
+      const lineProgress=lineIndex/Math.max(lineWords.length-1,1);
+      const lineStart=revealStart+lineProgress*lineStaggerSpan;
+      group.forEach((word,wordIndex)=>{
+        const wordProgress=wordIndex/Math.max(group.length-1,1);
+        const start=lineStart+wordProgress*lineWordStagger;
+        const local=Math.max(0,Math.min(1,(progress-start)/wordWindow));
+        if(progress>=start+wordWindow-1e-6){
+          word.style.opacity='1';
+          word.style.filter='none';
+          word.style.transform='none';
+          return;
+        }
+        const eased=1-Math.pow(1-local,7);
+        const hidden=1-eased;
+        word.style.opacity=(restingOpacity+eased*(1-restingOpacity)).toFixed(3);
+        word.style.filter=`blur(${(hidden*blur).toFixed(2)}px)`;
+        word.style.transform=`translate3d(0,${(hidden*lift).toFixed(2)}px,0) scale(${(baseScale+eased*(1-baseScale)).toFixed(4)})`;
+      });
+    });
+  }
+
+  if(reduce){
+    applyProgress(1);
+    return;
+  }
+
+  let ticking=false;
+  let renderedWordProgress=-1;
+  function render(targetProgress,mobile){
+    if(Math.abs(targetProgress-renderedWordProgress)>.0001){
+      applyProgress(targetProgress,mobile);
+      renderedWordProgress=targetProgress;
+    }
+
+    if(background){
+      const smoothProgress=targetProgress*targetProgress*(3-2*targetProgress);
+      const motionProgress=targetProgress*.7+smoothProgress*.3;
+      const parallaxRange=mobile?115.2:180;
+      const parallaxY=(motionProgress-.5)*2*parallaxRange;
+      const baseOffset=mobile?-29.376:-42.432;
+      const offset=baseOffset+parallaxY;
+      const startScale=mobile?1.6068:1.6224;
+      const scale=startScale+motionProgress*(mobile?.0234:.0312);
+      background.style.transform=`translate3d(0,${offset.toFixed(3)}px,0) scale(${scale.toFixed(4)})`;
+    }
+  }
+  function update(){
+    const viewH=window.innerHeight||1;
+    const sectionRect=section.getBoundingClientRect();
+    const targetProgress=Math.max(0,Math.min(1,(viewH-sectionRect.top)/(viewH+sectionRect.height)));
+    const inRange=sectionRect.bottom>0&&sectionRect.top<viewH;
+    if(inRange||Math.abs(targetProgress-renderedWordProgress)>.0001){
+      render(targetProgress,window.matchMedia('(max-width: 600px)').matches);
+    }
+    ticking=false;
+  }
+  function onScroll(){
+    if(ticking) return;
+    ticking=true;
+    requestAnimationFrame(update);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  update();
+})();
+
+/* ===== Platform flip cards ===== */
+(function(){
+  const platform = document.querySelector('.section.platform');
+  if (!platform) return;
+  const cards = platform.querySelectorAll('.flip-card');
+  const markInteracted = () => platform.classList.add('platform--interacted');
+
+  cards.forEach(card => {
+    card.addEventListener('pointerenter', markInteracted, { once:true });
+    card.addEventListener('focus', markInteracted, { once:true });
+    card.addEventListener('click', () => {
+      const next = !card.classList.contains('is-flipped');
+      card.classList.toggle('is-flipped', next);
+      card.setAttribute('aria-pressed', String(next));
+      markInteracted();
+      if (!next) requestAnimationFrame(() => card.blur());
+    });
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        card.click();
+      } else if (event.key === 'Escape') {
+        card.classList.remove('is-flipped');
+        card.setAttribute('aria-pressed', 'false');
+      }
+    });
+  });
+})();
+
+/* ===== 5. Customer Results carousel — infinite loop + drag + snap ===== */
+(function initResultsCarousel(){
+  const viewport=document.getElementById('qViewport');
+  const track=document.getElementById('qTrack');
+  const prev=document.querySelector('.section.results .c-arrow.left');
+  const next=document.querySelector('.section.results .c-arrow.right');
+  const dots=[...document.querySelectorAll('#qDots i')];
+  if(!viewport||!track||!prev||!next) return;
+
+  const GAP=26;
+  const STEP_MS=420;
+  const originals=[...track.querySelectorAll('.qcard')];
+  const total=originals.length;
+  if(!total) return;
+
+  let visible=1,cardWidth=0,step=0,setWidth=0,offset=0,index=0;
+  let dragging=false,pointerId=null,startX=0,startOffset=0,moved=false;
+  let stepping=false,stepEndHandler=null,stepFallbackTimer=null;
+
+  function removeClones(){
+    track.querySelectorAll('.qcard--clone').forEach(el=>el.remove());
+  }
+  function apply(animate){
+    track.style.transition=animate?`transform ${STEP_MS/1000}s cubic-bezier(.4,0,.2,1)`:'none';
+    track.style.transform=`translate3d(${-offset}px,0,0)`;
+  }
+  function wrap(){
+    if(!setWidth) return;
+    while(offset>=setWidth*2) offset-=setWidth;
+    while(offset<setWidth) offset+=setWidth;
+  }
+  function setDot(i){
+    dots.forEach((d,x)=>d.classList.toggle('active',x===i));
+  }
+  function syncIndexFromOffset(){
+    if(!step) return;
+    wrap();
+    const raw=Math.round((offset-setWidth)/step);
+    index=((raw%total)+total)%total;
+    setDot(index);
+  }
+  function clearStepTimers(){
+    if(stepEndHandler){
+      track.removeEventListener('transitionend',stepEndHandler);
+      stepEndHandler=null;
+    }
+    if(stepFallbackTimer){
+      clearTimeout(stepFallbackTimer);
+      stepFallbackTimer=null;
+    }
+  }
+  function completeStep(){
+    if(!stepping) return;
+    clearStepTimers();
+    wrap();
+    syncIndexFromOffset();
+    apply(false);
+    stepping=false;
+  }
+  function snapToNearest(animate){
+    if(!step||!setWidth) return;
+    if(stepping) completeStep();
+    wrap();
+    const relative=offset-setWidth;
+    const nearest=Math.round(relative/step);
+    let target=setWidth+nearest*step;
+    while(target<offset-setWidth/2) target+=setWidth;
+    while(target>offset+setWidth/2) target-=setWidth;
+    const distance=Math.abs(target-offset);
+    if(!animate||distance<.5){
+      offset=target;
+      wrap();
+      syncIndexFromOffset();
+      apply(false);
+      return;
+    }
+    stepping=true;
+    stepEndHandler=function onSnapEnd(e){
+      if(e.target!==track) return;
+      if(e.propertyName!=='transform'&&e.propertyName!=='-webkit-transform') return;
+      completeStep();
+    };
+    track.addEventListener('transitionend',stepEndHandler);
+    stepFallbackTimer=setTimeout(completeStep,STEP_MS+120);
+    apply(false);
+    void track.offsetWidth;
+    offset=target;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>apply(true)));
+  }
+  function stepBy(direction){
+    if(!step||!setWidth||dragging) return;
+    if(stepping) completeStep();
+    wrap();
+    syncIndexFromOffset();
+    const prevIndex=index;
+    index=(index+direction+total)%total;
+    if(direction<0&&offset-step<setWidth){
+      offset+=setWidth;apply(false);void track.offsetWidth;
+    }
+    if(direction>0&&prevIndex===total-1){
+      offset-=setWidth;apply(false);void track.offsetWidth;
+    }
+    stepping=true;
+    stepEndHandler=function onStepEnd(e){
+      if(e.target!==track) return;
+      if(e.propertyName!=='transform'&&e.propertyName!=='-webkit-transform') return;
+      completeStep();
+    };
+    track.addEventListener('transitionend',stepEndHandler);
+    stepFallbackTimer=setTimeout(completeStep,STEP_MS+120);
+    offset+=direction*step;
+    setDot(index);
+    requestAnimationFrame(()=>apply(true));
+  }
+  function goToIndex(targetIndex,animate){
+    if(!step||!setWidth) return;
+    if(stepping) completeStep();
+    wrap();
+    index=((targetIndex%total)+total)%total;
+    let target=setWidth+index*step;
+    while(target<offset-setWidth/2) target+=setWidth;
+    while(target>offset+setWidth/2) target-=setWidth;
+    if(!animate){
+      offset=target;wrap();setDot(index);apply(false);return;
+    }
+    stepping=true;
+    stepEndHandler=function onGoEnd(e){
+      if(e.target!==track) return;
+      if(e.propertyName!=='transform'&&e.propertyName!=='-webkit-transform') return;
+      completeStep();
+    };
+    track.addEventListener('transitionend',stepEndHandler);
+    stepFallbackTimer=setTimeout(completeStep,STEP_MS+120);
+    apply(false);
+    void track.offsetWidth;
+    offset=target;
+    setDot(index);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>apply(true)));
+  }
+  function setExpandState(card,expanded){
+    card.classList.toggle('is-expanded',expanded);
+    const btn=card.querySelector('.qcard__more');
+    if(!btn) return;
+    btn.setAttribute('aria-expanded',expanded?'true':'false');
+    btn.setAttribute('aria-label',expanded?'Show less':'Read more');
+  }
+  function syncExpandable(quoteId,expanded){
+    originals.forEach(card=>{
+      if(card.getAttribute('data-quote')===quoteId) setExpandState(card,expanded);
+    });
+    track.querySelectorAll(`.qcard[data-quote="${quoteId}"]`).forEach(card=>setExpandState(card,expanded));
+  }
+  function rebuild(){
+    removeClones();
+    const before=document.createDocumentFragment(),after=document.createDocumentFragment();
+    originals.forEach(card=>{
+      const a=card.cloneNode(true),b=card.cloneNode(true);
+      a.classList.add('qcard--clone');b.classList.add('qcard--clone');
+      a.setAttribute('aria-hidden','true');b.setAttribute('aria-hidden','true');
+      a.setAttribute('inert','');b.setAttribute('inert','');
+      before.appendChild(a);after.appendChild(b);
+    });
+    track.insertBefore(before,track.firstChild);
+    track.appendChild(after);
+
+    visible=window.innerWidth<=860?1:3;
+    const viewportW=viewport.clientWidth;
+    cardWidth=(viewportW-(visible-1)*GAP)/visible;
+    step=cardWidth+GAP;
+    [...track.children].forEach(card=>{
+      card.style.flex=`0 0 ${cardWidth}px`;
+      card.style.width=`${cardWidth}px`;
+    });
+    setWidth=step*total;
+    offset=setWidth+index*step;
+    wrap();
+    apply(false);
+    setDot(index);
+  }
+  track.addEventListener('click',e=>{
+    const btn=e.target.closest('.qcard__more');
+    if(!btn||!track.contains(btn)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const card=btn.closest('.qcard');
+    if(!card) return;
+    const quoteId=card.getAttribute('data-quote');
+    if(!quoteId) return;
+    syncExpandable(quoteId,!card.classList.contains('is-expanded'));
+  });
+  function onPointerDown(e){
+    if(e.button!=null&&e.button!==0) return;
+    if(e.target.closest('a,button')) return;
+    if(stepping) completeStep();
+    dragging=true;moved=false;pointerId=e.pointerId;
+    startX=e.clientX;startOffset=offset;
+    viewport.classList.add('is-dragging');
+    track.style.transition='none';
+    try{viewport.setPointerCapture(e.pointerId)}catch(err){}
+  }
+  function onPointerMove(e){
+    if(!dragging||e.pointerId!==pointerId) return;
+    const dx=e.clientX-startX;
+    if(Math.abs(dx)>3) moved=true;
+    offset=startOffset-dx;
+    wrap();
+    apply(false);
+  }
+  function endDrag(e){
+    if(!dragging) return;
+    if(e&&pointerId!=null&&e.pointerId!==pointerId) return;
+    dragging=false;pointerId=null;
+    viewport.classList.remove('is-dragging');
+    snapToNearest(true);
+  }
+
+  prev.addEventListener('click',e=>{e.preventDefault();stepBy(-1)});
+  next.addEventListener('click',e=>{e.preventDefault();stepBy(1)});
+  dots.forEach((dot,i)=>dot.addEventListener('click',()=>goToIndex(i,true)));
+  viewport.addEventListener('pointerdown',onPointerDown);
+  viewport.addEventListener('pointermove',onPointerMove);
+  viewport.addEventListener('pointerup',endDrag);
+  viewport.addEventListener('pointercancel',endDrag);
+  viewport.addEventListener('lostpointercapture',endDrag);
+  viewport.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation()}},true);
+
+  let resizeTimer;
+  window.addEventListener('resize',()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(rebuild,150);
+  });
+  rebuild();
+})();
+
+/* ===== 6. Decorative play interaction ===== */
+document.querySelectorAll('.video-wrap').forEach(v => {
+  const play = () => {
+    const btn = v.querySelector('.play-btn'); if(!btn) return;
+    btn.animate([{transform:'translate(-50%,-50%) scale(1)'},{transform:'translate(-50%,-50%) scale(1.35)',opacity:.4}],{duration:320,easing:'ease-out'});
+    /* TODO: swap for real video playback / lightbox embed */
+  };
+  v.addEventListener('click', play);
+  v.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); play(); }});
+});
+
+/* ===== 7. Customer story click-to-load YouTube facade ===== */
+(function customerStoryVideo(){
+  const btn=document.querySelector('.customer_story__video');
+  if(!btn) return;
+  btn.addEventListener('click',function(){
+    const id=btn.getAttribute('data-video-id');
+    if(!id) return;
+    const iframe=document.createElement('iframe');
+    iframe.src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0';
+    iframe.title='City of Tulia story';
+    iframe.className='customer_story__iframe';
+    iframe.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    iframe.setAttribute('allowfullscreen','');
+    btn.replaceWith(iframe);
+  });
+})();
+</script>
+
+  {{ standard_footer_includes }}
+</body>
+</html>
